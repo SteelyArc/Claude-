@@ -180,14 +180,17 @@ def main(argv: list[str] | None = None) -> int:
             o = d.optionen
             if d.ist_datenkarte:
                 st1 = karten_mod.stand_lesen(d.quelle)
+                vermerke = drehbuch_mod.vermerke_liste(o.get("vermerke", ""))
                 staende = [karten_mod.Kartenstand(
                     st1, drehbuch_mod.hervorhebungen(o.get("hervorheben", ""), st1),
-                    drehbuch_mod.nachbarn(o.get("nachbarn", ""), st1, streng=False))]
+                    drehbuch_mod.nachbarn(o.get("nachbarn", ""), st1, streng=False),
+                    drehbuch_mod.zonen_liste(o.get("zonen", "")), vermerke)]
                 if "wechsel" in o:
                     st2 = karten_mod.stand_lesen(o["wechsel"])
                     staende.append(karten_mod.Kartenstand(
                         st2, drehbuch_mod.hervorhebungen(o.get("hervorheben_danach", o.get("hervorheben", "")), st2),
-                        drehbuch_mod.nachbarn(o.get("nachbarn", ""), st2, streng=False)))
+                        drehbuch_mod.nachbarn(o.get("nachbarn", ""), st2, streng=False),
+                        drehbuch_mod.zonen_liste(o.get("zonen_danach", "")), vermerke))
                 karte = karten_mod.Kartenszene(
                     staende, zeit_im_video(o.get("wechsel_bei")), o.get("ausschnitt", "Europa"),
                     o.get("fahrt"), zeit_im_video(o.get("fahrt_von")), zeit_im_video(o.get("fahrt_bis")),

@@ -72,7 +72,9 @@ Vorlage dient `ausgabe/zeitplan_verwendet.txt`. Danach neu rendern.
 - **Karten sind vollständig ENGLISCH beschriftet** (Titel, Länder, Orte, Legende),
   heller Atlas-Stil des 19. Jahrhunderts (Vorbild: klassischer Europa-Atlas und
   moderne „Partitions of Poland“-Karte). Fotos/Dokumente/Ton bleiben davon unberührt.
-- **Kartendaten:** ab 1886 ausschließlich CShapes 2.0 (tagesgenau); vor 1886 nur
+- **Kartendaten:** Mitteleuropa 1918–1939 vorrangig OpenHistoricalMap (`daten/karten/ohm`,
+  geprüft, siehe QUELLEN.md; neue Relationen nur mit `werkzeuge/ohm_holen.py` laden und
+  vor Verwendung an belegten Orten prüfen); sonst ab 1886 CShapes 2.0 (tagesgenau); vor 1886 nur
   historical-basemaps mit Warnung (nachweislich fehlerhaft, z. B. Teilungen Polens)
   → die Person vorher fragen, besser Originalkarte. 1772/1793 gibt es in keinem
   verfügbaren Datensatz.
@@ -93,7 +95,10 @@ Vorlage dient `ausgabe/zeitplan_verwendet.txt`. Danach neu rendern.
   Cairo, Lambert-Projektion), `film.py` (Archivfilm), `texte.py` (Einblendungen).
 - Ohne `drehbuch.txt` läuft exakt der Etappe-1-Weg (Regressionstest: Vorschau-MD5
   eines Testprojekts vor/nach Änderungen vergleichen).
-- Benötigt: Python 3.10+, Pillow, pycairo, ffmpeg/ffprobe ≥ 6.
+- Benötigt: Python 3.10+, Pillow, pycairo, shapely, numpy, ffmpeg/ffprobe ≥ 6.
+- Karten-Drehbuch zusätzlich: `zonen`/`zonen_danach` (Schlüssel aus `daten/karten/ohm/zonen.json`,
+  z. B. allenstein, marienwerder, upper-silesia-1920, upper-silesia, east-upper-silesia) und
+  `vermerke` (`Text@Ort` oder `Text@Breite,Länge`, `|` = Zeilenumbruch).
   **In jeder neuen Sitzung zuerst:** `pip install -r requirements.txt`.
 - Kartendaten: `daten/karten` (Quellen/Lizenzen in `daten/QUELLEN.md`). Fehlende
   Stichjahre lädt `karten.py` aus dem gepinnten GitHub-Stand nach → danach committen.

@@ -46,7 +46,8 @@ SCHLUESSEL = {
     "film": {"ort", "zeit", "quelle", "ab", "darstellung"},
     "karte_bild": {"ort", "zeit", "quelle", "bewegung", "darstellung"},
     "karte": {"wechsel", "wechsel_bei", "ausschnitt", "fahrt", "fahrt_von", "fahrt_bis", "hervorheben",
-              "hervorheben_danach", "nachbarn", "orte", "titel", "jahreszahl"},
+              "hervorheben_danach", "nachbarn", "orte", "titel", "jahreszahl", "zonen", "zonen_danach",
+              "vermerke"},
 }
 
 _KOPF = re.compile(r"^(\d[\d:.,]*)\s+(\w+)\s*(.*)$")
@@ -226,6 +227,9 @@ def pruefen(szenen: list[DSzene]) -> list[str]:
                     karten._ausschnitt_geo(o["fahrt"], 9 / 16)
                 for name in orte_liste(o.get("orte", "")):
                     karten.ort_finden(name)
+                zonen_liste(o.get("zonen", ""))
+                zonen_liste(o.get("zonen_danach", ""))
+                vermerke_liste(o.get("vermerke", ""))
         except (karten.KartenFehler, ZeitplanFehler, ValueError) as f:
             fehler.append(f"{ort}: {f}")
     return fehler
@@ -260,3 +264,28 @@ def schnittanalyse(szenen: list[DSzene]) -> list[str]:
         hinweise.append(f"{laengste} Fotos/Dokumente folgen direkt aufeinander – wirkt schnell wie eine "
                         f"Diashow. Eine Karte, ein Dokument oder Archivfilm dazwischen lockert auf.")
     return hinweise
+
+
+def zonen_liste(text: str) -> list[str]:
+    """'allenstein; marienwerder' → Schlüssel (geprüft gegen daten/karten/ohm/zonen.json)."""
+    from . import ohm
+    liste = [t.strip().lower() for t in text.split(";") if t.strip()]
+    for z in liste:
+        if z not in ohm.zonen_konfig():
+            raise karten.KartenFehler(f"Zone '{z}' unbekannt. Vorhanden: {', '.join(sorted(ohm.zonen_konfig()))}.")
+    return liste
+
+
+def vermerke_liste(text: str) -> list[tuple[str, float, float]]:
+    """'Polish Corridor@53.85,17.95; Battle of Warsaw|Aug 1920@Warsaw' → (Text, Breite, Länge).
+    Ein '|' im Text erzeugt einen Zeilenumbruch."""
+    liste = []
+    for teil in (t.strip() for t in text.split(";")):
+        if not teil:
+            continue
+        if "@" not in teil:
+            raise karten.KartenFehler(f"Vermerk '{teil}': Format 'Text@Ort' oder 'Text@Breite,Länge'.")
+        text_, ort = teil.rsplit("@", 1)
+        _, lat, lon = karten.ort_finden(ort if "," not in ort else f"x@{ort}")
+        liste.append((text_.strip(), lat, lon))
+    return liste

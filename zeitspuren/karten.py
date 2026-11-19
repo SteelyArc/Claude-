@@ -46,7 +46,7 @@ import cairo
 import numpy as np
 from PIL import Image
 
-from . import texte
+from . import ohm, texte
 
 DATEN = Path(__file__).resolve().parent.parent / "daten" / "karten"
 HIST_ORDNER = DATEN / "historisch"
@@ -79,6 +79,8 @@ GRADNETZ = (0.40, 0.52, 0.58)
 GRENZE = (0.20, 0.17, 0.15)
 TINTE = (0.204, 0.157, 0.118)
 ALTE_GRENZE = (0.62, 0.17, 0.13)
+UMKAEMPFT = (0.40, 0.27, 0.18)        # Schraffur umkämpfter Gebiete (Sepia)
+ZONE = (0.36, 0.20, 0.38)             # Abstimmungsgebiete (Pflaume)
 
 PASTELL = {
     "rosa": (0.949, 0.800, 0.765),
@@ -183,6 +185,8 @@ class Stand:
     @property
     def quellenangabe(self) -> str:
         if self.quelle == "cshapes":
+            if ohm.gilt_am(self.datum.isoformat()):
+                return "OpenHistoricalMap · CShapes 2.0"
             return "CShapes 2.0 (ETH Zurich)"
         return "historical-basemaps (A. Ourednik), approximate"
 
@@ -211,6 +215,9 @@ def stand_lesen(text: str) -> Stand:
 
 
 def daten_warnung(stand: Stand) -> str | None:
+    if stand.quelle == "cshapes":
+        w = ohm.warnungen_am(stand.datum.isoformat())
+        return " ".join(w) if w else None
     if stand.quelle == "hb":
         return (f"Kartenstand {stand.anzeige} stammt aus Näherungsdaten (historical-basemaps). Stichproben "
                 f"zeigen dort Fehler (z. B. 1783: Thorn und Krakau falsch zugeordnet). Nur nach Prüfung "
@@ -251,6 +258,11 @@ def gebiete(stand: Stand) -> list[dict]:
             polygone = [[_topo_ring(arcs, ring) for ring in poly] for poly in ringe]
             liste.append({"name": p["country_name"], "genauigkeit": 3 if p.get("b_def") else 1,
                           "status": p.get("status", ""), "polygone": polygone})
+        # Detailgrenzen (OpenHistoricalMap) ersetzen, wo vorhanden, die gröberen CShapes-Flächen
+        liste, umkaempft = ohm.kombinieren(liste, tag)
+        for polys, text, kante, start, ende in umkaempft:
+            liste.append({"name": "__umkaempft__", "umkaempft": True, "text": text, "genauigkeit": 1,
+                          "status": "", "polygone": polys, "kante": kante, "start": start, "ende": ende})
         return liste
     return _historisch(stand.jahr)
 
@@ -435,6 +447,8 @@ class Kartenstand:
     stand: Stand
     hervorhebungen: list[Hervorhebung] = field(default_factory=list)
     nachbarn: list[tuple[str, str]] = field(default_factory=list)  # (Datenname, Beschriftung)
+    zonen: list[str] = field(default_factory=list)                    # Schlüssel aus ohm/zonen.json
+    vermerke: list[tuple[str, float, float]] = field(default_factory=list)  # (Text, Breite, Länge)
 
 
 def _weich(x: float) -> float:
@@ -534,6 +548,7 @@ class Kartenszene:
             if pt:
                 self.orte.append((name or angabe, pt))
         self._schraffur_muster = self._schraffur(hoehe / 1920)
+        self._schraffur_umkaempft = self._schraffur(hoehe / 1920, UMKAEMPFT, steigend=False, abstand=13)
         self._einblendungen = self._texte_vorbereiten()
 
     # -- Geometrie -------------------------------------------------------------
@@ -602,7 +617,14 @@ class Kartenszene:
     def _stand_vorbereiten(self, kst: Kartenstand) -> dict:
         liste = gebiete(kst.stand)
         laender = []
+        umkaempft = []
         for g in liste:
+            if g.get("umkaempft"):
+                teil = self._flaechen_pfad(g["polygone"])
+                umkaempft.append({"teil": teil, "text": g["text"], "mitte": self._beschriftungspunkt(g["polygone"]),
+                                  "kante": self._linien_pfad(g["kante"]),
+                                  "start": self.proj(*g["start"]), "ende": self.proj(*g["ende"])})
+                continue
             teil = self._flaechen_pfad(g["polygone"])
             laender.append({"name": g["name"], "teil": teil, "genau": g["genauigkeit"] >= 2})
         hervor = []
@@ -616,7 +638,18 @@ class Kartenszene:
             if polys:
                 teil = self._flaechen_pfad(polys)
                 nachbarn.append((text, self._beschriftungspunkt(polys), teil[1]))
-        return {"laender": laender, "hervor": hervor, "nachbarn": nachbarn}
+        zonen = []
+        for schl in kst.zonen:
+            form, k = ohm.zone(schl)
+            polys = ohm.als_polygone(form)
+            zonen.append({"teil": self._flaechen_pfad(polys), "k": k, "mitte": self._beschriftungspunkt(polys)})
+        vermerke = []
+        for text, lat, lon in kst.vermerke:
+            pt = self.proj(lon, lat)
+            if pt:
+                vermerke.append((text, pt))
+        return {"laender": laender, "hervor": hervor, "nachbarn": nachbarn, "umkaempft": umkaempft,
+                "zonen": zonen, "vermerke": vermerke}
 
     def _farben_verteilen(self) -> None:
         """Pastellfarben so verteilen, dass Nachbarn nie dieselbe Farbe haben.
@@ -707,16 +740,20 @@ class Kartenszene:
         return bestes
 
     @staticmethod
-    def _schraffur(px: float):
-        """Diagonale rote Schraffur (klassische Kennzeichnung abgetretener Gebiete)."""
-        n = max(8, round(16 * px))
+    def _schraffur(px: float, farbe=ALTE_GRENZE, steigend: bool = True, abstand: float = 16):
+        """Diagonale Schraffur (rot: abgetretene Gebiete; braun, fallend: umkämpfte Gebiete)."""
+        n = max(8, round(abstand * px))
         kachel = cairo.ImageSurface(cairo.FORMAT_ARGB32, n, n)
         c = cairo.Context(kachel)
-        c.set_source_rgba(*ALTE_GRENZE, 0.9)
+        c.set_source_rgba(*farbe, 0.9)
         c.set_line_width(max(1.2, 2.4 * px))
         for versatz in (-n, 0, n):
-            c.move_to(versatz, n)
-            c.line_to(versatz + n, 0)
+            if steigend:
+                c.move_to(versatz, n)
+                c.line_to(versatz + n, 0)
+            else:
+                c.move_to(versatz, 0)
+                c.line_to(versatz + n, n)
         c.stroke()
         muster = cairo.SurfacePattern(kachel)
         muster.set_extend(cairo.EXTEND_REPEAT)
@@ -741,10 +778,12 @@ class Kartenszene:
                                      teil="inhalt", legendenplatz=True)
         b2, x2, y2 = texte.kartusche(neu.anzeige, neu.stand_englisch, self.titel, legende, quelle, W, H,
                                      teil="inhalt")
-        m = self.wechsel_bei
+        # Die Jahreszahl wechselt, BEVOR sich der neue Stand einzeichnet – so ist jede
+        # sichtbare Fläche stets dem angezeigten Jahr zugeordnet.
+        m = self.wechsel_bei - self.WECHSEL_DAUER / 2
         return [texte.Einblendung(r, rx, ry, self.von + 0.5, self.bis - 0.4, ein=1.2),
-                texte.Einblendung(b1, x1, y1, self.von + 0.5, m, ein=1.2, aus=0.55),
-                texte.Einblendung(b2, x2, y2, m, self.bis - 0.4, ein=0.7)]
+                texte.Einblendung(b1, x1, y1, self.von + 0.5, m - 0.1, ein=1.2, aus=0.5),
+                texte.Einblendung(b2, x2, y2, m - 0.15, self.bis - 0.4, ein=0.5)]
 
     # -- Kamera ----------------------------------------------------------------
     def kamera(self, t: float) -> tuple[float, float, float]:
@@ -785,6 +824,17 @@ class Kartenszene:
         def bildpunkt(kx, ky):
             return W / 2 + (kx - cx) * s, H / 2 - (ky - cy) * s
 
+        umk_kanten = [u["kante"] for e in self.ebenen for u in e["umkaempft"]]
+
+        def radieren(breite_px=6):
+            """Entfernt an der äußeren Kante umkämpfter Gebiete die Grenzlinien – 1920 gab es dort keine Grenze."""
+            if umk_kanten and pfad(*umk_kanten):
+                ctx.save()
+                ctx.set_operator(cairo.OPERATOR_CLEAR)
+                ctx.set_line_width(breite_px * px)
+                ctx.stroke()
+                ctx.restore()
+
         ctx.set_line_join(cairo.LINE_JOIN_ROUND)
         ctx.set_line_cap(cairo.LINE_CAP_ROUND)
 
@@ -810,7 +860,7 @@ class Kartenszene:
             anteile = [1.0]
             w_fort = 0.0
         else:
-            w0 = self.wechsel_bei - self.WECHSEL_DAUER / 2
+            w0 = self.wechsel_bei - self.WECHSEL_DAUER / 2 + 0.5
             a = _weich((t - w0) / self.WECHSEL_DAUER)
             anteile = [1.0 - a, a]
             w_fort = min(1.0, max(0.0, (t - w0) / (self.WECHSEL_DAUER + 1.2)))
@@ -847,6 +897,7 @@ class Kartenszene:
             if pfad(*ungefaehre):
                 ctx.stroke()
             ctx.set_dash([])
+            radieren()
             ctx.pop_group_to_source()
             ctx.paint_with_alpha(anteil * einblenden)
 
@@ -871,6 +922,7 @@ class Kartenszene:
             ctx.stroke()
 
         # Hervorhebungen
+        ctx.push_group()
         for i, (ebene, anteil) in enumerate(zip(self.ebenen, anteile)):
             if anteil <= 0.002 or not ebene["hervor"]:
                 continue
@@ -894,6 +946,46 @@ class Kartenszene:
                 ctx.set_dash([max(0.01, fortschritt * laenge_px), laenge_px + 10])
                 ctx.stroke()
                 ctx.set_dash([])
+        radieren(26)
+        ctx.pop_group_to_source()
+        ctx.paint()
+
+        # Umkämpfte Gebiete: keine Grenzlinie, Farbe des Nachbarstaats läuft aus, Sepia-Schraffur
+        for ebene, anteil in zip(self.ebenen, anteile):
+            st = anteil * einblenden
+            if st <= 0.002:
+                continue
+            for u in ebene["umkaempft"]:
+                if not u["start"] or not u["ende"]:
+                    continue
+                x0, y0 = bildpunkt(*u["start"])
+                x1, y1 = bildpunkt(*u["ende"])
+                # vom festen Gebiet aus zunehmend zurückgenommen und schraffiert – keine Grenzlinie
+                aufhellen = cairo.LinearGradient(x0, y0, x1, y1)
+                aufhellen.add_color_stop_rgba(0, *ZURUECK, 0.0)
+                aufhellen.add_color_stop_rgba(0.22, *ZURUECK, 0.62 * st)
+                aufhellen.add_color_stop_rgba(1, *ZURUECK, 0.86 * st)
+                maske = cairo.LinearGradient(x0, y0, x1, y1)
+                maske.add_color_stop_rgba(0, 0, 0, 0, 0.0)
+                maske.add_color_stop_rgba(0.2, 0, 0, 0, 0.5 * st)
+                maske.add_color_stop_rgba(1, 0, 0, 0, 0.6 * st)
+                if not pfad(u["teil"]):
+                    continue
+                ctx.save()
+                ctx.clip()
+                ctx.set_source(aufhellen)
+                ctx.paint()
+                ctx.set_source(self._schraffur_umkaempft)
+                ctx.mask(maske)
+                ctx.restore()
+                # äußere Kante nur gepunktet: die erst 1921 in Riga festgelegte Linie
+                if pfad(u["kante"]):
+                    ctx.set_source_rgba(*UMKAEMPFT, 0.85 * st)
+                    ctx.set_line_width(2.6 * px)
+                    ctx.set_dash([0.1, 7 * px])
+                    ctx.stroke()
+                    ctx.set_dash([])
+
 
         # Abgetretene Gebiete (früher Teil der Hervorhebung, jetzt nicht mehr): rot schraffiert
         if len(self.ebenen) > 1 and anteile[1] > 0.002 and self.ebenen[0]["hervor"]:
@@ -919,6 +1011,32 @@ class Kartenszene:
                     ctx.set_dash([11 * px, 7 * px])
                     ctx.stroke()
                     ctx.set_dash([])
+
+        # Historische Zonen (Abstimmungsgebiete, Übergaben)
+        zonen_ein = _weich((t - self.von - 2.0) / 1.5)
+        for ebene, anteil in zip(self.ebenen, anteile):
+            st = anteil * zonen_ein
+            if st <= 0.002:
+                continue
+            for z in ebene["zonen"]:
+                if not pfad(z["teil"]):
+                    continue
+                if z["k"].get("stil") == "uebergabe":
+                    ctx.save()
+                    ctx.clip_preserve()
+                    ctx.set_source(self._schraffur_muster)
+                    ctx.paint_with_alpha(0.75 * st)
+                    ctx.restore()
+                    farbe_linie = ALTE_GRENZE
+                else:
+                    ctx.set_source_rgba(*ZONE, 0.10 * st)
+                    ctx.fill_preserve()
+                    farbe_linie = ZONE
+                ctx.set_source_rgba(*farbe_linie, 0.95 * st)
+                ctx.set_line_width(3.0 * px)
+                ctx.set_dash([12 * px, 6 * px])
+                ctx.stroke()
+                ctx.set_dash([])
 
         # --- Beschriftung: kollisionsfrei, nach Wichtigkeit -----------------------
         belegung = _Belegung(W, H, 24 * px)
@@ -947,6 +1065,29 @@ class Kartenszene:
                     sprites.append((spr, lx, ly, a))
                     break
 
+        def setzen(spr, mx, my, st, versaetze=(0, 0.9, -0.9)):
+            kandidaten = [(0, dy) for dy in versaetze] + [(dx, dy) for dx in (-0.45, 0.45) for dy in (0, 1.0, -1.0)]
+            for dx, dy in kandidaten:
+                lx = mx - spr.width / 2 + dx * spr.width
+                ly = my - spr.height / 2 + dy * spr.height
+                rand = 12 * px
+                if belegung.frei(lx + rand, ly + rand, spr.width - 2 * rand, spr.height - 2 * rand):
+                    belegung.belegen(lx + rand, ly + rand, spr.width - 2 * rand, spr.height - 2 * rand)
+                    sprites.append((spr, lx, ly, st))
+                    return True
+            return False
+
+        # 2a) Umkämpfte Gebiete (wichtiger als Ländernamen)
+        for ebene, anteil in zip(self.ebenen, anteile):
+            st = anteil * einblenden
+            if st > 0.01:
+                for u in ebene["umkaempft"]:
+                    if u["mitte"] is None:
+                        continue
+                    titel, _, unter = u["text"].partition("|")
+                    spr = texte.zonenbeschriftung(titel, unter, H, tuple(int(c * 255) for c in UMKAEMPFT))
+                    setzen(spr, *bildpunkt(*u["mitte"]), st, (0, 1.0, -1.0, 2.0, -2.0))
+
         # 2) Hervorgehobene Gebiete: Name im Gebiet, notfalls leicht versetzt.
         #    Gleichnamige Beschriftung in beiden Ständen nur einmal (vom überwiegenden Stand).
         reihenfolge = sorted(range(len(self.ebenen)), key=lambda k: -anteile[k])
@@ -971,7 +1112,20 @@ class Kartenszene:
                         sprites.append((spr, lx, ly, st))
                         break
 
-        # 3) Nachbarn: zurückhaltend, nur wenn nah genug und das Gebiet groß genug ist
+        # 3) Zonen, umkämpfte Gebiete und Vermerke
+        for ebene, anteil in zip(self.ebenen, anteile):
+            st = anteil * zonen_ein
+            if st > 0.01:
+                for z in ebene["zonen"]:
+                    if z["mitte"] is None:
+                        continue
+                    farbe = tuple(int(c * 255) for c in (ALTE_GRENZE if z["k"].get("stil") == "uebergabe" else ZONE))
+                    spr = texte.zonenbeschriftung(z["k"]["titel"], z["k"].get("unterzeile", ""), H, farbe)
+                    setzen(spr, *bildpunkt(*z["mitte"]), st, (0, 1.0, -1.0, 1.8))
+        for text, (vx, vy) in self.ebenen[0]["vermerke"]:  # Vermerke gelten für die ganze Szene
+            setzen(texte.vermerk(text, H), *bildpunkt(vx, vy), einblenden * hervor_ein)
+
+        # 4) Nachbarn: zurückhaltend, nur wenn nah genug und das Gebiet groß genug ist
         nachbar_nah = _weich((NACHBARN_AB_KM - wkm) / (0.3 * NACHBARN_AB_KM))
         for ebene, anteil in zip(self.ebenen, anteile):
             st = anteil * einblenden * nachbar_nah

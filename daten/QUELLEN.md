@@ -1,5 +1,28 @@
 # Datenquellen und Lizenzen
 
+## Detailgrenzen 1918–1939 (Mitteleuropa) – `karten/ohm/`
+- **OpenHistoricalMap** (Lizenz: CC0), abgerufen über die Overpass-API mit
+  `werkzeuge/ohm_holen.py`; jede Datei speichert Relation, Version und Zeitstempel.
+- Tagesgenaue Fassungen für Deutsches Reich, Polen, Danzig, Litauen, Memelland,
+  Tschechoslowakei, Teschener Schlesien; Zuordnung in `ohm/staaten.json`. Innerhalb
+  ihrer Gültigkeit ersetzen sie die gröberen CShapes-Flächen.
+- **Grenzen der Quelle:** Die Ereignisse sind belegt (z. B. FRUS, Versailler Vertrag),
+  die Linienführung trägt in OHM den Vermerk „needs source for boundary lines“.
+  Deshalb geprüft:
+  - 42 belegte Ortszuordnungen (u. a. Kattowitz/Königshütte/Tarnowitz bis Juni 1922
+    deutsch, danach polnisch; Gleiwitz/Beuthen/Oppeln deutsch; Korridor mit Gdingen,
+    Putzig, Hela polnisch; Stolp, Lauenburg, Bütow deutsch; Allenstein, Marienwerder,
+    Elbing deutsch; Soldau polnisch; Danzig/Zoppot Freie Stadt) – alle bestanden.
+  - Abstimmungsgebiete 1920 = Versailler Vertrag Art. 94/96 (Kreise) – Abweichung 0,0 km².
+- **Bewusst offen:** Polens Ostgrenze 1920 (polnisch-sowjetischer Krieg) ist in OHM
+  nicht geschlossen. Das Programm zeigt dort keine Grenzlinie, sondern ein
+  auslaufendes, schraffiertes umkämpftes Gebiet; die äußere Kante ist nur gepunktet
+  und als „Riga line of 1921“ beschriftet.
+- **Nicht erfasst:** Mittellitauen (Okt. 1920 – Apr. 1922) – das Programm warnt; das
+  oberschlesische Abstimmungsgebiet selbst (nur als Provinz beschriftet).
+- Abstimmungsergebnisse: Allenstein 11.07.1920 97,9 % für Deutschland; Marienwerder
+  11.07.1920 92,4 %; Oberschlesien 20.03.1921 59,6 % Deutschland, 40,4 % Polen.
+
 ## Staatsgrenzen ab 1886 (Hauptquelle) – `karten/cshapes/`
 - **CShapes 2.0** – N. B. Weidmann, G. Schvitz, L. Girardin u. a. (ETH Zürich /
   Universität Konstanz). Schvitz et al. (2022), „Mapping the International System,
@@ -8,6 +31,9 @@
   Stand `54840534d9a82cfd01caf1021f85933e701e8318`, Datei `cshapes_2_gw.topojson.xz`
 - Jede Grenzziehung hat exakte Gültigkeitsdaten (Beginn/Ende). Ein Kartenstand
   „1920“ bedeutet den 1. Juli 1920; genaue Tage sind möglich (`1920-10-07`).
+- **Grobe Linien (Weltdatensatz):** z. B. Ost-Oberschlesien bereits ab 1919 polnisch,
+  Tarnowitz nach 1922 deutsch, Memel 1914 russisch. Für Mitteleuropa 1918–1939
+  daher OpenHistoricalMap (oben) vorrangig.
 - Kodierungsregeln laut CShapes (Gleditsch-Ward-Staatensystem): Annexionen und
   Besetzungen im Zweiten Weltkrieg sind teils nicht als Grenzänderung erfasst
   (z. B. bleibt Österreich 1938–1945 eigenständig). Für solche Ereignisse eine

@@ -1,0 +1,197 @@
+{
+  "_hinweis": "Tagesgenaue Staatsgrenzen aus OpenHistoricalMap (CC0), die im Zeitraum ihrer Gültigkeit die gröberen CShapes-Flächen ersetzen. Jede Datei <relation>.geojson enthält Relation, Version und Zeitstempel. 'offen' = Grenze in den Daten bewusst nicht geschlossen (umkämpft); dann gilt 'huelle' als äußere Ausdehnung, deren nicht festgelegter Teil als umkämpft dargestellt wird. Geprüft gegen 42 belegte Ortszuordnungen und den Versailler Vertrag (siehe daten/QUELLEN.md).",
+  "staaten": [
+    {
+      "name": "German Reich",
+      "ersetzt": [
+        "Germany (Prussia)"
+      ],
+      "versionen": [
+        {
+          "datei": "2696519",
+          "von": "1918-11-11",
+          "bis": "1920-01-10"
+        },
+        {
+          "datei": "2692483",
+          "von": "1920-01-10",
+          "bis": "1920-02-04"
+        },
+        {
+          "datei": "2696518",
+          "von": "1920-02-04",
+          "bis": "1920-06-15"
+        },
+        {
+          "datei": "2696517",
+          "von": "1920-06-15",
+          "bis": "1920-08-15"
+        },
+        {
+          "datei": "2741459",
+          "von": "1920-08-15",
+          "bis": "1920-12-24"
+        },
+        {
+          "datei": "2696516",
+          "von": "1920-12-24",
+          "bis": "1922-06-20"
+        },
+        {
+          "datei": "2696515",
+          "von": "1922-06-20",
+          "bis": "1935-03-01"
+        }
+      ]
+    },
+    {
+      "name": "Poland",
+      "ersetzt": [
+        "Poland"
+      ],
+      "versionen": [
+        {
+          "datei": "2855675",
+          "von": "1920-01-10",
+          "bis": "1920-05-19",
+          "offen": true,
+          "huelle": "2855672",
+          "umkaempft": "Eastern border not yet fixed|Polish–Soviet War · dotted: Riga line of 1921"
+        },
+        {
+          "datei": "2855669",
+          "von": "1920-05-19",
+          "bis": "1920-08-15",
+          "offen": true,
+          "huelle": "2855672",
+          "umkaempft": "Eastern border not yet fixed|Polish–Soviet War · dotted: Riga line of 1921"
+        },
+        {
+          "datei": "2855670",
+          "von": "1920-08-15",
+          "bis": "1921-03-18",
+          "offen": true,
+          "huelle": "2855672",
+          "umkaempft": "Eastern border not yet fixed|Polish–Soviet War · dotted: Riga line of 1921"
+        },
+        {
+          "datei": "2855671",
+          "von": "1921-03-18",
+          "bis": "1922-04-18",
+          "offen": false,
+          "huelle": "2855672",
+          "warnung": "1921-03-18 bis 1922-04-18: Mittellitauen (Gebiet um Wilna) ist in den Daten nicht gesondert erfasst und erscheint als polnisch – Karten dieses Zeitraums nicht auf das Wilnagebiet richten.",
+          "datei_flaeche": "2855672"
+        },
+        {
+          "datei": "2855672",
+          "von": "1922-04-18",
+          "bis": "1922-06-20"
+        },
+        {
+          "datei": "2741472",
+          "von": "1922-06-20",
+          "bis": "1924-03-12"
+        }
+      ]
+    },
+    {
+      "name": "Danzig",
+      "ersetzt": [
+        "Danzig"
+      ],
+      "versionen": [
+        {
+          "datei": "2971093",
+          "von": "1920-01-10",
+          "bis": "1920-11-15",
+          "anzeigename": "Danzig under Allied administration"
+        },
+        {
+          "datei": "2696571",
+          "von": "1920-11-15",
+          "bis": "1920-12-24",
+          "anzeigename": "Free City of Danzig"
+        },
+        {
+          "datei": "2691478",
+          "von": "1920-12-24",
+          "bis": "1939-09-01",
+          "anzeigename": "Free City of Danzig"
+        }
+      ]
+    },
+    {
+      "name": "Lithuania",
+      "ersetzt": [
+        "Lithuania"
+      ],
+      "versionen": [
+        {
+          "datei": "2693086",
+          "von": "1920-10-09",
+          "bis": "1923-01-19",
+          "_hinweis": "OHM: start_date 1920, start_event Besetzung Wilnas durch Polen (9.10.1920)"
+        },
+        {
+          "datei": "2692218",
+          "von": "1923-01-19",
+          "bis": "1939-03-23"
+        }
+      ]
+    },
+    {
+      "name": "Memel Territory",
+      "ersetzt": [],
+      "versionen": [
+        {
+          "datei": "2691476",
+          "von": "1920-01-10",
+          "bis": "1923-01-19",
+          "anzeigename": "Memel Territory (Allied administration)"
+        }
+      ]
+    },
+    {
+      "name": "Czechoslovakia",
+      "ersetzt": [
+        "Czechoslovakia"
+      ],
+      "versionen": [
+        {
+          "datei": "2747877",
+          "von": "1918-11-05",
+          "bis": "1920-02-04"
+        },
+        {
+          "datei": "2747876",
+          "von": "1920-02-04",
+          "bis": "1920-05-19"
+        },
+        {
+          "datei": "2693465",
+          "von": "1920-05-19",
+          "bis": "1920-08-10"
+        },
+        {
+          "datei": "2747893",
+          "von": "1920-08-10",
+          "bis": "1924-03-12"
+        }
+      ]
+    },
+    {
+      "name": "Cieszyn Silesia (disputed)",
+      "ersetzt": [],
+      "versionen": [
+        {
+          "datei": "2747891",
+          "von": "1918-10-30",
+          "bis": "1920-08-10",
+          "anzeigename": "Cieszyn Silesia (disputed)",
+          "_hinweis": "OHM-Ende 1920-08-28; hier bis zur Übernahme durch die Tschechoslowakei (1920-08-10), damit sich Flächen nicht überlagern"
+        }
+      ]
+    }
+  ]
+}

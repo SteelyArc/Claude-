@@ -1,0 +1,61 @@
+{
+  "_hinweis": "Historische Zonen, die als Überlagerung gezeigt werden können (Drehbuch: 'zonen: allenstein; marienwerder'). 'teile' = Vereinigung der genannten OHM-Dateien bzw. Differenz zweier Staatsstände. Beschriftung englisch; Ergebnisse nach den amtlichen Abstimmungsergebnissen.",
+  "zonen": {
+    "allenstein": {
+      "teile": [
+        "2855668",
+        "2888931"
+      ],
+      "titel": "Allenstein plebiscite area",
+      "unterzeile": "11 July 1920 · 97.9 % for Germany",
+      "stil": "abstimmung",
+      "beleg": "Versailler Vertrag Art. 94: Regierungsbezirk Allenstein + Kreis Oletzko; deckungsgleich mit OHM-Relation 2855647 (Abweichung 0,0 km²)"
+    },
+    "marienwerder": {
+      "teile": [
+        "2692549",
+        "2693143",
+        "2692548",
+        "2693145"
+      ],
+      "titel": "Marienwerder plebiscite area",
+      "unterzeile": "11 July 1920 · 92.4 % for Germany",
+      "stil": "abstimmung",
+      "beleg": "Versailler Vertrag Art. 96: Kreise Stuhm, Rosenberg, Marienburg und Marienwerder östlich von Nogat/Weichsel; deckungsgleich mit OHM-Relation 2855647"
+    },
+    "upper-silesia": {
+      "teile": [
+        "2693611"
+      ],
+      "titel": "Province of Upper Silesia",
+      "unterzeile": "plebiscite 20 March 1921 · 59.6 % Germany, 40.4 % Poland",
+      "stil": "abstimmung",
+      "beleg": "Provinz Oberschlesien 1920–1922 (OHM 2693611). Das Abstimmungsgebiet umfasste den Großteil, nicht alle Kreise – daher als Provinz beschriftet."
+    },
+    "east-upper-silesia": {
+      "differenz": [
+        "2696516",
+        "2696515"
+      ],
+      "nur_um": [
+        17.5,
+        49.5,
+        19.6,
+        51.2
+      ],
+      "titel": "East Upper Silesia",
+      "unterzeile": "to Poland, 20 June 1922",
+      "stil": "uebergabe",
+      "beleg": "Deutsches Reich vor minus nach dem 20.06.1922 (OHM 2696516 − 2696515), beschränkt auf Oberschlesien"
+    },
+    "upper-silesia-1920": {
+      "teile": [
+        "2693611"
+      ],
+      "titel": "Province of Upper Silesia",
+      "unterzeile": "German · plebiscite pending · held 20 March 1921",
+      "stil": "abstimmung",
+      "beleg": "Provinz Oberschlesien (OHM 2693611); 1920 deutsch, Abstimmung erst am 20.03.1921"
+    }
+  }
+}

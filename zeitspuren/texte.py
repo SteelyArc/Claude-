@@ -334,3 +334,45 @@ def kartenbeschriftung(text: str, art: str, hoehe: int, farbe: tuple = TINTE) ->
     alpha = 255 if art != "nachbar" else 170
     _atlas_text(d, (pad, pad), text, f, tuple(farbe) + (alpha,), sperr, (5 if art != "nachbar" else 4) * s)
     return ebene
+
+
+@lru_cache(maxsize=256)
+def zonenbeschriftung(titel: str, unterzeile: str, hoehe: int, farbe: tuple = TINTE) -> Image.Image:
+    """Zweizeilige Beschriftung einer historischen Zone (z. B. Abstimmungsgebiet)."""
+    s = hoehe / 1920
+    f1 = schrift(SANS_FETT, round(27 * s))
+    f2 = schrift(SERIF_KURSIV, round(32 * s))
+    t1 = titel.upper()
+    sperr = 3.5 * s
+    b1 = _sperrsatz_breite(t1, f1, sperr)
+    unter = [z.strip() for z in unterzeile.split("·")] if unterzeile else []
+    # lange Unterzeilen an '·' umbrechen, kurze zusammenlassen
+    if unter and f2.getlength(unterzeile, features=MERKMALE) <= max(b1, 380 * s):
+        unter = [unterzeile]
+    breiten = [f2.getlength(z, features=MERKMALE) for z in unter]
+    pad = round(14 * s)
+    breite = round(max([b1] + breiten)) + 2 * pad
+    zeile1 = f1.getmetrics()[0] + f1.getmetrics()[1]
+    zh = round(38 * s)
+    ebene, d = _leinwand(breite, zeile1 + zh * len(unter) + 2 * pad)
+    _atlas_text(d, ((breite - b1) / 2, pad), t1, f1, tuple(farbe) + (255,), sperr, 5 * s)
+    for i, (z, b2) in enumerate(zip(unter, breiten)):
+        _atlas_text(d, ((breite - b2) / 2, pad + zeile1 - round(2 * s) + i * zh), z, f2, tuple(farbe) + (240,), 0,
+                    5 * s)
+    return ebene
+
+
+@lru_cache(maxsize=256)
+def vermerk(text: str, hoehe: int, farbe: tuple = TINTE) -> Image.Image:
+    """Kursiver Vermerk auf der Karte (z. B. 'Polish Corridor', 'Battle of Warsaw')."""
+    s = hoehe / 1920
+    f = schrift(SERIF_KURSIV, round(38 * s))
+    pad = round(14 * s)
+    zeilen = text.split("|")
+    breite = round(max(f.getlength(z, features=MERKMALE) for z in zeilen)) + 2 * pad
+    zh = round(44 * s)
+    ebene, d = _leinwand(breite, zh * len(zeilen) + 2 * pad)
+    for i, z in enumerate(zeilen):
+        _atlas_text(d, ((breite - f.getlength(z, features=MERKMALE)) / 2, pad + i * zh), z, f,
+                    tuple(farbe) + (255,), 0, 5 * s)
+    return ebene

@@ -1,0 +1,24 @@
+# Historisch geprüfte Karten 1920 und 1921/22 (Vorschau)
+0:00   karte   1920-08-15
+       ausschnitt: Warsaw 1750
+       fahrt: Gdansk 760
+       fahrt_von: 0:05
+       fahrt_bis: 0:17
+       hervorheben: Poland=rot:Poland; German Reich=blau:Germany; Danzig under Allied administration=violett:Danzig
+       nachbarn: Russia (Soviet Union)=Soviet Russia; Lithuania; Czechoslovakia; Memel Territory (Allied administration)=Memel Territory; Latvia
+       zonen: allenstein; marienwerder; upper-silesia-1920
+       orte: Warsaw, Posen@52.41,16.93, Allenstein@53.78,20.48, Königsberg@54.71,20.51, Kattowitz@50.26,19.02
+       vermerke: Polish Corridor@53.75,17.85; East Prussia|(Germany)@54.35,21.6; Battle of Warsaw|13–25 Aug 1920@52.6,22.1
+       titel: Poland in August 1920
+
+0:21   karte   1921-06-01
+       wechsel: 1922-07-15
+       wechsel_bei: 0:32
+       ausschnitt: Katowice 700
+       fahrt: Katowice 420
+       hervorheben: German Reich=blau:Germany; Poland=rot:Poland
+       zonen: upper-silesia
+       zonen_danach: east-upper-silesia
+       nachbarn: Czechoslovakia
+       orte: Kattowitz@50.26,19.02, Gleiwitz@50.29,18.67, Oppeln@50.67,17.93, Rybnik@50.10,18.54, Beuthen@50.35,18.92
+       titel: The Partition of Upper Silesia
