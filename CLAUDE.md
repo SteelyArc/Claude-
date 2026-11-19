@@ -88,6 +88,11 @@ Vorlage dient `ausgabe/zeitplan_verwendet.txt`. Danach neu rendern.
   verwenden und diese nicht ins Repository übernehmen.
 
 ## Technik
+- MCP-Server **claude-video-vision** (npm, MIT, Version fest 1.4.0, in `.mcp.json`):
+  lässt Claude Videos ansehen (Einzelbilder per FFmpeg, Ton per Whisper/Gemini/OpenAI).
+  Gut zur Kontrolle fertiger ZEITSPUREN-Videos. Vor der ersten Nutzung `video_setup`
+  bzw. `video_configure` aufrufen; Ton nur dann an Google/OpenAI senden, wenn die Person
+  das ausdrücklich will (Standard: keine Übertragung).
 - Einstieg: `zeitspuren/__main__.py`. Module: `audio.py` (Analyse, Lautheit),
   `bilder.py` (Bildplatten, Kamerafahrten), `zeitplan.py`, `render.py`
   (Einzelbilder in Python mit Subpixel-Transformation → FFmpeg/libx264),
