@@ -1,0 +1,16 @@
+# Image sources – only what is printed on the images themselves or clearly identifiable.
+# Please add missing sources (marked ???).
+danzig_long_bridge_photochrom.jpg = Photochrom print "8389 P.Z. Danzig, Lange Brücke" (Photoglob Zürich), c. 1890–1900
+west_prussia_locator_map.jpg      = Locator map: Province of West Prussia within the German Empire (source ???)
+teutonic_knights_painting.jpg     = Painting: knights and a crowned ruler at a castle gate (title/artist ???)
+marienburg_engraving.jpg          = Steel engraving "Marienburg", Kunstanstalt des Bibliographischen Instituts, Hildburghausen (19th century)
+battle_of_grunwald_matejko.jpg    = Jan Matejko, "Battle of Grunwald" (1878), National Museum in Warsaw
+danzig_merian_1652.jpg            = Matthäus Merian, "Dantiscum / Dantzig", Topographia Prussiae et Pomerelliae (1652)
+handtke_province_map.jpg          = F. Handtke, "Provinz Westpreussen", Carl Flemmings Generalkarten No. 4
+thorn_photo.jpg                   = Thorn (Toruń), riverside with St. John's Cathedral (date/source ???)
+mother_tongues_1910_map.jpg       = T. P. Gray, "Mother Tongues of Province West Prussia according to the census of 1910"
+farmstead_photo.jpg               = Rural farmstead with boy on horse (place/date/source ???)
+danzig_motlawa_photo.jpg          = Danzig, Motława with St. Mary's Church and Town Hall (date/source ???)
+danzig_aerial_st_mary.jpg         = Danzig, St. Mary's Church from above (date/source ???)
+marienburg_photochrom.jpg         = Photochrom print "9692 P.Z. Marienburg, Westseite" (Photoglob Zürich), c. 1890–1900
+teutonic_order_1466_map.png      = S. Bollmann, "The state of the Teutonic Order after 1466", Wikimedia Commons (File:Teutonic Order 1466.png), CC BY-SA 3.0

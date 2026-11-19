@@ -497,12 +497,13 @@ class Kartenszene:
     def __init__(self, staende: list[Kartenstand], wechsel_bei: float | None,
                  ausschnitt: str, fahrt_ziel: str | None, fahrt_von: float | None, fahrt_bis: float | None,
                  orte: list[str], titel: str, jahr_text: str | None,
-                 von: float, bis: float, breite: int, hoehe: int):
+                 von: float, bis: float, breite: int, hoehe: int, vermerke_ab: float | None = None):
         self.staende = staende
         self.von, self.bis = von, bis
         self.breite, self.hoehe = breite, hoehe
         self.titel = titel
         self.jahr_text = jahr_text
+        self.vermerke_ab = vermerke_ab
         seitenv = breite / hoehe
 
         start = _ausschnitt_geo(ausschnitt, seitenv)
@@ -1122,8 +1123,12 @@ class Kartenszene:
                     farbe = tuple(int(c * 255) for c in (ALTE_GRENZE if z["k"].get("stil") == "uebergabe" else ZONE))
                     spr = texte.zonenbeschriftung(z["k"]["titel"], z["k"].get("unterzeile", ""), H, farbe)
                     setzen(spr, *bildpunkt(*z["mitte"]), st, (0, 1.0, -1.0, 1.8))
+        vermerk_ein = einblenden * hervor_ein
+        if self.vermerke_ab is not None:  # erst ab dem passenden Satz der Erzählung
+            vermerk_ein *= _weich((t - self.vermerke_ab) / 1.0)
         for text, (vx, vy) in self.ebenen[0]["vermerke"]:  # Vermerke gelten für die ganze Szene
-            setzen(texte.vermerk(text, H), *bildpunkt(vx, vy), einblenden * hervor_ein)
+            if vermerk_ein > 0.01:
+                setzen(texte.vermerk(text, H), *bildpunkt(vx, vy), vermerk_ein)
 
         # 4) Nachbarn: zurückhaltend, nur wenn nah genug und das Gebiet groß genug ist
         nachbar_nah = _weich((NACHBARN_AB_KM - wkm) / (0.3 * NACHBARN_AB_KM))

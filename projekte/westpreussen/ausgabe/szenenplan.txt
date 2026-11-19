@@ -1,0 +1,20 @@
+# Übersicht der Szenen (Zeit ab Beginn der Sprecheraufnahme). Geändert wird in drehbuch.txt.
+ 0:00.0   foto      danzig_long_bridge_photochrom.jpg  eingepasst  zoom-rein
+ 0:04.2   karte     west_prussia_locator_map.jpg       eingepasst  zoom-rein
+ 0:12.6   karte     Karte 2019-12-31                   animiert    fahrt → Gdansk 640
+ 0:28.1   foto      teutonic_knights_painting.jpg      eingepasst  zoom-rein
+ 0:35.8   foto      marienburg_engraving.jpg           eingepasst  zoom-rein
+ 0:42.0   foto      battle_of_grunwald_matejko.jpg     eingepasst  schwenk-rechts
+ 0:45.0   karte     teutonic_order_1466_map.png        eingepasst  zoom-rein
+ 0:56.8   foto      danzig_merian_1652.jpg             eingepasst  schwenk-rechts
+ 1:02.9   karte     handtke_province_map.jpg           eingepasst  zoom-rein
+ 1:16.8   foto      thorn_photo.jpg                    eingepasst  zoom-raus
+ 1:20.7   dokument  mother_tongues_1910_map.jpg        eingepasst  zoom-rein
+ 1:28.4   foto      farmstead_photo.jpg                eingepasst  zoom-raus
+ 1:33.2   karte     Karte 1919-11-30→1920-12-31        animiert    langsamer Zoom
+ 1:59.8   karte     Karte 1939-08-31→1940-01-01        animiert    langsamer Zoom
+ 2:22.0   karte     Karte 1945-08-02                   animiert    fahrt → Gdansk 700
+ 2:35.8   foto      danzig_aerial_st_mary.jpg          eingepasst  zoom-raus
+ 2:41.9   foto      marienburg_photochrom.jpg          eingepasst  zoom-rein
+ 2:47.4   foto      danzig_motlawa_photo.jpg           eingepasst  zoom-raus
+ 2:51.5   karte     handtke_province_map.jpg           eingepasst  zoom-raus

@@ -195,7 +195,8 @@ def main(argv: list[str] | None = None) -> int:
                     staende, zeit_im_video(o.get("wechsel_bei")), o.get("ausschnitt", "Europa"),
                     o.get("fahrt"), zeit_im_video(o.get("fahrt_von")), zeit_im_video(o.get("fahrt_bis")),
                     drehbuch_mod.orte_liste(o.get("orte", "")), o.get("titel", ""), o.get("jahreszahl"),
-                    sz.sichtbar_von, sz.sichtbar_bis, fmt.breite, fmt.hoehe)
+                    sz.sichtbar_von, sz.sichtbar_bis, fmt.breite, fmt.hoehe,
+                    vermerke_ab=zeit_im_video(o.get("vermerke_ab")))
                 sz.renderer = karte.bild
                 sz.darstellung = "animiert"
                 sz.bewegung = ("fahrt → " + o["fahrt"]) if "fahrt" in o else "langsamer Zoom"

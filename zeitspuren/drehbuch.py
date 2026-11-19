@@ -47,7 +47,7 @@ SCHLUESSEL = {
     "karte_bild": {"ort", "zeit", "quelle", "bewegung", "darstellung"},
     "karte": {"wechsel", "wechsel_bei", "ausschnitt", "fahrt", "fahrt_von", "fahrt_bis", "hervorheben",
               "hervorheben_danach", "nachbarn", "orte", "titel", "jahreszahl", "zonen", "zonen_danach",
-              "vermerke"},
+              "vermerke", "vermerke_ab"},
 }
 
 _KOPF = re.compile(r"^(\d[\d:.,]*)\s+(\w+)\s*(.*)$")

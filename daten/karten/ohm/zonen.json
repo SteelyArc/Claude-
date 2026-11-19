@@ -56,6 +56,33 @@
       "unterzeile": "German · plebiscite pending · held 20 March 1921",
       "stil": "abstimmung",
       "beleg": "Provinz Oberschlesien (OHM 2693611); 1920 deutsch, Abstimmung erst am 20.03.1921"
+    },
+    "west-prussia": {
+      "teile": [
+        "2828868"
+      ],
+      "titel": "Province of West Prussia",
+      "unterzeile": "borders of 1909–1919",
+      "stil": "abstimmung",
+      "beleg": "Provinz Westpreußen 1909–1919 (OHM 2828868); geprüft: enthält Danzig, Thorn, Marienburg, Elbing, Konitz, nicht Posen/Allenstein"
+    },
+    "west-prussia-former": {
+      "teile": [
+        "2828868"
+      ],
+      "titel": "Former Province of West Prussia",
+      "unterzeile": "borders of 1909–1919",
+      "stil": "abstimmung",
+      "beleg": "Provinz Westpreußen 1909–1919 (OHM 2828868); geprüft: enthält Danzig, Thorn, Marienburg, Elbing, Konitz, nicht Posen/Allenstein"
+    },
+    "reichsgau-danzig-west-prussia": {
+      "teile": [
+        "2747833"
+      ],
+      "titel": "Reichsgau Danzig-West Prussia",
+      "unterzeile": "annexed by Germany, October 1939",
+      "stil": "uebergabe",
+      "beleg": "OHM 2747833 (1939-10-08 – 1945); geprüft: enthält Danzig, Thorn, Bromberg, Marienwerder"
     }
   }
 }

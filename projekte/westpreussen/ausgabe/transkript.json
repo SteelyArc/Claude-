@@ -1,0 +1,2203 @@
+{
+ "modell": "medium",
+ "dauer": 176.58775,
+ "saetze": [
+  {
+   "von": 0.0,
+   "bis": 1.06,
+   "text": "West Prussia."
+  },
+  {
+   "von": 1.4,
+   "bis": 3.46,
+   "text": "A land shaped by history."
+  },
+  {
+   "von": 4.16,
+   "bis": 11.94,
+   "text": "A land between Germany and Poland, shaped by centuries of changing borders, different cultures, and unforgettable events."
+  },
+  {
+   "von": 12.58,
+   "bis": 20.22,
+   "text": "Today, much of this historic region lies within modern Poland, but its story goes back much further than the borders we know today."
+  },
+  {
+   "von": 20.84,
+   "bis": 27.62,
+   "text": "Long before the name West Prussia existed, the region was home to Baltic peoples known as the Old Prussians."
+  },
+  {
+   "von": 28.14,
+   "bis": 35.22,
+   "text": "In the 13th century, the Teutonic order began expanding into these lands, building castles, towns, and settlements."
+  },
+  {
+   "von": 35.84,
+   "bis": 41.62,
+   "text": "One of its greatest strongholds was Marienburg, which became the order's headquarters in 1309."
+  },
+  {
+   "von": 41.98,
+   "bis": 44.54,
+   "text": "But the order's power did not last forever."
+  },
+  {
+   "von": 45.04,
+   "bis": 51.5,
+   "text": "After years of conflict, the second piece of thorn in 1466 divided its former territories."
+  },
+  {
+   "von": 51.5,
+   "bis": 56.16,
+   "text": "The western part became royal Prussia, connected to the Polish crown."
+  },
+  {
+   "von": 56.82,
+   "bis": 62.2,
+   "text": "Cities such as Danzig, Thorn, and Elbing became important centers of trade and culture."
+  },
+  {
+   "von": 62.88,
+   "bis": 66.42,
+   "text": "More than 300 years later, everything changed again."
+  },
+  {
+   "von": 66.86,
+   "bis": 73.28,
+   "text": "During the first partition of Poland in 1772, Prussia took control of large parts of the region."
+  },
+  {
+   "von": 73.7,
+   "bis": 76.16,
+   "text": "The province of West Prussia was established."
+  },
+  {
+   "von": 76.8,
+   "bis": 79.84,
+   "text": "Danzig and Thorn followed in 1793."
+  },
+  {
+   "von": 80.66,
+   "bis": 87.86,
+   "text": "Over time, Germans, Poles, Kashubians, and Jewish communities helped shape everyday life in this diverse region."
+  },
+  {
+   "von": 88.38,
+   "bis": 92.6,
+   "text": "Different languages, traditions, and religions existed side by side."
+  },
+  {
+   "von": 93.22,
+   "bis": 95.26,
+   "text": "Then came the First World War."
+  },
+  {
+   "von": 95.74,
+   "bis": 98.92,
+   "text": "Germany's defeat changed the map of Europe once again."
+  },
+  {
+   "von": 99.38,
+   "bis": 104.9,
+   "text": "Under the Treaty of Versailles in 1919, most of West Prussia was transferred to Poland."
+  },
+  {
+   "von": 104.9,
+   "bis": 111.1,
+   "text": "Danzig became a free city under international supervision, while some territories remained German."
+  },
+  {
+   "von": 111.58,
+   "bis": 115.86,
+   "text": "In 1920, the old province of West Prussia ceased to exist."
+  },
+  {
+   "von": 116.42,
+   "bis": 119.24,
+   "text": "But the story of this land was far from over."
+  },
+  {
+   "von": 119.84,
+   "bis": 124.44,
+   "text": "On September 1, 1939, Nazi Germany invaded Poland."
+  },
+  {
+   "von": 124.88,
+   "bis": 128.88,
+   "text": "The region was occupied, and large parts were annexed to the German Reich."
+  },
+  {
+   "von": 129.38,
+   "bis": 131.78,
+   "text": "What followed was a period of terror."
+  },
+  {
+   "von": 131.78,
+   "bis": 135.74,
+   "text": "Polish civilians were imprisoned, expelled, and murdered."
+  },
+  {
+   "von": 136.22,
+   "bis": 141.2,
+   "text": "The Jewish population was persecuted and almost entirely destroyed in the Holocaust."
+  },
+  {
+   "von": 141.96,
+   "bis": 147.62,
+   "text": "As the Second World War came to an end in 1945, the region changed once again."
+  },
+  {
+   "von": 148.02,
+   "bis": 150.7,
+   "text": "Many German inhabitants fled or were expelled."
+  },
+  {
+   "von": 151.24,
+   "bis": 155.48,
+   "text": "Polish settlers arrived, and the towns and villages took on a new identity."
+  },
+  {
+   "von": 155.78,
+   "bis": 166.76,
+   "text": "Today, traces of the old West Prussia can still be found in the streets of Gdańsk, in the walls of Malbork Castle, and in countless archives, cemeteries, and family memories."
+  },
+  {
+   "von": 167.4,
+   "bis": 168.84,
+   "text": "Its borders have disappeared."
+  },
+  {
+   "von": 169.4,
+   "bis": 170.78,
+   "text": "Its history has not."
+  },
+  {
+   "von": 171.46,
+   "bis": 173.48,
+   "text": "This was West Prussia."
+  },
+  {
+   "von": 173.98,
+   "bis": 174.64,
+   "text": "Zeit spüren."
+  },
+  {
+   "von": 175.16,
+   "bis": 176.32,
+   "text": "History that remains."
+  }
+ ],
+ "woerter": [
+  {
+   "wort": "West",
+   "von": 0.0,
+   "bis": 0.5
+  },
+  {
+   "wort": "Prussia.",
+   "von": 0.5,
+   "bis": 1.06
+  },
+  {
+   "wort": "A",
+   "von": 1.4,
+   "bis": 1.68
+  },
+  {
+   "wort": "land",
+   "von": 1.68,
+   "bis": 2.02
+  },
+  {
+   "wort": "shaped",
+   "von": 2.02,
+   "bis": 2.52
+  },
+  {
+   "wort": "by",
+   "von": 2.52,
+   "bis": 2.92
+  },
+  {
+   "wort": "history.",
+   "von": 2.92,
+   "bis": 3.46
+  },
+  {
+   "wort": "A",
+   "von": 4.16,
+   "bis": 4.28
+  },
+  {
+   "wort": "land",
+   "von": 4.28,
+   "bis": 4.58
+  },
+  {
+   "wort": "between",
+   "von": 4.58,
+   "bis": 4.98
+  },
+  {
+   "wort": "Germany",
+   "von": 4.98,
+   "bis": 5.5
+  },
+  {
+   "wort": "and",
+   "von": 5.5,
+   "bis": 5.78
+  },
+  {
+   "wort": "Poland,",
+   "von": 5.78,
+   "bis": 6.28
+  },
+  {
+   "wort": "shaped",
+   "von": 6.72,
+   "bis": 6.82
+  },
+  {
+   "wort": "by",
+   "von": 6.82,
+   "bis": 7.26
+  },
+  {
+   "wort": "centuries",
+   "von": 7.26,
+   "bis": 7.66
+  },
+  {
+   "wort": "of",
+   "von": 7.66,
+   "bis": 7.98
+  },
+  {
+   "wort": "changing",
+   "von": 7.98,
+   "bis": 8.34
+  },
+  {
+   "wort": "borders,",
+   "von": 8.34,
+   "bis": 8.84
+  },
+  {
+   "wort": "different",
+   "von": 9.24,
+   "bis": 9.46
+  },
+  {
+   "wort": "cultures,",
+   "von": 9.46,
+   "bis": 9.98
+  },
+  {
+   "wort": "and",
+   "von": 10.3,
+   "bis": 10.64
+  },
+  {
+   "wort": "unforgettable",
+   "von": 10.64,
+   "bis": 11.38
+  },
+  {
+   "wort": "events.",
+   "von": 11.38,
+   "bis": 11.94
+  },
+  {
+   "wort": "Today,",
+   "von": 12.58,
+   "bis": 12.84
+  },
+  {
+   "wort": "much",
+   "von": 13.14,
+   "bis": 13.36
+  },
+  {
+   "wort": "of",
+   "von": 13.36,
+   "bis": 13.52
+  },
+  {
+   "wort": "this",
+   "von": 13.52,
+   "bis": 13.72
+  },
+  {
+   "wort": "historic",
+   "von": 13.72,
+   "bis": 14.22
+  },
+  {
+   "wort": "region",
+   "von": 14.22,
+   "bis": 14.6
+  },
+  {
+   "wort": "lies",
+   "von": 14.6,
+   "bis": 15.0
+  },
+  {
+   "wort": "within",
+   "von": 15.0,
+   "bis": 15.4
+  },
+  {
+   "wort": "modern",
+   "von": 15.4,
+   "bis": 15.78
+  },
+  {
+   "wort": "Poland,",
+   "von": 15.78,
+   "bis": 16.24
+  },
+  {
+   "wort": "but",
+   "von": 16.58,
+   "bis": 16.74
+  },
+  {
+   "wort": "its",
+   "von": 16.74,
+   "bis": 17.06
+  },
+  {
+   "wort": "story",
+   "von": 17.06,
+   "bis": 17.28
+  },
+  {
+   "wort": "goes",
+   "von": 17.28,
+   "bis": 17.56
+  },
+  {
+   "wort": "back",
+   "von": 17.56,
+   "bis": 17.96
+  },
+  {
+   "wort": "much",
+   "von": 17.96,
+   "bis": 18.24
+  },
+  {
+   "wort": "further",
+   "von": 18.24,
+   "bis": 18.66
+  },
+  {
+   "wort": "than",
+   "von": 18.66,
+   "bis": 18.86
+  },
+  {
+   "wort": "the",
+   "von": 18.86,
+   "bis": 19.1
+  },
+  {
+   "wort": "borders",
+   "von": 19.1,
+   "bis": 19.34
+  },
+  {
+   "wort": "we",
+   "von": 19.34,
+   "bis": 19.6
+  },
+  {
+   "wort": "know",
+   "von": 19.6,
+   "bis": 19.76
+  },
+  {
+   "wort": "today.",
+   "von": 19.76,
+   "bis": 20.22
+  },
+  {
+   "wort": "Long",
+   "von": 20.84,
+   "bis": 21.12
+  },
+  {
+   "wort": "before",
+   "von": 21.12,
+   "bis": 21.54
+  },
+  {
+   "wort": "the",
+   "von": 21.54,
+   "bis": 21.72
+  },
+  {
+   "wort": "name",
+   "von": 21.72,
+   "bis": 21.98
+  },
+  {
+   "wort": "West",
+   "von": 21.98,
+   "bis": 22.4
+  },
+  {
+   "wort": "Prussia",
+   "von": 22.4,
+   "bis": 22.82
+  },
+  {
+   "wort": "existed,",
+   "von": 22.82,
+   "bis": 23.4
+  },
+  {
+   "wort": "the",
+   "von": 23.82,
+   "bis": 23.96
+  },
+  {
+   "wort": "region",
+   "von": 23.96,
+   "bis": 24.2
+  },
+  {
+   "wort": "was",
+   "von": 24.2,
+   "bis": 24.42
+  },
+  {
+   "wort": "home",
+   "von": 24.42,
+   "bis": 24.68
+  },
+  {
+   "wort": "to",
+   "von": 24.68,
+   "bis": 24.92
+  },
+  {
+   "wort": "Baltic",
+   "von": 24.92,
+   "bis": 25.38
+  },
+  {
+   "wort": "peoples",
+   "von": 25.38,
+   "bis": 25.76
+  },
+  {
+   "wort": "known",
+   "von": 25.76,
+   "bis": 26.16
+  },
+  {
+   "wort": "as",
+   "von": 26.16,
+   "bis": 26.38
+  },
+  {
+   "wort": "the",
+   "von": 26.38,
+   "bis": 26.68
+  },
+  {
+   "wort": "Old",
+   "von": 26.68,
+   "bis": 27.04
+  },
+  {
+   "wort": "Prussians.",
+   "von": 27.04,
+   "bis": 27.62
+  },
+  {
+   "wort": "In",
+   "von": 28.14,
+   "bis": 28.3
+  },
+  {
+   "wort": "the",
+   "von": 28.3,
+   "bis": 28.48
+  },
+  {
+   "wort": "13th",
+   "von": 28.48,
+   "bis": 28.98
+  },
+  {
+   "wort": "century,",
+   "von": 28.98,
+   "bis": 29.38
+  },
+  {
+   "wort": "the",
+   "von": 29.68,
+   "bis": 29.8
+  },
+  {
+   "wort": "Teutonic",
+   "von": 29.8,
+   "bis": 30.24
+  },
+  {
+   "wort": "order",
+   "von": 30.24,
+   "bis": 30.62
+  },
+  {
+   "wort": "began",
+   "von": 30.62,
+   "bis": 30.96
+  },
+  {
+   "wort": "expanding",
+   "von": 30.96,
+   "bis": 31.54
+  },
+  {
+   "wort": "into",
+   "von": 31.54,
+   "bis": 31.82
+  },
+  {
+   "wort": "these",
+   "von": 31.82,
+   "bis": 32.08
+  },
+  {
+   "wort": "lands,",
+   "von": 32.08,
+   "bis": 32.52
+  },
+  {
+   "wort": "building",
+   "von": 32.8,
+   "bis": 33.1
+  },
+  {
+   "wort": "castles,",
+   "von": 33.1,
+   "bis": 33.78
+  },
+  {
+   "wort": "towns,",
+   "von": 34.02,
+   "bis": 34.38
+  },
+  {
+   "wort": "and",
+   "von": 34.64,
+   "bis": 34.84
+  },
+  {
+   "wort": "settlements.",
+   "von": 34.84,
+   "bis": 35.22
+  },
+  {
+   "wort": "One",
+   "von": 35.84,
+   "bis": 35.98
+  },
+  {
+   "wort": "of",
+   "von": 35.98,
+   "bis": 36.06
+  },
+  {
+   "wort": "its",
+   "von": 36.06,
+   "bis": 36.44
+  },
+  {
+   "wort": "greatest",
+   "von": 36.44,
+   "bis": 36.8
+  },
+  {
+   "wort": "strongholds",
+   "von": 36.8,
+   "bis": 37.52
+  },
+  {
+   "wort": "was",
+   "von": 37.52,
+   "bis": 37.74
+  },
+  {
+   "wort": "Marienburg,",
+   "von": 37.74,
+   "bis": 38.42
+  },
+  {
+   "wort": "which",
+   "von": 38.7,
+   "bis": 38.92
+  },
+  {
+   "wort": "became",
+   "von": 38.92,
+   "bis": 39.26
+  },
+  {
+   "wort": "the",
+   "von": 39.26,
+   "bis": 39.5
+  },
+  {
+   "wort": "order's",
+   "von": 39.5,
+   "bis": 39.86
+  },
+  {
+   "wort": "headquarters",
+   "von": 39.86,
+   "bis": 40.34
+  },
+  {
+   "wort": "in",
+   "von": 40.34,
+   "bis": 40.68
+  },
+  {
+   "wort": "1309.",
+   "von": 40.68,
+   "bis": 41.62
+  },
+  {
+   "wort": "But",
+   "von": 41.98,
+   "bis": 42.2
+  },
+  {
+   "wort": "the",
+   "von": 42.2,
+   "bis": 42.4
+  },
+  {
+   "wort": "order's",
+   "von": 42.4,
+   "bis": 42.86
+  },
+  {
+   "wort": "power",
+   "von": 42.86,
+   "bis": 43.16
+  },
+  {
+   "wort": "did",
+   "von": 43.16,
+   "bis": 43.46
+  },
+  {
+   "wort": "not",
+   "von": 43.46,
+   "bis": 43.74
+  },
+  {
+   "wort": "last",
+   "von": 43.74,
+   "bis": 44.02
+  },
+  {
+   "wort": "forever.",
+   "von": 44.02,
+   "bis": 44.54
+  },
+  {
+   "wort": "After",
+   "von": 45.04,
+   "bis": 45.34
+  },
+  {
+   "wort": "years",
+   "von": 45.34,
+   "bis": 45.72
+  },
+  {
+   "wort": "of",
+   "von": 45.72,
+   "bis": 46.06
+  },
+  {
+   "wort": "conflict,",
+   "von": 46.06,
+   "bis": 46.44
+  },
+  {
+   "wort": "the",
+   "von": 46.72,
+   "bis": 46.92
+  },
+  {
+   "wort": "second",
+   "von": 46.92,
+   "bis": 47.2
+  },
+  {
+   "wort": "piece",
+   "von": 47.2,
+   "bis": 47.5
+  },
+  {
+   "wort": "of",
+   "von": 47.5,
+   "bis": 47.8
+  },
+  {
+   "wort": "thorn",
+   "von": 47.8,
+   "bis": 48.1
+  },
+  {
+   "wort": "in",
+   "von": 48.1,
+   "bis": 48.34
+  },
+  {
+   "wort": "1466",
+   "von": 48.34,
+   "bis": 49.52
+  },
+  {
+   "wort": "divided",
+   "von": 49.52,
+   "bis": 50.3
+  },
+  {
+   "wort": "its",
+   "von": 50.3,
+   "bis": 50.6
+  },
+  {
+   "wort": "former",
+   "von": 50.6,
+   "bis": 50.88
+  },
+  {
+   "wort": "territories.",
+   "von": 50.88,
+   "bis": 51.5
+  },
+  {
+   "wort": "The",
+   "von": 51.5,
+   "bis": 52.22
+  },
+  {
+   "wort": "western",
+   "von": 52.22,
+   "bis": 52.62
+  },
+  {
+   "wort": "part",
+   "von": 52.62,
+   "bis": 52.98
+  },
+  {
+   "wort": "became",
+   "von": 52.98,
+   "bis": 53.38
+  },
+  {
+   "wort": "royal",
+   "von": 53.38,
+   "bis": 53.88
+  },
+  {
+   "wort": "Prussia,",
+   "von": 53.88,
+   "bis": 54.3
+  },
+  {
+   "wort": "connected",
+   "von": 54.64,
+   "bis": 54.98
+  },
+  {
+   "wort": "to",
+   "von": 54.98,
+   "bis": 55.18
+  },
+  {
+   "wort": "the",
+   "von": 55.18,
+   "bis": 55.32
+  },
+  {
+   "wort": "Polish",
+   "von": 55.32,
+   "bis": 55.66
+  },
+  {
+   "wort": "crown.",
+   "von": 55.66,
+   "bis": 56.16
+  },
+  {
+   "wort": "Cities",
+   "von": 56.82,
+   "bis": 56.98
+  },
+  {
+   "wort": "such",
+   "von": 56.98,
+   "bis": 57.36
+  },
+  {
+   "wort": "as",
+   "von": 57.36,
+   "bis": 57.52
+  },
+  {
+   "wort": "Danzig,",
+   "von": 57.52,
+   "bis": 58.0
+  },
+  {
+   "wort": "Thorn,",
+   "von": 58.3,
+   "bis": 58.6
+  },
+  {
+   "wort": "and",
+   "von": 58.74,
+   "bis": 59.02
+  },
+  {
+   "wort": "Elbing",
+   "von": 59.02,
+   "bis": 59.36
+  },
+  {
+   "wort": "became",
+   "von": 59.36,
+   "bis": 59.88
+  },
+  {
+   "wort": "important",
+   "von": 59.88,
+   "bis": 60.48
+  },
+  {
+   "wort": "centers",
+   "von": 60.48,
+   "bis": 60.88
+  },
+  {
+   "wort": "of",
+   "von": 60.88,
+   "bis": 61.14
+  },
+  {
+   "wort": "trade",
+   "von": 61.14,
+   "bis": 61.5
+  },
+  {
+   "wort": "and",
+   "von": 61.5,
+   "bis": 61.78
+  },
+  {
+   "wort": "culture.",
+   "von": 61.78,
+   "bis": 62.2
+  },
+  {
+   "wort": "More",
+   "von": 62.88,
+   "bis": 63.04
+  },
+  {
+   "wort": "than",
+   "von": 63.04,
+   "bis": 63.36
+  },
+  {
+   "wort": "300",
+   "von": 63.36,
+   "bis": 63.86
+  },
+  {
+   "wort": "years",
+   "von": 63.86,
+   "bis": 64.3
+  },
+  {
+   "wort": "later,",
+   "von": 64.3,
+   "bis": 64.74
+  },
+  {
+   "wort": "everything",
+   "von": 65.1,
+   "bis": 65.4
+  },
+  {
+   "wort": "changed",
+   "von": 65.4,
+   "bis": 65.92
+  },
+  {
+   "wort": "again.",
+   "von": 65.92,
+   "bis": 66.42
+  },
+  {
+   "wort": "During",
+   "von": 66.86,
+   "bis": 67.06
+  },
+  {
+   "wort": "the",
+   "von": 67.06,
+   "bis": 67.26
+  },
+  {
+   "wort": "first",
+   "von": 67.26,
+   "bis": 67.58
+  },
+  {
+   "wort": "partition",
+   "von": 67.58,
+   "bis": 68.04
+  },
+  {
+   "wort": "of",
+   "von": 68.04,
+   "bis": 68.24
+  },
+  {
+   "wort": "Poland",
+   "von": 68.24,
+   "bis": 68.66
+  },
+  {
+   "wort": "in",
+   "von": 68.66,
+   "bis": 68.96
+  },
+  {
+   "wort": "1772,",
+   "von": 68.96,
+   "bis": 70.1
+  },
+  {
+   "wort": "Prussia",
+   "von": 70.64,
+   "bis": 70.98
+  },
+  {
+   "wort": "took",
+   "von": 70.98,
+   "bis": 71.22
+  },
+  {
+   "wort": "control",
+   "von": 71.22,
+   "bis": 71.7
+  },
+  {
+   "wort": "of",
+   "von": 71.7,
+   "bis": 72.06
+  },
+  {
+   "wort": "large",
+   "von": 72.06,
+   "bis": 72.34
+  },
+  {
+   "wort": "parts",
+   "von": 72.34,
+   "bis": 72.64
+  },
+  {
+   "wort": "of",
+   "von": 72.64,
+   "bis": 72.82
+  },
+  {
+   "wort": "the",
+   "von": 72.82,
+   "bis": 72.96
+  },
+  {
+   "wort": "region.",
+   "von": 72.96,
+   "bis": 73.28
+  },
+  {
+   "wort": "The",
+   "von": 73.7,
+   "bis": 73.92
+  },
+  {
+   "wort": "province",
+   "von": 73.92,
+   "bis": 74.32
+  },
+  {
+   "wort": "of",
+   "von": 74.32,
+   "bis": 74.66
+  },
+  {
+   "wort": "West",
+   "von": 74.66,
+   "bis": 74.92
+  },
+  {
+   "wort": "Prussia",
+   "von": 74.92,
+   "bis": 75.34
+  },
+  {
+   "wort": "was",
+   "von": 75.34,
+   "bis": 75.64
+  },
+  {
+   "wort": "established.",
+   "von": 75.64,
+   "bis": 76.16
+  },
+  {
+   "wort": "Danzig",
+   "von": 76.8,
+   "bis": 77.22
+  },
+  {
+   "wort": "and",
+   "von": 77.22,
+   "bis": 77.56
+  },
+  {
+   "wort": "Thorn",
+   "von": 77.56,
+   "bis": 77.9
+  },
+  {
+   "wort": "followed",
+   "von": 77.9,
+   "bis": 78.4
+  },
+  {
+   "wort": "in",
+   "von": 78.4,
+   "bis": 78.72
+  },
+  {
+   "wort": "1793.",
+   "von": 78.72,
+   "bis": 79.84
+  },
+  {
+   "wort": "Over",
+   "von": 80.66,
+   "bis": 80.9
+  },
+  {
+   "wort": "time,",
+   "von": 80.9,
+   "bis": 81.4
+  },
+  {
+   "wort": "Germans,",
+   "von": 81.74,
+   "bis": 82.04
+  },
+  {
+   "wort": "Poles,",
+   "von": 82.42,
+   "bis": 82.92
+  },
+  {
+   "wort": "Kashubians,",
+   "von": 83.12,
+   "bis": 83.7
+  },
+  {
+   "wort": "and",
+   "von": 83.92,
+   "bis": 84.02
+  },
+  {
+   "wort": "Jewish",
+   "von": 84.02,
+   "bis": 84.34
+  },
+  {
+   "wort": "communities",
+   "von": 84.34,
+   "bis": 84.9
+  },
+  {
+   "wort": "helped",
+   "von": 84.9,
+   "bis": 85.36
+  },
+  {
+   "wort": "shape",
+   "von": 85.36,
+   "bis": 85.74
+  },
+  {
+   "wort": "everyday",
+   "von": 85.74,
+   "bis": 86.22
+  },
+  {
+   "wort": "life",
+   "von": 86.22,
+   "bis": 86.6
+  },
+  {
+   "wort": "in",
+   "von": 86.6,
+   "bis": 86.78
+  },
+  {
+   "wort": "this",
+   "von": 86.78,
+   "bis": 86.96
+  },
+  {
+   "wort": "diverse",
+   "von": 86.96,
+   "bis": 87.44
+  },
+  {
+   "wort": "region.",
+   "von": 87.44,
+   "bis": 87.86
+  },
+  {
+   "wort": "Different",
+   "von": 88.38,
+   "bis": 88.66
+  },
+  {
+   "wort": "languages,",
+   "von": 88.66,
+   "bis": 89.24
+  },
+  {
+   "wort": "traditions,",
+   "von": 89.8,
+   "bis": 89.98
+  },
+  {
+   "wort": "and",
+   "von": 90.2,
+   "bis": 90.42
+  },
+  {
+   "wort": "religions",
+   "von": 90.42,
+   "bis": 90.86
+  },
+  {
+   "wort": "existed",
+   "von": 90.86,
+   "bis": 91.54
+  },
+  {
+   "wort": "side",
+   "von": 91.54,
+   "bis": 91.98
+  },
+  {
+   "wort": "by",
+   "von": 91.98,
+   "bis": 92.2
+  },
+  {
+   "wort": "side.",
+   "von": 92.2,
+   "bis": 92.6
+  },
+  {
+   "wort": "Then",
+   "von": 93.22,
+   "bis": 93.6
+  },
+  {
+   "wort": "came",
+   "von": 93.6,
+   "bis": 93.94
+  },
+  {
+   "wort": "the",
+   "von": 93.94,
+   "bis": 94.16
+  },
+  {
+   "wort": "First",
+   "von": 94.16,
+   "bis": 94.48
+  },
+  {
+   "wort": "World",
+   "von": 94.48,
+   "bis": 94.92
+  },
+  {
+   "wort": "War.",
+   "von": 94.92,
+   "bis": 95.26
+  },
+  {
+   "wort": "Germany's",
+   "von": 95.74,
+   "bis": 96.28
+  },
+  {
+   "wort": "defeat",
+   "von": 96.28,
+   "bis": 96.64
+  },
+  {
+   "wort": "changed",
+   "von": 96.64,
+   "bis": 97.14
+  },
+  {
+   "wort": "the",
+   "von": 97.14,
+   "bis": 97.36
+  },
+  {
+   "wort": "map",
+   "von": 97.36,
+   "bis": 97.52
+  },
+  {
+   "wort": "of",
+   "von": 97.52,
+   "bis": 97.76
+  },
+  {
+   "wort": "Europe",
+   "von": 97.76,
+   "bis": 98.04
+  },
+  {
+   "wort": "once",
+   "von": 98.04,
+   "bis": 98.42
+  },
+  {
+   "wort": "again.",
+   "von": 98.42,
+   "bis": 98.92
+  },
+  {
+   "wort": "Under",
+   "von": 99.38,
+   "bis": 99.62
+  },
+  {
+   "wort": "the",
+   "von": 99.62,
+   "bis": 99.86
+  },
+  {
+   "wort": "Treaty",
+   "von": 99.86,
+   "bis": 100.06
+  },
+  {
+   "wort": "of",
+   "von": 100.06,
+   "bis": 100.26
+  },
+  {
+   "wort": "Versailles",
+   "von": 100.26,
+   "bis": 100.78
+  },
+  {
+   "wort": "in",
+   "von": 100.78,
+   "bis": 101.02
+  },
+  {
+   "wort": "1919,",
+   "von": 101.02,
+   "bis": 102.02
+  },
+  {
+   "wort": "most",
+   "von": 102.36,
+   "bis": 102.66
+  },
+  {
+   "wort": "of",
+   "von": 102.66,
+   "bis": 102.88
+  },
+  {
+   "wort": "West",
+   "von": 102.88,
+   "bis": 103.1
+  },
+  {
+   "wort": "Prussia",
+   "von": 103.1,
+   "bis": 103.52
+  },
+  {
+   "wort": "was",
+   "von": 103.52,
+   "bis": 103.88
+  },
+  {
+   "wort": "transferred",
+   "von": 103.88,
+   "bis": 104.22
+  },
+  {
+   "wort": "to",
+   "von": 104.22,
+   "bis": 104.52
+  },
+  {
+   "wort": "Poland.",
+   "von": 104.52,
+   "bis": 104.9
+  },
+  {
+   "wort": "Danzig",
+   "von": 104.9,
+   "bis": 105.84
+  },
+  {
+   "wort": "became",
+   "von": 105.84,
+   "bis": 106.22
+  },
+  {
+   "wort": "a",
+   "von": 106.22,
+   "bis": 106.52
+  },
+  {
+   "wort": "free",
+   "von": 106.52,
+   "bis": 106.74
+  },
+  {
+   "wort": "city",
+   "von": 106.74,
+   "bis": 107.1
+  },
+  {
+   "wort": "under",
+   "von": 107.1,
+   "bis": 107.42
+  },
+  {
+   "wort": "international",
+   "von": 107.42,
+   "bis": 108.12
+  },
+  {
+   "wort": "supervision,",
+   "von": 108.12,
+   "bis": 108.74
+  },
+  {
+   "wort": "while",
+   "von": 109.16,
+   "bis": 109.28
+  },
+  {
+   "wort": "some",
+   "von": 109.28,
+   "bis": 109.58
+  },
+  {
+   "wort": "territories",
+   "von": 109.58,
+   "bis": 110.14
+  },
+  {
+   "wort": "remained",
+   "von": 110.14,
+   "bis": 110.62
+  },
+  {
+   "wort": "German.",
+   "von": 110.62,
+   "bis": 111.1
+  },
+  {
+   "wort": "In",
+   "von": 111.58,
+   "bis": 111.78
+  },
+  {
+   "wort": "1920,",
+   "von": 111.78,
+   "bis": 112.52
+  },
+  {
+   "wort": "the",
+   "von": 112.78,
+   "bis": 112.96
+  },
+  {
+   "wort": "old",
+   "von": 112.96,
+   "bis": 113.28
+  },
+  {
+   "wort": "province",
+   "von": 113.28,
+   "bis": 113.7
+  },
+  {
+   "wort": "of",
+   "von": 113.7,
+   "bis": 113.96
+  },
+  {
+   "wort": "West",
+   "von": 113.96,
+   "bis": 114.24
+  },
+  {
+   "wort": "Prussia",
+   "von": 114.24,
+   "bis": 114.74
+  },
+  {
+   "wort": "ceased",
+   "von": 114.74,
+   "bis": 115.14
+  },
+  {
+   "wort": "to",
+   "von": 115.14,
+   "bis": 115.52
+  },
+  {
+   "wort": "exist.",
+   "von": 115.52,
+   "bis": 115.86
+  },
+  {
+   "wort": "But",
+   "von": 116.42,
+   "bis": 116.56
+  },
+  {
+   "wort": "the",
+   "von": 116.56,
+   "bis": 116.84
+  },
+  {
+   "wort": "story",
+   "von": 116.84,
+   "bis": 117.06
+  },
+  {
+   "wort": "of",
+   "von": 117.06,
+   "bis": 117.26
+  },
+  {
+   "wort": "this",
+   "von": 117.26,
+   "bis": 117.46
+  },
+  {
+   "wort": "land",
+   "von": 117.46,
+   "bis": 117.76
+  },
+  {
+   "wort": "was",
+   "von": 117.76,
+   "bis": 118.2
+  },
+  {
+   "wort": "far",
+   "von": 118.2,
+   "bis": 118.58
+  },
+  {
+   "wort": "from",
+   "von": 118.58,
+   "bis": 118.86
+  },
+  {
+   "wort": "over.",
+   "von": 118.86,
+   "bis": 119.24
+  },
+  {
+   "wort": "On",
+   "von": 119.84,
+   "bis": 120.0
+  },
+  {
+   "wort": "September",
+   "von": 120.0,
+   "bis": 120.4
+  },
+  {
+   "wort": "1,",
+   "von": 120.4,
+   "bis": 120.9
+  },
+  {
+   "wort": "1939,",
+   "von": 121.24,
+   "bis": 122.1
+  },
+  {
+   "wort": "Nazi",
+   "von": 122.68,
+   "bis": 122.86
+  },
+  {
+   "wort": "Germany",
+   "von": 122.86,
+   "bis": 123.36
+  },
+  {
+   "wort": "invaded",
+   "von": 123.36,
+   "bis": 123.92
+  },
+  {
+   "wort": "Poland.",
+   "von": 123.92,
+   "bis": 124.44
+  },
+  {
+   "wort": "The",
+   "von": 124.88,
+   "bis": 125.06
+  },
+  {
+   "wort": "region",
+   "von": 125.06,
+   "bis": 125.34
+  },
+  {
+   "wort": "was",
+   "von": 125.34,
+   "bis": 125.62
+  },
+  {
+   "wort": "occupied,",
+   "von": 125.62,
+   "bis": 126.2
+  },
+  {
+   "wort": "and",
+   "von": 126.38,
+   "bis": 126.64
+  },
+  {
+   "wort": "large",
+   "von": 126.64,
+   "bis": 126.9
+  },
+  {
+   "wort": "parts",
+   "von": 126.9,
+   "bis": 127.24
+  },
+  {
+   "wort": "were",
+   "von": 127.24,
+   "bis": 127.56
+  },
+  {
+   "wort": "annexed",
+   "von": 127.56,
+   "bis": 127.94
+  },
+  {
+   "wort": "to",
+   "von": 127.94,
+   "bis": 128.06
+  },
+  {
+   "wort": "the",
+   "von": 128.06,
+   "bis": 128.18
+  },
+  {
+   "wort": "German",
+   "von": 128.18,
+   "bis": 128.52
+  },
+  {
+   "wort": "Reich.",
+   "von": 128.52,
+   "bis": 128.88
+  },
+  {
+   "wort": "What",
+   "von": 129.38,
+   "bis": 129.64
+  },
+  {
+   "wort": "followed",
+   "von": 129.64,
+   "bis": 130.08
+  },
+  {
+   "wort": "was",
+   "von": 130.08,
+   "bis": 130.4
+  },
+  {
+   "wort": "a",
+   "von": 130.4,
+   "bis": 130.62
+  },
+  {
+   "wort": "period",
+   "von": 130.62,
+   "bis": 131.0
+  },
+  {
+   "wort": "of",
+   "von": 131.0,
+   "bis": 131.36
+  },
+  {
+   "wort": "terror.",
+   "von": 131.36,
+   "bis": 131.78
+  },
+  {
+   "wort": "Polish",
+   "von": 131.78,
+   "bis": 132.58
+  },
+  {
+   "wort": "civilians",
+   "von": 132.58,
+   "bis": 133.14
+  },
+  {
+   "wort": "were",
+   "von": 133.14,
+   "bis": 133.48
+  },
+  {
+   "wort": "imprisoned,",
+   "von": 133.48,
+   "bis": 134.0
+  },
+  {
+   "wort": "expelled,",
+   "von": 134.46,
+   "bis": 134.82
+  },
+  {
+   "wort": "and",
+   "von": 135.16,
+   "bis": 135.44
+  },
+  {
+   "wort": "murdered.",
+   "von": 135.44,
+   "bis": 135.74
+  },
+  {
+   "wort": "The",
+   "von": 136.22,
+   "bis": 136.38
+  },
+  {
+   "wort": "Jewish",
+   "von": 136.38,
+   "bis": 136.68
+  },
+  {
+   "wort": "population",
+   "von": 136.68,
+   "bis": 137.32
+  },
+  {
+   "wort": "was",
+   "von": 137.32,
+   "bis": 137.6
+  },
+  {
+   "wort": "persecuted",
+   "von": 137.6,
+   "bis": 138.22
+  },
+  {
+   "wort": "and",
+   "von": 138.22,
+   "bis": 138.6
+  },
+  {
+   "wort": "almost",
+   "von": 138.6,
+   "bis": 138.88
+  },
+  {
+   "wort": "entirely",
+   "von": 138.88,
+   "bis": 139.6
+  },
+  {
+   "wort": "destroyed",
+   "von": 139.6,
+   "bis": 140.26
+  },
+  {
+   "wort": "in",
+   "von": 140.26,
+   "bis": 140.5
+  },
+  {
+   "wort": "the",
+   "von": 140.5,
+   "bis": 140.68
+  },
+  {
+   "wort": "Holocaust.",
+   "von": 140.68,
+   "bis": 141.2
+  },
+  {
+   "wort": "As",
+   "von": 141.96,
+   "bis": 142.12
+  },
+  {
+   "wort": "the",
+   "von": 142.12,
+   "bis": 142.38
+  },
+  {
+   "wort": "Second",
+   "von": 142.38,
+   "bis": 142.62
+  },
+  {
+   "wort": "World",
+   "von": 142.62,
+   "bis": 143.02
+  },
+  {
+   "wort": "War",
+   "von": 143.02,
+   "bis": 143.2
+  },
+  {
+   "wort": "came",
+   "von": 143.2,
+   "bis": 143.46
+  },
+  {
+   "wort": "to",
+   "von": 143.46,
+   "bis": 143.68
+  },
+  {
+   "wort": "an",
+   "von": 143.68,
+   "bis": 143.84
+  },
+  {
+   "wort": "end",
+   "von": 143.84,
+   "bis": 144.06
+  },
+  {
+   "wort": "in",
+   "von": 144.06,
+   "bis": 144.28
+  },
+  {
+   "wort": "1945,",
+   "von": 144.28,
+   "bis": 145.34
+  },
+  {
+   "wort": "the",
+   "von": 145.74,
+   "bis": 145.88
+  },
+  {
+   "wort": "region",
+   "von": 145.88,
+   "bis": 146.18
+  },
+  {
+   "wort": "changed",
+   "von": 146.18,
+   "bis": 146.76
+  },
+  {
+   "wort": "once",
+   "von": 146.76,
+   "bis": 147.1
+  },
+  {
+   "wort": "again.",
+   "von": 147.1,
+   "bis": 147.62
+  },
+  {
+   "wort": "Many",
+   "von": 148.02,
+   "bis": 148.28
+  },
+  {
+   "wort": "German",
+   "von": 148.28,
+   "bis": 148.66
+  },
+  {
+   "wort": "inhabitants",
+   "von": 148.66,
+   "bis": 149.22
+  },
+  {
+   "wort": "fled",
+   "von": 149.22,
+   "bis": 149.7
+  },
+  {
+   "wort": "or",
+   "von": 149.7,
+   "bis": 150.02
+  },
+  {
+   "wort": "were",
+   "von": 150.02,
+   "bis": 150.32
+  },
+  {
+   "wort": "expelled.",
+   "von": 150.32,
+   "bis": 150.7
+  },
+  {
+   "wort": "Polish",
+   "von": 151.24,
+   "bis": 151.6
+  },
+  {
+   "wort": "settlers",
+   "von": 151.6,
+   "bis": 151.96
+  },
+  {
+   "wort": "arrived,",
+   "von": 151.96,
+   "bis": 152.48
+  },
+  {
+   "wort": "and",
+   "von": 152.74,
+   "bis": 152.84
+  },
+  {
+   "wort": "the",
+   "von": 152.84,
+   "bis": 153.06
+  },
+  {
+   "wort": "towns",
+   "von": 153.06,
+   "bis": 153.3
+  },
+  {
+   "wort": "and",
+   "von": 153.3,
+   "bis": 153.54
+  },
+  {
+   "wort": "villages",
+   "von": 153.54,
+   "bis": 153.92
+  },
+  {
+   "wort": "took",
+   "von": 153.92,
+   "bis": 154.24
+  },
+  {
+   "wort": "on",
+   "von": 154.24,
+   "bis": 154.6
+  },
+  {
+   "wort": "a",
+   "von": 154.6,
+   "bis": 154.78
+  },
+  {
+   "wort": "new",
+   "von": 154.78,
+   "bis": 154.98
+  },
+  {
+   "wort": "identity.",
+   "von": 154.98,
+   "bis": 155.48
+  },
+  {
+   "wort": "Today,",
+   "von": 155.78,
+   "bis": 156.28
+  },
+  {
+   "wort": "traces",
+   "von": 156.52,
+   "bis": 156.82
+  },
+  {
+   "wort": "of",
+   "von": 156.82,
+   "bis": 157.06
+  },
+  {
+   "wort": "the",
+   "von": 157.06,
+   "bis": 157.26
+  },
+  {
+   "wort": "old",
+   "von": 157.26,
+   "bis": 157.56
+  },
+  {
+   "wort": "West",
+   "von": 157.56,
+   "bis": 157.84
+  },
+  {
+   "wort": "Prussia",
+   "von": 157.84,
+   "bis": 158.24
+  },
+  {
+   "wort": "can",
+   "von": 158.24,
+   "bis": 158.56
+  },
+  {
+   "wort": "still",
+   "von": 158.56,
+   "bis": 158.8
+  },
+  {
+   "wort": "be",
+   "von": 158.8,
+   "bis": 159.12
+  },
+  {
+   "wort": "found",
+   "von": 159.12,
+   "bis": 159.34
+  },
+  {
+   "wort": "in",
+   "von": 159.34,
+   "bis": 159.52
+  },
+  {
+   "wort": "the",
+   "von": 159.52,
+   "bis": 159.72
+  },
+  {
+   "wort": "streets",
+   "von": 159.72,
+   "bis": 159.94
+  },
+  {
+   "wort": "of",
+   "von": 159.94,
+   "bis": 160.14
+  },
+  {
+   "wort": "Gdańsk,",
+   "von": 160.14,
+   "bis": 160.66
+  },
+  {
+   "wort": "in",
+   "von": 160.66,
+   "bis": 161.1
+  },
+  {
+   "wort": "the",
+   "von": 161.1,
+   "bis": 161.32
+  },
+  {
+   "wort": "walls",
+   "von": 161.32,
+   "bis": 161.6
+  },
+  {
+   "wort": "of",
+   "von": 161.6,
+   "bis": 161.9
+  },
+  {
+   "wort": "Malbork",
+   "von": 161.9,
+   "bis": 162.32
+  },
+  {
+   "wort": "Castle,",
+   "von": 162.32,
+   "bis": 162.7
+  },
+  {
+   "wort": "and",
+   "von": 163.28,
+   "bis": 163.28
+  },
+  {
+   "wort": "in",
+   "von": 163.28,
+   "bis": 163.56
+  },
+  {
+   "wort": "countless",
+   "von": 163.56,
+   "bis": 163.96
+  },
+  {
+   "wort": "archives,",
+   "von": 163.96,
+   "bis": 164.66
+  },
+  {
+   "wort": "cemeteries,",
+   "von": 165.0,
+   "bis": 165.62
+  },
+  {
+   "wort": "and",
+   "von": 165.8,
+   "bis": 166.04
+  },
+  {
+   "wort": "family",
+   "von": 166.04,
+   "bis": 166.26
+  },
+  {
+   "wort": "memories.",
+   "von": 166.26,
+   "bis": 166.76
+  },
+  {
+   "wort": "Its",
+   "von": 167.4,
+   "bis": 167.6
+  },
+  {
+   "wort": "borders",
+   "von": 167.6,
+   "bis": 167.98
+  },
+  {
+   "wort": "have",
+   "von": 167.98,
+   "bis": 168.26
+  },
+  {
+   "wort": "disappeared.",
+   "von": 168.26,
+   "bis": 168.84
+  },
+  {
+   "wort": "Its",
+   "von": 169.4,
+   "bis": 169.6
+  },
+  {
+   "wort": "history",
+   "von": 169.6,
+   "bis": 170.08
+  },
+  {
+   "wort": "has",
+   "von": 170.08,
+   "bis": 170.52
+  },
+  {
+   "wort": "not.",
+   "von": 170.52,
+   "bis": 170.78
+  },
+  {
+   "wort": "This",
+   "von": 171.46,
+   "bis": 171.84
+  },
+  {
+   "wort": "was",
+   "von": 171.84,
+   "bis": 172.36
+  },
+  {
+   "wort": "West",
+   "von": 172.36,
+   "bis": 172.74
+  },
+  {
+   "wort": "Prussia.",
+   "von": 172.74,
+   "bis": 173.48
+  },
+  {
+   "wort": "Zeit",
+   "von": 173.98,
+   "bis": 174.16
+  },
+  {
+   "wort": "spüren.",
+   "von": 174.16,
+   "bis": 174.64
+  },
+  {
+   "wort": "History",
+   "von": 175.16,
+   "bis": 175.56
+  },
+  {
+   "wort": "that",
+   "von": 175.56,
+   "bis": 175.9
+  },
+  {
+   "wort": "remains.",
+   "von": 175.9,
+   "bis": 176.32
+  }
+ ]
+}

@@ -1,0 +1,133 @@
+# ZEITSPUREN – West Prussia (English narration, 2:56)
+# Times = start of the matching sentence in the narration (from the speech-recognition transcript).
+
+0:00     foto      danzig_long_bridge_photochrom.jpg
+         ort: Danzig (Gdańsk)
+         zeit: c. 1890–1900
+         quelle: Photochrom print, Photoglob Zürich
+
+# "A land between Germany and Poland …"
+0:04.2   karte     west_prussia_locator_map.jpg
+         ort: Province of West Prussia
+         zeit: within the German Empire, 1878–1919
+         darstellung: eingepasst
+         bewegung: zoom-rein
+
+# "Today, much of this historic region lies within modern Poland …" / "… Old Prussians."
+0:12.6   karte     2019-12-31
+         ausschnitt: Gdansk 820
+         fahrt: Gdansk 640
+         hervorheben: Poland=rot:Poland
+         nachbarn: Russia (Soviet Union)=Russia; Lithuania; German Federal Republic=Germany
+         zonen: west-prussia-former
+         orte: Gdańsk@54.35,18.65, Toruń@53.01,18.60, Malbork@54.04,19.03, Elbląg@54.16,19.40
+         vermerke: Land of the|Old Prussians@53.85,21.3
+         vermerke_ab: 0:20.8
+         titel: West Prussia Today
+
+# "In the 13th century, the Teutonic Order began expanding …"
+0:28.1   foto      teutonic_knights_painting.jpg
+         bewegung: zoom-rein
+
+# "One of its greatest strongholds was Marienburg … headquarters in 1309."
+0:35.8   foto      marienburg_engraving.jpg
+         ort: Marienburg (Malbork)
+         zeit: seat of the Grand Master from 1309
+         quelle: Engraving, Bibliographisches Institut, Hildburghausen (19th c.)
+
+# "But the order's power did not last forever. After years of conflict …"
+0:42.0   foto      battle_of_grunwald_matejko.jpg
+         ort: Battle of Grunwald, 1410
+         zeit: painted by Jan Matejko, 1878
+         quelle: National Museum in Warsaw
+         bewegung: schwenk-rechts
+
+# "… the Second Peace of Thorn in 1466 divided its former territories. … Royal Prussia …"
+0:45.0   karte     teutonic_order_1466_map.png
+         ort: Second Peace of Thorn, 1466
+         quelle: Map: S. Bollmann · Wikimedia Commons · CC BY-SA 3.0
+         darstellung: eingepasst
+         bewegung: zoom-rein
+
+# "Cities such as Danzig, Thorn and Elbing became important centres of trade and culture."
+0:56.8   foto      danzig_merian_1652.jpg
+         ort: Danzig
+         zeit: 1652
+         quelle: Matthäus Merian, Topographia Prussiae et Pomerelliae
+         bewegung: schwenk-rechts
+
+# "More than 300 years later … first partition of Poland in 1772 … the province of West Prussia was established."
+1:02.9   karte     handtke_province_map.jpg
+         ort: Province of West Prussia
+         zeit: historical map (German)
+         quelle: F. Handtke, Carl Flemmings Generalkarten No. 4
+         darstellung: eingepasst
+         bewegung: zoom-rein
+
+# "Danzig and Thorn followed in 1793."
+1:16.8   foto      thorn_photo.jpg
+         ort: Thorn (Toruń)
+
+# "Over time, Germans, Poles, Kashubians and Jewish communities …"
+1:20.7   dokument  mother_tongues_1910_map.jpg
+         ort: West Prussia
+         zeit: mother tongues, census of 1910
+         quelle: Map: T. P. Gray
+
+# "Different languages, traditions and religions existed side by side."
+1:28.4   foto      farmstead_photo.jpg
+
+# "Then came the First World War. … Treaty of Versailles in 1919 …"
+1:33.2   karte     1919-11-30
+         wechsel: 1920-12-31
+         wechsel_bei: 1:39.4
+         ausschnitt: Gdansk 640
+         hervorheben: German Reich=blau:Germany
+         hervorheben_danach: German Reich=blau:Germany; Poland=rot:Poland; Free City of Danzig=violett:Free City of Danzig
+         zonen: west-prussia
+         zonen_danach: west-prussia; marienwerder
+         orte: Danzig@54.35,18.65, Thorn@53.01,18.60, Marienburg@54.04,19.03
+         vermerke: Polish Corridor@53.85,17.85
+         vermerke_ab: 1:41.0
+         titel: The Treaty of Versailles
+
+# "On September 1, 1939, Nazi Germany invaded Poland. … annexed to the German Reich."
+1:59.8   karte     1939-08-31
+         wechsel: 1940-01-01
+         wechsel_bei: 2:04.9
+         ausschnitt: Warsaw 1500
+         hervorheben: Poland=rot:Poland; Free City of Danzig=violett:Danzig; German Reich=blau:Germany
+         hervorheben_danach: German Reich=blau:German Reich; General Government (German-occupied)=gelb:General Government; Soviet Union=gruen:Soviet Union
+         zonen_danach: reichsgau-danzig-west-prussia
+         orte: Danzig@54.35,18.65, Warsaw
+         titel: 1939: Invasion and Annexation
+
+# "As the Second World War came to an end in 1945 …"
+2:22.0   karte     1945-08-02
+         ausschnitt: Gdansk 900
+         fahrt: Gdansk 700
+         hervorheben: Poland=rot:Poland
+         nachbarn: Soviet Union; German Democratic Republic=Soviet Zone of Germany
+         zonen: west-prussia-former
+         orte: Gdańsk@54.35,18.65, Malbork@54.04,19.03, Toruń@53.01,18.60, Olsztyn@53.78,20.48
+         titel: 1945: A New Border
+
+# "Today, traces of the old West Prussia can still be found in the streets of Gdańsk …"
+2:35.8   foto      danzig_aerial_st_mary.jpg
+         ort: Danzig (Gdańsk)
+         zeit: St. Mary's Church
+
+# "… in the walls of Malbork Castle …"
+2:41.9   foto      marienburg_photochrom.jpg
+         ort: Marienburg (Malbork)
+         zeit: c. 1890–1900
+         quelle: Photochrom print, Photoglob Zürich
+
+# "Its borders have disappeared. Its history has not."
+2:47.4   foto      danzig_motlawa_photo.jpg
+         ort: Danzig (Gdańsk)
+
+# "This was West Prussia. – Zeit spüren. History that remains."
+2:51.5   karte     handtke_province_map.jpg
+         darstellung: eingepasst
+         bewegung: zoom-raus

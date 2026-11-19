@@ -18,6 +18,10 @@
   nicht geschlossen. Das Programm zeigt dort keine Grenzlinie, sondern ein
   auslaufendes, schraffiertes umkämpftes Gebiet; die äußere Kante ist nur gepunktet
   und als „Riga line of 1921“ beschriftet.
+- **1939–1945** (geprüft an 23 belegten Orten): Deutsches Reich vor/nach 26.10.1939,
+  Generalgouvernement, Sowjetunion, Litauen, Polen ab 02.08.1945, Reichsgau Danzig-Westpreußen,
+  Provinz Westpreußen 1909–1919. OHM zählt das Generalgouvernement zum Reichsgebiet; es war
+  besetzt, nicht annektiert – es wird abgezogen und separat gezeigt (`minus` in staaten.json).
 - **Nicht erfasst:** Mittellitauen (Okt. 1920 – Apr. 1922) – das Programm warnt; das
   oberschlesische Abstimmungsgebiet selbst (nur als Provinz beschriftet).
 - Abstimmungsergebnisse: Allenstein 11.07.1920 97,9 % für Deutschland; Marienwerder

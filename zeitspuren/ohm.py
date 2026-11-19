@@ -68,6 +68,8 @@ def staaten_am(tag: str) -> list[dict]:
                 eintrag["offen"] = v
             else:
                 eintrag["form"] = _form(v["datei"])
+            for minus in v.get("minus", []):  # z. B. besetzte, nicht annektierte Gebiete abziehen
+                eintrag["form"] = eintrag["form"].difference(_form(minus))
             ergebnis.append(eintrag)
             break
     # Offene Staaten: Hülle um die anderen OHM-Staaten verkleinern, umkämpften Teil bestimmen

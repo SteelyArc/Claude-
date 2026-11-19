@@ -107,5 +107,10 @@ Vorlage dient `ausgabe/zeitplan_verwendet.txt`. Danach neu rendern.
   **In jeder neuen Sitzung zuerst:** `pip install -r requirements.txt`.
 - Kartendaten: `daten/karten` (Quellen/Lizenzen in `daten/QUELLEN.md`). Fehlende
   Stichjahre lädt `karten.py` aus dem gepinnten GitHub-Stand nach → danach committen.
+- **Spracherkennung (Etappe 2):** `HF_HUB_DISABLE_XET=1 python3 werkzeuge/transkribieren.py projekte/X medium [de|en]`
+  → `ausgabe/transkript.txt` (Satz + Startzeit) und `transkript.json` (Wort-Zeitstempel).
+  Benötigt `pip install faster-whisper`; Modell kommt von Hugging Face (in Umgebung „Claude-“ freigegeben).
+  Immer zuerst prüfen, ob die Aufnahme dem Manuskript entspricht (Sprache, Vollständigkeit).
+- Karten-Drehbuch: `vermerke_ab: 1:41` blendet Vermerke erst ab diesem Satz ein.
 - Ausbaustufen: Etappe 2 = automatische Bildwechsel per Spracherkennung (Whisper),
   Etappe 3 = eingebrannte Untertitel, Titelkarte, Jahreszahlen, Quellenangaben.

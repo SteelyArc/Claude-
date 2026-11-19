@@ -41,6 +41,20 @@
           "datei": "2696515",
           "von": "1922-06-20",
           "bis": "1935-03-01"
+        },
+        {
+          "datei": "2704709",
+          "von": "1939-03-22",
+          "bis": "1939-10-26"
+        },
+        {
+          "datei": "2704716",
+          "von": "1939-10-26",
+          "bis": "1940-05-18",
+          "minus": [
+            "2693083"
+          ],
+          "_hinweis": "OHM zählt das Generalgouvernement zum Reichsgebiet; es war besetzt, nicht annektiert – wird daher abgezogen und separat gezeigt"
         }
       ]
     },
@@ -92,6 +106,17 @@
           "datei": "2741472",
           "von": "1922-06-20",
           "bis": "1924-03-12"
+        },
+        {
+          "datei": "2741574",
+          "von": "1938-11-01",
+          "bis": "1939-10-06"
+        },
+        {
+          "datei": "2692206",
+          "von": "1945-08-02",
+          "bis": "1948-01-01",
+          "_hinweis": "OHM start_date 1945-08 (Potsdamer Abkommen, 2.8.1945)"
         }
       ]
     },
@@ -127,6 +152,16 @@
         "Lithuania"
       ],
       "versionen": [
+        {
+          "datei": "2855606",
+          "von": "1939-03-23",
+          "bis": "1939-10-28"
+        },
+        {
+          "datei": "2848250",
+          "von": "1939-10-28",
+          "bis": "1940-08-03"
+        },
         {
           "datei": "2693086",
           "von": "1920-10-09",
@@ -190,6 +225,38 @@
           "bis": "1920-08-10",
           "anzeigename": "Cieszyn Silesia (disputed)",
           "_hinweis": "OHM-Ende 1920-08-28; hier bis zur Übernahme durch die Tschechoslowakei (1920-08-10), damit sich Flächen nicht überlagern"
+        }
+      ]
+    },
+    {
+      "name": "General Government",
+      "ersetzt": [
+        "Poland"
+      ],
+      "versionen": [
+        {
+          "datei": "2693083",
+          "von": "1939-10-26",
+          "bis": "1941-08-01",
+          "anzeigename": "General Government (German-occupied)"
+        }
+      ]
+    },
+    {
+      "name": "Soviet Union",
+      "ersetzt": [
+        "Russia (Soviet Union)"
+      ],
+      "versionen": [
+        {
+          "datei": "2848241",
+          "von": "1939-10-28",
+          "bis": "1940-03-12"
+        },
+        {
+          "datei": "2851943",
+          "von": "1945-08-01",
+          "bis": "1945-08-25"
         }
       ]
     }
