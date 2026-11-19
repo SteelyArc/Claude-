@@ -83,9 +83,14 @@ def aus_datei(datei: Path, bilder: list[Path]) -> list[tuple[float, Path, str, s
 
 
 def szenen_bilden(eintraege, sprechdauer: float, vorlauf: float, nachlauf: float,
-                  ueberblendung: float, bilddauer_min: float) -> tuple[list[Szene], float, list[str]]:
-    """Legt fest, wann jedes Bild sichtbar ist (inklusive Überblendungen)."""
+                  ueberblendung: float, bilddauer_min: float, bilddauer_max: float
+                  ) -> tuple[list[Szene], float, list[str], list[str]]:
+    """Legt fest, wann jedes Bild sichtbar ist (inklusive Überblendungen).
+
+    Rückgabe: Szenen, Gesamtlänge, Hinweise, zu lange Standbilder.
+    """
     warnungen: list[str] = []
+    zu_lang: list[str] = []
     gesamt = vorlauf + sprechdauer + nachlauf
     szenen = [Szene(pfad=p, beginn=vorlauf + t if i else 0.0, darstellung=d, bewegung=b)
               for i, (t, p, d, b) in enumerate(eintraege)]
@@ -99,11 +104,13 @@ def szenen_bilden(eintraege, sprechdauer: float, vorlauf: float, nachlauf: float
             )
         if dauer < bilddauer_min:
             warnungen.append(f"Bild '{sz.pfad.name}' steht nur {dauer:.1f} s (empfohlen ≥ {bilddauer_min:.0f} s).")
-        if dauer > 14:
-            warnungen.append(f"Bild '{sz.pfad.name}' steht {dauer:.1f} s – ggf. ein weiteres Bild ergänzen.")
+        # Das letzte Bild trägt den Ausklang (Nachlauf) mit – der zählt nicht.
+        standzeit = dauer - (nachlauf if i == len(szenen) - 1 else 0.0)
+        if standzeit > bilddauer_max:
+            zu_lang.append(f"'{sz.pfad.name}' stünde {standzeit:.1f} s (höchstens {bilddauer_max:.0f} s)")
 
     halb = ueberblendung / 2
     for i, sz in enumerate(szenen):
         sz.sichtbar_von = 0.0 if i == 0 else sz.beginn - halb
         sz.sichtbar_bis = gesamt if i == len(szenen) - 1 else szenen[i + 1].beginn + halb
-    return szenen, gesamt, warnungen
+    return szenen, gesamt, warnungen, zu_lang

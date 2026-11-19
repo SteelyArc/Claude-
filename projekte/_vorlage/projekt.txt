@@ -4,6 +4,17 @@
 
 titel: Mein Thema
 
+# Kanalvorgabe: Jede Dokumentation dauert ca. 5 Minuten.
+# Die Sprecheraufnahme sollte möglichst genau so lang sein. Weicht sie um mehr
+# als die Toleranz ab, meldet das System das, BEVOR ein Video erstellt wird.
+# (Die Stimme wird nie schneller oder langsamer gemacht.)
+ziel_laenge: 5:00
+laenge_toleranz: 10        # Sekunden
+
+# Kein Bild soll länger als so viele Sekunden stehen (sonst wirkt es gestreckt).
+# Für 5 Minuten heißt das: mindestens 25, besser etwa 35–40 Bilder.
+bilddauer_max: 12
+
 # Bildlook:  original | warm | schwarzweiss
 farbe: original
 

@@ -12,12 +12,18 @@ auf dem Android-Handy. Antworte auf Deutsch, einfach und ohne Fachjargon.
 1. `git pull` auf dem aktuellen Branch (neu hochgeladene Dateien holen). Liegt das
    Projekt nur auf `main`, vorher `git fetch origin main` und die Projektdateien von
    dort übernehmen (`git checkout origin/main -- projekte/X`).
-2. Erst eine schnelle Vorschau, wenn die Person das möchte:
+2. **Immer zuerst prüfen:** `python3 -m zeitspuren X --pruefen`. Meldet das Programm
+   eine Abweichung von der Kanalvorgabe (Länge ≠ 5 min, zu wenige Bilder), die
+   Person **vor dem Erstellen** in einfachen Worten darauf hinweisen und fragen, wie
+   sie vorgehen möchte (neue Aufnahme, mehr Bilder oder bewusst trotzdem erstellen).
+   Nur nach ausdrücklicher Zustimmung mit `--bestaetigt` rendern.
+3. Erst eine schnelle Vorschau, wenn die Person das möchte:
    `python3 -m zeitspuren X --vorschau`
-3. Endfassung: `python3 -m zeitspuren X` (Dauer ≈ 3–4 × Videolänge).
-4. Die Datei `projekte/X/ausgabe/X.mp4` mit dem SendUserFile-Werkzeug übergeben
+4. Endfassung: `python3 -m zeitspuren X` (Dauer ≈ 3–4 × Videolänge, bei 5 min also
+   rund 15–20 min; im Hintergrund laufen lassen und Fortschritt melden).
+5. Die Datei `projekte/X/ausgabe/X.mp4` mit dem SendUserFile-Werkzeug übergeben
    und die Ausgabe des Programms kurz zusammenfassen (Bildreihenfolge, Hinweise).
-5. Die erzeugte `projekte/X/ausgabe/zeitplan_verwendet.txt` committen und pushen;
+6. Die erzeugte `projekte/X/ausgabe/zeitplan_verwendet.txt` committen und pushen;
    MP4-Dateien werden nicht committet (siehe .gitignore).
 
 **„Lege ein neues Projekt X an“**
@@ -30,6 +36,17 @@ hochgeladen werden (siehe README, Abschnitt „Material hochladen“).
 Vorlage dient `ausgabe/zeitplan_verwendet.txt`. Danach neu rendern.
 
 ## Unverrückbare Regeln des Kanals
+- **Ziel-Länge jeder Dokumentation: ca. 5 Minuten (300 s).** Die Sprecheraufnahme
+  soll möglichst genau 5 Minuten lang sein (Standard-Toleranz ± 10 s, Einstellungen
+  `ziel_laenge` / `laenge_toleranz`). Weicht sie ab, die Person darauf hinweisen,
+  **bevor** ein Video erstellt wird – niemals die Laufzeit durch Dehnen/Stauchen der
+  Stimme, lange Standbilder oder Stille „passend machen“.
+- Die Bilder müssen die gesamte Erzählung tragen: kein Bild länger als
+  `bilddauer_max` (Standard 12 s). Für 5 Minuten braucht es mindestens 25, besser
+  etwa 35–40 Bilder; fehlen Bilder, darauf hinweisen statt zu strecken.
+- Bildwechsel sollen zum gesprochenen Inhalt passen (Zeitplan bzw. ab Etappe 2
+  automatisch per Spracherkennung).
+- Bild und Ton müssen exakt synchron und gleich lang sein (prüft das Programm am Ende).
 - Niemals Bilder erzeugen, erfinden, KI-generieren, retuschieren oder inhaltlich
   verändern. Erlaubt: Ausschnitt, Zoom, Schwenk, dezente Farbkorrektur.
 - Die Sprecherstimme nie beschleunigen, verlangsamen, in der Tonhöhe ändern oder

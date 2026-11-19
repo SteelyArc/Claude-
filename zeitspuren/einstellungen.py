@@ -34,6 +34,11 @@ class Einstellungen:
     nachlauf: float = 2.0
     # Mindestdauer pro Bild in Sekunden (Warnung, falls unterschritten)
     bilddauer_min: float = 4.0
+    # Höchstdauer pro Bild – länger stehende Bilder wirken wie künstliche Verlängerung
+    bilddauer_max: float = 12.0
+    # Kanalvorgabe: Ziel-Länge der Sprecheraufnahme (Sekunden) und erlaubte Abweichung
+    ziel_laenge: float = 300.0
+    laenge_toleranz: float = 10.0
 
 
 _JA = {"ja", "an", "ein", "true", "1", "yes"}
@@ -82,7 +87,12 @@ def laden(projektordner: Path) -> Einstellungen:
                 raise EinstellungsFehler(f"projekt.txt Zeile {nr}: '{name}' muss 'ja' oder 'nein' sein.")
         elif isinstance(aktuell, float):
             try:
-                setattr(e, name, float(wert.replace(",", ".")))
+                zahl = wert.replace(",", ".")
+                if ":" in zahl:  # Zeitangabe wie 5:00
+                    minuten, sekunden = zahl.split(":", 1)
+                    setattr(e, name, float(minuten) * 60 + float(sekunden))
+                else:
+                    setattr(e, name, float(zahl))
             except ValueError:
                 raise EinstellungsFehler(f"projekt.txt Zeile {nr}: '{name}' muss eine Zahl sein.") from None
         elif name in _ERLAUBT:
@@ -96,6 +106,12 @@ def laden(projektordner: Path) -> Einstellungen:
 
     if not 0.4 <= e.ueberblendung <= 3.0:
         raise EinstellungsFehler("projekt.txt: 'ueberblendung' muss zwischen 0.4 und 3.0 Sekunden liegen.")
+    if not 30 <= e.ziel_laenge <= 1800:
+        raise EinstellungsFehler("projekt.txt: 'ziel_laenge' muss zwischen 30 und 1800 Sekunden liegen.")
+    if e.laenge_toleranz < 0:
+        raise EinstellungsFehler("projekt.txt: 'laenge_toleranz' darf nicht negativ sein.")
+    if e.bilddauer_max <= e.bilddauer_min:
+        raise EinstellungsFehler("projekt.txt: 'bilddauer_max' muss größer als 'bilddauer_min' sein.")
     if e.vorlauf < 0 or e.nachlauf < 0.5:
         raise EinstellungsFehler("projekt.txt: 'vorlauf' muss ≥ 0 und 'nachlauf' ≥ 0.5 Sekunden sein.")
     return e

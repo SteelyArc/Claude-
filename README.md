@@ -4,6 +4,10 @@ Automatische Herstellung hochwertiger historischer Dokumentationsvideos im
 Hochformat (1080 × 1920, 9:16) für TikTok – aus **Ihren** historischen Fotos,
 Karten und einer fertigen Sprecheraufnahme.
 
+**Kanalvorgabe:** Jede Dokumentation dauert **ca. 5 Minuten**. Die
+Sprecheraufnahme sollte also möglichst genau 5:00 Minuten lang sein, und es
+werden etwa **35–40 Bilder** benötigt (mindestens 25).
+
 Sie brauchen keine Programmierkenntnisse. Die Bedienung läuft über Claude Code
 (z. B. auf dem Android-Handy): Sie laden das Material hoch und schreiben Claude
 einen Satz wie *„Erstelle das Video für Projekt mauerfall“*.
@@ -55,7 +59,7 @@ Schreiben Sie Claude: *„Lege ein neues Projekt **mauerfall** an.“*
 | Datei | Beispiel | Hinweis |
 |---|---|---|
 | Sprecheraufnahme | `sprecher.mp3` | auch `.wav`, `.m4a` möglich |
-| Bilder | `01_berlin_1961.jpg`, `02_karte_teilung.png`, … | Nummer = Reihenfolge |
+| Bilder | `01_berlin_1961.jpg`, `02_karte_teilung.png`, … | Nummer = Reihenfolge; für 5 Minuten ca. 35–40 Bilder |
 | Karten | `05_karte_europa_1945.jpg` | Wörter *karte*, *map* oder *plan* im Namen → langsamer Zoom aufs Geschehen |
 
 Tipp: Bilder möglichst in hoher Auflösung verwenden (mindestens etwa 1500 Pixel
@@ -63,6 +67,17 @@ an der längeren Seite). Zu kleine Bilder meldet das System.
 
 ### Schritt 3: Video erstellen lassen
 Schreiben Sie Claude: *„Erstelle das Video für Projekt mauerfall.“*
+
+Claude prüft zuerst das Material, **bevor** gerechnet wird:
+- Ist die Sprecheraufnahme deutlich kürzer oder länger als 5 Minuten
+  (mehr als ± 10 Sekunden), sagt Claude Ihnen Bescheid und fragt, wie Sie
+  vorgehen möchten. Die Stimme wird niemals schneller oder langsamer gemacht,
+  um die Länge zu erreichen.
+- Sind zu wenige Bilder vorhanden (ein Bild würde länger als 12 Sekunden
+  stehen), erfahren Sie, wie viele Bilder noch fehlen. Das Video wird nicht
+  durch lange Standbilder künstlich gestreckt.
+
+Ein 5-Minuten-Video braucht in der Endfassung etwa 15–20 Minuten Rechenzeit.
 Für einen schnellen ersten Eindruck: *„Erstelle eine Vorschau für mauerfall.“*
 
 Claude schickt Ihnen die fertige MP4-Datei direkt in den Chat. Von dort können Sie
@@ -85,6 +100,9 @@ abgeschnitten“*. Claude passt den Zeitplan an und erstellt das Video neu.
 | `hintergrund` | `unschaerfe`, `schwarz` (hinter Querformaten) | `unschaerfe` |
 | `bewegung` | `ruhig`, `normal`, `lebendig` | `normal` |
 | `ueberblendung` | Sekunden, 0.4 bis 3.0 | `1.2` |
+| `ziel_laenge` | Ziel-Länge der Sprecheraufnahme, z. B. `5:00` | `5:00` |
+| `laenge_toleranz` | erlaubte Abweichung in Sekunden | `10` |
+| `bilddauer_max` | längste Standzeit eines Bildes in Sekunden | `12` |
 | `vorlauf` / `nachlauf` | Sekunden Stille vor dem ersten bzw. nach dem letzten Wort | `0.6` / `2.0` |
 
 ## Genaue Bildwechsel (Datei `zeitplan.txt`, optional)

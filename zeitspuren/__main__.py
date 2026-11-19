@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import subprocess
 import sys
 import time
@@ -46,6 +47,10 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="zeitspuren", description="ZEITSPUREN Videoproduktion (9:16)")
     ap.add_argument("projekt", help="Projektordner, z. B. projekte/mauerfall oder einfach 'mauerfall'")
     ap.add_argument("--vorschau", action="store_true", help="schnelle Vorschau in halber Auflösung")
+    ap.add_argument("--pruefen", action="store_true",
+                    help="nur Material prüfen (Länge, Bildanzahl), kein Video erstellen")
+    ap.add_argument("--bestaetigt", action="store_true",
+                    help="Video trotz gemeldeter Abweichungen erstellen (nach Rückfrage)")
     args = ap.parse_args(argv)
 
     beginn = time.time()
@@ -76,9 +81,48 @@ def main(argv: list[str] | None = None) -> int:
         else:
             eintraege = zeitplan_mod.gleichmaessig(bilder, info.dauer)
             quelle = "gleichmäßig verteilt"
-        szenen, gesamt, warnungen = zeitplan_mod.szenen_bilden(
-            eintraege, info.dauer, e.vorlauf, e.nachlauf, e.ueberblendung, e.bilddauer_min)
+        szenen, gesamt, warnungen, zu_lang = zeitplan_mod.szenen_bilden(
+            eintraege, info.dauer, e.vorlauf, e.nachlauf, e.ueberblendung, e.bilddauer_min, e.bilddauer_max)
         print(f"   {len(szenen)} Bilder, Anordnung: {quelle}, Videolänge {zeitplan_mod.zeit_schreiben(gesamt)} min")
+
+        # --- Kanalvorgabe prüfen, BEVOR gerechnet wird -------------------------
+        probleme = []
+        abweichung = info.dauer - e.ziel_laenge
+        ziel_txt = zeitplan_mod.zeit_schreiben(e.ziel_laenge)
+        if abs(abweichung) > e.laenge_toleranz:
+            richtung = "kürzer" if abweichung < 0 else "länger"
+            probleme.append(
+                f"Die Sprecheraufnahme ist {zeitplan_mod.zeit_schreiben(info.dauer)} min lang und damit "
+                f"{abs(abweichung):.0f} s {richtung} als die Vorgabe von {ziel_txt} min "
+                f"(erlaubt ± {e.laenge_toleranz:.0f} s). Die Stimme wird NICHT gedehnt oder gestaucht.")
+        else:
+            print(f"   Länge OK: {zeitplan_mod.zeit_schreiben(info.dauer)} min "
+                  f"(Vorgabe {ziel_txt} min, Abweichung {abweichung:+.1f} s)")
+        empfohlen = math.ceil(info.dauer / 8)  # ca. 8 s pro Bild = ruhig, aber nicht statisch
+        mindestens = math.ceil(info.dauer / e.bilddauer_max)
+        if zu_lang:
+            beispiele = "; ".join(zu_lang[:5]) + ("; …" if len(zu_lang) > 5 else "")
+            probleme.append(
+                f"Zu wenige Bilder: Für {zeitplan_mod.zeit_schreiben(info.dauer)} min Erzählung werden "
+                f"mindestens {mindestens}, empfohlen etwa {empfohlen} Bilder gebraucht (vorhanden: "
+                f"{len(szenen)}). {len(zu_lang)} Bild(er) würden zu lange stehen, das wirkt wie "
+                f"künstliche Verlängerung ({beispiele}).")
+        else:
+            print(f"   Bildanzahl OK: {len(szenen)} Bilder (empfohlen etwa {empfohlen}, "
+                  f"durchschnittlich {info.dauer / len(szenen):.1f} s pro Bild)")
+
+        if probleme:
+            print("\nBITTE PRÜFEN – Abweichung von der Kanalvorgabe:")
+            for pr in probleme:
+                print(f"   • {pr}")
+            if not args.bestaetigt and not args.pruefen:
+                print("\nEs wurde noch KEIN Video erstellt. Zum Erstellen trotz Abweichung erneut mit "
+                      "--bestaetigt starten.")
+                return 2
+        if args.pruefen:
+            print("\nPrüfung abgeschlossen – " + ("Abweichungen siehe oben." if probleme
+                                                   else "alles entspricht der Kanalvorgabe."))
+            return 0
 
         print("3) Bildplatten und Kamerafahrten vorbereiten …")
 
