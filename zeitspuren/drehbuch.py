@@ -46,7 +46,7 @@ SCHLUESSEL = {
     "film": {"ort", "zeit", "quelle", "ab", "darstellung"},
     "karte_bild": {"ort", "zeit", "quelle", "bewegung", "darstellung"},
     "karte": {"wechsel", "wechsel_bei", "ausschnitt", "fahrt", "fahrt_von", "fahrt_bis", "hervorheben",
-              "hervorheben_danach", "orte", "titel", "jahreszahl"},
+              "hervorheben_danach", "nachbarn", "orte", "titel", "jahreszahl"},
 }
 
 _KOPF = re.compile(r"^(\d[\d:.,]*)\s+(\w+)\s*(.*)$")
@@ -101,7 +101,7 @@ def lesen(datei: Path, projektordner: Path) -> list[DSzene]:
             if not quelle:
                 raise DrehbuchFehler(f"drehbuch.txt Zeile {nr}: Nach '{art}' fehlt die Datei bzw. das Kartenjahr.")
             sz = DSzene(zeit, art, quelle, nr)
-            if art != "karte" or not re.fullmatch(r"-?\d+", quelle):
+            if art != "karte" or not re.fullmatch(r"-?\d+|\d{4}-\d{2}-\d{2}", quelle):
                 pfad = dateien.get(quelle.lower())
                 if pfad is None:
                     raise DrehbuchFehler(f"drehbuch.txt Zeile {nr}: Datei '{quelle}' gibt es in diesem Projekt nicht.")
@@ -137,8 +137,9 @@ def _dateien(projektordner: Path) -> list[Path]:
             if p.is_file() and p.suffix.lower() in endungen and not p.name.startswith(".")]
 
 
-def hervorhebungen(text: str, jahr: int) -> list[karten.Hervorhebung]:
-    """'Germany=rot:Deutsches Reich; Poland=gold' → Liste (Namen werden gegen die Daten geprüft)."""
+def hervorhebungen(text: str, stand: "karten.Stand") -> list[karten.Hervorhebung]:
+    """'Poland=rot:Poland; Germany (Prussia)=blau:German Reich' → Liste.
+    Namen werden gegen die Daten des Kartenstands geprüft; Beschriftung auf Englisch."""
     liste = []
     for teil in (t.strip() for t in text.split(";")):
         if not teil:
@@ -147,9 +148,43 @@ def hervorhebungen(text: str, jahr: int) -> list[karten.Hervorhebung]:
             raise karten.KartenFehler(f"Hervorhebung '{teil}': Format 'Gebiet=Farbe' oder 'Gebiet=Farbe:Beschriftung'.")
         name, rest = (t.strip() for t in teil.split("=", 1))
         farbe, _, beschriftung = rest.partition(":")
-        liste.append(karten.Hervorhebung(karten.gebiet_pruefen(jahr, name), karten.farbe_lesen(farbe),
-                                         beschriftung.strip()))
+        name = karten.gebiet_pruefen(stand, name)
+        liste.append(karten.Hervorhebung(name, karten.farbe_lesen(farbe), beschriftung.strip() or name))
     return liste
+
+
+def nachbarn(text: str, stand: "karten.Stand", streng: bool = True) -> list[tuple[str, str]]:
+    """'Russia (Soviet Union)=Soviet Union; Lithuania' → [(Datenname, Beschriftung)].
+    Nicht streng: Namen, die es in diesem Stand nicht gibt, werden übersprungen."""
+    liste = []
+    for teil in (t.strip() for t in text.split(";")):
+        if not teil:
+            continue
+        name, _, text_ = (t.strip() for t in teil.partition("="))
+        try:
+            name = karten.gebiet_pruefen(stand, name)
+        except karten.KartenFehler:
+            if streng:
+                raise
+            continue
+        liste.append((name, text_ or name))
+    return liste
+
+
+def datenwarnungen(szenen: list[DSzene]) -> list[str]:
+    """Warnungen zu Kartenständen aus Näherungsdaten (vor 1886)."""
+    warnungen = []
+    for sz in szenen:
+        if not sz.ist_datenkarte:
+            continue
+        for text in [sz.quelle] + ([sz.optionen["wechsel"]] if "wechsel" in sz.optionen else []):
+            try:
+                w = karten.daten_warnung(karten.stand_lesen(text))
+            except karten.KartenFehler:
+                continue
+            if w:
+                warnungen.append(f"Zeile {sz.zeile}: {w}")
+    return warnungen
 
 
 def pruefen(szenen: list[DSzene]) -> list[str]:
@@ -171,13 +206,18 @@ def pruefen(szenen: list[DSzene]) -> list[str]:
             if "ab" in o:
                 zeit_lesen(o["ab"])
             if sz.ist_datenkarte:
-                jahr = int(sz.quelle)
-                karten.stichjahr_pruefen(jahr)
-                hervorhebungen(o.get("hervorheben", ""), jahr)
+                st1 = karten.stand_lesen(sz.quelle)
+                hervorhebungen(o.get("hervorheben", ""), st1)
+                staende = [st1]
                 if "wechsel" in o:
-                    jahr2 = int(o["wechsel"])
-                    karten.stichjahr_pruefen(jahr2)
-                    hervorhebungen(o.get("hervorheben_danach", o.get("hervorheben", "")), jahr2)
+                    st2 = karten.stand_lesen(o["wechsel"])
+                    staende.append(st2)
+                    hervorhebungen(o.get("hervorheben_danach", o.get("hervorheben", "")), st2)
+                if "nachbarn" in o:
+                    gefunden = [n for st in staende for n in nachbarn(o["nachbarn"], st, streng=False)]
+                    for teil in (t.split("=")[0].strip() for t in o["nachbarn"].split(";") if t.strip()):
+                        if not any(n[0].lower() == teil.lower() for n in gefunden):
+                            karten.gebiet_pruefen(staende[0], teil)  # löst Fehlermeldung mit Vorschlägen aus
                 for schl in ("wechsel_bei", "fahrt_von", "fahrt_bis"):
                     if schl in o:
                         zeit_lesen(o[schl])

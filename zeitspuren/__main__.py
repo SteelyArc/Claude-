@@ -113,9 +113,10 @@ def main(argv: list[str] | None = None) -> int:
                 sz.art, sz.spez = d.art, d
             for h in drehbuch_mod.schnittanalyse(dszenen):
                 print(f"   {h}")
+            kartenwarnungen = drehbuch_mod.datenwarnungen(dszenen)
 
         # --- Kanalvorgabe prüfen, BEVOR gerechnet wird -------------------------
-        probleme = []
+        probleme = list(kartenwarnungen) if dszenen else []
         abweichung = info.dauer - e.ziel_laenge
         ziel_txt = zeitplan_mod.zeit_schreiben(e.ziel_laenge)
         if abs(abweichung) > e.laenge_toleranz:
@@ -178,12 +179,15 @@ def main(argv: list[str] | None = None) -> int:
         def szene_aus_drehbuch(i, sz, d):
             o = d.optionen
             if d.ist_datenkarte:
-                jahr = int(d.quelle)
-                staende = [karten_mod.Kartenstand(jahr, drehbuch_mod.hervorhebungen(o.get("hervorheben", ""), jahr))]
+                st1 = karten_mod.stand_lesen(d.quelle)
+                staende = [karten_mod.Kartenstand(
+                    st1, drehbuch_mod.hervorhebungen(o.get("hervorheben", ""), st1),
+                    drehbuch_mod.nachbarn(o.get("nachbarn", ""), st1, streng=False))]
                 if "wechsel" in o:
-                    jahr2 = int(o["wechsel"])
-                    staende.append(karten_mod.Kartenstand(jahr2, drehbuch_mod.hervorhebungen(
-                        o.get("hervorheben_danach", o.get("hervorheben", "")), jahr2)))
+                    st2 = karten_mod.stand_lesen(o["wechsel"])
+                    staende.append(karten_mod.Kartenstand(
+                        st2, drehbuch_mod.hervorhebungen(o.get("hervorheben_danach", o.get("hervorheben", "")), st2),
+                        drehbuch_mod.nachbarn(o.get("nachbarn", ""), st2, streng=False)))
                 karte = karten_mod.Kartenszene(
                     staende, zeit_im_video(o.get("wechsel_bei")), o.get("ausschnitt", "Europa"),
                     o.get("fahrt"), zeit_im_video(o.get("fahrt_von")), zeit_im_video(o.get("fahrt_bis")),

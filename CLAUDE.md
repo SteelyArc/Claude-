@@ -69,8 +69,14 @@ Vorlage dient `ausgabe/zeitplan_verwendet.txt`. Danach neu rendern.
 - Die Sprecherstimme nie beschleunigen, verlangsamen, in der Tonhöhe ändern oder
   komprimieren – nur eine gleichbleibende Lautstärkeanpassung.
 - Keine hektischen Schnitte oder Effekte; ruhiger TV-Dokumentationsstil.
-- **Karten:** Grenzen nur aus den Daten (`daten/karten`, historical-basemaps,
-  Stichjahre). Niemals Grenzverläufe, Zwischenstände oder Gebiete selbst zeichnen
+- **Karten sind vollständig ENGLISCH beschriftet** (Titel, Länder, Orte, Legende),
+  heller Atlas-Stil des 19. Jahrhunderts (Vorbild: klassischer Europa-Atlas und
+  moderne „Partitions of Poland“-Karte). Fotos/Dokumente/Ton bleiben davon unberührt.
+- **Kartendaten:** ab 1886 ausschließlich CShapes 2.0 (tagesgenau); vor 1886 nur
+  historical-basemaps mit Warnung (nachweislich fehlerhaft, z. B. Teilungen Polens)
+  → die Person vorher fragen, besser Originalkarte. 1772/1793 gibt es in keinem
+  verfügbaren Datensatz.
+- **Karten:** Grenzen nur aus den Daten (`daten/karten`). Niemals Grenzverläufe, Zwischenstände oder Gebiete selbst zeichnen
   oder „ungefähr passend“ ein anderes Jahr ausgeben, ohne dass die Karte den
   tatsächlichen Stand nennt (macht das Programm automatisch). Passt kein Stichjahr
   zum erzählten Ereignis, der Person sagen und eine eingescannte Originalkarte
