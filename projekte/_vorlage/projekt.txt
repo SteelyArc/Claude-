@@ -1,0 +1,27 @@
+# ZEITSPUREN – Projekteinstellungen
+# Alles hinter einem # ist nur eine Erklärung und wird ignoriert.
+# Diese Datei ist optional. Fehlt sie, gelten die hier gezeigten Standardwerte.
+
+titel: Mein Thema
+
+# Bildlook:  original | warm | schwarzweiss
+farbe: original
+
+# Feines Filmkorn für den Kinolook:  leicht | aus
+filmkorn: leicht
+
+# Dezente Abdunklung der Bildränder:  ja | nein
+vignette: ja
+
+# Hintergrund hinter Querformat-Bildern und Karten:  unschaerfe | schwarz
+hintergrund: unschaerfe
+
+# Kamerabewegung:  ruhig | normal | lebendig
+bewegung: normal
+
+# Dauer einer Überblendung in Sekunden (0.4 bis 3.0)
+ueberblendung: 1.2
+
+# Stille vor dem ersten Wort und Ausklang am Ende (Sekunden)
+vorlauf: 0.6
+nachlauf: 2.0

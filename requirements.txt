@@ -1,0 +1,2 @@
+pillow>=10.0
+# Außerdem erforderlich (kein Python-Paket): ffmpeg und ffprobe ab Version 6

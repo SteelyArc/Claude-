@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+# Fertige Videos werden im Chat übergeben, nicht im Repository gespeichert
+projekte/*/ausgabe/*.mp4
+projekte/*/ausgabe/ffmpeg_protokoll.txt
