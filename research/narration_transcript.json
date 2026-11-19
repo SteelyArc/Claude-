@@ -1,0 +1,4522 @@
+[
+ {
+  "start": 0.0,
+  "end": 5.58,
+  "text": "West Prussia was once a province between the Baltic Sea and the Vistula River. For centuries,",
+  "words": [
+   {
+    "w": "West",
+    "s": 0.0,
+    "e": 0.44
+   },
+   {
+    "w": "Prussia",
+    "s": 0.44,
+    "e": 0.88
+   },
+   {
+    "w": "was",
+    "s": 0.88,
+    "e": 1.12
+   },
+   {
+    "w": "once",
+    "s": 1.12,
+    "e": 1.38
+   },
+   {
+    "w": "a",
+    "s": 1.38,
+    "e": 1.64
+   },
+   {
+    "w": "province",
+    "s": 1.64,
+    "e": 1.88
+   },
+   {
+    "w": "between",
+    "s": 1.88,
+    "e": 2.28
+   },
+   {
+    "w": "the",
+    "s": 2.28,
+    "e": 2.48
+   },
+   {
+    "w": "Baltic",
+    "s": 2.48,
+    "e": 2.78
+   },
+   {
+    "w": "Sea",
+    "s": 2.78,
+    "e": 3.12
+   },
+   {
+    "w": "and",
+    "s": 3.12,
+    "e": 3.42
+   },
+   {
+    "w": "the",
+    "s": 3.42,
+    "e": 3.64
+   },
+   {
+    "w": "Vistula",
+    "s": 3.64,
+    "e": 3.94
+   },
+   {
+    "w": "River.",
+    "s": 3.94,
+    "e": 4.22
+   },
+   {
+    "w": "For",
+    "s": 4.92,
+    "e": 5.06
+   },
+   {
+    "w": "centuries,",
+    "s": 5.06,
+    "e": 5.58
+   }
+  ]
+ },
+ {
+  "start": 5.94,
+  "end": 11.9,
+  "text": "it was a region of strategic importance, economic opportunity, and cultural diversity. Its history",
+  "words": [
+   {
+    "w": "it",
+    "s": 5.94,
+    "e": 6.0
+   },
+   {
+    "w": "was",
+    "s": 6.0,
+    "e": 6.12
+   },
+   {
+    "w": "a",
+    "s": 6.12,
+    "e": 6.3
+   },
+   {
+    "w": "region",
+    "s": 6.3,
+    "e": 6.54
+   },
+   {
+    "w": "of",
+    "s": 6.54,
+    "e": 6.78
+   },
+   {
+    "w": "strategic",
+    "s": 6.78,
+    "e": 7.28
+   },
+   {
+    "w": "importance,",
+    "s": 7.28,
+    "e": 7.86
+   },
+   {
+    "w": "economic",
+    "s": 8.26,
+    "e": 8.68
+   },
+   {
+    "w": "opportunity,",
+    "s": 8.68,
+    "e": 9.24
+   },
+   {
+    "w": "and",
+    "s": 9.58,
+    "e": 9.8
+   },
+   {
+    "w": "cultural",
+    "s": 9.8,
+    "e": 10.22
+   },
+   {
+    "w": "diversity.",
+    "s": 10.22,
+    "e": 10.82
+   },
+   {
+    "w": "Its",
+    "s": 11.42,
+    "e": 11.54
+   },
+   {
+    "w": "history",
+    "s": 11.54,
+    "e": 11.9
+   }
+  ]
+ },
+ {
+  "start": 11.9,
+  "end": 16.42,
+  "text": "was shaped by competing powers, changing borders, and the lives of people who often",
+  "words": [
+   {
+    "w": "was",
+    "s": 11.9,
+    "e": 12.14
+   },
+   {
+    "w": "shaped",
+    "s": 12.14,
+    "e": 12.42
+   },
+   {
+    "w": "by",
+    "s": 12.42,
+    "e": 12.62
+   },
+   {
+    "w": "competing",
+    "s": 12.62,
+    "e": 13.06
+   },
+   {
+    "w": "powers,",
+    "s": 13.06,
+    "e": 13.6
+   },
+   {
+    "w": "changing",
+    "s": 13.96,
+    "e": 14.28
+   },
+   {
+    "w": "borders,",
+    "s": 14.28,
+    "e": 14.64
+   },
+   {
+    "w": "and",
+    "s": 14.9,
+    "e": 15.02
+   },
+   {
+    "w": "the",
+    "s": 15.02,
+    "e": 15.2
+   },
+   {
+    "w": "lives",
+    "s": 15.2,
+    "e": 15.4
+   },
+   {
+    "w": "of",
+    "s": 15.4,
+    "e": 15.6
+   },
+   {
+    "w": "people",
+    "s": 15.6,
+    "e": 15.88
+   },
+   {
+    "w": "who",
+    "s": 15.88,
+    "e": 16.06
+   },
+   {
+    "w": "often",
+    "s": 16.06,
+    "e": 16.42
+   }
+  ]
+ },
+ {
+  "start": 16.42,
+  "end": 21.12,
+  "text": "had little influence over the decisions made above them. To understand what happened here,",
+  "words": [
+   {
+    "w": "had",
+    "s": 16.42,
+    "e": 16.64
+   },
+   {
+    "w": "little",
+    "s": 16.64,
+    "e": 16.98
+   },
+   {
+    "w": "influence",
+    "s": 16.98,
+    "e": 17.52
+   },
+   {
+    "w": "over",
+    "s": 17.52,
+    "e": 17.74
+   },
+   {
+    "w": "the",
+    "s": 17.74,
+    "e": 17.94
+   },
+   {
+    "w": "decisions",
+    "s": 17.94,
+    "e": 18.32
+   },
+   {
+    "w": "made",
+    "s": 18.32,
+    "e": 18.56
+   },
+   {
+    "w": "above",
+    "s": 18.56,
+    "e": 18.8
+   },
+   {
+    "w": "them.",
+    "s": 18.8,
+    "e": 19.14
+   },
+   {
+    "w": "To",
+    "s": 19.72,
+    "e": 19.84
+   },
+   {
+    "w": "understand",
+    "s": 19.84,
+    "e": 20.3
+   },
+   {
+    "w": "what",
+    "s": 20.3,
+    "e": 20.5
+   },
+   {
+    "w": "happened",
+    "s": 20.5,
+    "e": 20.82
+   },
+   {
+    "w": "here,",
+    "s": 20.82,
+    "e": 21.12
+   }
+  ]
+ },
+ {
+  "start": 21.46,
+  "end": 26.1,
+  "text": "we have to go back several centuries. During the Middle Ages, the Teutonic Order",
+  "words": [
+   {
+    "w": "we",
+    "s": 21.46,
+    "e": 21.6
+   },
+   {
+    "w": "have",
+    "s": 21.6,
+    "e": 21.76
+   },
+   {
+    "w": "to",
+    "s": 21.76,
+    "e": 21.92
+   },
+   {
+    "w": "go",
+    "s": 21.92,
+    "e": 22.04
+   },
+   {
+    "w": "back",
+    "s": 22.04,
+    "e": 22.26
+   },
+   {
+    "w": "several",
+    "s": 22.26,
+    "e": 22.76
+   },
+   {
+    "w": "centuries.",
+    "s": 22.76,
+    "e": 23.3
+   },
+   {
+    "w": "During",
+    "s": 24.0,
+    "e": 24.24
+   },
+   {
+    "w": "the",
+    "s": 24.24,
+    "e": 24.44
+   },
+   {
+    "w": "Middle",
+    "s": 24.44,
+    "e": 24.6
+   },
+   {
+    "w": "Ages,",
+    "s": 24.6,
+    "e": 25.0
+   },
+   {
+    "w": "the",
+    "s": 25.3,
+    "e": 25.4
+   },
+   {
+    "w": "Teutonic",
+    "s": 25.4,
+    "e": 25.84
+   },
+   {
+    "w": "Order",
+    "s": 25.84,
+    "e": 26.1
+   }
+  ]
+ },
+ {
+  "start": 26.1,
+  "end": 32.62,
+  "text": "expanded into the region. Over time, it established a powerful state, building castles, founding towns,",
+  "words": [
+   {
+    "w": "expanded",
+    "s": 26.1,
+    "e": 26.68
+   },
+   {
+    "w": "into",
+    "s": 26.68,
+    "e": 27.0
+   },
+   {
+    "w": "the",
+    "s": 27.0,
+    "e": 27.2
+   },
+   {
+    "w": "region.",
+    "s": 27.2,
+    "e": 27.5
+   },
+   {
+    "w": "Over",
+    "s": 28.12,
+    "e": 28.28
+   },
+   {
+    "w": "time,",
+    "s": 28.28,
+    "e": 28.66
+   },
+   {
+    "w": "it",
+    "s": 28.88,
+    "e": 28.96
+   },
+   {
+    "w": "established",
+    "s": 28.96,
+    "e": 29.4
+   },
+   {
+    "w": "a",
+    "s": 29.4,
+    "e": 29.76
+   },
+   {
+    "w": "powerful",
+    "s": 29.76,
+    "e": 30.12
+   },
+   {
+    "w": "state,",
+    "s": 30.12,
+    "e": 30.56
+   },
+   {
+    "w": "building",
+    "s": 30.82,
+    "e": 31.06
+   },
+   {
+    "w": "castles,",
+    "s": 31.06,
+    "e": 31.58
+   },
+   {
+    "w": "founding",
+    "s": 31.92,
+    "e": 32.16
+   },
+   {
+    "w": "towns,",
+    "s": 32.16,
+    "e": 32.62
+   }
+  ]
+ },
+ {
+  "start": 32.94,
+  "end": 37.82,
+  "text": "and controlling important trade routes along the Baltic coast. But its power was challenged by",
+  "words": [
+   {
+    "w": "and",
+    "s": 32.94,
+    "e": 33.08
+   },
+   {
+    "w": "controlling",
+    "s": 33.08,
+    "e": 33.48
+   },
+   {
+    "w": "important",
+    "s": 33.48,
+    "e": 34.06
+   },
+   {
+    "w": "trade",
+    "s": 34.06,
+    "e": 34.34
+   },
+   {
+    "w": "routes",
+    "s": 34.34,
+    "e": 34.6
+   },
+   {
+    "w": "along",
+    "s": 34.6,
+    "e": 34.84
+   },
+   {
+    "w": "the",
+    "s": 34.84,
+    "e": 35.02
+   },
+   {
+    "w": "Baltic",
+    "s": 35.02,
+    "e": 35.32
+   },
+   {
+    "w": "coast.",
+    "s": 35.32,
+    "e": 35.76
+   },
+   {
+    "w": "But",
+    "s": 35.98,
+    "e": 36.36
+   },
+   {
+    "w": "its",
+    "s": 36.36,
+    "e": 36.5
+   },
+   {
+    "w": "power",
+    "s": 36.5,
+    "e": 36.82
+   },
+   {
+    "w": "was",
+    "s": 36.82,
+    "e": 37.08
+   },
+   {
+    "w": "challenged",
+    "s": 37.08,
+    "e": 37.6
+   },
+   {
+    "w": "by",
+    "s": 37.6,
+    "e": 37.82
+   }
+  ]
+ },
+ {
+  "start": 37.82,
+  "end": 43.02,
+  "text": "the Kingdom of Poland and Lithuania. After decades of conflict, the Second Peace of Thorn",
+  "words": [
+   {
+    "w": "the",
+    "s": 37.82,
+    "e": 38.02
+   },
+   {
+    "w": "Kingdom",
+    "s": 38.02,
+    "e": 38.16
+   },
+   {
+    "w": "of",
+    "s": 38.16,
+    "e": 38.42
+   },
+   {
+    "w": "Poland",
+    "s": 38.42,
+    "e": 38.86
+   },
+   {
+    "w": "and",
+    "s": 38.86,
+    "e": 39.08
+   },
+   {
+    "w": "Lithuania.",
+    "s": 39.08,
+    "e": 39.62
+   },
+   {
+    "w": "After",
+    "s": 40.24,
+    "e": 40.48
+   },
+   {
+    "w": "decades",
+    "s": 40.48,
+    "e": 40.94
+   },
+   {
+    "w": "of",
+    "s": 40.94,
+    "e": 41.22
+   },
+   {
+    "w": "conflict,",
+    "s": 41.22,
+    "e": 41.58
+   },
+   {
+    "w": "the",
+    "s": 41.9,
+    "e": 42.04
+   },
+   {
+    "w": "Second",
+    "s": 42.04,
+    "e": 42.3
+   },
+   {
+    "w": "Peace",
+    "s": 42.3,
+    "e": 42.52
+   },
+   {
+    "w": "of",
+    "s": 42.52,
+    "e": 42.74
+   },
+   {
+    "w": "Thorn",
+    "s": 42.74,
+    "e": 43.02
+   }
+  ]
+ },
+ {
+  "start": 43.02,
+  "end": 48.66,
+  "text": "in 1466 divided the Order's territory. The western part came under the Polish Crown and",
+  "words": [
+   {
+    "w": "in",
+    "s": 43.02,
+    "e": 43.2
+   },
+   {
+    "w": "1466",
+    "s": 43.2,
+    "e": 44.2
+   },
+   {
+    "w": "divided",
+    "s": 44.2,
+    "e": 44.84
+   },
+   {
+    "w": "the",
+    "s": 44.84,
+    "e": 45.1
+   },
+   {
+    "w": "Order's",
+    "s": 45.1,
+    "e": 45.5
+   },
+   {
+    "w": "territory.",
+    "s": 45.5,
+    "e": 45.88
+   },
+   {
+    "w": "The",
+    "s": 46.36,
+    "e": 46.6
+   },
+   {
+    "w": "western",
+    "s": 46.6,
+    "e": 46.82
+   },
+   {
+    "w": "part",
+    "s": 46.82,
+    "e": 47.16
+   },
+   {
+    "w": "came",
+    "s": 47.16,
+    "e": 47.36
+   },
+   {
+    "w": "under",
+    "s": 47.36,
+    "e": 47.58
+   },
+   {
+    "w": "the",
+    "s": 47.58,
+    "e": 47.78
+   },
+   {
+    "w": "Polish",
+    "s": 47.78,
+    "e": 48.1
+   },
+   {
+    "w": "Crown",
+    "s": 48.1,
+    "e": 48.38
+   },
+   {
+    "w": "and",
+    "s": 48.38,
+    "e": 48.66
+   }
+  ]
+ },
+ {
+  "start": 48.66,
+  "end": 53.56,
+  "text": "became known as Royal Prussia. The eastern territories remained under the Teutonic Order.",
+  "words": [
+   {
+    "w": "became",
+    "s": 48.66,
+    "e": 48.94
+   },
+   {
+    "w": "known",
+    "s": 48.94,
+    "e": 49.28
+   },
+   {
+    "w": "as",
+    "s": 49.28,
+    "e": 49.62
+   },
+   {
+    "w": "Royal",
+    "s": 49.62,
+    "e": 49.9
+   },
+   {
+    "w": "Prussia.",
+    "s": 49.9,
+    "e": 50.36
+   },
+   {
+    "w": "The",
+    "s": 50.74,
+    "e": 50.98
+   },
+   {
+    "w": "eastern",
+    "s": 50.98,
+    "e": 51.28
+   },
+   {
+    "w": "territories",
+    "s": 51.28,
+    "e": 51.86
+   },
+   {
+    "w": "remained",
+    "s": 51.86,
+    "e": 52.26
+   },
+   {
+    "w": "under",
+    "s": 52.26,
+    "e": 52.66
+   },
+   {
+    "w": "the",
+    "s": 52.66,
+    "e": 52.82
+   },
+   {
+    "w": "Teutonic",
+    "s": 52.82,
+    "e": 53.22
+   },
+   {
+    "w": "Order.",
+    "s": 53.22,
+    "e": 53.56
+   }
+  ]
+ },
+ {
+  "start": 53.56,
+  "end": 56.8,
+  "text": "This division would shape the region for generations.",
+  "words": [
+   {
+    "w": "This",
+    "s": 53.56,
+    "e": 54.26
+   },
+   {
+    "w": "division",
+    "s": 54.26,
+    "e": 54.72
+   },
+   {
+    "w": "would",
+    "s": 54.72,
+    "e": 54.96
+   },
+   {
+    "w": "shape",
+    "s": 54.96,
+    "e": 55.3
+   },
+   {
+    "w": "the",
+    "s": 55.3,
+    "e": 55.52
+   },
+   {
+    "w": "region",
+    "s": 55.52,
+    "e": 55.8
+   },
+   {
+    "w": "for",
+    "s": 55.8,
+    "e": 56.12
+   },
+   {
+    "w": "generations.",
+    "s": 56.12,
+    "e": 56.8
+   }
+  ]
+ },
+ {
+  "start": 57.52,
+  "end": 63.7,
+  "text": "In the 18th century, the balance of power changed once again. In 1772, Prussia, Russia,",
+  "words": [
+   {
+    "w": "In",
+    "s": 57.52,
+    "e": 57.6
+   },
+   {
+    "w": "the",
+    "s": 57.6,
+    "e": 57.76
+   },
+   {
+    "w": "18th",
+    "s": 57.76,
+    "e": 58.22
+   },
+   {
+    "w": "century,",
+    "s": 58.22,
+    "e": 58.54
+   },
+   {
+    "w": "the",
+    "s": 58.82,
+    "e": 58.94
+   },
+   {
+    "w": "balance",
+    "s": 58.94,
+    "e": 59.18
+   },
+   {
+    "w": "of",
+    "s": 59.18,
+    "e": 59.42
+   },
+   {
+    "w": "power",
+    "s": 59.42,
+    "e": 59.62
+   },
+   {
+    "w": "changed",
+    "s": 59.62,
+    "e": 60.06
+   },
+   {
+    "w": "once",
+    "s": 60.06,
+    "e": 60.38
+   },
+   {
+    "w": "again.",
+    "s": 60.38,
+    "e": 60.74
+   },
+   {
+    "w": "In",
+    "s": 61.28,
+    "e": 61.42
+   },
+   {
+    "w": "1772,",
+    "s": 61.42,
+    "e": 62.4
+   },
+   {
+    "w": "Prussia,",
+    "s": 62.78,
+    "e": 63.18
+   },
+   {
+    "w": "Russia,",
+    "s": 63.36,
+    "e": 63.7
+   }
+  ]
+ },
+ {
+  "start": 63.86,
+  "end": 68.88,
+  "text": "and Austria carried out the First Partition of Poland. Large areas of what would later become",
+  "words": [
+   {
+    "w": "and",
+    "s": 63.86,
+    "e": 64.02
+   },
+   {
+    "w": "Austria",
+    "s": 64.02,
+    "e": 64.46
+   },
+   {
+    "w": "carried",
+    "s": 64.46,
+    "e": 64.88
+   },
+   {
+    "w": "out",
+    "s": 64.88,
+    "e": 65.1
+   },
+   {
+    "w": "the",
+    "s": 65.1,
+    "e": 65.24
+   },
+   {
+    "w": "First",
+    "s": 65.24,
+    "e": 65.6
+   },
+   {
+    "w": "Partition",
+    "s": 65.6,
+    "e": 66.06
+   },
+   {
+    "w": "of",
+    "s": 66.06,
+    "e": 66.22
+   },
+   {
+    "w": "Poland.",
+    "s": 66.22,
+    "e": 66.66
+   },
+   {
+    "w": "Large",
+    "s": 67.2,
+    "e": 67.42
+   },
+   {
+    "w": "areas",
+    "s": 67.42,
+    "e": 67.8
+   },
+   {
+    "w": "of",
+    "s": 67.8,
+    "e": 68.0
+   },
+   {
+    "w": "what",
+    "s": 68.0,
+    "e": 68.12
+   },
+   {
+    "w": "would",
+    "s": 68.12,
+    "e": 68.28
+   },
+   {
+    "w": "later",
+    "s": 68.28,
+    "e": 68.52
+   },
+   {
+    "w": "become",
+    "s": 68.52,
+    "e": 68.88
+   }
+  ]
+ },
+ {
+  "start": 68.88,
+  "end": 73.74,
+  "text": "West Prussia were taken by the Kingdom of Prussia. Danzig and Thorn initially remained",
+  "words": [
+   {
+    "w": "West",
+    "s": 68.88,
+    "e": 69.2
+   },
+   {
+    "w": "Prussia",
+    "s": 69.2,
+    "e": 69.6
+   },
+   {
+    "w": "were",
+    "s": 69.6,
+    "e": 69.82
+   },
+   {
+    "w": "taken",
+    "s": 69.82,
+    "e": 70.1
+   },
+   {
+    "w": "by",
+    "s": 70.1,
+    "e": 70.32
+   },
+   {
+    "w": "the",
+    "s": 70.32,
+    "e": 70.56
+   },
+   {
+    "w": "Kingdom",
+    "s": 70.56,
+    "e": 70.76
+   },
+   {
+    "w": "of",
+    "s": 70.76,
+    "e": 71.0
+   },
+   {
+    "w": "Prussia.",
+    "s": 71.0,
+    "e": 71.44
+   },
+   {
+    "w": "Danzig",
+    "s": 71.92,
+    "e": 72.24
+   },
+   {
+    "w": "and",
+    "s": 72.24,
+    "e": 72.46
+   },
+   {
+    "w": "Thorn",
+    "s": 72.46,
+    "e": 72.8
+   },
+   {
+    "w": "initially",
+    "s": 72.8,
+    "e": 73.34
+   },
+   {
+    "w": "remained",
+    "s": 73.34,
+    "e": 73.74
+   }
+  ]
+ },
+ {
+  "start": 73.74,
+  "end": 79.56,
+  "text": "outside Prussian control. That changed in 1793, when both cities were incorporated during the",
+  "words": [
+   {
+    "w": "outside",
+    "s": 73.74,
+    "e": 74.2
+   },
+   {
+    "w": "Prussian",
+    "s": 74.2,
+    "e": 74.64
+   },
+   {
+    "w": "control.",
+    "s": 74.64,
+    "e": 75.08
+   },
+   {
+    "w": "That",
+    "s": 75.6,
+    "e": 75.84
+   },
+   {
+    "w": "changed",
+    "s": 75.84,
+    "e": 76.2
+   },
+   {
+    "w": "in",
+    "s": 76.2,
+    "e": 76.44
+   },
+   {
+    "w": "1793,",
+    "s": 76.44,
+    "e": 77.4
+   },
+   {
+    "w": "when",
+    "s": 77.6,
+    "e": 77.82
+   },
+   {
+    "w": "both",
+    "s": 77.82,
+    "e": 78.12
+   },
+   {
+    "w": "cities",
+    "s": 78.12,
+    "e": 78.44
+   },
+   {
+    "w": "were",
+    "s": 78.44,
+    "e": 78.64
+   },
+   {
+    "w": "incorporated",
+    "s": 78.64,
+    "e": 79.16
+   },
+   {
+    "w": "during",
+    "s": 79.16,
+    "e": 79.52
+   },
+   {
+    "w": "the",
+    "s": 79.52,
+    "e": 79.84
+   }
+  ]
+ },
+ {
+  "start": 79.84,
+  "end": 84.34,
+  "text": "Second Partition of Poland. West Prussia was now firmly part of the Prussian state.",
+  "words": [
+   {
+    "w": "Second",
+    "s": 79.84,
+    "e": 80.02
+   },
+   {
+    "w": "Partition",
+    "s": 80.02,
+    "e": 80.48
+   },
+   {
+    "w": "of",
+    "s": 80.48,
+    "e": 80.6
+   },
+   {
+    "w": "Poland.",
+    "s": 80.6,
+    "e": 81.02
+   },
+   {
+    "w": "West",
+    "s": 81.56,
+    "e": 81.74
+   },
+   {
+    "w": "Prussia",
+    "s": 81.74,
+    "e": 82.12
+   },
+   {
+    "w": "was",
+    "s": 82.12,
+    "e": 82.34
+   },
+   {
+    "w": "now",
+    "s": 82.34,
+    "e": 82.56
+   },
+   {
+    "w": "firmly",
+    "s": 82.56,
+    "e": 83.02
+   },
+   {
+    "w": "part",
+    "s": 83.02,
+    "e": 83.38
+   },
+   {
+    "w": "of",
+    "s": 83.38,
+    "e": 83.54
+   },
+   {
+    "w": "the",
+    "s": 83.54,
+    "e": 83.68
+   },
+   {
+    "w": "Prussian",
+    "s": 83.68,
+    "e": 83.98
+   },
+   {
+    "w": "state.",
+    "s": 83.98,
+    "e": 84.34
+   }
+  ]
+ },
+ {
+  "start": 84.84,
+  "end": 89.06,
+  "text": "The region developed economically and administratively. Agriculture, trade,",
+  "words": [
+   {
+    "w": "The",
+    "s": 84.84,
+    "e": 84.96
+   },
+   {
+    "w": "region",
+    "s": 84.96,
+    "e": 85.18
+   },
+   {
+    "w": "developed",
+    "s": 85.18,
+    "e": 85.62
+   },
+   {
+    "w": "economically",
+    "s": 85.62,
+    "e": 86.26
+   },
+   {
+    "w": "and",
+    "s": 86.26,
+    "e": 86.66
+   },
+   {
+    "w": "administratively.",
+    "s": 86.66,
+    "e": 87.46
+   },
+   {
+    "w": "Agriculture,",
+    "s": 87.98,
+    "e": 88.34
+   },
+   {
+    "w": "trade,",
+    "s": 88.86,
+    "e": 89.06
+   }
+  ]
+ },
+ {
+  "start": 89.22,
+  "end": 94.3,
+  "text": "and industry became important parts of everyday life. Danzig remained a major commercial center,",
+  "words": [
+   {
+    "w": "and",
+    "s": 89.22,
+    "e": 89.36
+   },
+   {
+    "w": "industry",
+    "s": 89.36,
+    "e": 89.76
+   },
+   {
+    "w": "became",
+    "s": 89.76,
+    "e": 90.08
+   },
+   {
+    "w": "important",
+    "s": 90.08,
+    "e": 90.56
+   },
+   {
+    "w": "parts",
+    "s": 90.56,
+    "e": 90.96
+   },
+   {
+    "w": "of",
+    "s": 90.96,
+    "e": 91.16
+   },
+   {
+    "w": "everyday",
+    "s": 91.16,
+    "e": 91.46
+   },
+   {
+    "w": "life.",
+    "s": 91.46,
+    "e": 91.86
+   },
+   {
+    "w": "Danzig",
+    "s": 92.4,
+    "e": 92.7
+   },
+   {
+    "w": "remained",
+    "s": 92.7,
+    "e": 93.0
+   },
+   {
+    "w": "a",
+    "s": 93.0,
+    "e": 93.22
+   },
+   {
+    "w": "major",
+    "s": 93.22,
+    "e": 93.5
+   },
+   {
+    "w": "commercial",
+    "s": 93.5,
+    "e": 93.96
+   },
+   {
+    "w": "center,",
+    "s": 93.96,
+    "e": 94.3
+   }
+  ]
+ },
+ {
+  "start": 94.44,
+  "end": 97.56,
+  "text": "while the Vistula connected inland territories with the Baltic Sea.",
+  "words": [
+   {
+    "w": "while",
+    "s": 94.44,
+    "e": 94.66
+   },
+   {
+    "w": "the",
+    "s": 94.66,
+    "e": 94.84
+   },
+   {
+    "w": "Vistula",
+    "s": 94.84,
+    "e": 95.18
+   },
+   {
+    "w": "connected",
+    "s": 95.18,
+    "e": 95.6
+   },
+   {
+    "w": "inland",
+    "s": 95.6,
+    "e": 96.0
+   },
+   {
+    "w": "territories",
+    "s": 96.0,
+    "e": 96.54
+   },
+   {
+    "w": "with",
+    "s": 96.54,
+    "e": 96.82
+   },
+   {
+    "w": "the",
+    "s": 96.82,
+    "e": 96.98
+   },
+   {
+    "w": "Baltic",
+    "s": 96.98,
+    "e": 97.28
+   },
+   {
+    "w": "Sea.",
+    "s": 97.28,
+    "e": 97.56
+   }
+  ]
+ },
+ {
+  "start": 98.02,
+  "end": 102.58,
+  "text": "Yet beneath this development, national, cultural, and political differences remained.",
+  "words": [
+   {
+    "w": "Yet",
+    "s": 98.02,
+    "e": 98.18
+   },
+   {
+    "w": "beneath",
+    "s": 98.18,
+    "e": 98.52
+   },
+   {
+    "w": "this",
+    "s": 98.52,
+    "e": 98.82
+   },
+   {
+    "w": "development,",
+    "s": 98.82,
+    "e": 99.32
+   },
+   {
+    "w": "national,",
+    "s": 99.76,
+    "e": 100.16
+   },
+   {
+    "w": "cultural,",
+    "s": 100.42,
+    "e": 100.76
+   },
+   {
+    "w": "and",
+    "s": 100.98,
+    "e": 101.08
+   },
+   {
+    "w": "political",
+    "s": 101.08,
+    "e": 101.54
+   },
+   {
+    "w": "differences",
+    "s": 101.54,
+    "e": 102.06
+   },
+   {
+    "w": "remained.",
+    "s": 102.06,
+    "e": 102.58
+   }
+  ]
+ },
+ {
+  "start": 103.14,
+  "end": 108.44,
+  "text": "Then came the First World War. In 1918, the German Empire collapsed.",
+  "words": [
+   {
+    "w": "Then",
+    "s": 103.14,
+    "e": 103.48
+   },
+   {
+    "w": "came",
+    "s": 103.48,
+    "e": 103.92
+   },
+   {
+    "w": "the",
+    "s": 103.92,
+    "e": 104.14
+   },
+   {
+    "w": "First",
+    "s": 104.14,
+    "e": 104.42
+   },
+   {
+    "w": "World",
+    "s": 104.42,
+    "e": 104.74
+   },
+   {
+    "w": "War.",
+    "s": 104.74,
+    "e": 105.08
+   },
+   {
+    "w": "In",
+    "s": 105.68,
+    "e": 105.78
+   },
+   {
+    "w": "1918,",
+    "s": 105.78,
+    "e": 106.48
+   },
+   {
+    "w": "the",
+    "s": 106.8,
+    "e": 106.96
+   },
+   {
+    "w": "German",
+    "s": 106.96,
+    "e": 107.3
+   },
+   {
+    "w": "Empire",
+    "s": 107.3,
+    "e": 107.7
+   },
+   {
+    "w": "collapsed.",
+    "s": 107.7,
+    "e": 108.44
+   }
+  ]
+ },
+ {
+  "start": 108.96,
+  "end": 113.32,
+  "text": "Poland regained its independence after more than a century of partition and foreign rule.",
+  "words": [
+   {
+    "w": "Poland",
+    "s": 108.96,
+    "e": 109.32
+   },
+   {
+    "w": "regained",
+    "s": 109.32,
+    "e": 109.74
+   },
+   {
+    "w": "its",
+    "s": 109.74,
+    "e": 109.96
+   },
+   {
+    "w": "independence",
+    "s": 109.96,
+    "e": 110.4
+   },
+   {
+    "w": "after",
+    "s": 110.4,
+    "e": 110.78
+   },
+   {
+    "w": "more",
+    "s": 110.78,
+    "e": 111.0
+   },
+   {
+    "w": "than",
+    "s": 111.0,
+    "e": 111.16
+   },
+   {
+    "w": "a",
+    "s": 111.16,
+    "e": 111.44
+   },
+   {
+    "w": "century",
+    "s": 111.44,
+    "e": 111.72
+   },
+   {
+    "w": "of",
+    "s": 111.72,
+    "e": 111.98
+   },
+   {
+    "w": "partition",
+    "s": 111.98,
+    "e": 112.4
+   },
+   {
+    "w": "and",
+    "s": 112.4,
+    "e": 112.68
+   },
+   {
+    "w": "foreign",
+    "s": 112.68,
+    "e": 113.0
+   },
+   {
+    "w": "rule.",
+    "s": 113.0,
+    "e": 113.32
+   }
+  ]
+ },
+ {
+  "start": 113.76,
+  "end": 117.74,
+  "text": "The question of borders became one of the most difficult issues in the post-war settlement.",
+  "words": [
+   {
+    "w": "The",
+    "s": 113.76,
+    "e": 113.88
+   },
+   {
+    "w": "question",
+    "s": 113.88,
+    "e": 114.22
+   },
+   {
+    "w": "of",
+    "s": 114.22,
+    "e": 114.48
+   },
+   {
+    "w": "borders",
+    "s": 114.48,
+    "e": 114.76
+   },
+   {
+    "w": "became",
+    "s": 114.76,
+    "e": 115.1
+   },
+   {
+    "w": "one",
+    "s": 115.1,
+    "e": 115.3
+   },
+   {
+    "w": "of",
+    "s": 115.3,
+    "e": 115.4
+   },
+   {
+    "w": "the",
+    "s": 115.4,
+    "e": 115.52
+   },
+   {
+    "w": "most",
+    "s": 115.52,
+    "e": 115.76
+   },
+   {
+    "w": "difficult",
+    "s": 115.76,
+    "e": 116.2
+   },
+   {
+    "w": "issues",
+    "s": 116.2,
+    "e": 116.64
+   },
+   {
+    "w": "in",
+    "s": 116.64,
+    "e": 116.8
+   },
+   {
+    "w": "the",
+    "s": 116.8,
+    "e": 116.96
+   },
+   {
+    "w": "post",
+    "s": 116.96,
+    "e": 117.16
+   },
+   {
+    "w": "-war",
+    "s": 117.16,
+    "e": 117.3
+   },
+   {
+    "w": "settlement.",
+    "s": 117.3,
+    "e": 117.74
+   }
+  ]
+ },
+ {
+  "start": 118.26,
+  "end": 123.42,
+  "text": "Under the Treaty of Versailles in 1919, large parts of West Prussia were transferred to Poland.",
+  "words": [
+   {
+    "w": "Under",
+    "s": 118.26,
+    "e": 118.42
+   },
+   {
+    "w": "the",
+    "s": 118.42,
+    "e": 118.66
+   },
+   {
+    "w": "Treaty",
+    "s": 118.66,
+    "e": 118.82
+   },
+   {
+    "w": "of",
+    "s": 118.82,
+    "e": 119.0
+   },
+   {
+    "w": "Versailles",
+    "s": 119.0,
+    "e": 119.42
+   },
+   {
+    "w": "in",
+    "s": 119.42,
+    "e": 119.64
+   },
+   {
+    "w": "1919,",
+    "s": 119.64,
+    "e": 120.32
+   },
+   {
+    "w": "large",
+    "s": 120.76,
+    "e": 121.1
+   },
+   {
+    "w": "parts",
+    "s": 121.1,
+    "e": 121.38
+   },
+   {
+    "w": "of",
+    "s": 121.38,
+    "e": 121.6
+   },
+   {
+    "w": "West",
+    "s": 121.6,
+    "e": 121.8
+   },
+   {
+    "w": "Prussia",
+    "s": 121.8,
+    "e": 122.16
+   },
+   {
+    "w": "were",
+    "s": 122.16,
+    "e": 122.36
+   },
+   {
+    "w": "transferred",
+    "s": 122.36,
+    "e": 122.78
+   },
+   {
+    "w": "to",
+    "s": 122.78,
+    "e": 122.98
+   },
+   {
+    "w": "Poland.",
+    "s": 122.98,
+    "e": 123.42
+   }
+  ]
+ },
+ {
+  "start": 123.84,
+  "end": 128.74,
+  "text": "The newly established Polish state gained access to the Baltic Sea through the territory known",
+  "words": [
+   {
+    "w": "The",
+    "s": 123.84,
+    "e": 124.0
+   },
+   {
+    "w": "newly",
+    "s": 124.0,
+    "e": 124.28
+   },
+   {
+    "w": "established",
+    "s": 124.28,
+    "e": 124.8
+   },
+   {
+    "w": "Polish",
+    "s": 124.8,
+    "e": 125.3
+   },
+   {
+    "w": "state",
+    "s": 125.3,
+    "e": 125.68
+   },
+   {
+    "w": "gained",
+    "s": 125.68,
+    "e": 126.06
+   },
+   {
+    "w": "access",
+    "s": 126.06,
+    "e": 126.5
+   },
+   {
+    "w": "to",
+    "s": 126.5,
+    "e": 126.7
+   },
+   {
+    "w": "the",
+    "s": 126.7,
+    "e": 126.86
+   },
+   {
+    "w": "Baltic",
+    "s": 126.86,
+    "e": 127.18
+   },
+   {
+    "w": "Sea",
+    "s": 127.18,
+    "e": 127.46
+   },
+   {
+    "w": "through",
+    "s": 127.46,
+    "e": 127.78
+   },
+   {
+    "w": "the",
+    "s": 127.78,
+    "e": 128.0
+   },
+   {
+    "w": "territory",
+    "s": 128.0,
+    "e": 128.4
+   },
+   {
+    "w": "known",
+    "s": 128.4,
+    "e": 128.74
+   }
+  ]
+ },
+ {
+  "start": 128.74,
+  "end": 135.8,
+  "text": "as the Polish Corridor. This created a geographical separation between Germany and East Prussia.",
+  "words": [
+   {
+    "w": "as",
+    "s": 128.74,
+    "e": 128.98
+   },
+   {
+    "w": "the",
+    "s": 128.98,
+    "e": 129.12
+   },
+   {
+    "w": "Polish",
+    "s": 129.12,
+    "e": 129.6
+   },
+   {
+    "w": "Corridor.",
+    "s": 129.6,
+    "e": 130.12
+   },
+   {
+    "w": "This",
+    "s": 130.66,
+    "e": 130.98
+   },
+   {
+    "w": "created",
+    "s": 130.98,
+    "e": 131.56
+   },
+   {
+    "w": "a",
+    "s": 131.56,
+    "e": 131.94
+   },
+   {
+    "w": "geographical",
+    "s": 131.94,
+    "e": 132.64
+   },
+   {
+    "w": "separation",
+    "s": 132.64,
+    "e": 133.48
+   },
+   {
+    "w": "between",
+    "s": 133.48,
+    "e": 133.94
+   },
+   {
+    "w": "Germany",
+    "s": 133.94,
+    "e": 134.48
+   },
+   {
+    "w": "and",
+    "s": 134.48,
+    "e": 134.88
+   },
+   {
+    "w": "East",
+    "s": 134.88,
+    "e": 135.26
+   },
+   {
+    "w": "Prussia.",
+    "s": 135.26,
+    "e": 135.8
+   }
+  ]
+ },
+ {
+  "start": 136.38,
+  "end": 141.78,
+  "text": "Danzig received a special status. It became the Free City of Danzig under the protection",
+  "words": [
+   {
+    "w": "Danzig",
+    "s": 136.38,
+    "e": 136.76
+   },
+   {
+    "w": "received",
+    "s": 136.76,
+    "e": 137.22
+   },
+   {
+    "w": "a",
+    "s": 137.22,
+    "e": 137.46
+   },
+   {
+    "w": "special",
+    "s": 137.46,
+    "e": 137.76
+   },
+   {
+    "w": "status.",
+    "s": 137.76,
+    "e": 138.28
+   },
+   {
+    "w": "It",
+    "s": 138.76,
+    "e": 138.96
+   },
+   {
+    "w": "became",
+    "s": 138.96,
+    "e": 139.28
+   },
+   {
+    "w": "the",
+    "s": 139.28,
+    "e": 139.58
+   },
+   {
+    "w": "Free",
+    "s": 139.58,
+    "e": 139.8
+   },
+   {
+    "w": "City",
+    "s": 139.8,
+    "e": 140.16
+   },
+   {
+    "w": "of",
+    "s": 140.16,
+    "e": 140.36
+   },
+   {
+    "w": "Danzig",
+    "s": 140.36,
+    "e": 140.84
+   },
+   {
+    "w": "under",
+    "s": 140.84,
+    "e": 141.18
+   },
+   {
+    "w": "the",
+    "s": 141.18,
+    "e": 141.4
+   },
+   {
+    "w": "protection",
+    "s": 141.4,
+    "e": 141.78
+   }
+  ]
+ },
+ {
+  "start": 141.78,
+  "end": 147.32,
+  "text": "of the League of Nations. It was no longer part of Germany, but it was also not incorporated",
+  "words": [
+   {
+    "w": "of",
+    "s": 141.78,
+    "e": 142.04
+   },
+   {
+    "w": "the",
+    "s": 142.04,
+    "e": 142.24
+   },
+   {
+    "w": "League",
+    "s": 142.24,
+    "e": 142.4
+   },
+   {
+    "w": "of",
+    "s": 142.4,
+    "e": 142.62
+   },
+   {
+    "w": "Nations.",
+    "s": 142.62,
+    "e": 143.02
+   },
+   {
+    "w": "It",
+    "s": 143.54,
+    "e": 143.7
+   },
+   {
+    "w": "was",
+    "s": 143.7,
+    "e": 143.86
+   },
+   {
+    "w": "no",
+    "s": 143.86,
+    "e": 144.06
+   },
+   {
+    "w": "longer",
+    "s": 144.06,
+    "e": 144.38
+   },
+   {
+    "w": "part",
+    "s": 144.38,
+    "e": 144.62
+   },
+   {
+    "w": "of",
+    "s": 144.62,
+    "e": 144.76
+   },
+   {
+    "w": "Germany,",
+    "s": 144.76,
+    "e": 145.18
+   },
+   {
+    "w": "but",
+    "s": 145.42,
+    "e": 145.64
+   },
+   {
+    "w": "it",
+    "s": 145.64,
+    "e": 145.88
+   },
+   {
+    "w": "was",
+    "s": 145.88,
+    "e": 146.02
+   },
+   {
+    "w": "also",
+    "s": 146.02,
+    "e": 146.42
+   },
+   {
+    "w": "not",
+    "s": 146.42,
+    "e": 146.74
+   },
+   {
+    "w": "incorporated",
+    "s": 146.74,
+    "e": 147.32
+   }
+  ]
+ },
+ {
+  "start": 147.32,
+  "end": 153.18,
+  "text": "into Poland. Other areas remained disputed. In the Marienwerder Plebiscite of 1920,",
+  "words": [
+   {
+    "w": "into",
+    "s": 147.32,
+    "e": 147.7
+   },
+   {
+    "w": "Poland.",
+    "s": 147.7,
+    "e": 148.12
+   },
+   {
+    "w": "Other",
+    "s": 148.62,
+    "e": 148.86
+   },
+   {
+    "w": "areas",
+    "s": 148.86,
+    "e": 149.3
+   },
+   {
+    "w": "remained",
+    "s": 149.3,
+    "e": 149.74
+   },
+   {
+    "w": "disputed.",
+    "s": 149.74,
+    "e": 150.32
+   },
+   {
+    "w": "In",
+    "s": 150.78,
+    "e": 150.92
+   },
+   {
+    "w": "the",
+    "s": 150.92,
+    "e": 151.12
+   },
+   {
+    "w": "Marienwerder",
+    "s": 151.12,
+    "e": 151.76
+   },
+   {
+    "w": "Plebiscite",
+    "s": 151.76,
+    "e": 152.32
+   },
+   {
+    "w": "of",
+    "s": 152.32,
+    "e": 152.52
+   },
+   {
+    "w": "1920,",
+    "s": 152.52,
+    "e": 153.18
+   }
+  ]
+ },
+ {
+  "start": 153.18,
+  "end": 158.58,
+  "text": "the overwhelming majority voted to remain with Germany. The historic province of West",
+  "words": [
+   {
+    "w": "the",
+    "s": 153.18,
+    "e": 153.64
+   },
+   {
+    "w": "overwhelming",
+    "s": 153.64,
+    "e": 154.36
+   },
+   {
+    "w": "majority",
+    "s": 154.36,
+    "e": 154.92
+   },
+   {
+    "w": "voted",
+    "s": 154.92,
+    "e": 155.32
+   },
+   {
+    "w": "to",
+    "s": 155.32,
+    "e": 155.58
+   },
+   {
+    "w": "remain",
+    "s": 155.58,
+    "e": 155.88
+   },
+   {
+    "w": "with",
+    "s": 155.88,
+    "e": 156.16
+   },
+   {
+    "w": "Germany.",
+    "s": 156.16,
+    "e": 156.58
+   },
+   {
+    "w": "The",
+    "s": 157.08,
+    "e": 157.18
+   },
+   {
+    "w": "historic",
+    "s": 157.18,
+    "e": 157.64
+   },
+   {
+    "w": "province",
+    "s": 157.64,
+    "e": 158.02
+   },
+   {
+    "w": "of",
+    "s": 158.02,
+    "e": 158.3
+   },
+   {
+    "w": "West",
+    "s": 158.3,
+    "e": 158.58
+   }
+  ]
+ },
+ {
+  "start": 158.58,
+  "end": 163.86,
+  "text": "Prussia was dissolved. Its former territories were divided between Germany, Poland, and the",
+  "words": [
+   {
+    "w": "Prussia",
+    "s": 158.58,
+    "e": 158.98
+   },
+   {
+    "w": "was",
+    "s": 158.98,
+    "e": 159.24
+   },
+   {
+    "w": "dissolved.",
+    "s": 159.24,
+    "e": 159.82
+   },
+   {
+    "w": "Its",
+    "s": 160.24,
+    "e": 160.4
+   },
+   {
+    "w": "former",
+    "s": 160.4,
+    "e": 160.68
+   },
+   {
+    "w": "territories",
+    "s": 160.68,
+    "e": 161.24
+   },
+   {
+    "w": "were",
+    "s": 161.24,
+    "e": 161.48
+   },
+   {
+    "w": "divided",
+    "s": 161.48,
+    "e": 161.86
+   },
+   {
+    "w": "between",
+    "s": 161.86,
+    "e": 162.24
+   },
+   {
+    "w": "Germany,",
+    "s": 162.24,
+    "e": 162.76
+   },
+   {
+    "w": "Poland,",
+    "s": 163.06,
+    "e": 163.32
+   },
+   {
+    "w": "and",
+    "s": 163.5,
+    "e": 163.7
+   },
+   {
+    "w": "the",
+    "s": 163.7,
+    "e": 163.86
+   }
+  ]
+ },
+ {
+  "start": 163.86,
+  "end": 168.46,
+  "text": "separate administration of Danzig. For the people who lived there, these decisions had",
+  "words": [
+   {
+    "w": "separate",
+    "s": 163.86,
+    "e": 164.18
+   },
+   {
+    "w": "administration",
+    "s": 164.18,
+    "e": 164.84
+   },
+   {
+    "w": "of",
+    "s": 164.84,
+    "e": 165.22
+   },
+   {
+    "w": "Danzig.",
+    "s": 165.22,
+    "e": 165.62
+   },
+   {
+    "w": "For",
+    "s": 166.02,
+    "e": 166.18
+   },
+   {
+    "w": "the",
+    "s": 166.18,
+    "e": 166.3
+   },
+   {
+    "w": "people",
+    "s": 166.3,
+    "e": 166.54
+   },
+   {
+    "w": "who",
+    "s": 166.54,
+    "e": 166.74
+   },
+   {
+    "w": "lived",
+    "s": 166.74,
+    "e": 166.96
+   },
+   {
+    "w": "there,",
+    "s": 166.96,
+    "e": 167.26
+   },
+   {
+    "w": "these",
+    "s": 167.56,
+    "e": 167.74
+   },
+   {
+    "w": "decisions",
+    "s": 167.74,
+    "e": 168.2
+   },
+   {
+    "w": "had",
+    "s": 168.2,
+    "e": 168.46
+   }
+  ]
+ },
+ {
+  "start": 168.46,
+  "end": 173.78,
+  "text": "immediate consequences. Trade routes changed. Administrative systems were reorganized.",
+  "words": [
+   {
+    "w": "immediate",
+    "s": 168.46,
+    "e": 169.04
+   },
+   {
+    "w": "consequences.",
+    "s": 169.04,
+    "e": 169.84
+   },
+   {
+    "w": "Trade",
+    "s": 170.42,
+    "e": 170.68
+   },
+   {
+    "w": "routes",
+    "s": 170.68,
+    "e": 170.96
+   },
+   {
+    "w": "changed.",
+    "s": 170.96,
+    "e": 171.48
+   },
+   {
+    "w": "Administrative",
+    "s": 171.96,
+    "e": 172.38
+   },
+   {
+    "w": "systems",
+    "s": 172.38,
+    "e": 172.86
+   },
+   {
+    "w": "were",
+    "s": 172.86,
+    "e": 173.16
+   },
+   {
+    "w": "reorganized.",
+    "s": 173.16,
+    "e": 173.78
+   }
+  ]
+ },
+ {
+  "start": 174.38,
+  "end": 178.52,
+  "text": "Families and communities found themselves separated by new international borders.",
+  "words": [
+   {
+    "w": "Families",
+    "s": 174.38,
+    "e": 174.66
+   },
+   {
+    "w": "and",
+    "s": 174.66,
+    "e": 174.98
+   },
+   {
+    "w": "communities",
+    "s": 174.98,
+    "e": 175.44
+   },
+   {
+    "w": "found",
+    "s": 175.44,
+    "e": 175.8
+   },
+   {
+    "w": "themselves",
+    "s": 175.8,
+    "e": 176.14
+   },
+   {
+    "w": "separated",
+    "s": 176.14,
+    "e": 176.74
+   },
+   {
+    "w": "by",
+    "s": 176.74,
+    "e": 177.0
+   },
+   {
+    "w": "new",
+    "s": 177.0,
+    "e": 177.34
+   },
+   {
+    "w": "international",
+    "s": 177.34,
+    "e": 178.06
+   },
+   {
+    "w": "borders.",
+    "s": 178.06,
+    "e": 178.52
+   }
+  ]
+ },
+ {
+  "start": 178.52,
+  "end": 184.94,
+  "text": "During the interwar years, relations between Germany and Poland remained tense. Danzig became",
+  "words": [
+   {
+    "w": "During",
+    "s": 178.52,
+    "e": 179.34
+   },
+   {
+    "w": "the",
+    "s": 179.34,
+    "e": 179.56
+   },
+   {
+    "w": "interwar",
+    "s": 179.56,
+    "e": 180.0
+   },
+   {
+    "w": "years,",
+    "s": 180.0,
+    "e": 180.48
+   },
+   {
+    "w": "relations",
+    "s": 180.76,
+    "e": 181.14
+   },
+   {
+    "w": "between",
+    "s": 181.14,
+    "e": 181.56
+   },
+   {
+    "w": "Germany",
+    "s": 181.56,
+    "e": 181.98
+   },
+   {
+    "w": "and",
+    "s": 181.98,
+    "e": 182.24
+   },
+   {
+    "w": "Poland",
+    "s": 182.24,
+    "e": 182.62
+   },
+   {
+    "w": "remained",
+    "s": 182.62,
+    "e": 183.08
+   },
+   {
+    "w": "tense.",
+    "s": 183.08,
+    "e": 183.7
+   },
+   {
+    "w": "Danzig",
+    "s": 184.32,
+    "e": 184.62
+   },
+   {
+    "w": "became",
+    "s": 184.62,
+    "e": 184.94
+   }
+  ]
+ },
+ {
+  "start": 184.94,
+  "end": 189.4,
+  "text": "a focal point of political conflict, while the Polish government invested in the development",
+  "words": [
+   {
+    "w": "a",
+    "s": 184.94,
+    "e": 185.2
+   },
+   {
+    "w": "focal",
+    "s": 185.2,
+    "e": 185.42
+   },
+   {
+    "w": "point",
+    "s": 185.42,
+    "e": 185.74
+   },
+   {
+    "w": "of",
+    "s": 185.74,
+    "e": 185.92
+   },
+   {
+    "w": "political",
+    "s": 185.92,
+    "e": 186.28
+   },
+   {
+    "w": "conflict,",
+    "s": 186.28,
+    "e": 186.88
+   },
+   {
+    "w": "while",
+    "s": 187.06,
+    "e": 187.24
+   },
+   {
+    "w": "the",
+    "s": 187.24,
+    "e": 187.4
+   },
+   {
+    "w": "Polish",
+    "s": 187.4,
+    "e": 187.74
+   },
+   {
+    "w": "government",
+    "s": 187.74,
+    "e": 188.08
+   },
+   {
+    "w": "invested",
+    "s": 188.08,
+    "e": 188.64
+   },
+   {
+    "w": "in",
+    "s": 188.64,
+    "e": 188.88
+   },
+   {
+    "w": "the",
+    "s": 188.88,
+    "e": 189.0
+   },
+   {
+    "w": "development",
+    "s": 189.0,
+    "e": 189.4
+   }
+  ]
+ },
+ {
+  "start": 189.4,
+  "end": 195.34,
+  "text": "of Gdynia as an alternative Baltic port. The region increasingly became part of a wider struggle",
+  "words": [
+   {
+    "w": "of",
+    "s": 189.4,
+    "e": 189.64
+   },
+   {
+    "w": "Gdynia",
+    "s": 189.64,
+    "e": 190.1
+   },
+   {
+    "w": "as",
+    "s": 190.1,
+    "e": 190.32
+   },
+   {
+    "w": "an",
+    "s": 190.32,
+    "e": 190.5
+   },
+   {
+    "w": "alternative",
+    "s": 190.5,
+    "e": 190.98
+   },
+   {
+    "w": "Baltic",
+    "s": 190.98,
+    "e": 191.42
+   },
+   {
+    "w": "port.",
+    "s": 191.42,
+    "e": 191.74
+   },
+   {
+    "w": "The",
+    "s": 192.22,
+    "e": 192.36
+   },
+   {
+    "w": "region",
+    "s": 192.36,
+    "e": 192.66
+   },
+   {
+    "w": "increasingly",
+    "s": 192.66,
+    "e": 193.42
+   },
+   {
+    "w": "became",
+    "s": 193.42,
+    "e": 193.88
+   },
+   {
+    "w": "part",
+    "s": 193.88,
+    "e": 194.18
+   },
+   {
+    "w": "of",
+    "s": 194.18,
+    "e": 194.34
+   },
+   {
+    "w": "a",
+    "s": 194.34,
+    "e": 194.64
+   },
+   {
+    "w": "wider",
+    "s": 194.64,
+    "e": 194.88
+   },
+   {
+    "w": "struggle",
+    "s": 194.88,
+    "e": 195.34
+   }
+  ]
+ },
+ {
+  "start": 195.34,
+  "end": 201.6,
+  "text": "over national identity, economic interests, and political influence. In September 1939,",
+  "words": [
+   {
+    "w": "over",
+    "s": 195.34,
+    "e": 195.64
+   },
+   {
+    "w": "national",
+    "s": 195.64,
+    "e": 196.1
+   },
+   {
+    "w": "identity,",
+    "s": 196.1,
+    "e": 196.58
+   },
+   {
+    "w": "economic",
+    "s": 196.96,
+    "e": 197.38
+   },
+   {
+    "w": "interests,",
+    "s": 197.38,
+    "e": 197.92
+   },
+   {
+    "w": "and",
+    "s": 198.1,
+    "e": 198.3
+   },
+   {
+    "w": "political",
+    "s": 198.3,
+    "e": 198.76
+   },
+   {
+    "w": "influence.",
+    "s": 198.76,
+    "e": 199.42
+   },
+   {
+    "w": "In",
+    "s": 199.98,
+    "e": 200.1
+   },
+   {
+    "w": "September",
+    "s": 200.1,
+    "e": 200.6
+   },
+   {
+    "w": "1939,",
+    "s": 200.6,
+    "e": 201.6
+   }
+  ]
+ },
+ {
+  "start": 202.22,
+  "end": 208.02,
+  "text": "Nazi Germany invaded Poland. Danzig was annexed by Germany, and the surrounding territories were",
+  "words": [
+   {
+    "w": "Nazi",
+    "s": 202.22,
+    "e": 202.5
+   },
+   {
+    "w": "Germany",
+    "s": 202.5,
+    "e": 202.9
+   },
+   {
+    "w": "invaded",
+    "s": 202.9,
+    "e": 203.46
+   },
+   {
+    "w": "Poland.",
+    "s": 203.46,
+    "e": 204.1
+   },
+   {
+    "w": "Danzig",
+    "s": 204.56,
+    "e": 204.98
+   },
+   {
+    "w": "was",
+    "s": 204.98,
+    "e": 205.18
+   },
+   {
+    "w": "annexed",
+    "s": 205.18,
+    "e": 205.56
+   },
+   {
+    "w": "by",
+    "s": 205.56,
+    "e": 205.82
+   },
+   {
+    "w": "Germany,",
+    "s": 205.82,
+    "e": 206.2
+   },
+   {
+    "w": "and",
+    "s": 206.46,
+    "e": 206.62
+   },
+   {
+    "w": "the",
+    "s": 206.62,
+    "e": 206.76
+   },
+   {
+    "w": "surrounding",
+    "s": 206.76,
+    "e": 207.12
+   },
+   {
+    "w": "territories",
+    "s": 207.12,
+    "e": 207.74
+   },
+   {
+    "w": "were",
+    "s": 207.74,
+    "e": 208.02
+   }
+  ]
+ },
+ {
+  "start": 208.02,
+  "end": 212.88,
+  "text": "incorporated into the German Reich. The occupation brought systematic persecution,",
+  "words": [
+   {
+    "w": "incorporated",
+    "s": 208.02,
+    "e": 208.58
+   },
+   {
+    "w": "into",
+    "s": 208.58,
+    "e": 208.96
+   },
+   {
+    "w": "the",
+    "s": 208.96,
+    "e": 209.14
+   },
+   {
+    "w": "German",
+    "s": 209.14,
+    "e": 209.48
+   },
+   {
+    "w": "Reich.",
+    "s": 209.48,
+    "e": 209.9
+   },
+   {
+    "w": "The",
+    "s": 210.4,
+    "e": 210.46
+   },
+   {
+    "w": "occupation",
+    "s": 210.46,
+    "e": 211.04
+   },
+   {
+    "w": "brought",
+    "s": 211.04,
+    "e": 211.36
+   },
+   {
+    "w": "systematic",
+    "s": 211.36,
+    "e": 212.08
+   },
+   {
+    "w": "persecution,",
+    "s": 212.08,
+    "e": 212.88
+   }
+  ]
+ },
+ {
+  "start": 213.3,
+  "end": 218.48,
+  "text": "violence, and mass murder. Polish political, religious, and intellectual leaders were",
+  "words": [
+   {
+    "w": "violence,",
+    "s": 213.3,
+    "e": 213.66
+   },
+   {
+    "w": "and",
+    "s": 213.9,
+    "e": 214.2
+   },
+   {
+    "w": "mass",
+    "s": 214.2,
+    "e": 214.46
+   },
+   {
+    "w": "murder.",
+    "s": 214.46,
+    "e": 214.88
+   },
+   {
+    "w": "Polish",
+    "s": 215.42,
+    "e": 215.66
+   },
+   {
+    "w": "political,",
+    "s": 215.66,
+    "e": 216.22
+   },
+   {
+    "w": "religious,",
+    "s": 216.5,
+    "e": 216.86
+   },
+   {
+    "w": "and",
+    "s": 217.08,
+    "e": 217.22
+   },
+   {
+    "w": "intellectual",
+    "s": 217.22,
+    "e": 217.8
+   },
+   {
+    "w": "leaders",
+    "s": 217.8,
+    "e": 218.2
+   },
+   {
+    "w": "were",
+    "s": 218.2,
+    "e": 218.48
+   }
+  ]
+ },
+ {
+  "start": 218.48,
+  "end": 223.92,
+  "text": "targeted. Jewish communities were destroyed as part of the Holocaust. Thousands of people were",
+  "words": [
+   {
+    "w": "targeted.",
+    "s": 218.48,
+    "e": 218.88
+   },
+   {
+    "w": "Jewish",
+    "s": 219.42,
+    "e": 219.64
+   },
+   {
+    "w": "communities",
+    "s": 219.64,
+    "e": 220.1
+   },
+   {
+    "w": "were",
+    "s": 220.1,
+    "e": 220.38
+   },
+   {
+    "w": "destroyed",
+    "s": 220.38,
+    "e": 220.94
+   },
+   {
+    "w": "as",
+    "s": 220.94,
+    "e": 221.16
+   },
+   {
+    "w": "part",
+    "s": 221.16,
+    "e": 221.38
+   },
+   {
+    "w": "of",
+    "s": 221.38,
+    "e": 221.5
+   },
+   {
+    "w": "the",
+    "s": 221.5,
+    "e": 221.64
+   },
+   {
+    "w": "Holocaust.",
+    "s": 221.64,
+    "e": 222.08
+   },
+   {
+    "w": "Thousands",
+    "s": 222.84,
+    "e": 223.14
+   },
+   {
+    "w": "of",
+    "s": 223.14,
+    "e": 223.42
+   },
+   {
+    "w": "people",
+    "s": 223.42,
+    "e": 223.68
+   },
+   {
+    "w": "were",
+    "s": 223.68,
+    "e": 223.92
+   }
+  ]
+ },
+ {
+  "start": 223.92,
+  "end": 229.92,
+  "text": "imprisoned, deported, or murdered. The region became deeply involved in the crimes of Nazi",
+  "words": [
+   {
+    "w": "imprisoned,",
+    "s": 223.92,
+    "e": 224.44
+   },
+   {
+    "w": "deported,",
+    "s": 224.84,
+    "e": 225.28
+   },
+   {
+    "w": "or",
+    "s": 225.64,
+    "e": 225.92
+   },
+   {
+    "w": "murdered.",
+    "s": 225.92,
+    "e": 226.26
+   },
+   {
+    "w": "The",
+    "s": 226.7,
+    "e": 226.88
+   },
+   {
+    "w": "region",
+    "s": 226.88,
+    "e": 227.16
+   },
+   {
+    "w": "became",
+    "s": 227.16,
+    "e": 227.58
+   },
+   {
+    "w": "deeply",
+    "s": 227.58,
+    "e": 228.12
+   },
+   {
+    "w": "involved",
+    "s": 228.12,
+    "e": 228.58
+   },
+   {
+    "w": "in",
+    "s": 228.58,
+    "e": 228.88
+   },
+   {
+    "w": "the",
+    "s": 228.88,
+    "e": 229.1
+   },
+   {
+    "w": "crimes",
+    "s": 229.1,
+    "e": 229.32
+   },
+   {
+    "w": "of",
+    "s": 229.32,
+    "e": 229.64
+   },
+   {
+    "w": "Nazi",
+    "s": 229.64,
+    "e": 229.92
+   }
+  ]
+ },
+ {
+  "start": 229.92,
+  "end": 236.6,
+  "text": "Germany. By 1945, the Second World War had devastated much of Europe. As Soviet forces",
+  "words": [
+   {
+    "w": "Germany.",
+    "s": 229.92,
+    "e": 230.36
+   },
+   {
+    "w": "By",
+    "s": 230.96,
+    "e": 231.08
+   },
+   {
+    "w": "1945,",
+    "s": 231.08,
+    "e": 231.94
+   },
+   {
+    "w": "the",
+    "s": 232.52,
+    "e": 232.72
+   },
+   {
+    "w": "Second",
+    "s": 232.72,
+    "e": 232.92
+   },
+   {
+    "w": "World",
+    "s": 232.92,
+    "e": 233.24
+   },
+   {
+    "w": "War",
+    "s": 233.24,
+    "e": 233.48
+   },
+   {
+    "w": "had",
+    "s": 233.48,
+    "e": 233.74
+   },
+   {
+    "w": "devastated",
+    "s": 233.74,
+    "e": 234.36
+   },
+   {
+    "w": "much",
+    "s": 234.36,
+    "e": 234.74
+   },
+   {
+    "w": "of",
+    "s": 234.74,
+    "e": 234.96
+   },
+   {
+    "w": "Europe.",
+    "s": 234.96,
+    "e": 235.26
+   },
+   {
+    "w": "As",
+    "s": 235.64,
+    "e": 235.86
+   },
+   {
+    "w": "Soviet",
+    "s": 235.86,
+    "e": 236.24
+   },
+   {
+    "w": "forces",
+    "s": 236.24,
+    "e": 236.6
+   }
+  ]
+ },
+ {
+  "start": 236.6,
+  "end": 241.72,
+  "text": "advanced, large numbers of civilians fled westwards. Many others were displaced after",
+  "words": [
+   {
+    "w": "advanced,",
+    "s": 236.6,
+    "e": 237.12
+   },
+   {
+    "w": "large",
+    "s": 237.46,
+    "e": 237.78
+   },
+   {
+    "w": "numbers",
+    "s": 237.78,
+    "e": 238.1
+   },
+   {
+    "w": "of",
+    "s": 238.1,
+    "e": 238.34
+   },
+   {
+    "w": "civilians",
+    "s": 238.34,
+    "e": 238.78
+   },
+   {
+    "w": "fled",
+    "s": 238.78,
+    "e": 239.1
+   },
+   {
+    "w": "westwards.",
+    "s": 239.1,
+    "e": 239.68
+   },
+   {
+    "w": "Many",
+    "s": 240.16,
+    "e": 240.36
+   },
+   {
+    "w": "others",
+    "s": 240.36,
+    "e": 240.7
+   },
+   {
+    "w": "were",
+    "s": 240.7,
+    "e": 240.88
+   },
+   {
+    "w": "displaced",
+    "s": 240.88,
+    "e": 241.36
+   },
+   {
+    "w": "after",
+    "s": 241.36,
+    "e": 241.72
+   }
+  ]
+ },
+ {
+  "start": 241.72,
+  "end": 246.68,
+  "text": "the fighting ended. At the end of the war, the territories east of the Oder-Neisse line came",
+  "words": [
+   {
+    "w": "the",
+    "s": 241.72,
+    "e": 241.9
+   },
+   {
+    "w": "fighting",
+    "s": 241.9,
+    "e": 242.12
+   },
+   {
+    "w": "ended.",
+    "s": 242.12,
+    "e": 242.5
+   },
+   {
+    "w": "At",
+    "s": 242.9,
+    "e": 243.06
+   },
+   {
+    "w": "the",
+    "s": 243.06,
+    "e": 243.2
+   },
+   {
+    "w": "end",
+    "s": 243.2,
+    "e": 243.34
+   },
+   {
+    "w": "of",
+    "s": 243.34,
+    "e": 243.48
+   },
+   {
+    "w": "the",
+    "s": 243.48,
+    "e": 243.6
+   },
+   {
+    "w": "war,",
+    "s": 243.6,
+    "e": 243.84
+   },
+   {
+    "w": "the",
+    "s": 244.14,
+    "e": 244.3
+   },
+   {
+    "w": "territories",
+    "s": 244.3,
+    "e": 244.74
+   },
+   {
+    "w": "east",
+    "s": 244.74,
+    "e": 245.14
+   },
+   {
+    "w": "of",
+    "s": 245.14,
+    "e": 245.32
+   },
+   {
+    "w": "the",
+    "s": 245.32,
+    "e": 245.58
+   },
+   {
+    "w": "Oder",
+    "s": 245.58,
+    "e": 245.76
+   },
+   {
+    "w": "-Neisse",
+    "s": 245.76,
+    "e": 246.08
+   },
+   {
+    "w": "line",
+    "s": 246.08,
+    "e": 246.4
+   },
+   {
+    "w": "came",
+    "s": 246.4,
+    "e": 246.68
+   }
+  ]
+ },
+ {
+  "start": 246.68,
+  "end": 252.26,
+  "text": "under Polish administration, pending a final peace settlement. The German population was expelled",
+  "words": [
+   {
+    "w": "under",
+    "s": 246.68,
+    "e": 246.96
+   },
+   {
+    "w": "Polish",
+    "s": 246.96,
+    "e": 247.36
+   },
+   {
+    "w": "administration,",
+    "s": 247.36,
+    "e": 248.08
+   },
+   {
+    "w": "pending",
+    "s": 248.42,
+    "e": 248.68
+   },
+   {
+    "w": "a",
+    "s": 248.68,
+    "e": 248.92
+   },
+   {
+    "w": "final",
+    "s": 248.92,
+    "e": 249.24
+   },
+   {
+    "w": "peace",
+    "s": 249.24,
+    "e": 249.52
+   },
+   {
+    "w": "settlement.",
+    "s": 249.52,
+    "e": 249.92
+   },
+   {
+    "w": "The",
+    "s": 250.28,
+    "e": 250.46
+   },
+   {
+    "w": "German",
+    "s": 250.46,
+    "e": 250.76
+   },
+   {
+    "w": "population",
+    "s": 250.76,
+    "e": 251.36
+   },
+   {
+    "w": "was",
+    "s": 251.36,
+    "e": 251.72
+   },
+   {
+    "w": "expelled",
+    "s": 251.72,
+    "e": 252.26
+   }
+  ]
+ },
+ {
+  "start": 252.26,
+  "end": 258.14,
+  "text": "or displaced. At the same time, Polish families arrived, many of them having themselves been",
+  "words": [
+   {
+    "w": "or",
+    "s": 252.26,
+    "e": 252.54
+   },
+   {
+    "w": "displaced.",
+    "s": 252.54,
+    "e": 253.14
+   },
+   {
+    "w": "At",
+    "s": 253.58,
+    "e": 253.74
+   },
+   {
+    "w": "the",
+    "s": 253.74,
+    "e": 253.88
+   },
+   {
+    "w": "same",
+    "s": 253.88,
+    "e": 254.1
+   },
+   {
+    "w": "time,",
+    "s": 254.1,
+    "e": 254.54
+   },
+   {
+    "w": "Polish",
+    "s": 254.82,
+    "e": 255.1
+   },
+   {
+    "w": "families",
+    "s": 255.1,
+    "e": 255.46
+   },
+   {
+    "w": "arrived,",
+    "s": 255.46,
+    "e": 255.96
+   },
+   {
+    "w": "many",
+    "s": 256.3,
+    "e": 256.64
+   },
+   {
+    "w": "of",
+    "s": 256.64,
+    "e": 256.78
+   },
+   {
+    "w": "them",
+    "s": 256.78,
+    "e": 257.0
+   },
+   {
+    "w": "having",
+    "s": 257.0,
+    "e": 257.26
+   },
+   {
+    "w": "themselves",
+    "s": 257.26,
+    "e": 257.8
+   },
+   {
+    "w": "been",
+    "s": 257.8,
+    "e": 258.14
+   }
+  ]
+ },
+ {
+  "start": 258.14,
+  "end": 262.52,
+  "text": "forced to leave territories in eastern Poland that had been annexed by the Soviet Union.",
+  "words": [
+   {
+    "w": "forced",
+    "s": 258.14,
+    "e": 258.38
+   },
+   {
+    "w": "to",
+    "s": 258.38,
+    "e": 258.6
+   },
+   {
+    "w": "leave",
+    "s": 258.6,
+    "e": 258.74
+   },
+   {
+    "w": "territories",
+    "s": 258.74,
+    "e": 259.28
+   },
+   {
+    "w": "in",
+    "s": 259.28,
+    "e": 259.62
+   },
+   {
+    "w": "eastern",
+    "s": 259.62,
+    "e": 259.92
+   },
+   {
+    "w": "Poland",
+    "s": 259.92,
+    "e": 260.32
+   },
+   {
+    "w": "that",
+    "s": 260.32,
+    "e": 260.64
+   },
+   {
+    "w": "had",
+    "s": 260.64,
+    "e": 260.78
+   },
+   {
+    "w": "been",
+    "s": 260.78,
+    "e": 261.06
+   },
+   {
+    "w": "annexed",
+    "s": 261.06,
+    "e": 261.4
+   },
+   {
+    "w": "by",
+    "s": 261.4,
+    "e": 261.62
+   },
+   {
+    "w": "the",
+    "s": 261.62,
+    "e": 261.8
+   },
+   {
+    "w": "Soviet",
+    "s": 261.8,
+    "e": 262.12
+   },
+   {
+    "w": "Union.",
+    "s": 262.12,
+    "e": 262.52
+   }
+  ]
+ },
+ {
+  "start": 262.52,
+  "end": 269.16,
+  "text": "The population, language, and cultural landscape of the region changed fundamentally. For those",
+  "words": [
+   {
+    "w": "The",
+    "s": 262.52,
+    "e": 263.06
+   },
+   {
+    "w": "population,",
+    "s": 263.06,
+    "e": 263.84
+   },
+   {
+    "w": "language,",
+    "s": 264.32,
+    "e": 264.66
+   },
+   {
+    "w": "and",
+    "s": 264.82,
+    "e": 265.08
+   },
+   {
+    "w": "cultural",
+    "s": 265.08,
+    "e": 265.5
+   },
+   {
+    "w": "landscape",
+    "s": 265.5,
+    "e": 266.04
+   },
+   {
+    "w": "of",
+    "s": 266.04,
+    "e": 266.26
+   },
+   {
+    "w": "the",
+    "s": 266.26,
+    "e": 266.4
+   },
+   {
+    "w": "region",
+    "s": 266.4,
+    "e": 266.66
+   },
+   {
+    "w": "changed",
+    "s": 266.66,
+    "e": 267.2
+   },
+   {
+    "w": "fundamentally.",
+    "s": 267.2,
+    "e": 268.1
+   },
+   {
+    "w": "For",
+    "s": 268.8,
+    "e": 268.94
+   },
+   {
+    "w": "those",
+    "s": 268.94,
+    "e": 269.16
+   }
+  ]
+ },
+ {
+  "start": 269.16,
+  "end": 273.92,
+  "text": "who had lived there for generations, the end of the war meant the loss of their homes and",
+  "words": [
+   {
+    "w": "who",
+    "s": 269.16,
+    "e": 269.3
+   },
+   {
+    "w": "had",
+    "s": 269.3,
+    "e": 269.46
+   },
+   {
+    "w": "lived",
+    "s": 269.46,
+    "e": 269.64
+   },
+   {
+    "w": "there",
+    "s": 269.64,
+    "e": 269.84
+   },
+   {
+    "w": "for",
+    "s": 269.84,
+    "e": 270.06
+   },
+   {
+    "w": "generations,",
+    "s": 270.06,
+    "e": 270.68
+   },
+   {
+    "w": "the",
+    "s": 271.38,
+    "e": 271.52
+   },
+   {
+    "w": "end",
+    "s": 271.52,
+    "e": 271.68
+   },
+   {
+    "w": "of",
+    "s": 271.68,
+    "e": 271.84
+   },
+   {
+    "w": "the",
+    "s": 271.84,
+    "e": 272.02
+   },
+   {
+    "w": "war",
+    "s": 272.02,
+    "e": 272.18
+   },
+   {
+    "w": "meant",
+    "s": 272.18,
+    "e": 272.42
+   },
+   {
+    "w": "the",
+    "s": 272.42,
+    "e": 272.6
+   },
+   {
+    "w": "loss",
+    "s": 272.6,
+    "e": 272.82
+   },
+   {
+    "w": "of",
+    "s": 272.82,
+    "e": 273.0
+   },
+   {
+    "w": "their",
+    "s": 273.0,
+    "e": 273.12
+   },
+   {
+    "w": "homes",
+    "s": 273.12,
+    "e": 273.58
+   },
+   {
+    "w": "and",
+    "s": 273.58,
+    "e": 273.92
+   }
+  ]
+ },
+ {
+  "start": 273.92,
+  "end": 279.12,
+  "text": "familiar surroundings. For those arriving, it meant beginning a new life in a place",
+  "words": [
+   {
+    "w": "familiar",
+    "s": 273.92,
+    "e": 274.32
+   },
+   {
+    "w": "surroundings.",
+    "s": 274.32,
+    "e": 274.9
+   },
+   {
+    "w": "For",
+    "s": 275.74,
+    "e": 275.96
+   },
+   {
+    "w": "those",
+    "s": 275.96,
+    "e": 276.14
+   },
+   {
+    "w": "arriving,",
+    "s": 276.14,
+    "e": 276.62
+   },
+   {
+    "w": "it",
+    "s": 277.12,
+    "e": 277.24
+   },
+   {
+    "w": "meant",
+    "s": 277.24,
+    "e": 277.4
+   },
+   {
+    "w": "beginning",
+    "s": 277.4,
+    "e": 277.76
+   },
+   {
+    "w": "a",
+    "s": 277.76,
+    "e": 277.92
+   },
+   {
+    "w": "new",
+    "s": 277.92,
+    "e": 278.2
+   },
+   {
+    "w": "life",
+    "s": 278.2,
+    "e": 278.5
+   },
+   {
+    "w": "in",
+    "s": 278.5,
+    "e": 278.76
+   },
+   {
+    "w": "a",
+    "s": 278.76,
+    "e": 278.94
+   },
+   {
+    "w": "place",
+    "s": 278.94,
+    "e": 279.12
+   }
+  ]
+ },
+ {
+  "start": 279.12,
+  "end": 285.02,
+  "text": "transformed by war and displacement. The old province of West Prussia no longer existed.",
+  "words": [
+   {
+    "w": "transformed",
+    "s": 279.12,
+    "e": 279.88
+   },
+   {
+    "w": "by",
+    "s": 279.88,
+    "e": 280.22
+   },
+   {
+    "w": "war",
+    "s": 280.22,
+    "e": 280.62
+   },
+   {
+    "w": "and",
+    "s": 280.62,
+    "e": 280.94
+   },
+   {
+    "w": "displacement.",
+    "s": 280.94,
+    "e": 281.58
+   },
+   {
+    "w": "The",
+    "s": 282.06,
+    "e": 282.28
+   },
+   {
+    "w": "old",
+    "s": 282.28,
+    "e": 282.5
+   },
+   {
+    "w": "province",
+    "s": 282.5,
+    "e": 282.94
+   },
+   {
+    "w": "of",
+    "s": 282.94,
+    "e": 283.14
+   },
+   {
+    "w": "West",
+    "s": 283.14,
+    "e": 283.38
+   },
+   {
+    "w": "Prussia",
+    "s": 283.38,
+    "e": 283.76
+   },
+   {
+    "w": "no",
+    "s": 283.76,
+    "e": 284.16
+   },
+   {
+    "w": "longer",
+    "s": 284.16,
+    "e": 284.46
+   },
+   {
+    "w": "existed.",
+    "s": 284.46,
+    "e": 285.02
+   }
+  ]
+ },
+ {
+  "start": 285.62,
+  "end": 291.38,
+  "text": "Its cities, roads, churches, and landscapes remained, but the political and social world",
+  "words": [
+   {
+    "w": "Its",
+    "s": 285.62,
+    "e": 285.8
+   },
+   {
+    "w": "cities,",
+    "s": 285.8,
+    "e": 286.3
+   },
+   {
+    "w": "roads,",
+    "s": 286.68,
+    "e": 287.06
+   },
+   {
+    "w": "churches,",
+    "s": 287.56,
+    "e": 287.84
+   },
+   {
+    "w": "and",
+    "s": 287.84,
+    "e": 288.26
+   },
+   {
+    "w": "landscapes",
+    "s": 288.26,
+    "e": 288.7
+   },
+   {
+    "w": "remained,",
+    "s": 288.7,
+    "e": 289.24
+   },
+   {
+    "w": "but",
+    "s": 289.4,
+    "e": 289.8
+   },
+   {
+    "w": "the",
+    "s": 289.8,
+    "e": 289.96
+   },
+   {
+    "w": "political",
+    "s": 289.96,
+    "e": 290.38
+   },
+   {
+    "w": "and",
+    "s": 290.38,
+    "e": 290.62
+   },
+   {
+    "w": "social",
+    "s": 290.62,
+    "e": 291.04
+   },
+   {
+    "w": "world",
+    "s": 291.04,
+    "e": 291.38
+   }
+  ]
+ },
+ {
+  "start": 291.38,
+  "end": 297.24,
+  "text": "that had shaped them for centuries had largely disappeared. Today, West Prussia is a historical",
+  "words": [
+   {
+    "w": "that",
+    "s": 291.38,
+    "e": 291.54
+   },
+   {
+    "w": "had",
+    "s": 291.54,
+    "e": 291.72
+   },
+   {
+    "w": "shaped",
+    "s": 291.72,
+    "e": 292.02
+   },
+   {
+    "w": "them",
+    "s": 292.02,
+    "e": 292.18
+   },
+   {
+    "w": "for",
+    "s": 292.18,
+    "e": 292.4
+   },
+   {
+    "w": "centuries",
+    "s": 292.4,
+    "e": 293.06
+   },
+   {
+    "w": "had",
+    "s": 293.06,
+    "e": 293.5
+   },
+   {
+    "w": "largely",
+    "s": 293.5,
+    "e": 293.84
+   },
+   {
+    "w": "disappeared.",
+    "s": 293.84,
+    "e": 294.44
+   },
+   {
+    "w": "Today,",
+    "s": 294.96,
+    "e": 295.3
+   },
+   {
+    "w": "West",
+    "s": 295.78,
+    "e": 295.98
+   },
+   {
+    "w": "Prussia",
+    "s": 295.98,
+    "e": 296.3
+   },
+   {
+    "w": "is",
+    "s": 296.3,
+    "e": 296.54
+   },
+   {
+    "w": "a",
+    "s": 296.54,
+    "e": 296.68
+   },
+   {
+    "w": "historical",
+    "s": 296.68,
+    "e": 297.24
+   }
+  ]
+ },
+ {
+  "start": 297.24,
+  "end": 302.96,
+  "text": "region divided between modern-day Poland and Germany. Its past cannot be reduced to a simple",
+  "words": [
+   {
+    "w": "region",
+    "s": 297.24,
+    "e": 297.66
+   },
+   {
+    "w": "divided",
+    "s": 297.66,
+    "e": 298.12
+   },
+   {
+    "w": "between",
+    "s": 298.12,
+    "e": 298.64
+   },
+   {
+    "w": "modern",
+    "s": 298.64,
+    "e": 298.9
+   },
+   {
+    "w": "-day",
+    "s": 298.9,
+    "e": 299.08
+   },
+   {
+    "w": "Poland",
+    "s": 299.08,
+    "e": 299.48
+   },
+   {
+    "w": "and",
+    "s": 299.48,
+    "e": 299.86
+   },
+   {
+    "w": "Germany.",
+    "s": 299.86,
+    "e": 300.26
+   },
+   {
+    "w": "Its",
+    "s": 300.66,
+    "e": 300.84
+   },
+   {
+    "w": "past",
+    "s": 300.84,
+    "e": 301.26
+   },
+   {
+    "w": "cannot",
+    "s": 301.26,
+    "e": 301.66
+   },
+   {
+    "w": "be",
+    "s": 301.66,
+    "e": 301.94
+   },
+   {
+    "w": "reduced",
+    "s": 301.94,
+    "e": 302.3
+   },
+   {
+    "w": "to",
+    "s": 302.3,
+    "e": 302.5
+   },
+   {
+    "w": "a",
+    "s": 302.5,
+    "e": 302.68
+   },
+   {
+    "w": "simple",
+    "s": 302.68,
+    "e": 302.96
+   }
+  ]
+ },
+ {
+  "start": 302.96,
+  "end": 308.74,
+  "text": "story of one nation against another. It is a history of changing borders, competing identities,",
+  "words": [
+   {
+    "w": "story",
+    "s": 302.96,
+    "e": 303.38
+   },
+   {
+    "w": "of",
+    "s": 303.38,
+    "e": 303.6
+   },
+   {
+    "w": "one",
+    "s": 303.6,
+    "e": 303.88
+   },
+   {
+    "w": "nation",
+    "s": 303.88,
+    "e": 304.26
+   },
+   {
+    "w": "against",
+    "s": 304.26,
+    "e": 304.6
+   },
+   {
+    "w": "another.",
+    "s": 304.6,
+    "e": 305.06
+   },
+   {
+    "w": "It",
+    "s": 305.48,
+    "e": 305.64
+   },
+   {
+    "w": "is",
+    "s": 305.64,
+    "e": 305.76
+   },
+   {
+    "w": "a",
+    "s": 305.76,
+    "e": 305.9
+   },
+   {
+    "w": "history",
+    "s": 305.9,
+    "e": 306.24
+   },
+   {
+    "w": "of",
+    "s": 306.24,
+    "e": 306.52
+   },
+   {
+    "w": "changing",
+    "s": 306.52,
+    "e": 306.88
+   },
+   {
+    "w": "borders,",
+    "s": 306.88,
+    "e": 307.42
+   },
+   {
+    "w": "competing",
+    "s": 307.76,
+    "e": 308.12
+   },
+   {
+    "w": "identities,",
+    "s": 308.12,
+    "e": 308.74
+   }
+  ]
+ },
+ {
+  "start": 309.22,
+  "end": 315.16,
+  "text": "political decisions, and human consequences. To understand West Prussia is to understand how",
+  "words": [
+   {
+    "w": "political",
+    "s": 309.22,
+    "e": 309.52
+   },
+   {
+    "w": "decisions,",
+    "s": 309.52,
+    "e": 310.12
+   },
+   {
+    "w": "and",
+    "s": 310.38,
+    "e": 310.6
+   },
+   {
+    "w": "human",
+    "s": 310.6,
+    "e": 310.88
+   },
+   {
+    "w": "consequences.",
+    "s": 310.88,
+    "e": 311.6
+   },
+   {
+    "w": "To",
+    "s": 312.1,
+    "e": 312.26
+   },
+   {
+    "w": "understand",
+    "s": 312.26,
+    "e": 312.94
+   },
+   {
+    "w": "West",
+    "s": 312.94,
+    "e": 313.26
+   },
+   {
+    "w": "Prussia",
+    "s": 313.26,
+    "e": 313.78
+   },
+   {
+    "w": "is",
+    "s": 313.78,
+    "e": 314.18
+   },
+   {
+    "w": "to",
+    "s": 314.18,
+    "e": 314.34
+   },
+   {
+    "w": "understand",
+    "s": 314.34,
+    "e": 314.86
+   },
+   {
+    "w": "how",
+    "s": 314.86,
+    "e": 315.16
+   }
+  ]
+ },
+ {
+  "start": 315.16,
+  "end": 320.88,
+  "text": "profoundly European history could change the lives of ordinary people, and how the traces",
+  "words": [
+   {
+    "w": "profoundly",
+    "s": 315.16,
+    "e": 315.86
+   },
+   {
+    "w": "European",
+    "s": 315.86,
+    "e": 316.44
+   },
+   {
+    "w": "history",
+    "s": 316.44,
+    "e": 316.92
+   },
+   {
+    "w": "could",
+    "s": 316.92,
+    "e": 317.2
+   },
+   {
+    "w": "change",
+    "s": 317.2,
+    "e": 317.6
+   },
+   {
+    "w": "the",
+    "s": 317.6,
+    "e": 317.84
+   },
+   {
+    "w": "lives",
+    "s": 317.84,
+    "e": 318.16
+   },
+   {
+    "w": "of",
+    "s": 318.16,
+    "e": 318.48
+   },
+   {
+    "w": "ordinary",
+    "s": 318.48,
+    "e": 318.9
+   },
+   {
+    "w": "people,",
+    "s": 318.9,
+    "e": 319.4
+   },
+   {
+    "w": "and",
+    "s": 319.4,
+    "e": 320.2
+   },
+   {
+    "w": "how",
+    "s": 320.2,
+    "e": 320.34
+   },
+   {
+    "w": "the",
+    "s": 320.34,
+    "e": 320.48
+   },
+   {
+    "w": "traces",
+    "s": 320.48,
+    "e": 320.88
+   }
+  ]
+ },
+ {
+  "start": 320.88,
+  "end": 325.48,
+  "text": "of those changes remain visible long after the borders themselves have disappeared.",
+  "words": [
+   {
+    "w": "of",
+    "s": 320.88,
+    "e": 321.04
+   },
+   {
+    "w": "those",
+    "s": 321.04,
+    "e": 321.28
+   },
+   {
+    "w": "changes",
+    "s": 321.28,
+    "e": 321.78
+   },
+   {
+    "w": "remain",
+    "s": 321.78,
+    "e": 322.16
+   },
+   {
+    "w": "visible",
+    "s": 322.16,
+    "e": 322.66
+   },
+   {
+    "w": "long",
+    "s": 322.66,
+    "e": 323.08
+   },
+   {
+    "w": "after",
+    "s": 323.08,
+    "e": 323.44
+   },
+   {
+    "w": "the",
+    "s": 323.44,
+    "e": 323.62
+   },
+   {
+    "w": "borders",
+    "s": 323.62,
+    "e": 323.94
+   },
+   {
+    "w": "themselves",
+    "s": 323.94,
+    "e": 324.64
+   },
+   {
+    "w": "have",
+    "s": 324.64,
+    "e": 325.0
+   },
+   {
+    "w": "disappeared.",
+    "s": 325.0,
+    "e": 325.48
+   }
+  ]
+ }
+]
