@@ -42,5 +42,5 @@ def render(render_fn_path, frame_ids, out_path, workers=4, W=1080, H=1920, tmp=N
 
 def mux(video, audio, out):
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", video, "-i", audio, "-map", "0:v", "-map", "1:a",
-                    "-c:v", "copy", "-c:a", "aac", "-b:a", "256k", "-ar", "48000", "-shortest", "-movflags", "+faststart", out],
+                    "-c:v", "copy", "-c:a", "aac", "-b:a", "256k", "-ar", "44100", "-shortest", "-movflags", "+faststart", out],
                    check=True)

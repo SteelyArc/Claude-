@@ -28,7 +28,7 @@ def qc(path, expect_w=1080, expect_h=1920, fps="30/1", sheet_every=1.5, sheet_di
     fz = run(["ffmpeg", "-v", "info", "-i", path, "-vf", "freezedetect=n=0.0005:d=2.5", "-an", "-f", "null", "-"]).stderr
     rep["frozen_segments"] = re.findall(r"freeze_start: ([\d.]+)", fz)
     lo = run(["ffmpeg", "-v", "info", "-i", path, "-af", "ebur128=peak=true", "-vn", "-f", "null", "-"]).stderr
-    m = re.search(r"I:\s+(-?[\d.]+) LUFS.*?LRA:\s+([\d.]+) LU.*?Peak:\s+(-?[\d.]+) dBFS", lo, re.S)
+    m = re.search(r"I:\s+(-?[\d.]+) LUFS.*?LRA:\s+([\d.]+) LU.*?Peak:\s+(-?[\d.]+) dBFS", lo[lo.rfind("Summary:"):], re.S)
     if m:
         rep["loudness"] = {"integrated_LUFS": float(m.group(1)), "LRA": float(m.group(2)), "true_peak_dBTP": float(m.group(3))}
         checks["true peak ≤ -1 dBTP"] = float(m.group(3)) <= -1.0
