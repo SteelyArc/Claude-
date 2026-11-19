@@ -52,3 +52,9 @@ Final mix plan: the narration is used sample-for-sample (no time-stretch, pitch 
 2. **End card**: may the final title hold about 3–4 s after the voice ends (music tail), or must the video end exactly at 325.88 s?
 3. **Music**: do you have licensed music/SFX you want used? Otherwise I'll compose a restrained score procedurally (fully licence-free) or use only CC0 tracks with documented licences.
 4. **Images**: if the Commons limit persists, can you add specific archival images to `assets/images/inbox/`?
+
+## 7. Decisions (answered by the producer)
+1. 294.96 s sentence: **keep the narration, correct it on screen** ("Today: entirely within Poland").
+2. End card: **allowed** to hold 3–4 s after the narration ends (music tail).
+3. Music/SFX: **none supplied** → licence-free score and sound design created for the project (procedural/own synthesis, documented).
+4. Images: **find other sources** → Library of Congress (Photochrom prints, PD) and Europeana added to the network allowlist; Commons used whenever its rate limit allows.
