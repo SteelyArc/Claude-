@@ -33,6 +33,8 @@ def T(name):
         return kreise.difference(rel("pomorskie_1919")).difference(rel("danzig_allied_1920")).buffer(-0.001).buffer(0.001)
     if name == "five_villages_1920":    # assigned to Poland 12 Aug 1920 (right bank of the Vistula)
         return T("plebiscite_area_marienwerder").intersection(rel("pomorskie_1920")).buffer(-0.0005).buffer(0.0005)
+    if name == "poland_1920":           # Poland 1924 minus East Upper Silesia (Polish only from 1922)
+        return rel("poland_1924").difference(rel("reich_1920_12")).buffer(-0.002).buffer(0.002)
     if name == "annexed_1939":          # former Polish + Free City land in the Reichsgau (RB West Prussia was German)
         return rel("reichsgau_dwp").intersection(unary_union([rel("poland_1938"), rel("free_city")])).buffer(-0.002).buffer(0.002)
     if name == "soviet_1945":           # northern East Prussia under Soviet control: pre-war East Prussia minus Poland 1945

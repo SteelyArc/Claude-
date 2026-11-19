@@ -240,7 +240,9 @@ class AtlasMap:
         self._ripples = {}
 
     def path(self, key, geom, tol):
-        k = (key, round(tol, 1))
+        if tol > 0:   # quantise so continuous zooms reuse cached paths (steps of 2^(1/3))
+            tol = 2 ** (math.floor(math.log2(tol) * 3) / 3)
+        k = (key, round(tol, 2))
         if k not in self._path_cache:
             self._path_cache[k] = geom_path(geom, tol)
         return self._path_cache[k]
@@ -277,7 +279,7 @@ class AtlasMap:
         p.setColor4f(hexc(STYLE["paper"])); canvas.drawPath(land, p)
         canvas.restore()
 
-    def fill(self, canvas, cam, key, geom, color, alpha=1.0, band=True, reveal=None, hatch=None):
+    def fill(self, canvas, cam, key, geom, color, alpha=1.0, band=True, reveal=None, hatch=None, reveal_out=False):
         """Territory wash. reveal=(origin_xy, progress) for an ink-spread reveal from a point."""
         if alpha <= 0.003 or geom is None or geom.is_empty:
             return
@@ -319,7 +321,7 @@ class AtlasMap:
             mask.setShader(skia.GradientShader.MakeRadial(
                 skia.Point(ox, oy), r, [skia.Color(0, 0, 0, 255), skia.Color(0, 0, 0, 255), skia.Color(0, 0, 0, 0)],
                 [0.0, 0.82, 1.0]))
-            mask.setBlendMode(skia.BlendMode.kDstIn)
+            mask.setBlendMode(skia.BlendMode.kDstOut if reveal_out else skia.BlendMode.kDstIn)
             canvas.drawPaint(mask)
         canvas.restore()  # layer
         canvas.restore()
@@ -474,13 +476,18 @@ def region_label(canvas, cam, xy, lines, alpha=1.0, size=40, color=None, trackin
 def water_label(canvas, cam, xy, lines, alpha=1.0, size=44, tracking=0.28):
     region_label(canvas, cam, xy, lines, alpha, size, STYLE["water_label"], tracking, "serif_italic")
 
-def title_block(canvas, date, title, alpha=1.0, y=330, sub=None, date_size=150, rise=0.0):
-    """Top title zone (y 220–560): big date, ornament rule, chapter title."""
+def title_block(canvas, date, title, alpha=1.0, y=330, sub=None, date_size=150, rise=0.0, light=False,
+                title_alpha=None, sub_alpha=None):
+    """Top title zone (y 220–560): big date, ornament rule, chapter title. light=True for dark backgrounds."""
     if alpha <= 0.003:
         return
-    ink = STYLE["ink"]
+    ink = "#F3EAD7" if light else STYLE["ink"]
+    halo = None if light else STYLE["halo"]
+    soft = "#D9CBB0" if light else STYLE["ink_soft"]
+    ta = alpha if title_alpha is None else title_alpha
+    sa = alpha if sub_alpha is None else sub_alpha
     if date:
-        draw_text(canvas, date, W / 2, y, font("display_bold", date_size), ink, alpha, 0.04, halo=STYLE["halo"],
+        draw_text(canvas, date, W / 2, y, font("display_bold", date_size), ink, alpha, 0.04, halo=halo,
                   halo_w=10, rise=rise)
     ry = y + 42
     p = skia.Paint(AntiAlias=True, StrokeWidth=2); p.setColor4f(hexc(ink, 0.75 * alpha))
@@ -489,11 +496,10 @@ def title_block(canvas, date, title, alpha=1.0, y=330, sub=None, date_size=150, 
     q = skia.Paint(AntiAlias=True); q.setColor4f(hexc(ink, 0.85 * alpha)); canvas.drawPath(d, q)
     yy = ry + 66
     for ln in title if isinstance(title, (list, tuple)) else [title]:
-        draw_text(canvas, ln, W / 2, yy, font("caps", 50), ink, alpha, 0.14, halo=STYLE["halo"], halo_w=9)
+        draw_text(canvas, ln, W / 2, yy, font("caps", 50), ink, ta, 0.14, halo=halo, halo_w=9)
         yy += 62
     if sub:
-        draw_text(canvas, sub, W / 2, yy + 4, font("serif_italic", 36), STYLE["ink_soft"], alpha, 0.0,
-                  halo=STYLE["halo"], halo_w=7)
+        draw_text(canvas, sub, W / 2, yy + 4, font("serif_italic", 36), soft, sa, 0.0, halo=halo, halo_w=7)
 
 def legend(canvas, items, alpha=1.0, y=1418, cols=2):
     """Bottom caption zone legend. items: [(color_or_None, label, hatch_bool)]."""

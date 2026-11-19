@@ -3,3 +3,6 @@ __pycache__/
 /build/
 /cache/
 *.f32
+/cache/
+assets/images/loc/*.tif
+assets/images/loc/*.jp2

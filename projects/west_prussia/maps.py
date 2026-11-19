@@ -233,7 +233,7 @@ def map_1919(canvas, t=1.0, frame=0):
     a = atlas(1920)
     cam = cam_at(*REG_CAM)
     start(canvas, a, cam)
-    de = G("reich_1920_12", VC); pl = G("poland_1924", VC); fc = G("free_city"); pleb = G("plebiscite_area_marienwerder")
+    de = G("reich_1920_12", VC); pl = G("poland_1920", VC); fc = G("free_city"); pleb = G("plebiscite_area_marienwerder")
     wp = G("west_prussia_1909")
     a.fill(canvas, cam, "de20", de.difference(pleb.buffer(100)), PALETTE["germany"], 0.9)
     a.fill(canvas, cam, "pl20", pl, PALETTE["poland"], ease(seg(t, 0.2, 0.5)),
@@ -271,7 +271,7 @@ def map_plebiscite(canvas, t=1.0, frame=0):
     a = atlas(1920)
     cam = cam_at(19.12, 53.84, 178)
     start(canvas, a, cam)
-    pleb = G("plebiscite_area_marienwerder"); pl = G("poland_1924", VC); fc = G("free_city")
+    pleb = G("plebiscite_area_marienwerder"); pl = G("poland_1920", VC); fc = G("free_city")
     de = G("reich_1920_12", VC)
     a.fill(canvas, cam, "pl20", pl, PALETTE["poland"], 0.85)
     a.fill(canvas, cam, "fc20", fc, PALETTE["freecity"], 0.85)
