@@ -104,6 +104,11 @@ class Szene:
     sichtbar_von: float = 0.0
     sichtbar_bis: float = 0.0
     hinweis: str = ""
+    # ab Etappe „Drehbuch“: Szenenart, Drehbuch-Angaben, eigener Renderer, Texteinblendungen
+    art: str = "foto"
+    spez: object = None
+    renderer: object = field(default=None, repr=False)
+    einblendungen: list = field(default_factory=list, repr=False)
 
 
 def _darstellung_waehlen(breite: int, hoehe: int, ziel_seitenv: float) -> str:

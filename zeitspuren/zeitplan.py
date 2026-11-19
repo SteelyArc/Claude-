@@ -83,7 +83,8 @@ def aus_datei(datei: Path, bilder: list[Path]) -> list[tuple[float, Path, str, s
 
 
 def szenen_bilden(eintraege, sprechdauer: float, vorlauf: float, nachlauf: float,
-                  ueberblendung: float, bilddauer_min: float, bilddauer_max: float
+                  ueberblendung: float, bilddauer_min: float, bilddauer_max: float,
+                  arten: list[str] | None = None
                   ) -> tuple[list[Szene], float, list[str], list[str]]:
     """Legt fest, wann jedes Bild sichtbar ist (inklusive Überblendungen).
 
@@ -106,8 +107,10 @@ def szenen_bilden(eintraege, sprechdauer: float, vorlauf: float, nachlauf: float
             warnungen.append(f"Bild '{sz.pfad.name}' steht nur {dauer:.1f} s (empfohlen ≥ {bilddauer_min:.0f} s).")
         # Das letzte Bild trägt den Ausklang (Nachlauf) mit – der zählt nicht.
         standzeit = dauer - (nachlauf if i == len(szenen) - 1 else 0.0)
-        if standzeit > bilddauer_max:
-            zu_lang.append(f"'{sz.pfad.name}' stünde {standzeit:.1f} s (höchstens {bilddauer_max:.0f} s)")
+        art = arten[i] if arten else "foto"
+        grenze = {"film": float("inf"), "karte": bilddauer_max * 2.5}.get(art, bilddauer_max)
+        if standzeit > grenze:
+            zu_lang.append(f"'{sz.pfad.name}' stünde {standzeit:.1f} s (höchstens {grenze:.0f} s)")
 
     halb = ueberblendung / 2
     for i, sz in enumerate(szenen):

@@ -25,7 +25,7 @@ class Format:
     hoehe: int = 1920
     fps: int = 30
     crf: int = 18
-    preset: str = "slow"
+    preset: str = "fast"  # gleiche Qualität wie "slow" (SSIM gemessen), halbe Rechenzeit
     vorschau: bool = False
 
 
@@ -43,14 +43,26 @@ def _weich(x: float) -> float:
     return 0.5 - 0.5 * math.cos(math.pi * x)
 
 
+def _szenenbild(sz: Szene, t: float, fmt: Format) -> Image.Image:
+    """Ein Bild der Szene: Foto-Kamerafahrt (Etappe 1) oder eigener Renderer
+    (Karte, Archivfilm), danach die Texteinblendungen der Szene."""
+    if sz.renderer is not None:
+        bild = sz.renderer(t)
+    else:
+        bild = einzelbild(sz, t, fmt.breite, fmt.hoehe)
+    for e in sz.einblendungen:
+        e.auftragen(bild, t)
+    return bild
+
+
 def _bild_zur_zeit(szenen: list[Szene], t: float, fmt: Format) -> bytes:
     aktiv = [s for s in szenen if s.sichtbar_von <= t < s.sichtbar_bis] or [szenen[-1]]
     if len(aktiv) == 1:
-        return einzelbild(aktiv[0], t, fmt.breite, fmt.hoehe).tobytes()
+        return _szenenbild(aktiv[0], t, fmt).tobytes()
     alt, neu = aktiv[0], aktiv[1]
     spanne = alt.sichtbar_bis - neu.sichtbar_von
     a = _weich((t - neu.sichtbar_von) / spanne)
-    bild = Image.blend(einzelbild(alt, t, fmt.breite, fmt.hoehe), einzelbild(neu, t, fmt.breite, fmt.hoehe), a)
+    bild = Image.blend(_szenenbild(alt, t, fmt), _szenenbild(neu, t, fmt), a)
     return bild.tobytes()
 
 

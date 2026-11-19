@@ -1,0 +1,37 @@
+# ZEITSPUREN – Beispiel-Drehbuch
+# Zum Verwenden in "drehbuch.txt" umbenennen (bzw. Claude schreibt es für Sie).
+#
+# Jede Szene beginnt am Zeilenanfang mit:   ZEIT   ART   QUELLE
+#   ZEIT   = Zeitpunkt in der Sprecheraufnahme, ab dem die Szene zu sehen ist
+#   ART    = foto | dokument | film | karte
+#   QUELLE = Dateiname (foto, dokument, film, eingescannte Karte)
+#            oder ein Kartenjahr (animierte Karte aus historischen Grenzdaten)
+# Darunter eingerückt die Angaben zur Szene (alle optional).
+
+0:00   foto      01_berlin_strasse.jpg
+       ort: Berlin
+       zeit: Herbst 1938
+       quelle: Bundesarchiv, Bild 183-XXXX
+
+0:09   karte     1938
+       wechsel: 1945                  # Grenzen wechseln animiert zum Stand 1945
+       wechsel_bei: 0:21              # genau bei diesem Satz der Erzählung
+       ausschnitt: Europa
+       fahrt: Danzig 900              # Kamera fährt auf Danzig, Bildbreite 900 km
+       hervorheben: Germany=rot:Deutsches Reich; Poland=gold:Polen
+       hervorheben_danach: Poland=gold:Polen
+       orte: Berlin, Danzig, Warschau
+       titel: Der Weg in den Krieg
+
+0:28   dokument  03_vertrag.jpg
+       zeit: 23. August 1939
+       quelle: Politisches Archiv des Auswärtigen Amts
+
+0:37   film      04_wochenschau.mp4
+       ab: 1:12                       # Startpunkt im Film
+       ort: Westerplatte
+       zeit: 1. September 1939
+       quelle: Wochenschau, Bundesarchiv Filmothek
+
+0:48   karte     05_karte_1939_scan.jpg   # eingescannte Originalkarte
+       quelle: Staatsbibliothek zu Berlin

@@ -2,7 +2,9 @@
 
 Automatische Herstellung hochwertiger historischer Dokumentationsvideos im
 Hochformat (1080 × 1920, 9:16) für TikTok – aus **Ihren** historischen Fotos,
-Karten und einer fertigen Sprecheraufnahme.
+Dokumenten, Archivfilmen, **animierten historischen Karten** und einer fertigen
+Sprecheraufnahme. Keine Diashow, sondern ein abwechslungsreicher Schnitt im
+Stil hochwertiger TV-Geschichtsdokumentationen.
 
 **Kanalvorgabe:** Jede Dokumentation dauert **ca. 5 Minuten**. Die
 Sprecheraufnahme sollte also möglichst genau 5:00 Minuten lang sein, und es
@@ -39,6 +41,51 @@ einen Satz wie *„Erstelle das Video für Projekt mauerfall“*.
 
 ---
 
+## Die vier Szenenarten
+
+| Art | Was zu sehen ist | Woher das Material kommt |
+|---|---|---|
+| **foto** | Originalfoto mit langsamer Kamerafahrt, optional Ortsmarke („BERLIN · Herbst 1938“) und Bildquelle | Ihre Archivfotos |
+| **dokument** | Urkunde, Brief, Zeitungsseite – vollständig gezeigt, langsames Heranfahren | Ihre Scans |
+| **film** | Echter Archivfilm (z. B. Wochenschau) in Originalgeschwindigkeit, ohne Originalton | Ihre Filmdateien (`.mp4`, `.mov` …) |
+| **karte** | **Animierte historische Karte**: Länder farbig hervorgehoben, Kamerafahrt auf Städte/Regionen, animierter Grenzwechsel, Ortsnamen und Jahreszahl elegant eingeblendet | Geprüfte historische Grenzdaten (siehe unten) – oder Ihre eingescannte Originalkarte |
+
+### Wie genau sind die animierten Karten?
+- Die Grenzen stammen aus dem wissenschaftlich dokumentierten Datensatz
+  **historical-basemaps** (fest verankerter Versionsstand) für **Stichjahre**,
+  z. B. 1815, 1878, 1900, **1914, 1920, 1930, 1938, 1945**, 1960, 1994 und viele
+  frühere Epochen. Küsten, Flüsse und Orte stammen aus **Natural Earth**.
+- **Zwischenstände werden nicht erfunden.** Ein Grenzwechsel blendet von einem
+  Stichjahr zum nächsten über (z. B. 1938 → 1945). Die Karte zeigt immer klein
+  an, welchen Stand sie darstellt.
+- Ländernamen werden gegen die Daten des jeweiligen Jahres geprüft. Ein Name,
+  den es im Datensatz nicht gibt, wird abgelehnt statt geraten.
+- Grenzen, die der Datensatz selbst als „ungefähr“ einstuft, werden gestrichelt
+  und blasser gezeichnet.
+- Für sehr kleinräumige Ereignisse (einzelne Städte, Frontverläufe einzelner
+  Tage) reicht die Genauigkeit eines Weltdatensatzes nicht – dafür eignet sich
+  eine eingescannte Originalkarte als Szene „karte“ mit Dateinamen.
+
+Details und Lizenzen: [`daten/QUELLEN.md`](daten/QUELLEN.md)
+
+### Das Drehbuch
+Welche Szene wann zu sehen ist, steht in der Datei `drehbuch.txt` im
+Projektordner. **Sie müssen sie nicht selbst schreiben:** Claude erstellt sie
+aus dem Inhalt Ihrer Erzählung, sodass Karten genau dann erscheinen, wenn
+geografische Veränderungen erklärt werden, und Fotos zu den jeweiligen
+Ereignissen passen. Ein kommentiertes Beispiel liegt in
+`projekte/_vorlage/drehbuch_beispiel.txt`.
+
+Vor dem Erstellen prüft das System das Drehbuch: Dateien vorhanden, Kartenjahre
+verfügbar, Ländernamen im Datensatz, Orte im Ortsverzeichnis – und es meldet,
+wenn zu viele Fotos hintereinander folgen (Diashow-Gefahr) oder keine Karte
+vorkommt.
+
+Ohne `drehbuch.txt` arbeitet das System wie bisher (Fotos gleichmäßig verteilt
+oder nach `zeitplan.txt`).
+
+---
+
 ## Ein neues Video herstellen – Schritt für Schritt
 
 ### Schritt 1: Projekt anlegen lassen
@@ -60,7 +107,13 @@ Schreiben Sie Claude: *„Lege ein neues Projekt **mauerfall** an.“*
 |---|---|---|
 | Sprecheraufnahme | `sprecher.mp3` | auch `.wav`, `.m4a` möglich |
 | Bilder | `01_berlin_1961.jpg`, `02_karte_teilung.png`, … | Nummer = Reihenfolge; für 5 Minuten ca. 35–40 Bilder |
-| Karten | `05_karte_europa_1945.jpg` | Wörter *karte*, *map* oder *plan* im Namen → langsamer Zoom aufs Geschehen |
+| Karten (Scans) | `05_karte_europa_1945.jpg` | Wörter *karte*, *map* oder *plan* im Namen → langsamer Zoom aufs Geschehen |
+| Dokumente | `07_vertrag_1939.jpg` | |
+| Archivfilme | `09_wochenschau.mp4` | Originalgeschwindigkeit, Originalton wird nicht verwendet |
+
+**Bitte zu jedem Foto, Dokument und Film die Quelle notieren** (z. B. in einer
+Datei `quellen.txt` im Projektordner: `01_berlin.jpg = Bundesarchiv, Bild 183-…`).
+Claude übernimmt sie als dezente Quellenangabe ins Video.
 
 Tipp: Bilder möglichst in hoher Auflösung verwenden (mindestens etwa 1500 Pixel
 an der längeren Seite). Zu kleine Bilder meldet das System.
@@ -77,7 +130,7 @@ Claude prüft zuerst das Material, **bevor** gerechnet wird:
   stehen), erfahren Sie, wie viele Bilder noch fehlen. Das Video wird nicht
   durch lange Standbilder künstlich gestreckt.
 
-Ein 5-Minuten-Video braucht in der Endfassung etwa 15–20 Minuten Rechenzeit.
+Ein 5-Minuten-Video braucht in der Endfassung etwa 10 Minuten Rechenzeit.
 Für einen schnellen ersten Eindruck: *„Erstelle eine Vorschau für mauerfall.“*
 
 Claude schickt Ihnen die fertige MP4-Datei direkt in den Chat. Von dort können Sie
@@ -129,7 +182,10 @@ Nach jedem Durchlauf legt das System die tatsächlich verwendete Anordnung in
 ## Ausbaustufen
 - [x] **Etappe 1:** Tonanalyse, Bildanordnung, Kamerafahrten, Überblendungen,
   Doku-Look, Export 1080 × 1920
-- [ ] **Etappe 2:** Bildwechsel automatisch passend zur Erzählung (Spracherkennung)
+- [x] **Erweiterung Doku-Stil:** animierte historische Karten, Dokumente,
+  Archivfilme, elegante Einblendungen, Drehbuch mit Prüfung und Schnittanalyse
+- [ ] **Etappe 2:** Spracherkennung mit Zeitstempeln → Claude legt Szenenwechsel
+  und Kartenanimationen exakt auf die passenden Sätze
 - [ ] **Etappe 3:** Elegante eingebrannte Untertitel, Titelkarte, Jahreszahlen,
   Quellenangaben, Logo
 - [ ] **Etappe 4:** Komfortfunktionen (z. B. automatische Kapitel, Musikbett)
@@ -138,4 +194,4 @@ Nach jedem Durchlauf legt das System die tatsächlich verwendete Anordnung in
 `python3 -m zeitspuren <projekt> [--vorschau]` – benötigt Python ≥ 3.10, Pillow
 und ffmpeg/ffprobe ≥ 6. Einzelbilder werden in Python per Subpixel-Affintransformation
 aus einer 1,12-fach überabgetasteten Bildplatte berechnet (ruckelfreie Zooms) und
-roh an libx264 (CRF 18, preset slow, BT.709) übergeben.
+roh an libx264 (CRF 18, preset fast, BT.709) übergeben.
