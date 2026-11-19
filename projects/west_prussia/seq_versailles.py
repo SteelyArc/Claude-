@@ -18,7 +18,7 @@ from engine.render import (W, H, new_surface, ease, seg, lerp_cam, finish, title
                            font, hexc, draw_graticule)
 from engine.shots import PhotoShot, DocumentShot, ink_mask, ink_blend
 from engine.depth import depth_map
-from projects.west_prussia.maps import G, P, C, cam_at, GRAT, VC, regions
+from projects.west_prussia.maps import G, P, C, D, cam_at, GRAT, VC, regions
 from projects.west_prussia.base import atlas
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -59,8 +59,9 @@ def shot_map_corridor(canvas, T, frame):
     a = _map_base(canvas, cam, T)
     de20 = G("reich_1920_12", VC); pl = G("poland_1920", VC); fc = G("free_city"); wp = G("west_prussia_1909")
     old_de = G("reich_1890", VC)
-    transferred = pl.intersection(old_de).buffer(-300).buffer(300)
-    pl_core = pl.difference(old_de.buffer(300))
+    transferred = D("transferred1920", lambda: pl.intersection(old_de).buffer(-300).buffer(300))
+    pl_core = D("plcore1920", lambda: pl.difference(old_de.buffer(300)))
+    new_border = D("plnew1920", lambda: pl.boundary.intersection(old_de.buffer(2000)))
     k = ease(seg(T, 124.8, 129.4), "inout")          # corridor recolour
     a.fill(canvas, cam, "de20", de20, PALETTE["germany"], 0.9)
     a.fill(canvas, cam, "fc_as_de", fc, PALETTE["germany"], 0.9)
@@ -73,7 +74,7 @@ def shot_map_corridor(canvas, T, frame):
         a.fill(canvas, cam, "tr_pl", transferred, PALETTE["poland"], 0.9, reveal=(C("Thorn"), kr) if kr < 1 else None)
     a.water(canvas, cam, flow=(T - T0) * 0.25); a.coast(canvas, cam)
     a.border(canvas, cam, "wp09", wp.boundary, 1.0, 0.9 * (1 - 0.4 * k), 2.4, "#6B4A2E", dash=(12, 8), halo=False)
-    a.border(canvas, cam, "pl-new", pl.boundary.intersection(old_de.buffer(2000)).intersection(cam.view_box(1.8)),
+    a.border(canvas, cam, "pl-new", new_border,
              ease(seg(T, 124.2, 129.0), "inout"), 1.0, 3.4, nib=True)
     # separation of East Prussia (134.9 s): pulse along the corridor
     pulse = math.sin(math.pi * seg(T, 134.6, 136.4)) if 134.6 < T < 136.4 else 0.0
@@ -126,7 +127,7 @@ def shot_map_danzig(canvas, T, frame):
     kp = ease(seg(T, 148.6, 150.2))
     a.fill(canvas, cam, "pleb", pleb, PALETTE["plebiscite"], kp, hatch={"step": 13, "w": 1.8, "alpha": 0.5, "color": "#8C6A2C"})
     a.water(canvas, cam, flow=(T - T0) * 0.25); a.coast(canvas, cam)
-    a.border(canvas, cam, "pl-b", pl.boundary.intersection(cam.view_box(1.8)), 1.0, 1.0, 2.8)
+    a.border(canvas, cam, "pl-b", D("plb1920", lambda: pl.boundary), 1.0, 1.0, 2.8)
     a.border(canvas, cam, "fc-b", fc.boundary, ease(seg(T, 141.6, 144.2), "inout"), 1.0, 3.4, "#4F6B3A", nib=True)
     a.border(canvas, cam, "pleb-b", pleb.boundary, ease(seg(T, 148.6, 150.4)), kp, 2.4, "#8C6A2C")
     L = Layout("seq_danzig")

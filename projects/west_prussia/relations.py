@@ -31,4 +31,5 @@ R = {
  "poland_1945": 2692206, "soviet_admin_1945": 2801070, "poland_today": 2870169,
  "pomorskie_1999": 2694728, "kujpom_1999": 2695509, "warmaz_1999": 2694729, "zachpom_1999": 2694734,
  "lithuania_today": 2692216,
+ "russia_1914": 2851294, "regency_poland_1916": 2695684, "austria_hungary_1908": 2692361,
 }

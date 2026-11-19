@@ -88,7 +88,7 @@ def compose(duration, progression=("Dm9", "Bbmaj7", "Gm9", "Asus", "Dm9", "Fmaj7
     """Restrained documentary bed: overlapping pad chords, low drone, sparse piano motif, hall reverb."""
     rng = np.random.default_rng(seed)
     n = int(duration * SR)
-    L = np.zeros(n + int(8 * SR), np.float32); R = np.zeros_like(L)
+    L = np.zeros(n + int((chord_len + 10) * SR), np.float32); R = np.zeros_like(L)
     t_ch = 0.0; i = 0
     while t_ch < duration:
         name = progression[i % len(progression)]

@@ -68,6 +68,13 @@ def text_width(txt, ft, tracking=0.0):
     ws = ft.getWidths(ft.textToGlyphs(txt))
     return sum(ws) + tracking * ft.getSize() * (len(txt) - 1)
 
+def fit_font(kind, size, txt, max_w, tracking=0.0, min_size=16):
+    """Largest font ≤ size whose rendered width fits max_w (guarantees text stays inside its box)."""
+    s = size
+    while s > min_size and text_width(txt, font(kind, s), tracking) > max_w:
+        s -= 1
+    return font(kind, s)
+
 def draw_text(canvas, txt, x, y, ft, color, alpha=1.0, tracking=0.0, align="center",
               halo=None, halo_w=0.0, rise=0.0):
     """Draw text with optional letter-spacing (em units) and a soft halo. y = baseline."""
@@ -242,7 +249,7 @@ class AtlasMap:
     def path(self, key, geom, tol):
         if tol > 0:   # quantise so continuous zooms reuse cached paths (steps of 2^(1/3))
             tol = 2 ** (math.floor(math.log2(tol) * 3) / 3)
-        k = (key, round(tol, 2))
+        k = (key, id(geom), round(tol, 2))   # id: same name in different scenes ≠ same shape
         if k not in self._path_cache:
             self._path_cache[k] = geom_path(geom, tol)
         return self._path_cache[k]
@@ -496,10 +503,10 @@ def title_block(canvas, date, title, alpha=1.0, y=330, sub=None, date_size=150, 
     q = skia.Paint(AntiAlias=True); q.setColor4f(hexc(ink, 0.85 * alpha)); canvas.drawPath(d, q)
     yy = ry + 66
     for ln in title if isinstance(title, (list, tuple)) else [title]:
-        draw_text(canvas, ln, W / 2, yy, font("caps", 50), ink, ta, 0.14, halo=halo, halo_w=9)
+        draw_text(canvas, ln, W / 2, yy, fit_font("caps", 50, ln, 880, 0.14), ink, ta, 0.14, halo=halo, halo_w=9)
         yy += 62
     if sub:
-        draw_text(canvas, sub, W / 2, yy + 4, font("serif_italic", 36), soft, sa, 0.0, halo=halo, halo_w=7)
+        draw_text(canvas, sub, W / 2, yy + 4, fit_font("serif_italic", 36, sub, 880), soft, sa, 0.0, halo=halo, halo_w=7)
 
 def legend(canvas, items, alpha=1.0, y=1418, cols=2):
     """Bottom caption zone legend. items: [(color_or_None, label, hatch_bool)]."""
@@ -528,7 +535,7 @@ def legend(canvas, items, alpha=1.0, y=1418, cols=2):
 
 def caption(canvas, lines, alpha=1.0, y=1500, size=30):
     for i, ln in enumerate(lines):
-        draw_text(canvas, ln, W / 2, y + i * size * 1.3, font("sans_italic", size), STYLE["ink_soft"], alpha, 0.0,
+        draw_text(canvas, ln, (60 + 930) / 2, y + i * size * 1.3, fit_font("sans_italic", size, ln, 860), STYLE["ink_soft"], alpha, 0.0,
                   halo=STYLE["halo"], halo_w=6)
 
 def finish(canvas, grain_i=None, paper=True, vignette=0.32, grain_alpha=0.10):

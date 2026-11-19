@@ -5,7 +5,7 @@ mix shots. Photographs are only moved/scaled and parallax-warped by a few pixels
 """
 import math, os
 import numpy as np, cv2, skia
-from engine.render import W, H, hexc, STYLE, draw_text, font, ease, seg, paper_texture
+from engine.render import W, H, hexc, STYLE, draw_text, font, fit_font, ease, seg, paper_texture
 
 def np_to_image(arr):
     if arr.shape[2] == 3:
@@ -77,9 +77,9 @@ class PhotoShot:
         cy = y0 + self.box_h + 58
         if caption:
             for i, ln in enumerate(caption):
-                draw_text(canvas, ln, W / 2, cy + i * 40, font("serif_italic", 33), "#F1E7D2", alpha)
+                draw_text(canvas, ln, W / 2, cy + i * 40, fit_font("serif_italic", 33, ln, self.box_w), "#F1E7D2", alpha)
         if credit:
-            draw_text(canvas, credit, W / 2, cy + len(caption or []) * 40 + 4, font("sans", 25), "#CDBFA4", alpha * 0.9, 0.04)
+            draw_text(canvas, credit, W / 2, cy + len(caption or []) * 40 + 4, fit_font("sans", 25, credit, self.box_w, 0.04), "#CDBFA4", alpha * 0.9, 0.04)
 
 # ------------------------------------------------------------------------------------------- document
 class DocumentShot:
@@ -135,12 +135,12 @@ class DocumentShot:
                     [skia.Color(255, 240, 210, 40), skia.Color(0, 0, 0, 0), skia.Color(30, 18, 6, 150)], [0, 0.5, 1]))
         canvas.drawPaint(v)
         if caption:
-            bg = skia.Paint(AntiAlias=True); bg.setColor4f(hexc("#2B2117", 0.55))
+            bg = skia.Paint(AntiAlias=True); bg.setColor4f(hexc("#2B2117", 0.82))
             canvas.drawRoundRect(skia.Rect.MakeXYWH(70, 1400, W - 140 - 80, 44 * len(caption) + 70), 14, 14, bg)
             for i, ln in enumerate(caption):
-                draw_text(canvas, ln, (W - 80) / 2, 1452 + i * 44, font("serif_italic", 34), "#F1E7D2", 1.0)
+                draw_text(canvas, ln, 500, 1452 + i * 44, fit_font("serif_italic", 34, ln, 800), "#F1E7D2", 1.0)
             if credit:
-                draw_text(canvas, credit, (W - 80) / 2, 1452 + len(caption) * 44 + 6, font("sans", 25), "#D8CBB0", 0.95, 0.03)
+                draw_text(canvas, credit, 500, 1452 + len(caption) * 44 + 6, fit_font("sans", 25, credit, 800, 0.03), "#D8CBB0", 0.95, 0.03)
 
 # ------------------------------------------------------------------------------------------- transitions
 _noise = {}

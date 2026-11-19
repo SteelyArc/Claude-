@@ -3,7 +3,7 @@ import os, subprocess, multiprocessing as mp, time, shutil
 import numpy as np
 
 FPS = 30
-X264 = ["-c:v", "libx264", "-preset", "slow", "-crf", "15", "-pix_fmt", "yuv420p", "-profile:v", "high",
+X264 = ["-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p", "-profile:v", "high",
         "-level", "4.2", "-r", str(FPS), "-g", "60", "-bf", "2", "-movflags", "+faststart"]
 
 def _worker(args):

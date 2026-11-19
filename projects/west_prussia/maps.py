@@ -35,6 +35,13 @@ def NE_COUNTRY(a3, clip=(2, 42, 34, 60)):
 def GRAT():
     return graticule_geoms(project_pt, (0, 40), (40, 64), 1.0)
 
+_derived = {}
+def D(key, fn):
+    """Cache any derived (projected) geometry by key – geometry ops must never run per frame."""
+    if key not in _derived:
+        _derived[key] = fn()
+    return _derived[key]
+
 def P(lon, lat):
     return project_pt(lon, lat)
 
@@ -82,15 +89,20 @@ def map_1466(canvas, t=1.0, frame=0):
     cam = lerp_cam(cam_at(19.1, 54.1, 470), cam_at(19.05, 53.95, 390), ease(seg(t, 0, 1), "sine"))
     start(canvas, a, cam)
     rp = G("royal_prussia_1466"); order = G("order_1466"); warm = G("warmia")
-    rp_core = rp.difference(warm.buffer(200))
+    rp_core = D("rp_core", lambda: rp.difference(warm.buffer(200)))
     a.fill(canvas, cam, "order1466", order, PALETTE["order"], ease(seg(t, 0.0, 0.25)))
+    k_rp = ease(seg(t, 0.35, 0.65), "out")
+    if k_rp < 1:   # before the division the western lands still belong to the Order: retreat as Royal Prussia spreads
+        pre = D("pre1466", lambda: G("order_1455").intersection(rp).buffer(0))
+        a.fill(canvas, cam, "pre1466", pre, PALETTE["order"], ease(seg(t, 0.0, 0.25)),
+               reveal=(C("Thorn"), k_rp) if k_rp > 0 else None, reveal_out=True)
     a.fill(canvas, cam, "rp1466", rp_core, PALETTE["poland"], ease(seg(t, 0.35, 0.6)),
            reveal=((C("Thorn")), ease(seg(t, 0.35, 0.65), "out")))
     a.fill(canvas, cam, "warm", warm, PALETTE["warmia"], ease(seg(t, 0.45, 0.7)),
            hatch={"step": 15, "w": 1.6, "alpha": 0.35, "color": "#9A5A48"})
     a.water(canvas, cam); a.coast(canvas, cam)
     a.border(canvas, cam, "o1466", order.boundary, 1.0, ease(seg(t, 0, 0.2)), 1.6, STYLE["ink_soft"])
-    a.border(canvas, cam, "rp-order", shared_border(rp, order), ease(seg(t, 0.25, 0.6), "inout"), 1.0, 3.6, nib=True)
+    a.border(canvas, cam, "rp-order", D("sb_rp_order", lambda: shared_border(rp, order)), ease(seg(t, 0.25, 0.6), "inout"), 1.0, 3.6, nib=True)
     a.border(canvas, cam, "rpo", rp.boundary, 1.0, ease(seg(t, 0.55, 0.75)), 2.0)
     k = ease(seg(t, 0.6, 0.85)); L = Layout("1466")
     regions(canvas, cam, L, [
@@ -120,7 +132,8 @@ def map_1772(canvas, t=1.0, frame=0):
     cam = cam_at(23.3, 52.2, 1450)
     start(canvas, a, cam)
     a.fill(canvas, cam, "prussia1744", G("prussia_1744", CL), PALETTE["prussia"], 0.5, band=False)
-    a.fill(canvas, cam, "russia1743", G("russia_1743", (2, 40, 40, 59.9)), PALETTE["russia"], 0.45, band=False)
+    a.fill(canvas, cam, "russia1743", D("ru1743c", lambda: G("russia_1743", (2, 40, 40, 63)).difference(project(box(18, 59.75, 31.5, 64)))),
+           PALETTE["russia"], 0.45, band=False)
     a.fill(canvas, cam, "plc1773", G("plc_1773", CL), PALETTE["poland"], 0.9)
     shares = [("prus", "prussian_share_1772", "#93A8BF", 0.15),
               ("rus", "russian_share_1772", PALETTE["russia"], 0.4),
@@ -164,10 +177,10 @@ def map_1773(canvas, t=1.0, frame=0):
     wp = G("west_prussia_1773"); ep = G("east_prussia_1773", RC); netze = G("netze_1773")
     pl = G("plc_1773", RC); pom = G("prussia_1744", RC)
     a.fill(canvas, cam, "pl73", pl, PALETTE["poland"], 0.85)
-    a.fill(canvas, cam, "pom44", pom.difference(ep.buffer(100)).difference(wp.buffer(50)).difference(netze.buffer(50)),
+    a.fill(canvas, cam, "pom44", D("pom44d", lambda: pom.difference(ep.buffer(100)).difference(wp.buffer(50)).difference(netze.buffer(50))),
            PALETTE["prussia"], 0.45, band=False)
-    a.fill(canvas, cam, "ep73", ep.difference(wp.buffer(50)), PALETTE["prussia"], 0.55, band=False)
-    a.fill(canvas, cam, "netze", netze.difference(wp.buffer(50)), PALETTE["prussia"], 0.55, band=False,
+    a.fill(canvas, cam, "ep73", D("ep73d", lambda: ep.difference(wp.buffer(50))), PALETTE["prussia"], 0.55, band=False)
+    a.fill(canvas, cam, "netze", D("netzed", lambda: netze.difference(wp.buffer(50))), PALETTE["prussia"], 0.55, band=False,
            hatch={"step": 14, "w": 1.5, "alpha": 0.35, "color": "#4E5E70"})
     a.fill(canvas, cam, "wp73", wp, "#93A8BF", ease(seg(t, 0.2, 0.6)),
            reveal=(C("Marienwerder"), ease(seg(t, 0.2, 0.65), "out")))
@@ -200,10 +213,10 @@ def map_1793(canvas, t=1.0, frame=0):
     start(canvas, a, cam)
     wp93 = G("west_prussia_1793"); wp73 = G("west_prussia_1773"); pr93 = G("prussia_1793", RC)
     pl93 = G("plc_1793", RC)
-    gain = wp93.difference(wp73.buffer(1500)).buffer(-800).buffer(800)
+    gain = D("gain93", lambda: wp93.difference(wp73.buffer(1500)).buffer(-800).buffer(800))
     a.fill(canvas, cam, "pl93", pl93, PALETTE["poland"], 0.85)
-    a.fill(canvas, cam, "pr93", pr93.difference(wp93.buffer(100)), PALETTE["prussia"], 0.5, band=False)
-    a.fill(canvas, cam, "wp93", wp93.difference(gain), "#93A8BF", 1.0)
+    a.fill(canvas, cam, "pr93", D("pr93d", lambda: pr93.difference(wp93.buffer(100))), PALETTE["prussia"], 0.5, band=False)
+    a.fill(canvas, cam, "wp93", D("wp93d", lambda: wp93.difference(gain)), "#93A8BF", 1.0)
     a.fill(canvas, cam, "gain93", gain, "#6F89A6", ease(seg(t, 0.3, 0.7)),
            reveal=(C("Danzig"), ease(seg(t, 0.3, 0.75), "out")))
     a.water(canvas, cam); a.coast(canvas, cam)
@@ -235,7 +248,7 @@ def map_1919(canvas, t=1.0, frame=0):
     start(canvas, a, cam)
     de = G("reich_1920_12", VC); pl = G("poland_1920", VC); fc = G("free_city"); pleb = G("plebiscite_area_marienwerder")
     wp = G("west_prussia_1909")
-    a.fill(canvas, cam, "de20", de.difference(pleb.buffer(100)), PALETTE["germany"], 0.9)
+    a.fill(canvas, cam, "de20", D("de20d", lambda: de.difference(pleb.buffer(100))), PALETTE["germany"], 0.9)
     a.fill(canvas, cam, "pl20", pl, PALETTE["poland"], ease(seg(t, 0.2, 0.5)),
            reveal=(C("Thorn"), ease(seg(t, 0.2, 0.55), "out")))
     a.fill(canvas, cam, "fc20", fc, PALETTE["freecity"], ease(seg(t, 0.5, 0.7)))
@@ -243,7 +256,7 @@ def map_1919(canvas, t=1.0, frame=0):
            hatch={"step": 13, "w": 1.8, "alpha": 0.5, "color": "#8C6A2C"})
     a.water(canvas, cam); a.coast(canvas, cam)
     a.border(canvas, cam, "wp09", wp.boundary, 1.0, 0.9, 2.4, "#6B4A2E", dash=(12, 8), halo=False)
-    a.border(canvas, cam, "pl-de", pl.boundary.intersection(cam.view_box(1.6)), ease(seg(t, 0.15, 0.5)), 1.0, 3.2, nib=True)
+    a.border(canvas, cam, "pl-de", D("pl20b", lambda: pl.boundary), ease(seg(t, 0.15, 0.5)), 1.0, 3.2, nib=True)
     a.border(canvas, cam, "fcb", fc.boundary, ease(seg(t, 0.5, 0.65)), 1.0, 3.0)
     a.border(canvas, cam, "plebb", pleb.boundary, 1.0, ease(seg(t, 0.65, 0.8)), 2.2, "#8C6A2C")
     L = Layout("1919")
@@ -275,17 +288,17 @@ def map_plebiscite(canvas, t=1.0, frame=0):
     de = G("reich_1920_12", VC)
     a.fill(canvas, cam, "pl20", pl, PALETTE["poland"], 0.85)
     a.fill(canvas, cam, "fc20", fc, PALETTE["freecity"], 0.85)
-    a.fill(canvas, cam, "de20b", de.difference(pleb.buffer(100)), PALETTE["germany"], 0.7)
+    a.fill(canvas, cam, "de20b", D("de20d", lambda: de.difference(pleb.buffer(100))), PALETTE["germany"], 0.7)
     a.fill(canvas, cam, "pleb", pleb, PALETTE["plebiscite"], 1.0,
            hatch={"step": 15, "w": 1.6, "alpha": 0.28, "color": "#8C6A2C"})
     a.water(canvas, cam); a.coast(canvas, cam)
     parts = []
     for k, n in KREISE:
-        g = G(k).intersection(pleb.buffer(50))
+        g = D("kr" + k, lambda: G(k).intersection(pleb.buffer(50)))
         parts.append((n, g))
         a.border(canvas, cam, "kb" + k, g.boundary, 1.0, 0.8, 1.7, "#7A5A24", dash=(7, 6), halo=False)
     a.border(canvas, cam, "plebb2", pleb.boundary, ease(seg(t, 0.0, 0.6)), 1.0, 3.6, "#6E4F1E", nib=True)
-    a.border(canvas, cam, "pl-b", pl.boundary.intersection(cam.view_box(1.6)), 1.0, 1.0, 2.6)
+    a.border(canvas, cam, "pl-b", D("pl20b", lambda: pl.boundary), 1.0, 1.0, 2.6)
     a.border(canvas, cam, "fc-b", fc.boundary, 1.0, 1.0, 2.6)
     from engine.geo import _TR
     inv = lambda x, y: _TR.transform(x, y, direction="INVERSE")
@@ -334,7 +347,7 @@ def map_1939(canvas, t=1.0, frame=0):
     a.fill(canvas, cam, "rg39", G("annexed_1939"), "#C9A49A", ease(seg(t, 0.55, 0.85)), band=False,
            hatch={"step": 12, "w": 2.0, "alpha": 0.5, "color": "#5E2A22"})
     a.water(canvas, cam); a.coast(canvas, cam)
-    a.border(canvas, cam, "pl38b", pl.boundary.intersection(cam.view_box(1.6)), 1.0, 1.0, 2.6)
+    a.border(canvas, cam, "pl38b", D("pl38b", lambda: pl.boundary), 1.0, 1.0, 2.6)
     a.border(canvas, cam, "fc39b", fc.boundary, 1.0, 1.0, 2.6)
     a.border(canvas, cam, "rg39b", rg.boundary, ease(seg(t, 0.55, 0.9)), 1.0, 2.6, "#5E2A22", dash=(12, 7))
     arrows = [("a4", [(17.05, 53.78), (17.65, 53.62), (18.3, 53.47)]),
@@ -366,14 +379,14 @@ def map_1945(canvas, t=1.0, frame=0):
     start(canvas, a, cam, 0.8)
     pl = G("poland_1945", WC); old_de = G("reich_1936", WC); fc = G("free_city")
     de_now = NE_COUNTRY("DEU"); su = G("soviet_1945")
-    ceded = unary_union([pl.intersection(old_de), fc]).buffer(-500).buffer(500)
+    ceded = D("ceded45", lambda: unary_union([pl.intersection(old_de), fc]).buffer(-500).buffer(500))
     a.fill(canvas, cam, "de45", de_now, PALETTE["germany"], 0.9)
     a.fill(canvas, cam, "pl45", pl, PALETTE["poland"], 0.9)
     a.fill(canvas, cam, "ceded", ceded, PALETTE["poland"], ease(seg(t, 0.3, 0.7)), band=False,
            hatch={"step": 13, "w": 1.6, "alpha": 0.45, "color": "#8A3B2E"})
     a.fill(canvas, cam, "su45", su, PALETTE["soviet"], 0.9)
     a.water(canvas, cam); a.coast(canvas, cam)
-    on = shared_border(pl, de_now, 3000)
+    on = D("odern", lambda: shared_border(pl, de_now, 3000))
     a.border(canvas, cam, "odern", on, ease(seg(t, 0.1, 0.6)), 1.0, 4.4, "#8A3B2E", nib=True)
     a.border(canvas, cam, "wp-old", G("west_prussia_1909").boundary, 1.0, 0.9, 2.2, "#3A2F24", dash=(10, 7), halo=False)
     L = Layout("1945")
@@ -413,7 +426,7 @@ def map_today(canvas, t=1.0, frame=0):
     a.water(canvas, cam); a.coast(canvas, cam)
     for k in ("pomorskie_1999", "kujpom_1999", "warmaz_1999", "zachpom_1999"):
         a.border(canvas, cam, "vb" + k, G(k).boundary, 1.0, 0.55, 1.2, STYLE["ink_soft"], dash=(5, 5), halo=False)
-    a.border(canvas, cam, "plb", pl.boundary.intersection(cam.view_box(1.6)), 1.0, 1.0, 2.8)
+    a.border(canvas, cam, "plb", D("pltb", lambda: pl.boundary), 1.0, 1.0, 2.8)
     a.border(canvas, cam, "wptb", wp.boundary, ease(seg(t, 0.2, 0.7)), 1.0, 3.0, "#6B4A2E", dash=(12, 7), nib=True)
     L = Layout("today")
     regions(canvas, cam, L, [
