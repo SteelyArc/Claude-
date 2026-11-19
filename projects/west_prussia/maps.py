@@ -312,7 +312,7 @@ def map_plebiscite(canvas, t=1.0, frame=0):
             lon, lat = manual[n]
         items.append((lon, lat, [n.upper()], 0.95, 26, {"color": "#5A4218"}))
     items += [(18.42, 53.72, ["POLAND"], 0.9, 34, {}), (19.9, 53.98, ["EAST", "PRUSSIA"], 0.9, 30, {}),
-              (18.95, 54.55, ["FREE CITY", "OF DANZIG"], 0.85, 26, {})]
+              (18.98, 54.3, ["FREE CITY", "OF DANZIG"], 0.85, 26, {})]
     regions(canvas, cam, L, items)
     city(canvas, cam, C("Marienwerder"), "", 1.0)
     for n, side in [("Graudenz", "left"), ("Elbing", "right"), ("Danzig", "left")]:

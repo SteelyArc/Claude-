@@ -262,7 +262,7 @@ def s_1922(c, T, f):
     a.border(c, cam, "wp22b", wp.boundary, 1.0, 1.0 - 0.6 * k, 3.2 - 1.2 * k, "#3A2F24", dash=(12, 8) if k > 0.3 else None)
     L = Layout("1922")
     regions(c, cam, L, [(18.1, 53.6, ["POLAND"], 0.9, 34, {}), (19.25, 54.65, ["FREE CITY", "OF DANZIG"], 0.9, 24, {}),
-                        (19.75, 53.75, ["WEST PRUSSIA", "DISTRICT"], ease(seg(T, 162.0, 163.0)), 24, {}),
+                        (19.5, 53.6, ["WEST PRUSSIA", "DISTRICT"], ease(seg(T, 162.0, 163.0)), 24, {}),
                         (16.65, 53.75, ["POSEN–", "WEST PRUSSIA"], ease(seg(T, 162.6, 163.6)), 24, {}),
                         (17.55, 54.9, ["BALTIC SEA"], 1.0, 42, {"water": True})])
     for n, side in (("Danzig", "left"), ("Marienwerder", "right"), ("Thorn", "left"), ("Elbing", "right")):
@@ -367,9 +367,9 @@ def s_1945front(c, T, f):
     a = base_map(c, 1945, cam, 0.8)
     a.fill(c, cam, "de44", G("reich_1939_10", (10, 49, 28, 58)), PALETTE["germany"], 0.75)
     a.water(c, cam); a.coast(c, cam)
-    soviet = [("sv1", [(22.0, 53.3), (21.0, 53.6), (20.1, 54.05), (19.55, 54.3)], 235.9, "Jan 1945"),
-              ("sv2", [(17.6, 52.8), (17.1, 53.4), (16.6, 54.1)], 236.8, "Feb–Mar 1945"),
-              ("sv3", [(18.2, 53.4), (18.4, 53.9), (18.6, 54.28)], 237.6, "Danzig falls 30 Mar 1945")]
+    soviet = [("sv1", [(22.0, 53.3), (21.0, 53.6), (20.1, 54.05), (19.55, 54.3)], 233.6, "Jan 1945"),
+              ("sv2", [(17.6, 52.8), (17.1, 53.4), (16.6, 54.1)], 234.8, "Feb–Mar 1945"),
+              ("sv3", [(18.2, 53.4), (18.4, 53.9), (18.6, 54.28)], 236.2, "Danzig falls 30 Mar 1945")]
     for k, pts, t0, lab in soviet:
         a.path_line(c, cam, k, D(k, lambda pts=pts: LineString([P(*p) for p in pts])), ease(seg(T, t0, t0 + 2.6)),
                     "#8A3B2E", 7.0, 0.9, dash=None, arrow=True)
@@ -384,7 +384,7 @@ def s_1945front(c, T, f):
         place_city(c, cam, L, C(n), n, 1.0, 30, side)
     title_block(c, "1945", "THE END OF THE WAR", ease(seg(T, 231.2, 232.2)), y=330, sub="Soviet offensive and civilian flight")
     legend(c, [("#8A3B2E", "Soviet advance (schematic)", False), ("#3E5C7A", "Flight over the frozen lagoon / by sea", False)],
-           ease(seg(T, 236.0, 237.0)), cols=1)
+           ease(seg(T, 233.8, 234.8)), cols=1)
     finish(c, f)
 
 # ------------------------------------------------------------------------------------------- S12 population movements (253–268)
@@ -450,7 +450,7 @@ def s_today_drift(c, T, f):
             a.border(c, cam, key, geom, 1.0, al, 2.0, "#8A3B2E", dash=(8, 6), halo=False)
     L = Layout("drift")
     ke = 1 - ease(seg(T, 319.5, 321.0))
-    regions(c, cam, L, [(19.8, 51.95, ["POLAND"], 0.9 * ke, 42, {}), (13.4, 51.75, ["GERMANY"], 0.9 * ke, 34, {}),
+    regions(c, cam, L, [(19.8, 51.95, ["POLAND"], 0.9 * ke, 42, {}), (13.4, 51.75, ["GERMANY"], 0.9 * ke * (1 - ease(seg(T, 305.0, 307.5))), 34, {}),
                         (17.2, 55.45, ["BALTIC SEA"], ke, 42, {"water": True})])
     for n, nm, side in (("Danzig", "Gdańsk", "left"), ("Thorn", "Toruń", "right"), ("Elbing", "Elbląg", "right"),
                         ("Marienwerder", "Kwidzyn", "right"), ("Marienburg", "Malbork", "left")):

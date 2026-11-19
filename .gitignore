@@ -6,3 +6,4 @@ __pycache__/
 /cache/
 assets/images/loc/*.tif
 assets/images/loc/*.jp2
+/output/

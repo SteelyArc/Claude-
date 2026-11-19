@@ -7,7 +7,7 @@ from shapely.ops import unary_union
 from engine.geo import ne_clip, project, GEO
 from engine.render import AtlasMap
 
-BBOX = (2.0, 38.0, 40.0, 64.0)  # lon/lat working extent
+BBOX = (2.0, 38.0, 40.0, 72.0)  # lon/lat working extent
 MAJOR = {"Vistula", "Oder", "Neman", "Daugava", "Bug", "Warta", "Elbe"}
 MINOR = {"Narew", "Noteć", "Drwęca", "Pilica", "San", "Łyna", "Wkra", "Gwda", "Wieprz", "Bzura",
          "Luzicka Nisa", "Spree", "Prosna", "Zakhidnyy Buh", "Pripyat", "Mukhavyets", "Neris"}
