@@ -1,0 +1,35 @@
+{
+ "file": "output/West_Prussia_TikTok_1080x1920.mp4",
+ "duration": 329.4,
+ "video": {
+  "codec": "h264",
+  "profile": "High",
+  "w": 1080,
+  "h": 1920,
+  "pix_fmt": "yuv420p",
+  "r_frame_rate": "30/1",
+  "avg_frame_rate": "30/1",
+  "frames": 9880,
+  "bitrate_kbps": 6609
+ },
+ "audio": {
+  "codec": "aac",
+  "sr": "44100",
+  "ch": 2
+ },
+ "black_segments": [],
+ "frozen_segments": [],
+ "loudness": {
+  "integrated_LUFS": -15.1,
+  "LRA": 3.1,
+  "true_peak_dBTP": -1.4
+ },
+ "checks": {
+  "resolution 1080x1920": true,
+  "H.264": true,
+  "yuv420p": true,
+  "30 fps constant": true,
+  "AAC audio": true,
+  "true peak ≤ -1 dBTP": true
+ }
+}
