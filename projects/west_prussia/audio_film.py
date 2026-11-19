@@ -18,6 +18,7 @@ from projects.west_prussia import film as F
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TARGET_LUFS = -15.0
+MUSIC = os.environ.get("MUSIC", "0") == "1"   # producer decision: no background music (default off)
 
 SECTIONS = [  # start, end, progression, chord_len, intensity, piano, gain_db, seed
     (0.0, 60.0, ("Dm9", "Bbmaj7", "Fmaj7", "C"), 7.5, 0.45, True, 0.0, 11),
@@ -43,7 +44,7 @@ def build(out_wav):
     voice = np.zeros(n, np.float32); voice[:len(v)] = v
     # ---- score
     music = np.zeros((n, 2), np.float32)
-    for (t0, t1, prog, cl, inten, piano, gdb, seed) in SECTIONS:
+    for (t0, t1, prog, cl, inten, piano, gdb, seed) in (SECTIONS if MUSIC else []):
         dur = t1 - t0
         m = compose(dur, progression=prog, chord_len=cl, seed=seed, piano=piano, intensity=inten)
         s = int(t0 * SR); e = min(n, s + len(m)); m = m[:e - s]
@@ -79,8 +80,11 @@ def build(out_wav):
     lufs = loudness(full); g = db(TARGET_LUFS - lufs)
     full, gr = limiter(full * g, -1.5)
     print(f"mix {lufs:.1f} LUFS → gain {20*np.log10(g):+.2f} dB, limiter max {gr:.1f} dB, final {loudness(full):.1f} LUFS")
-    vl, ml = loudness(np.stack([voice, voice], 1)), loudness(mus)
-    print(f"voice {vl:.1f} LUFS, music bed {ml:.1f} LUFS → music {vl-ml:.1f} LU under voice")
+    if MUSIC:
+        vl, ml = loudness(np.stack([voice, voice], 1)), loudness(mus)
+        print(f"voice {vl:.1f} LUFS, music bed {ml:.1f} LUFS → music {vl-ml:.1f} LU under voice")
+    else:
+        print("no background music (narration + subtle sound design only)")
     write_wav(out_wav, full)
     return out_wav
 

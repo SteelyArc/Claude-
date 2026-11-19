@@ -58,3 +58,4 @@ Final mix plan: the narration is used sample-for-sample (no time-stretch, pitch 
 2. End card: **allowed** to hold 3–4 s after the narration ends (music tail).
 3. Music/SFX: **none supplied** → licence-free score and sound design created for the project (procedural/own synthesis, documented).
 4. Images: **find other sources** → Library of Congress (Photochrom prints, PD) and Europeana added to the network allowlist; Commons used whenever its rate limit allows.
+5. Background music: **removed at the producer's request** (Phase 4). Final audio = untouched narration + subtle generated sound design.
