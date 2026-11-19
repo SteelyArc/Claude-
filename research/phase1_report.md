@@ -24,7 +24,7 @@ Final mix plan: the narration is used sample-for-sample (no time-stretch, pitch 
 | Time | Narration says | Issue | Proposed visual handling |
 |---|---|---|---|
 | **294.96 s** | "Today, West Prussia is a historical region **divided between modern-day Poland and Germany**." | **Incorrect.** All of the former province's territory, including the parts that stayed German in 1920 (Deutsch Krone, Schlochau, Flatow, Elbing, Marienburg, Marienwerder), has been in **Poland** since 1945. No part lies in today's Germany. | The map shows the historic outline entirely inside Poland, captioned "Today: entirely within Poland". The narration and the image will then disagree for about 6 s. Alternative: you correct that one sentence in ElevenLabs and send a replacement file. |
-| 223.92 s | "**Thousands** of people were imprisoned, deported or murdered." | Understated. Intelligenzaktion Pommern alone ≈ 23,000 victims; Stutthof 63,000–65,000 deaths; Piaśnica 12,000–16,000. | Caption with sourced figures (marked as estimates). |
+| 223.92 s | "**Thousands** of people were imprisoned, deported or murdered." | Understated. Intelligenzaktion Pommern alone ≈ 23,000 victims; Stutthof 63,000–65,000 deaths; Piaśnica 12,000–14,000. | Caption with sourced figures (marked as estimates). |
 | 158.98 s | "The historic province… was dissolved" (placed after the 1920 plebiscite) | Defensible, but the formal date is 1919 de facto / 1 July 1922 de jure. | Caption "1922 – Province formally dissolved". |
 | 38.02 s | "the Kingdom of Poland and Lithuania" | In the 15th century these were two states in personal union. | Labels: "Kingdom of Poland" + "Grand Duchy of Lithuania". |
 | 118.66 s | "Treaty of Versailles in 1919" | Signed 28 Jun 1919, in force 10 Jan 1920 (actual transfer). | Subtitle with both dates. |
@@ -36,7 +36,7 @@ Final mix plan: the narration is used sample-for-sample (no time-stretch, pitch 
 - **1807–1814** (Napoleonic Free City of Danzig; Thorn in the Duchy of Warsaw) isn't narrated. The maps avoid implying a continuous 1793–1919 border.
 - **Versailles split West Prussia four ways** (Poland / Free City / East Prussia after the plebiscite / Germany–Grenzmark). Never colour the whole province Polish.
 - **Plebiscite:** 11 July 1920; Germany 96,923 vs Poland 8,018 (**≈92.4 %**), consistent across FRUS-based figures and Wikipedia. Five right-bank Vistula villages went to Poland (12 Aug 1920).
-- **1939:** annexation of Danzig declared 1 Sep 1939 (some sources say 2 Sep → the screen shows "September 1939"). The Reichsgau was an annexation not recognised in international law, so it's drawn hatched, not as a normal border.
+- **1939:** annexation of Danzig declared 1 Sep 1939 (one source says 2 Sep → the screen shows "September 1939"); Reichsgau created by decree 8 Oct 1939. The Reichsgau was an annexation not recognised in international law, so it's drawn hatched, not as a normal border.
 - **1945:** Danzig fell on 30 Mar 1945; Potsdam was 2 Aug 1945. The border was confirmed only in the 1990 German–Polish treaty, so it's shown as "under Polish administration pending a peace settlement" (hatched), then solid with "1990" in Scene 13.
 
 ## 5. What's still to build
