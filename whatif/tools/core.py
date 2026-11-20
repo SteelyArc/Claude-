@@ -218,39 +218,63 @@ def load_rgb(rel, max_side=None):
 SAMP = skia.SamplingOptions(skia.FilterMode.kLinear, skia.MipmapMode.kLinear)
 
 
-# ---------------------------------------------------------------- post-processing
+# ---------------------------------------------------------------- post-processing (v2)
+POST_STATE = {}          # per-frame hints a scene may set (e.g. depth-of-field strength)
+
+
 class Post:
-    def __init__(self, grain=0.035, vignette=0.45, bloom=0.0, seed=1, warm=None):
+    """Filmic finishing: halation/bloom, tilt-shift DOF, lens chromatic aberration, vignette,
+    full-resolution luminance grain (also dithers 8-bit output against banding), gentle tone shoulder."""
+
+    def __init__(self, grain=0.035, vignette=0.45, bloom=0.0, seed=1, warm=None, halation=0.0, ca=0.0, shoulder=0.0):
         rng = np.random.default_rng(seed)
-        self.noise = [rng.normal(0, 1, (H // 2, W // 2)).astype(np.float32) for _ in range(8)]
+        self.noise = [cv2.GaussianBlur(rng.normal(0, 1, (H, W)).astype(np.float32), (0, 0), 0.55) * 1.6 for _ in range(6)]
         yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
         r = np.sqrt(((xx - W / 2) / (W * 0.62)) ** 2 + ((yy - H / 2) / (H * 0.60)) ** 2)
         self.vig = (1 - vignette * np.clip(r - 0.35, 0, 1) ** 1.6)[..., None].astype(np.float32)
-        self.grain, self.bloom = grain, bloom
+        self.grain, self.bloom, self.halation, self.ca, self.shoulder = grain, bloom, halation, ca, shoulder
+        self.ymask = (yy[:, :1] / H).astype(np.float32)
 
-    def __call__(self, rgba, f):
-        img = rgba[..., :3].astype(np.float32) / 255.0
-        if self.bloom > 0:
+    def __call__(self, img, f):
+        if img.dtype == np.uint8:
+            img = img[..., :3].astype(np.float32) / 255.0
+        dof = POST_STATE.get('dof', 0.0)
+        if dof > 0.01:   # tilt-shift: far (top) of a tilted map softens, a little at the bottom too
+            b1 = cv2.GaussianBlur(img, (0, 0), 2.2 * dof + 0.01); b2 = cv2.GaussianBlur(img, (0, 0), 6.0 * dof + 0.01)
+            top = np.clip((0.38 - self.ymask) / 0.38, 0, 1); bot = np.clip((self.ymask - 0.86) / 0.14, 0, 1) * 0.6
+            m = np.clip(top + bot, 0, 1)[..., None]
+            img = img * (1 - m) + (b1 * (1 - m) + b2 * m) * m
+        if self.bloom > 0 or self.halation > 0:
             small = cv2.resize(img, (W // 4, H // 4), interpolation=cv2.INTER_AREA)
-            hi = np.clip(small - 0.55, 0, 1) * 2.2
-            b = cv2.GaussianBlur(hi, (0, 0), 9) + cv2.GaussianBlur(hi, (0, 0), 28) * 0.7
-            img = 1 - (1 - img) * (1 - np.clip(cv2.resize(b, (W, H)) * self.bloom, 0, 1))  # screen blend
+            hi = np.clip(small - 0.52, 0, 1) * 2.2
+            b = cv2.GaussianBlur(hi, (0, 0), 7) * 0.8 + cv2.GaussianBlur(hi, (0, 0), 22) * 0.7 + cv2.GaussianBlur(hi, (0, 0), 60) * 0.4
+            b = cv2.resize(b, (W, H), interpolation=cv2.INTER_LINEAR)
+            if self.halation > 0:
+                b = b * (1 - self.halation) + b * np.array([1.25, 0.72, 0.45], np.float32) * self.halation
+            img = 1 - (1 - img) * (1 - np.clip(b * max(self.bloom, self.halation), 0, 1))
+        if self.ca > 0:   # radial lateral chromatic aberration
+            for ch, k in ((0, 1 + self.ca), (2, 1 - self.ca)):
+                M = cv2.getRotationMatrix2D((W / 2, H / 2), 0, k)
+                img[..., ch] = cv2.warpAffine(img[..., ch], M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+        if self.shoulder > 0:
+            img = img * (1 + self.shoulder) / (1 + self.shoulder * img)
         img *= self.vig
-        if self.grain > 0:
-            n = cv2.resize(self.noise[f % 8], (W, H), interpolation=cv2.INTER_LINEAR)[..., None]
-            lum = img.mean(axis=2, keepdims=True)
-            img += n * self.grain * (0.35 + 0.65 * (1 - np.abs(lum - 0.5) * 2))
+        n = self.noise[f % 6][..., None]
+        lum = img.mean(axis=2, keepdims=True)
+        img = img + n * (self.grain * (0.30 + 0.70 * (1 - np.abs(lum - 0.45) * 1.8).clip(0, 1)) + 1.2 / 255)
         return (np.clip(img, 0, 1) * 255 + 0.5).astype(np.uint8)
 
 
 # ---------------------------------------------------------------- writer
+X264 = ['-c:v', 'libx264', '-preset', 'slow', '-tune', 'film', '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-r', str(FPS)]
+
+
 class Writer:
-    def __init__(self, out, audio=None, crf=17, t0=0.0, dur=None):
+    def __init__(self, out, audio=None, crf=16, t0=0.0, dur=None):
         cmd = ['ffmpeg', '-y', '-v', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-']
         if audio:
             cmd += ['-ss', str(t0)] + (['-t', str(dur)] if dur else []) + ['-i', audio, '-c:a', 'aac', '-b:a', '192k', '-shortest']
-        cmd += ['-c:v', 'libx264', '-preset', 'slow', '-crf', str(crf), '-pix_fmt', 'yuv420p', '-profile:v', 'high',
-                '-movflags', '+faststart', '-r', str(FPS), out]
+        cmd += X264 + ['-crf', str(crf), '-movflags', '+faststart', out]
         self.p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
 
     def write(self, rgb):
@@ -266,31 +290,68 @@ def new_canvas():
     return arr, surf
 
 
-def render(scene, dur, out, post, audio=None, stills=(), still_dir=None, frames=None):
-    """scene(canvas, t, f) draws one frame. Writes MP4 and optional PNG stills at given times."""
-    n = int(round(dur * FPS))
-    w = Writer(out, audio)
-    still_f = {int(round(s * FPS)): s for s in stills}
-    for f in (frames or range(n)):
+def frame(scene, f, mb=1, shutter=0.5):
+    """Render frame f with temporal motion blur: mb sub-frames spread over the shutter (0.5 = 180 degrees)."""
+    acc = None
+    for i in range(mb):
+        tt = f / FPS + (((i + 0.5) / mb - 0.5) * shutter / FPS if mb > 1 else 0.0)
         arr, surf = new_canvas()
         with surf as c:
-            scene(c, f / FPS, f)
-        img = post(arr, f)
+            scene(c, tt, f)
+        x = arr[..., :3].astype(np.float32)
+        acc = x if acc is None else acc + x
+    return acc / (255.0 * mb)
+
+
+def _render_chunk(args):
+    scene_mod, fr, out, post, mb, still_f, still_dir, name = args
+    import importlib, sys as _s
+    cv2.setNumThreads(1)
+    if os.path.dirname(os.path.abspath(__file__)) not in _s.path: _s.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    mod = importlib.import_module(scene_mod)
+    w = Writer(out)
+    for f in fr:
+        img = post(frame(mod.scene, f, mb), f)
         w.write(img)
         if f in still_f and still_dir:
-            cv2.imwrite(f'{still_dir}/{os.path.basename(out)[:-4]}_{still_f[f]:05.2f}s.png', cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
-        if f % 60 == 0: print(f'  {out.split("/")[-1]} {f}/{n}', flush=True)
+            cv2.imwrite(f'{still_dir}/{name}_{still_f[f]:05.2f}s.jpg', cv2.cvtColor(img, cv2.COLOR_RGB2BGR), [cv2.IMWRITE_JPEG_QUALITY, 93])
+        if f % 30 == 0: print(f'  {name} frame {f}', flush=True)
     w.close()
 
 
-def test_frames(scene, times, post, prefix):
+def render(scene, dur, out, post, audio=None, stills=(), still_dir=None, frames=None, mb=1, workers=1, scene_mod=None):
+    """Render scene to MP4 (optionally in parallel chunks, concatenated losslessly at the end)."""
+    n = int(round(dur * FPS))
+    still_f = {int(round(s * FPS)): s for s in stills}
+    name = os.path.basename(out)[:-4]
+    allf = list(frames or range(n))
+    if workers > 1 and scene_mod:
+        import multiprocessing as mp, tempfile
+        k = (len(allf) + workers - 1) // workers
+        tmp = tempfile.mkdtemp(dir=os.path.dirname(out))
+        parts = [(scene_mod, allf[i * k:(i + 1) * k], f'{tmp}/p{i}.mp4', post, mb, still_f, still_dir, name) for i in range(workers)]
+        with mp.get_context('spawn').Pool(workers) as pool:   # spawn: fork deadlocks with OpenCV/Skia threads
+            for _ in pool.imap_unordered(_render_chunk, parts): pass
+        lst = f'{tmp}/list.txt'; open(lst, 'w').write(''.join(f"file '{p[2]}'\n" for p in parts))
+        subprocess.run(['ffmpeg', '-y', '-v', 'error', '-f', 'concat', '-safe', '0', '-i', lst, '-c', 'copy', '-movflags', '+faststart', out], check=True)
+        import shutil; shutil.rmtree(tmp)
+        return
+    w = Writer(out, audio)
+    for f in allf:
+        img = post(frame(scene, f, mb), f)
+        w.write(img)
+        if f in still_f and still_dir:
+            cv2.imwrite(f'{still_dir}/{name}_{still_f[f]:05.2f}s.jpg', cv2.cvtColor(img, cv2.COLOR_RGB2BGR), [cv2.IMWRITE_JPEG_QUALITY, 93])
+        if f % 30 == 0: print(f'  {name} {f}/{n}', flush=True)
+    w.close()
+
+
+def test_frames(scene, times, post, prefix, mb=1):
     """Render individual frames to PNG for checking (no video)."""
     outs = []
     for tt in times:
-        arr, surf = new_canvas()
-        with surf as c:
-            scene(c, tt, int(tt * FPS))
-        img = post(arr, int(tt * FPS))
+        f = int(round(tt * FPS))
+        img = post(frame(lambda c, t_, f_: scene(c, t_ - f / FPS + tt, f_), f, mb), f)
         o = f'{prefix}_{tt:05.2f}.png'; cv2.imwrite(o, cv2.cvtColor(img, cv2.COLOR_RGB2BGR)); outs.append(o)
     return outs
 

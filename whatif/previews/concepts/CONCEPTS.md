@@ -58,5 +58,39 @@ All four share one rule: **documented history = solid lines and an ivory "DOCUME
 
 ---
 
+## Version 2: quality upgrade (applies to all four)
+
+**Engine**
+- **Real motion blur**: every frame averages 3–6 sub-frames over a 180° shutter, like a film camera. Camera moves and type animation no longer step.
+- **Filmic finishing**: halation (warm glow around highlights), multi-radius bloom, lens chromatic aberration, a soft highlight shoulder, and tilt-shift depth of field on tilted maps.
+- **Grain** at full resolution on luminance only. It also dithers the 8-bit output, so the dark gradients no longer band.
+- x264 `-tune film` at CRF 16; parallel rendering on 4 cores.
+
+**Concept 1 – Atlas**
+- Relief at 340 m/px (the native resolution of the elevation tiles), with fine ridge shading plus broad landform shading.
+- Sea-depth gradient with engraved coastal contour lines; glowing rivers.
+- The camera descends through two parallax cloud layers in the hook, with a gentle "operated camera" drift.
+- **Partitions as physical plates**: each annexed territory lifts out of the map, leaving a shadowed void, drifts toward the annexing power, takes on its colour and drops back into place.
+- Metallic gold title type with a moving specular highlight. The light tracing the border has a glowing pen tip. Cities pulse.
+- A focus falloff fades the world into darkness away from the Commonwealth. Russia's display shape continues east of the 42°E data window.
+
+**Concept 2 – Living History**
+- Lanczos upscaling, gentle local-contrast enhancement and sharpening of the paintings.
+- Two-level lens blur for smooth bokeh, and atmospheric haze by depth.
+- **Light shafts masked by depth**: they pass behind the foreground crowd instead of lying flat on top.
+- Handheld camera drift, and an anamorphic lens streak in the light-burn transition.
+
+**Concept 3 – Timeline**
+- Paper texture tied to the wall, so it travels with the camera, plus soft moving window light.
+- Cards swing in with true 3D perspective, with separate contact and ambient shadows.
+- Mini-maps appear with an organic ink-bleed reveal.
+
+**Concept 4 – Two Timelines**
+- Terrain relief under the flat vector maps, and a focus falloff.
+- A glowing seam with a lens flare at the year pill.
+- Campaign arrows with particles flowing along them, and a light-wipe takeover at the end.
+
+---
+
 ## Recommendation
 For a premium film, **combine them, with one as the master look**: Concept 1 as the cartographic backbone, Concept 2 for people and paintings, and Concept 4 for the real-versus-alternate comparison. Concept 3 would serve as the chapter navigator, restyled dark to match. These four samples are deliberately pure so you can judge each language on its own.

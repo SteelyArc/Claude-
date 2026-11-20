@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 data/relief.npz
+data/relief_hi.npz
+data/relief_hi_rgb.npy

@@ -16,29 +16,40 @@ class Plate:
         d = np.load(f'{ROOT}/data/depth/{name}.npy').astype(np.float32)
         d = cv2.resize(d, (im.shape[1], im.shape[0]))
         if scale != 1:
-            im = cv2.resize(im, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC if scale > 1 else cv2.INTER_AREA)
-            d = cv2.resize(d, (im.shape[1], im.shape[0]))
-        self.im = im; self.d = cv2.GaussianBlur(d, (0, 0), 3)
-        self.blur = cv2.GaussianBlur(im, (0, 0), 9)
+            im = cv2.resize(im, None, fx=scale, fy=scale, interpolation=cv2.INTER_LANCZOS4 if scale > 1 else cv2.INTER_AREA)
+            d = cv2.resize(d, (im.shape[1], im.shape[0]), interpolation=cv2.INTER_CUBIC)
+        # detail: local contrast (CLAHE on luminance, gentle) + unsharp mask
+        lab = cv2.cvtColor(np.clip(im, 0, 1), cv2.COLOR_RGB2LAB)
+        l8 = np.clip(lab[..., 0] * 2.55, 0, 255).astype(np.uint8)
+        l2 = cv2.createCLAHE(clipLimit=1.6, tileGridSize=(8, 8)).apply(l8).astype(np.float32) / 2.55
+        lab[..., 0] = lab[..., 0] * 0.55 + l2 * 0.45
+        im = np.clip(cv2.cvtColor(lab, cv2.COLOR_LAB2RGB), 0, 1)
+        im = np.clip(im + (im - cv2.GaussianBlur(im, (0, 0), 1.6)) * 0.7, 0, 1)
+        self.im = im.astype(np.float32); self.d = cv2.GaussianBlur(d, (0, 0), 3)
+        self.blur = cv2.GaussianBlur(self.im, (0, 0), 4.5); self.blur2 = cv2.GaussianBlur(self.im, (0, 0), 13)
         self.h, self.w = d.shape
 
     def shoot(self, cx, cy, zoom, par_x, par_y, dolly, focus=None, fstop=0.0):
         """cx, cy: source point at screen centre; zoom: screen px per source px;
         par_x/y: parallax shift in source px for depth=1 relative to depth=0; dolly: extra magnification of near layers."""
+        zoom = float(zoom)
         xs = (np.arange(W, dtype=np.float32) - W / 2) / zoom
         ys = (np.arange(H, dtype=np.float32) - H / 2) / zoom
         U, V = np.meshgrid(xs, ys)
-        u, v = U + cx, V + cy
+        cx, cy, zoom = float(cx), float(cy), float(zoom)
+        u, v = (U + cx).astype(np.float32), (V + cy).astype(np.float32)
         for _ in range(2):          # fixed-point refine depth at the displaced position
             d = cv2.remap(self.d, u, v, cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
             k = 1 / (1 + dolly * d)
-            u = cx + U * k - par_x * (d - 0.5)
-            v = cy + V * k - par_y * (d - 0.5)
+            u = (cx + U * k - par_x * (d - 0.5)).astype(np.float32)
+            v = (cy + V * k - par_y * (d - 0.5)).astype(np.float32)
         col = cv2.remap(self.im, u, v, cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
         if focus is not None and fstop > 0:
-            b = cv2.remap(self.blur, u, v, cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+            b1 = cv2.remap(self.blur, u, v, cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+            b2 = cv2.remap(self.blur2, u, v, cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
             coc = np.clip(np.abs(d - focus) * fstop, 0, 1)[..., None]
-            col = col * (1 - coc) + b * coc
+            k1 = np.clip(coc * 2, 0, 1); k2 = np.clip(coc * 2 - 1, 0, 1)
+            col = col * (1 - k1) + (b1 * (1 - k2) + b2 * k2) * k1
         return col, d
 
 
@@ -114,16 +125,35 @@ def lower_third(c, t, t0, kicker, title, sub, credit, a_out=1.0):
         text(c, ln, x, max(1470, yy + 82) + i * 32, font('SourceSans3-Regular.ttf', 25), rgb('#cfc4b0', 0.85 * a), align='l', spacing=0.6)
 
 
+def atmos(img, d, t, ox, oy, ang, inten, spread=0.7, n=8, haze=(1.0, 0.86, 0.64), haze_a=0.16):
+    """aerial perspective + light shafts that pass behind near objects (masked by depth)."""
+    far = (1 - d)[..., None]
+    img = img * (1 - far * haze_a) + np.array(haze, np.float32) * far * haze_a * 0.55
+    arr, surf = new_canvas()
+    with surf as cc:
+        cc.clear(skia.ColorBLACK); rays(cc, t, ox, oy, ang, inten, n=n, spread=spread)
+    r = arr[..., :3].astype(np.float32) / 255.0
+    occl = np.clip(1.15 - d * 1.1, 0.08, 1)[..., None]
+    return 1 - (1 - img) * (1 - r * occl)
+
+
+def drift(t, amp=1.0):
+    """handheld-feel camera: smooth, low-frequency, never jittery."""
+    return (amp * (6 * np.sin(t * 0.83) + 3 * np.sin(t * 1.91 + 1)), amp * (5 * np.sin(t * 0.67 + 2) + 2 * np.sin(t * 2.3)),
+            1 + amp * 0.004 * np.sin(t * 0.5 + 0.7))
+
+
 def scene(c, t, f):
     # ---------------- shot A: the Senate hall, 3 May 1791 (0 - 5.6 s)
     if t < 5.9:
         k = ease(seg(t, 0, 5.9))
-        img, d = A.shoot(cx=lerp(1280, 1980, k), cy=lerp(1250, 1180, k), zoom=lerp(0.92, 1.02, k),
-                         par_x=lerp(-130, 130, k), par_y=lerp(30, -20, k), dolly=lerp(0.05, 0.22, k), focus=0.85, fstop=lerp(1.1, 0.7, k))
+        dx, dy, dz = drift(t)
+        img, d = A.shoot(cx=lerp(1280, 1980, k) + dx, cy=lerp(1250, 1180, k) + dy, zoom=lerp(0.92, 1.02, k) * dz,
+                         par_x=lerp(-130, 130, k), par_y=lerp(30, -20, k), dolly=lerp(0.05, 0.22, k), focus=0.85, fstop=lerp(0.55, 0.35, k))
         flick = 1 + 0.025 * np.sin(t * 13.0) * np.sin(t * 7.3 + 1)
         img = grade(img * flick, 1.0)
-        c.drawImage(to_image((img * 255).astype(np.uint8)), 0, 0)
-        rays(c, t, lerp(250, 120, k), -120, 1.15, 0.16, n=8, spread=0.7)
+        img = atmos(img, d, t, lerp(250, 120, k), -120, 1.15, 0.19, spread=0.7, n=8, haze_a=0.07)
+        c.drawImage(to_image((np.clip(img, 0, 1) * 255).astype(np.uint8)), 0, 0)
         motes(c, t, lerp(-260, 260, k), focus_z=0.8)
         # a soft vignette top/bottom for type
         g = skia.Paint(); g.setShader(lin_grad((0, 950), (0, H), [rgb('#0b0806', 0), rgb('#0b0806', 0.88)])); c.drawRect(skia.Rect(0, 950, W, H), g)
@@ -133,17 +163,15 @@ def scene(c, t, f):
     # ---------------- shot B: the king (5.0 - 11 s)
     if t >= 5.0:
         k = seg(t, 5.0, 11.0); e = ease(k)
-        img, d = B.shoot(cx=lerp(880, 835, e), cy=lerp(1180, 700, e), zoom=lerp(0.80, 1.45, e),
+        dx, dy, dz = drift(t + 3, 0.7)
+        img, d = B.shoot(cx=lerp(880, 835, e) + dx, cy=lerp(1180, 700, e) + dy, zoom=lerp(0.80, 1.45, e) * dz,
                          par_x=lerp(60, -50, e), par_y=lerp(-25, 15, e), dolly=lerp(0.0, 0.15, e), focus=lerp(0.35, 0.72, eout(seg(t, 5.4, 7.4))), fstop=0.9)
         img = grade(img, 0.9)
-        # rim light from the right, breathing
-        if True:
-            pass
-        imgB = to_image((img * 255).astype(np.uint8))
+        img = atmos(img, d, t, W + 120, -60, 2.05, 0.15, spread=0.5, n=6, haze=(0.85, 0.9, 1.0), haze_a=0.10)
+        imgB = to_image((np.clip(img, 0, 1) * 255).astype(np.uint8))
         a = seg(t, 5.0, 5.9)
         p = skia.Paint(); p.setAlphaf(a)
         c.drawImage(imgB, 0, 0, SAMP, p)
-        rays(c, t, W + 120, -60, 2.05, 0.12 * a, n=6, spread=0.5)
         motes(c, t, lerp(140, -140, e), focus_z=0.9, a=0.7 * a)
         g = skia.Paint(); g.setShader(lin_grad((0, 820), (0, 1250), [rgb('#0b0806', 0), rgb('#0b0806', 0.93)])); c.drawRect(skia.Rect(0, 820, W, H), g)
         lower_third(c, t, 6.6, 'KING OF POLAND · GRAND DUKE OF LITHUANIA', ['Stanisław August'], 'The last king of the Commonwealth, 1764–1795',
@@ -157,11 +185,20 @@ def scene(c, t, f):
         x = lerp(-300, W + 300, ease(tb))
         p.setShader(rad_grad(x, H * 0.42, 1300, [rgb('#fff1d6', 0.95 * a), rgb('#ffb45e', 0.55 * a), rgb('#ff8a3d', 0)], [0, .35, 1]))
         c.drawRect(skia.Rect(0, 0, W, H), p)
+        # anamorphic streak through the flare centre
+        st = skia.Paint(); st.setBlendMode(skia.BlendMode.kScreen)
+        st.setShader(lin_grad((x - 900, 0), (x + 900, 0), [rgb('#7fb4ff', 0), rgb('#cfe2ff', 0.75 * a), rgb('#7fb4ff', 0)], [0, .5, 1]))
+        st.setMaskFilter(skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 5))
+        c.drawRect(skia.Rect(x - 900, H * 0.42 - 5, x + 900, H * 0.42 + 5), st)
+        st.setMaskFilter(skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 26)); st.setAlphaf(0.5)
+        c.drawRect(skia.Rect(x - 900, H * 0.42 - 26, x + 900, H * 0.42 + 26), st)
     if t < 0.5: c.drawRect(skia.Rect(0, 0, W, H), fill(rgb('#000000', 1 - t / 0.5)))
     if t > 10.6: c.drawRect(skia.Rect(0, 0, W, H), fill(rgb('#000000', seg(t, 10.6, 11.0))))
 
 
+POST = Post(grain=0.04, vignette=0.6, bloom=0.4, halation=0.45, ca=0.0018, shoulder=0.12, seed=3)
+
 if __name__ == '__main__':
     out = f'{ROOT}/previews/concepts/concept2_living_history.mp4'
-    render(scene, 11.0, out, Post(grain=0.045, vignette=0.6, bloom=0.35, seed=3), stills=(2.6, 4.6, 5.3, 7.8, 9.8),
-           still_dir=f'{ROOT}/previews/concepts')
+    render(scene, 11.0, out, POST, stills=(2.6, 4.6, 5.3, 7.8, 9.8), still_dir=f'{ROOT}/previews/concepts',
+           mb=3, workers=4, scene_mod='concept2_living')

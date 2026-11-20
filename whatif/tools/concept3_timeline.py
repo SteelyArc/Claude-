@@ -14,6 +14,33 @@ FORK_Y, RX, AX = 1900, 270, 640    # fork position; branch column x for real / a
 IMG = {k: to_image(load_rgb(f'assets/images/{f}', 900)) for k, f in
        {'cake': 'kings_cake.jpg', 'const': 'constitution_1791.jpg', 'cath': 'catherine.jpg'}.items()}
 
+# paper: mottled fibre texture, tiled vertically in world space so it travels with the wall
+def _paper(h=2048, seed=2):
+    rng = np.random.default_rng(seed)
+    acc = np.zeros((h, W), np.float32); amp = 1.0
+    for o in range(6):
+        s = 3 * 2 ** o
+        acc += cv2.resize(rng.normal(0, 1, (s * 2, s)).astype(np.float32), (W, h), interpolation=cv2.INTER_CUBIC) * amp; amp *= 0.6
+    fib = cv2.GaussianBlur(rng.normal(0, 1, (h, W)).astype(np.float32), (0, 0), sigmaX=0.6, sigmaY=4.0)
+    v = 0.5 + acc * 0.0045 + fib * 0.011
+    base = np.array([0.937, 0.929, 0.906], np.float32)
+    img = np.clip(base[None, None] * (v[..., None] * 2), 0, 1)
+    return to_image((img * 255).astype(np.uint8))
+import cv2
+PAPER = _paper()
+
+
+def rough_circle(cx, cy, r, seed=0, amp=0.09):
+    """ink-bleed mask: circle with a noisy, organic edge."""
+    p = skia.Path(); n = 140
+    rs = np.random.default_rng(seed); ph = rs.uniform(0, 6.28, 5)
+    for i in range(n + 1):
+        th = i / n * 2 * np.pi
+        rr = r * (1 + amp * (np.sin(3 * th + ph[0]) * 0.5 + np.sin(7 * th + ph[1]) * 0.3 + np.sin(13 * th + ph[2]) * 0.2))
+        (p.moveTo if i == 0 else p.lineTo)(cx + rr * np.cos(th), cy + rr * np.sin(th))
+    p.close(); return p
+
+
 # mini-map frame: bounds of the pre-1772 Commonwealth
 _b = L['plt_pre72'].bounds
 MM = dict(x0=_b[0] - 40e3, x1=_b[2] + 40e3, y0=_b[1] - 40e3, y1=_b[3] + 40e3)
@@ -23,6 +50,11 @@ def minimap(c, x, y, w, layers, a=1.0, ghost=True):
     """layers: list of (geom, colour, alpha, dashed)."""
     s = w / (MM['x1'] - MM['x0']); h = (MM['y1'] - MM['y0']) * s
     M = skia.Matrix(); M.setTranslate(x, y); M.preScale(s, -s); M.preTranslate(-MM['x0'], -MM['y1'])
+    if a <= 0: return h
+    c.save()
+    if a < 1:
+        c.clipPath(rough_circle(x + w * 0.35, y + h * 0.4, w * 1.1 * eout(a, 2), seed=int(x + y)), doAntiAlias=True)
+        a = 1.0
     if ghost:
         c.drawPath(tpath(path(L['plt_pre72']), M), fill(rgb('#d9d5cc', a)))
     for g, col, al, dashed in layers:
@@ -30,6 +62,7 @@ def minimap(c, x, y, w, layers, a=1.0, ghost=True):
         p = tpath(path(g), M)
         if al > 0: c.drawPath(p, fill(skia.Color4f(col.fR, col.fG, col.fB, al * a)))
         c.drawPath(p, stroke(skia.Color4f(col.fR, col.fG, col.fB, a), 2.2, dash=[9, 6] if dashed else None))
+    c.restore()
     return h
 
 
@@ -37,9 +70,19 @@ def card(c, img, x, y, w, rot, a, caption=None, k=1.0):
     """a physical print with shadow; slides/settles in with k."""
     if a <= 0: return
     h = w * img.height() / img.width()
-    c.save(); c.translate(x + (1 - k) * 260, y); c.rotate(rot * (0.4 + 0.6 * k) + (1 - k) * 8)
-    sh = skia.Paint(Color4f=rgb('#000000', 0.28 * a), AntiAlias=True); sh.setMaskFilter(skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 18))
-    c.drawRect(skia.Rect(-w / 2 + 10, -h / 2 + 22, w / 2 + 10, h / 2 + 28), sh)
+    c.save(); c.translate(x + (1 - k) * 180, y - (1 - k) * 40); c.rotate(rot * (0.4 + 0.6 * k) + (1 - k) * 6)
+    sw = (1 - k)   # perspective swing about the vertical axis
+    if sw > 0.001:
+        P = skia.Matrix(); hw, hh = w / 2 + 14, h / 2 + 14
+        P.setPolyToPoly([skia.Point(-hw, -hh), skia.Point(hw, -hh), skia.Point(hw, hh), skia.Point(-hw, hh)],
+                        [skia.Point(-hw * (1 - 0.35 * sw), -hh * (1 - 0.10 * sw)), skia.Point(hw, -hh * (1 + 0.08 * sw)),
+                         skia.Point(hw, hh * (1 + 0.08 * sw)), skia.Point(-hw * (1 - 0.35 * sw), hh * (1 - 0.10 * sw))])
+        c.concat(P)
+    lift = 1 + 1.5 * (1 - k)
+    sh = skia.Paint(Color4f=rgb('#2a2016', 0.22 * a), AntiAlias=True); sh.setMaskFilter(skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 26 * lift))
+    c.drawRect(skia.Rect(-w / 2 + 14 * lift, -h / 2 + 30 * lift, w / 2 + 14 * lift, h / 2 + 40 * lift), sh)
+    sh2 = skia.Paint(Color4f=rgb('#000000', 0.35 * a * k), AntiAlias=True); sh2.setMaskFilter(skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 4))
+    c.drawRect(skia.Rect(-w / 2 - 10, -h / 2 - 6, w / 2 + 14, h / 2 + 16), sh2)
     c.drawRect(skia.Rect(-w / 2 - 12, -h / 2 - 12, w / 2 + 12, h / 2 + 12), fill(rgb('#fbfaf6', a)))
     p = skia.Paint(); p.setAlphaf(a)
     c.drawImageRect(img, skia.Rect(-w / 2, -h / 2, w / 2, h / 2), SAMP, p)
@@ -87,6 +130,17 @@ def vis(y_world, cy, t_in, t):
 def scene(c, t, f):
     c.clear(BG.toColor())
     cy = cam_y(t)
+    POST_STATE['dof'] = 0.55
+    zoom_ = lerp(1.0, 0.74, ease(seg(t, 9.7, 11.3)))
+    c.save()
+    P0 = skia.Matrix()
+    P0.setPolyToPoly([skia.Point(0, 0), skia.Point(W, 0), skia.Point(W, H), skia.Point(0, H)],
+                     [skia.Point(70, 60), skia.Point(W - 30, 30), skia.Point(W + 20, H + 30), skia.Point(-40, H + 10)])
+    c.concat(P0); c.translate(W / 2, 760); c.scale(zoom_, zoom_); c.translate(-W / 2, -cy)
+    py0 = int((cy - 1600) // 2048) * 2048
+    for k_ in range(4):
+        c.drawImageRect(PAPER, skia.Rect(-600, py0 + k_ * 2048, W + 600, py0 + (k_ + 1) * 2048), SAMP)
+    c.restore()
     zoom = lerp(1.0, 0.74, ease(seg(t, 9.7, 11.3)))
     # giant background year (parallax at 0.35), outline type
     big = '1772' if t < 3.6 else '1791' if t < 6.2 else '1793' if t < 8.0 else '1795'
@@ -154,6 +208,9 @@ def scene(c, t, f):
         entry(c, AX - 16, yy - 120, yr, ti, body, a, GOLD, hyp=True)
         if al: minimap(c, AX - 10, yy + 50, 300, [(L['plt1773'], GOLD, al, True)], a)
     c.restore()
+    wl = skia.Paint(); wl.setBlendMode(skia.BlendMode.kSoftLight)
+    lx = W * (0.15 + 0.10 * np.sin(t * 0.35))
+    wl.setShader(rad_grad(lx, 300, 1500, [rgb('#fff6e2', 0.35), rgb('#fff1d8', 0.08), rgb('#3a2f20', 0.22)], [0, .5, 1])); c.drawPaint(wl)
     # header (fixed, TikTok-safe) on a soft backing so scrolling content passes beneath
     hb = skia.Paint(); hb.setShader(lin_grad((0, 250), (0, 420), [BG, skia.Color4f(BG.fR, BG.fG, BG.fB, 0)])); c.drawRect(skia.Rect(0, 0, W, 420), hb)
     ha = seg(t, 0.0, 0.6)
@@ -171,7 +228,9 @@ def scene(c, t, f):
     if t < 0.3: c.drawRect(skia.Rect(0, 0, W, H), fill(rgb('#000000', 1 - t / 0.3)))
 
 
+POST = Post(grain=0.02, vignette=0.28, bloom=0.0, ca=0.0010, seed=5)
+
 if __name__ == '__main__':
     out = f'{ROOT}/previews/concepts/concept3_animated_timeline.mp4'
-    render(scene, 11.5, out, Post(grain=0.022, vignette=0.22, bloom=0.0, seed=5), stills=(2.4, 5.0, 6.5, 9.4, 11.3),
-           still_dir=f'{ROOT}/previews/concepts')
+    render(scene, 11.5, out, POST, stills=(2.4, 5.0, 6.5, 9.4, 11.3), still_dir=f'{ROOT}/previews/concepts',
+           mb=5, workers=4, scene_mod='concept3_timeline')

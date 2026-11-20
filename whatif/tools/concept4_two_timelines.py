@@ -14,21 +14,41 @@ GOLD = rgb('#e8b54f'); COOL = rgb('#d7dde4')
 SANS, SANSB = 'SourceSans3-Regular.ttf', 'SourceSans3-SemiBold.ttf'
 SPLIT = 960      # seam y when fully split
 
+# terrain relief under the flat graphic maps (soft-light), and Russia continued east of the 42E data window
+_D = np.load(f'{ROOT}/data/relief.npz'); RX0, RY0, RX1, RY1, RRES = _D['extent']
+_sh = _D['shade'].astype(np.float32) / 255; _ld = _D['land'].astype(np.float32) / 255
+_rgba = np.dstack([_sh, _sh, _sh, np.ones_like(_sh)]) * (_ld[..., None] * 0.9)
+RELIEF = skia.Image.fromarray((np.clip(_rgba, 0, 1) * 255).astype(np.uint8), colorType=skia.kRGBA_8888_ColorType, alphaType=skia.kPremul_AlphaType)
+del _D, _sh, _ld, _rgba
+from shapely.geometry import box as _box
+from shapely.ops import transform as _tr
+_ext = _tr(lambda x, y, z=None: FWD.transform(x, y), _box(37.0, 48.0, 62.0, 67.0).segmentize(0.25))
+RUSSIA_DISP = S91['russia'].union(_ext.difference(S91['sweden'].buffer(2e3)).difference(S91['ottoman'].buffer(2e3))).buffer(0)
+
 
 def panel_cam(cy_screen, zoom=0.64):
     c0 = ll(25.3, 52.4)
     return Cam(c0[0], c0[1], zoom, 0, 0, oy=cy_screen - H / 2)
 
 
-def flatmap(c, M, a=1.0, desat=0.0):
+def flatmap(c, M, a=1.0, desat=0.0, cam=None):
+    c.saveLayer()
     c.drawPath(tpath(path(L['land']), M), fill(LAND))
+    c.save(); c.concat(M); c.translate(RX0, RY1); c.scale(RRES, -RRES)
+    rp = skia.Paint(); rp.setBlendMode(skia.BlendMode.kSoftLight); rp.setAlphaf(0.85)
+    c.drawImage(RELIEF, 0, 0, SAMP, rp); c.restore()
     for k in ('hre', 'saxony', 'sweden', 'denmark', 'other', 'venice', 'ragusa'):
         g = S91.get(k)
         if g is not None and not g.is_empty: c.drawPath(tpath(path(g), M), stroke(EDGE, 1.0))
     for k in ('ottoman', 'habsburg', 'russia', 'prussia'):
-        p = tpath(path(S91[k]), M); col = rgb(COL[k])
+        p = tpath(path(RUSSIA_DISP if k == 'russia' else S91[k]), M); col = rgb(COL[k])
         col = lerpc((col.fR, col.fG, col.fB), (0.5, 0.52, 0.55), desat)
         c.drawPath(p, fill(skia.Color4f(*col, 0.13 * a))); c.drawPath(p, stroke(skia.Color4f(*col, 0.5 * a), 1.2))
+    if cam is not None:   # focus falloff: the world fades to graphite away from the Commonwealth
+        fx, fy = cam.pt(*ll(25.0, 52.6)); rr = 1000 * cam.zoom / 0.6
+        fm = skia.Paint(); fm.setBlendMode(skia.BlendMode.kDstIn)
+        fm.setShader(rad_grad(fx, fy, rr, [rgb('#000000', 1), rgb('#000000', 0.9), rgb('#000000', 0)], [0, .55, 1])); c.drawPaint(fm)
+    c.restore()
 
 
 def spread_geom(g, origin, k):
@@ -49,6 +69,10 @@ def arrow(c, M, pts, k, col, w=7):
     seg_ = skia.Path(); meas.getSegment(0, L_ * k, seg_, True)
     c.drawPath(seg_, stroke(skia.Color4f(col.fR, col.fG, col.fB, 0.35), w * 3, glow=8))
     c.drawPath(seg_, stroke(col, w, cap=skia.Paint.kButt_Cap))
+    for j in range(7):   # flowing particles along the drawn part
+        u = ((j / 7) + 0.0) % 1.0 * k
+        pp_, _t = meas.getPosTan(L_ * u)
+        c.drawCircle(pp_.x(), pp_.y(), 5, stroke(skia.Color4f(1, 0.85, 0.75, col.fA * 0.5), 3, glow=4))
     pos, tan = meas.getPosTan(L_ * k)
     ang = np.degrees(np.arctan2(tan.y(), tan.x()))
     c.save(); c.translate(pos.x(), pos.y()); c.rotate(ang)
@@ -94,7 +118,7 @@ def scene(c, t, f):
     # ---------------- top panel: our history
     c.save(); c.clipRect(skia.Rect(0, 0, W, seam - 2))
     cam = panel_cam(top_c, lerp(0.88, 0.58, sp)); M = cam.matrix()
-    flatmap(c, M, desat=0.35 * sp)
+    flatmap(c, M, desat=0.35 * sp, cam=cam)
     c.save()
     for g, k_, o, a, b in TOP_EVENTS:
         k = seg(t, a, b)
@@ -120,7 +144,7 @@ def scene(c, t, f):
     # ---------------- bottom panel: alternate timeline
     c.save(); c.clipRect(skia.Rect(0, seam + 2 if sp > 0 else 0, W, H))
     cam = panel_cam(bot_c, zb); M = cam.matrix()
-    flatmap(c, M, a=lerp(1, 0.8, sp))
+    flatmap(c, M, a=lerp(1, 0.8, sp), cam=cam)
     pp = tpath(path(PLT91), M)
     glow = 0.5 + 0.5 * np.sin(t * 2.4)
     c.drawPath(pp, fill(skia.Color4f(*lerpc((0.79, 0.82, 0.86), (0.91, 0.71, 0.31), sp), lerp(0.30, 0.34, sp))))
@@ -138,11 +162,21 @@ def scene(c, t, f):
                 x, y = M.mapXY(*ll(*pts[-1])).x(), M.mapXY(*ll(*pts[-1])).y()
                 c.drawCircle(x, y, 28 + 30 * seg(t, t0 + 0.9, t0 + 1.6), stroke(rgb('#ffd27a', fade * (1 - seg(t, t0 + 0.9, t0 + 1.6))), 3))
     c.restore()
+    if 0 < take < 1:
+        wy = seam
+        lw = skia.Paint(); lw.setBlendMode(skia.BlendMode.kScreen)
+        lw.setShader(lin_grad((0, wy - 220), (0, wy + 40), [rgb('#ffd27a', 0), rgb('#ffe7b8', 0.55 * np.sin(np.pi * take)), rgb('#ffd27a', 0)], [0, .8, 1]))
+        c.drawRect(skia.Rect(0, wy - 220, W, wy + 40), lw)
     # ---------------- seam with year
     if sp > 0 and take < 1:
         a = sp * (1 - take)
         g = skia.Paint(); g.setShader(lin_grad((0, seam), (W, seam), [rgb('#d7dde4', 0), rgb('#ffffff', a), rgb('#e8b54f', a), rgb('#e8b54f', 0)], [0, .3, .7, 1]))
         g.setStrokeWidth(2.5); g.setStyle(skia.Paint.kStroke_Style); c.drawLine(0, seam, W, seam, g)
+        gg = skia.Paint(); gg.setShader(lin_grad((0, seam), (W, seam), [rgb('#9fb6d6', 0), rgb('#cfe0ff', 0.5 * a), rgb('#ffcf7a', 0.5 * a), rgb('#ffcf7a', 0)], [0, .3, .7, 1]))
+        gg.setStrokeWidth(18); gg.setStyle(skia.Paint.kStroke_Style); gg.setMaskFilter(skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 12)); gg.setBlendMode(skia.BlendMode.kScreen)
+        c.drawLine(0, seam, W, seam, gg)
+        fl = skia.Paint(); fl.setBlendMode(skia.BlendMode.kScreen)
+        fl.setShader(rad_grad(W / 2, seam, 260, [rgb('#ffffff', 0.35 * a), rgb('#ffe2a8', 0.10 * a), rgb('#ffe2a8', 0)], [0, .3, 1])); c.drawCircle(W / 2, seam, 260, fl)
         f = font('Cinzel-Bold.ttf', 70); w = text_width(yr, f, 10) + 60
         r = skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(W / 2 - w / 2, seam - 52, w, 104), 52, 52)
         c.drawRRect(r, fill(rgb('#0d0e11', 0.96 * a))); c.drawRRect(r, stroke(rgb('#ffffff', 0.6 * a), 1.5))
@@ -191,7 +225,9 @@ def scene(c, t, f):
     if t < 0.2: c.drawRect(skia.Rect(0, 0, W, H), fill(rgb('#000000', 1 - t / 0.2)))
 
 
+POST = Post(grain=0.02, vignette=0.4, bloom=0.3, halation=0.25, ca=0.0014, shoulder=0.1, seed=9)
+
 if __name__ == '__main__':
     out = f'{ROOT}/previews/concepts/concept4_two_timelines.mp4'
-    render(scene, 11.5, out, Post(grain=0.018, vignette=0.35, bloom=0.25, seed=9), stills=(0.4, 1.0, 3.6, 5.6, 8.2, 11.2),
-           still_dir=f'{ROOT}/previews/concepts')
+    render(scene, 11.5, out, POST, stills=(0.4, 1.0, 3.6, 5.6, 8.2, 11.2), still_dir=f'{ROOT}/previews/concepts',
+           mb=5, workers=4, scene_mod='concept4_two_timelines')
