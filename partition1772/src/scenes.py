@@ -407,6 +407,26 @@ CAKE = dict(file='kings_cake.jpg', w=1313, h=2000,
             figs=[('Catherine II', 'Russia', (253, 1020), (-1, 1)), ('Stanisław August', 'King of Poland', (467, 833), (-1, -1)),
                   ('Joseph II', 'Habsburg co-ruler', (940, 905), (1, -1)), ('Frederick II', 'Prussia', (1093, 905), (1, 1))])
 
+def doc_plate(c, hx, hy, lx, ly, align, name, sub, t):
+    f1 = font(SERIF, 44); f2 = font(BODY_I, 28)
+    w = max(text_width(name, f1, 0.02), text_width(sub, f2)) + 44
+    x0 = lx if align == 'left' else lx - w
+    e = ease_out_cubic(clamp(t * 1.4))
+    rr = skia.RRect.MakeRectXY(skia.Rect(x0, ly - 52, x0 + w, ly + 46), 10, 10)
+    bp = skia.Paint(AntiAlias=True, Color=C(18, 13, 9)); bp.setAlphaf(0.78 * e); c.drawRRect(rr, bp)
+    sp = skia.Paint(AntiAlias=True, Color=C(190, 152, 90), Style=skia.Paint.kStroke_Style, StrokeWidth=1.3); sp.setAlphaf(0.8 * e); c.drawRRect(rr, sp)
+    # leader: from plate edge to the figure, drawn progressively, ending in a ring
+    ax = x0 + w / 2; ay = ly + 46 if hy > ly else ly - 52
+    lt = ease_in_out_sine(clamp(t * 1.6 - 0.25))
+    ex, ey = lerp(ax, hx, lt), lerp(ay, hy, lt)
+    lp = skia.Paint(AntiAlias=True, Color=C(236, 214, 170), StrokeWidth=2.0); lp.setAlphaf(0.9 * e); c.drawLine(ax, ay, ex, ey, lp)
+    if lt > 0.98:
+        rp = skia.Paint(AntiAlias=True, Color=C(255, 236, 196), Style=skia.Paint.kStroke_Style, StrokeWidth=2.4); rp.setAlphaf(e)
+        c.drawCircle(hx, hy, 16, rp)
+    tx = x0 + 22
+    draw_text(c, name, tx, ly - 6, f1, C(246, 236, 214), align='left', tracking=0.02, alpha=e, reveal=clamp(t * 1.5 - 0.1), stagger=0.5, rise=6)
+    draw_text(c, sub, tx, ly + 30, f2, C(214, 194, 158), align='left', alpha=e, reveal=clamp(t * 1.5 - 0.35), stagger=0.4)
+
 class S3:
     a0, a1 = 304.30, 315.35
     lead = 0.6; tail = 0.5
@@ -418,7 +438,7 @@ class S3:
         iw, ih = img.width(), img.height(); k = iw / CAKE['w']
         # document camera keyframes in image pixel space: (centre x, centre y, px->screen scale, tilt, rot)
         keys = [(304.0, (656, 1000, 0.62, 24, -5)), (306.6, (656, 1050, 0.78, 10, -2)),
-                (309.2, (680, 1000, 1.25, 4, 0)), (311.6, (860, 1300, 1.85, 2, 1)), (315.4, (700, 1080, 0.98, 6, -1))]
+                (309.4, (690, 1000, 0.98, 3, 0)), (312.2, (860, 1300, 1.85, 2, 1)), (315.4, (700, 1080, 0.98, 6, -1))]
         def kf(x):
             if x <= keys[0][0]: return keys[0][1]
             for (t0, v0), (t1, v1) in zip(keys, keys[1:]):
@@ -449,16 +469,14 @@ class S3:
         c.drawRect(skia.Rect(0, 0, W, H), skia.Paint(Shader=g, BlendMode=skia.BlendMode.kScreen))
         # focus pool: darken outside current point of interest
         c.restore()
-        # figure annotations (leader lines from the engraving to clean labels)
-        for i, (name, sub, (px, py), (dx, dy)) in enumerate(CAKE['figs']):
-            lt = window(a, 307.4 + i * 0.55, 311.0, 0.9, 0.6)
+        # figure annotations: four plates in the frame corners, leader lines to each figure
+        slots = {'Stanisław August': (70, 590, 'left'), 'Joseph II': (W - 70, 590, 'right'),
+                 'Catherine II': (70, 1400, 'left'), 'Frederick II': (W - 70, 1400, 'right')}
+        for i, (name, sub, (px, py), _) in enumerate(CAKE['figs']):
+            lt = window(a, 306.9 + i * 0.45, 311.4, 0.8, 0.6)
             if lt <= 0: continue
-            q = m.mapXY(px * k, py * k)
-            if not (40 < q.x() < W - 40 and 420 < q.y() < 1420): continue
-            sx = 1 if q.x() < W / 2 else -1
-            leader_label(c, q.x(), q.y(), name, sx * 90, dy * 150 - 40, lt, size=38, color=(246, 236, 214), fontname=SERIF, sub=sub)
-            hp = skia.Paint(AntiAlias=True, Color=C(255, 236, 196), Style=skia.Paint.kStroke_Style, StrokeWidth=2); hp.setAlphaf(0.8 * lt)
-            c.drawCircle(q.x(), q.y(), 10 + 4 * math.sin(a * 3), hp)
+            q = m.mapXY(px * k, py * k); lx, ly, al = slots[name]
+            doc_plate(c, q.x(), q.y(), lx, ly, al, name, sub, lt)
         # date card (top) & caption (bottom)
         top_a = 1 - ramp(a, 313.8, 314.8)
         c.save()

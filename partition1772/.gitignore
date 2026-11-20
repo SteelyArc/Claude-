@@ -19,3 +19,5 @@ assets/raw/*.json
 assets/raw/*.sh
 assets/raw/*.log
 __pycache__/
+work/*.mp4
+work/concat.txt
