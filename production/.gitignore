@@ -6,3 +6,4 @@ __pycache__/
 previews/phase3/chunks/
 audio/music/*.wav
 previews/final/chunks/
+previews/final/*.mp4
