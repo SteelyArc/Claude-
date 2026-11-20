@@ -1,0 +1,5 @@
+# Re-downloadable raw sources (see README "Rebuild")
+data/ohm/
+data/ne/
+data/geo/[0-9]*.geojson
+__pycache__/
