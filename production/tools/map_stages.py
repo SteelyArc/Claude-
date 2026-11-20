@@ -23,7 +23,8 @@ def _poly(cv, cam, key, geom, kind, alpha=1.0, ribbon_a=0.5):
     fill(cv, p, PAL[f], alpha); ribbon(cv, cam, PATHS.get_ext(key, geom), PAL[e], 18, ribbon_a * alpha)
 
 def _neutral(cv, cam, st, tag):
-    for k in ('hre', 'saxony', 'sweden', 'denmark'):
+    for k in ('other', 'hre', 'saxony', 'sweden', 'denmark'):
+        if k not in st: continue
         p = PATHS.get_path(f'{tag}_{k}', st[k]); fill(cv, p, PAL['neutral'], 0.9)
         stroke(cv, cam, p, PAL['ink_soft'], 0.9, 0.45)
 
