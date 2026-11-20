@@ -108,7 +108,7 @@ CAPS = {  # (top documented caption, bottom hypothetical caption)
 def scene(c, t, f):
     c.clear(BG.toColor())
     sp = ease(seg(t, 0.6, 1.6))                # 0 = one full map, 1 = split
-    take = eexp(seg(t, 8.9, 10.0))             # bottom takes over the frame
+    take = ease(seg(t, 8.8, 10.2))             # bottom takes over the frame
     yr = [y for (ts, y) in YEARS if t >= ts][-1]
     # panel geometry
     top_c = lerp(H / 2, 500, sp) - 600 * take
@@ -230,4 +230,4 @@ POST = Post(grain=0.02, vignette=0.4, bloom=0.3, halation=0.25, ca=0.0014, shoul
 if __name__ == '__main__':
     out = f'{ROOT}/previews/concepts/concept4_two_timelines.mp4'
     render(scene, 11.5, out, POST, stills=(0.4, 1.0, 3.6, 5.6, 8.2, 11.2), still_dir=f'{ROOT}/previews/concepts',
-           mb=5, workers=4, scene_mod='concept4_two_timelines')
+           mb=12, workers=4, scene_mod='concept4_two_timelines')
