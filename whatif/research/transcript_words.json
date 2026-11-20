@@ -1,0 +1,3948 @@
+[
+ {
+  "start": 0.0,
+  "end": 5.62,
+  "text": "What if Poland-Lithuania had never been partitioned, the empire that could have survived?",
+  "words": [
+   {
+    "w": " What",
+    "s": 0.0,
+    "e": 0.3
+   },
+   {
+    "w": " if",
+    "s": 0.3,
+    "e": 0.48
+   },
+   {
+    "w": " Poland",
+    "s": 0.48,
+    "e": 0.92
+   },
+   {
+    "w": "-Lithuania",
+    "s": 0.92,
+    "e": 1.54
+   },
+   {
+    "w": " had",
+    "s": 1.54,
+    "e": 1.92
+   },
+   {
+    "w": " never",
+    "s": 1.92,
+    "e": 2.28
+   },
+   {
+    "w": " been",
+    "s": 2.28,
+    "e": 2.54
+   },
+   {
+    "w": " partitioned,",
+    "s": 2.54,
+    "e": 3.38
+   },
+   {
+    "w": " the",
+    "s": 3.6,
+    "e": 3.88
+   },
+   {
+    "w": " empire",
+    "s": 3.88,
+    "e": 4.3
+   },
+   {
+    "w": " that",
+    "s": 4.3,
+    "e": 4.58
+   },
+   {
+    "w": " could",
+    "s": 4.58,
+    "e": 4.86
+   },
+   {
+    "w": " have",
+    "s": 4.86,
+    "e": 5.04
+   },
+   {
+    "w": " survived?",
+    "s": 5.04,
+    "e": 5.62
+   }
+  ]
+ },
+ {
+  "start": 6.2,
+  "end": 11.72,
+  "text": "Imagine a Europe where Poland was never erased from the map, where Warsaw became one of the",
+  "words": [
+   {
+    "w": " Imagine",
+    "s": 6.2,
+    "e": 6.62
+   },
+   {
+    "w": " a",
+    "s": 6.62,
+    "e": 6.86
+   },
+   {
+    "w": " Europe",
+    "s": 6.86,
+    "e": 7.12
+   },
+   {
+    "w": " where",
+    "s": 7.12,
+    "e": 7.4
+   },
+   {
+    "w": " Poland",
+    "s": 7.4,
+    "e": 7.88
+   },
+   {
+    "w": " was",
+    "s": 7.88,
+    "e": 8.12
+   },
+   {
+    "w": " never",
+    "s": 8.12,
+    "e": 8.54
+   },
+   {
+    "w": " erased",
+    "s": 8.54,
+    "e": 9.0
+   },
+   {
+    "w": " from",
+    "s": 9.0,
+    "e": 9.26
+   },
+   {
+    "w": " the",
+    "s": 9.26,
+    "e": 9.42
+   },
+   {
+    "w": " map,",
+    "s": 9.42,
+    "e": 9.7
+   },
+   {
+    "w": " where",
+    "s": 10.1,
+    "e": 10.36
+   },
+   {
+    "w": " Warsaw",
+    "s": 10.36,
+    "e": 10.82
+   },
+   {
+    "w": " became",
+    "s": 10.82,
+    "e": 11.22
+   },
+   {
+    "w": " one",
+    "s": 11.22,
+    "e": 11.46
+   },
+   {
+    "w": " of",
+    "s": 11.46,
+    "e": 11.58
+   },
+   {
+    "w": " the",
+    "s": 11.58,
+    "e": 11.72
+   }
+  ]
+ },
+ {
+  "start": 11.72,
+  "end": 16.06,
+  "text": "great political capitals of the continent, where the Polish-Lithuanian Commonwealth",
+  "words": [
+   {
+    "w": " great",
+    "s": 11.72,
+    "e": 12.08
+   },
+   {
+    "w": " political",
+    "s": 12.08,
+    "e": 12.58
+   },
+   {
+    "w": " capitals",
+    "s": 12.58,
+    "e": 12.94
+   },
+   {
+    "w": " of",
+    "s": 12.94,
+    "e": 13.18
+   },
+   {
+    "w": " the",
+    "s": 13.18,
+    "e": 13.38
+   },
+   {
+    "w": " continent,",
+    "s": 13.38,
+    "e": 13.72
+   },
+   {
+    "w": " where",
+    "s": 14.2,
+    "e": 14.36
+   },
+   {
+    "w": " the",
+    "s": 14.36,
+    "e": 14.58
+   },
+   {
+    "w": " Polish",
+    "s": 14.58,
+    "e": 14.9
+   },
+   {
+    "w": "-Lithuanian",
+    "s": 14.9,
+    "e": 15.66
+   },
+   {
+    "w": " Commonwealth",
+    "s": 15.66,
+    "e": 16.06
+   }
+  ]
+ },
+ {
+  "start": 16.06,
+  "end": 21.7,
+  "text": "survived the Age of Empires, and where Russia, Prussia, and Austria never divided",
+  "words": [
+   {
+    "w": " survived",
+    "s": 16.06,
+    "e": 16.82
+   },
+   {
+    "w": " the",
+    "s": 16.82,
+    "e": 17.1
+   },
+   {
+    "w": " Age",
+    "s": 17.1,
+    "e": 17.24
+   },
+   {
+    "w": " of",
+    "s": 17.24,
+    "e": 17.44
+   },
+   {
+    "w": " Empires,",
+    "s": 17.44,
+    "e": 17.94
+   },
+   {
+    "w": " and",
+    "s": 17.96,
+    "e": 18.46
+   },
+   {
+    "w": " where",
+    "s": 18.46,
+    "e": 18.62
+   },
+   {
+    "w": " Russia,",
+    "s": 18.62,
+    "e": 19.1
+   },
+   {
+    "w": " Prussia,",
+    "s": 19.48,
+    "e": 19.86
+   },
+   {
+    "w": " and",
+    "s": 19.98,
+    "e": 20.18
+   },
+   {
+    "w": " Austria",
+    "s": 20.18,
+    "e": 20.66
+   },
+   {
+    "w": " never",
+    "s": 20.66,
+    "e": 21.26
+   },
+   {
+    "w": " divided",
+    "s": 21.26,
+    "e": 21.7
+   }
+  ]
+ },
+ {
+  "start": 21.7,
+  "end": 26.72,
+  "text": "its lands between them. In our timeline, this country disappeared at the end of the 18th",
+  "words": [
+   {
+    "w": " its",
+    "s": 21.7,
+    "e": 21.94
+   },
+   {
+    "w": " lands",
+    "s": 21.94,
+    "e": 22.18
+   },
+   {
+    "w": " between",
+    "s": 22.18,
+    "e": 22.58
+   },
+   {
+    "w": " them.",
+    "s": 22.58,
+    "e": 22.9
+   },
+   {
+    "w": " In",
+    "s": 23.4,
+    "e": 23.64
+   },
+   {
+    "w": " our",
+    "s": 23.64,
+    "e": 23.86
+   },
+   {
+    "w": " timeline,",
+    "s": 23.86,
+    "e": 24.26
+   },
+   {
+    "w": " this",
+    "s": 24.56,
+    "e": 24.82
+   },
+   {
+    "w": " country",
+    "s": 24.82,
+    "e": 25.1
+   },
+   {
+    "w": " disappeared",
+    "s": 25.1,
+    "e": 25.64
+   },
+   {
+    "w": " at",
+    "s": 25.64,
+    "e": 25.84
+   },
+   {
+    "w": " the",
+    "s": 25.84,
+    "e": 25.98
+   },
+   {
+    "w": " end",
+    "s": 25.98,
+    "e": 26.1
+   },
+   {
+    "w": " of",
+    "s": 26.1,
+    "e": 26.28
+   },
+   {
+    "w": " the",
+    "s": 26.28,
+    "e": 26.4
+   },
+   {
+    "w": " 18th",
+    "s": 26.4,
+    "e": 26.72
+   }
+  ]
+ },
+ {
+  "start": 26.72,
+  "end": 32.5,
+  "text": "century. But what if history had taken a different turn? To understand this alternative world,",
+  "words": [
+   {
+    "w": " century.",
+    "s": 26.72,
+    "e": 27.2
+   },
+   {
+    "w": " But",
+    "s": 27.74,
+    "e": 27.94
+   },
+   {
+    "w": " what",
+    "s": 27.94,
+    "e": 28.38
+   },
+   {
+    "w": " if",
+    "s": 28.38,
+    "e": 28.54
+   },
+   {
+    "w": " history",
+    "s": 28.54,
+    "e": 28.84
+   },
+   {
+    "w": " had",
+    "s": 28.84,
+    "e": 29.08
+   },
+   {
+    "w": " taken",
+    "s": 29.08,
+    "e": 29.3
+   },
+   {
+    "w": " a",
+    "s": 29.3,
+    "e": 29.5
+   },
+   {
+    "w": " different",
+    "s": 29.5,
+    "e": 29.78
+   },
+   {
+    "w": " turn?",
+    "s": 29.78,
+    "e": 30.16
+   },
+   {
+    "w": " To",
+    "s": 30.62,
+    "e": 30.8
+   },
+   {
+    "w": " understand",
+    "s": 30.8,
+    "e": 31.36
+   },
+   {
+    "w": " this",
+    "s": 31.36,
+    "e": 31.6
+   },
+   {
+    "w": " alternative",
+    "s": 31.6,
+    "e": 32.02
+   },
+   {
+    "w": " world,",
+    "s": 32.02,
+    "e": 32.5
+   }
+  ]
+ },
+ {
+  "start": 32.76,
+  "end": 38.14,
+  "text": "we must return to the year 1791. The Polish-Lithuanian Commonwealth was",
+  "words": [
+   {
+    "w": " we",
+    "s": 32.76,
+    "e": 32.98
+   },
+   {
+    "w": " must",
+    "s": 32.98,
+    "e": 33.26
+   },
+   {
+    "w": " return",
+    "s": 33.26,
+    "e": 33.64
+   },
+   {
+    "w": " to",
+    "s": 33.64,
+    "e": 33.86
+   },
+   {
+    "w": " the",
+    "s": 33.86,
+    "e": 33.96
+   },
+   {
+    "w": " year",
+    "s": 33.96,
+    "e": 34.2
+   },
+   {
+    "w": " 1791.",
+    "s": 34.2,
+    "e": 35.44
+   },
+   {
+    "w": " The",
+    "s": 35.92,
+    "e": 36.26
+   },
+   {
+    "w": " Polish",
+    "s": 36.26,
+    "e": 36.64
+   },
+   {
+    "w": "-Lithuanian",
+    "s": 36.64,
+    "e": 37.34
+   },
+   {
+    "w": " Commonwealth",
+    "s": 37.34,
+    "e": 37.76
+   },
+   {
+    "w": " was",
+    "s": 37.76,
+    "e": 38.14
+   }
+  ]
+ },
+ {
+  "start": 38.14,
+  "end": 43.24,
+  "text": "once one of Europe's largest states. It stretched across vast territories in central",
+  "words": [
+   {
+    "w": " once",
+    "s": 38.14,
+    "e": 38.44
+   },
+   {
+    "w": " one",
+    "s": 38.44,
+    "e": 38.68
+   },
+   {
+    "w": " of",
+    "s": 38.68,
+    "e": 38.84
+   },
+   {
+    "w": " Europe's",
+    "s": 38.84,
+    "e": 39.28
+   },
+   {
+    "w": " largest",
+    "s": 39.28,
+    "e": 39.64
+   },
+   {
+    "w": " states.",
+    "s": 39.64,
+    "e": 40.16
+   },
+   {
+    "w": " It",
+    "s": 40.52,
+    "e": 40.72
+   },
+   {
+    "w": " stretched",
+    "s": 40.72,
+    "e": 41.08
+   },
+   {
+    "w": " across",
+    "s": 41.08,
+    "e": 41.46
+   },
+   {
+    "w": " vast",
+    "s": 41.46,
+    "e": 41.98
+   },
+   {
+    "w": " territories",
+    "s": 41.98,
+    "e": 42.52
+   },
+   {
+    "w": " in",
+    "s": 42.52,
+    "e": 42.86
+   },
+   {
+    "w": " central",
+    "s": 42.86,
+    "e": 43.24
+   }
+  ]
+ },
+ {
+  "start": 43.24,
+  "end": 49.42,
+  "text": "and eastern Europe, connecting different peoples, languages, and religions. But by the 18th century,",
+  "words": [
+   {
+    "w": " and",
+    "s": 43.24,
+    "e": 43.5
+   },
+   {
+    "w": " eastern",
+    "s": 43.5,
+    "e": 43.82
+   },
+   {
+    "w": " Europe,",
+    "s": 43.82,
+    "e": 44.22
+   },
+   {
+    "w": " connecting",
+    "s": 44.52,
+    "e": 44.84
+   },
+   {
+    "w": " different",
+    "s": 44.84,
+    "e": 45.2
+   },
+   {
+    "w": " peoples,",
+    "s": 45.2,
+    "e": 45.74
+   },
+   {
+    "w": " languages,",
+    "s": 46.16,
+    "e": 46.54
+   },
+   {
+    "w": " and",
+    "s": 46.92,
+    "e": 47.0
+   },
+   {
+    "w": " religions.",
+    "s": 47.0,
+    "e": 47.52
+   },
+   {
+    "w": " But",
+    "s": 48.04,
+    "e": 48.18
+   },
+   {
+    "w": " by",
+    "s": 48.18,
+    "e": 48.48
+   },
+   {
+    "w": " the",
+    "s": 48.48,
+    "e": 48.64
+   },
+   {
+    "w": " 18th",
+    "s": 48.64,
+    "e": 49.1
+   },
+   {
+    "w": " century,",
+    "s": 49.1,
+    "e": 49.42
+   }
+  ]
+ },
+ {
+  "start": 49.82,
+  "end": 55.22,
+  "text": "the Commonwealth had become dangerously weak. Its political system made major reforms difficult.",
+  "words": [
+   {
+    "w": " the",
+    "s": 49.82,
+    "e": 49.96
+   },
+   {
+    "w": " Commonwealth",
+    "s": 49.96,
+    "e": 50.34
+   },
+   {
+    "w": " had",
+    "s": 50.34,
+    "e": 50.6
+   },
+   {
+    "w": " become",
+    "s": 50.6,
+    "e": 50.9
+   },
+   {
+    "w": " dangerously",
+    "s": 50.9,
+    "e": 51.62
+   },
+   {
+    "w": " weak.",
+    "s": 51.62,
+    "e": 52.02
+   },
+   {
+    "w": " Its",
+    "s": 52.36,
+    "e": 52.58
+   },
+   {
+    "w": " political",
+    "s": 52.58,
+    "e": 53.02
+   },
+   {
+    "w": " system",
+    "s": 53.02,
+    "e": 53.44
+   },
+   {
+    "w": " made",
+    "s": 53.44,
+    "e": 53.68
+   },
+   {
+    "w": " major",
+    "s": 53.68,
+    "e": 54.12
+   },
+   {
+    "w": " reforms",
+    "s": 54.12,
+    "e": 54.64
+   },
+   {
+    "w": " difficult.",
+    "s": 54.64,
+    "e": 55.22
+   }
+  ]
+ },
+ {
+  "start": 55.22,
+  "end": 59.8,
+  "text": "Powerful nobles could block decisions, while neighboring monarchies grew stronger.",
+  "words": [
+   {
+    "w": " Powerful",
+    "s": 55.22,
+    "e": 56.08
+   },
+   {
+    "w": " nobles",
+    "s": 56.08,
+    "e": 56.48
+   },
+   {
+    "w": " could",
+    "s": 56.48,
+    "e": 56.74
+   },
+   {
+    "w": " block",
+    "s": 56.74,
+    "e": 57.02
+   },
+   {
+    "w": " decisions,",
+    "s": 57.02,
+    "e": 57.62
+   },
+   {
+    "w": " while",
+    "s": 57.88,
+    "e": 58.14
+   },
+   {
+    "w": " neighboring",
+    "s": 58.14,
+    "e": 58.46
+   },
+   {
+    "w": " monarchies",
+    "s": 58.46,
+    "e": 59.1
+   },
+   {
+    "w": " grew",
+    "s": 59.1,
+    "e": 59.3
+   },
+   {
+    "w": " stronger.",
+    "s": 59.3,
+    "e": 59.8
+   }
+  ]
+ },
+ {
+  "start": 60.4,
+  "end": 65.1,
+  "text": "Russia increasingly interfered in its affairs. Prussia and Austria watched for",
+  "words": [
+   {
+    "w": " Russia",
+    "s": 60.4,
+    "e": 60.7
+   },
+   {
+    "w": " increasingly",
+    "s": 60.7,
+    "e": 61.5
+   },
+   {
+    "w": " interfered",
+    "s": 61.5,
+    "e": 62.04
+   },
+   {
+    "w": " in",
+    "s": 62.04,
+    "e": 62.22
+   },
+   {
+    "w": " its",
+    "s": 62.22,
+    "e": 62.38
+   },
+   {
+    "w": " affairs.",
+    "s": 62.38,
+    "e": 62.82
+   },
+   {
+    "w": " Prussia",
+    "s": 63.34,
+    "e": 63.72
+   },
+   {
+    "w": " and",
+    "s": 63.72,
+    "e": 63.92
+   },
+   {
+    "w": " Austria",
+    "s": 63.92,
+    "e": 64.42
+   },
+   {
+    "w": " watched",
+    "s": 64.42,
+    "e": 64.86
+   },
+   {
+    "w": " for",
+    "s": 64.86,
+    "e": 65.1
+   }
+  ]
+ },
+ {
+  "start": 65.1,
+  "end": 69.68,
+  "text": "opportunities to expand. Then came a moment that could have changed everything.",
+  "words": [
+   {
+    "w": " opportunities",
+    "s": 65.1,
+    "e": 65.6
+   },
+   {
+    "w": " to",
+    "s": 65.6,
+    "e": 65.88
+   },
+   {
+    "w": " expand.",
+    "s": 65.88,
+    "e": 66.34
+   },
+   {
+    "w": " Then",
+    "s": 66.94,
+    "e": 67.2
+   },
+   {
+    "w": " came",
+    "s": 67.2,
+    "e": 67.5
+   },
+   {
+    "w": " a",
+    "s": 67.5,
+    "e": 67.66
+   },
+   {
+    "w": " moment",
+    "s": 67.66,
+    "e": 67.96
+   },
+   {
+    "w": " that",
+    "s": 67.96,
+    "e": 68.2
+   },
+   {
+    "w": " could",
+    "s": 68.2,
+    "e": 68.48
+   },
+   {
+    "w": " have",
+    "s": 68.48,
+    "e": 68.66
+   },
+   {
+    "w": " changed",
+    "s": 68.66,
+    "e": 69.06
+   },
+   {
+    "w": " everything.",
+    "s": 69.06,
+    "e": 69.68
+   }
+  ]
+ },
+ {
+  "start": 70.24,
+  "end": 76.32,
+  "text": "On the 3rd of May, 1791, the Commonwealth adopted a new constitution. It was one of",
+  "words": [
+   {
+    "w": " On",
+    "s": 70.24,
+    "e": 70.36
+   },
+   {
+    "w": " the",
+    "s": 70.36,
+    "e": 70.54
+   },
+   {
+    "w": " 3rd",
+    "s": 70.54,
+    "e": 70.84
+   },
+   {
+    "w": " of",
+    "s": 70.84,
+    "e": 70.92
+   },
+   {
+    "w": " May,",
+    "s": 70.92,
+    "e": 71.22
+   },
+   {
+    "w": " 1791,",
+    "s": 71.64,
+    "e": 72.44
+   },
+   {
+    "w": " the",
+    "s": 72.94,
+    "e": 73.08
+   },
+   {
+    "w": " Commonwealth",
+    "s": 73.08,
+    "e": 73.48
+   },
+   {
+    "w": " adopted",
+    "s": 73.48,
+    "e": 74.0
+   },
+   {
+    "w": " a",
+    "s": 74.0,
+    "e": 74.32
+   },
+   {
+    "w": " new",
+    "s": 74.32,
+    "e": 74.54
+   },
+   {
+    "w": " constitution.",
+    "s": 74.54,
+    "e": 75.22
+   },
+   {
+    "w": " It",
+    "s": 75.72,
+    "e": 75.86
+   },
+   {
+    "w": " was",
+    "s": 75.86,
+    "e": 76.02
+   },
+   {
+    "w": " one",
+    "s": 76.02,
+    "e": 76.18
+   },
+   {
+    "w": " of",
+    "s": 76.18,
+    "e": 76.32
+   }
+  ]
+ },
+ {
+  "start": 76.32,
+  "end": 81.2,
+  "text": "the first modern written constitutions in Europe. It aimed to strengthen central government,",
+  "words": [
+   {
+    "w": " the",
+    "s": 76.32,
+    "e": 76.44
+   },
+   {
+    "w": " first",
+    "s": 76.44,
+    "e": 76.8
+   },
+   {
+    "w": " modern",
+    "s": 76.8,
+    "e": 77.3
+   },
+   {
+    "w": " written",
+    "s": 77.3,
+    "e": 77.6
+   },
+   {
+    "w": " constitutions",
+    "s": 77.6,
+    "e": 78.32
+   },
+   {
+    "w": " in",
+    "s": 78.32,
+    "e": 78.56
+   },
+   {
+    "w": " Europe.",
+    "s": 78.56,
+    "e": 78.9
+   },
+   {
+    "w": " It",
+    "s": 79.32,
+    "e": 79.44
+   },
+   {
+    "w": " aimed",
+    "s": 79.44,
+    "e": 79.68
+   },
+   {
+    "w": " to",
+    "s": 79.68,
+    "e": 79.92
+   },
+   {
+    "w": " strengthen",
+    "s": 79.92,
+    "e": 80.34
+   },
+   {
+    "w": " central",
+    "s": 80.34,
+    "e": 80.76
+   },
+   {
+    "w": " government,",
+    "s": 80.76,
+    "e": 81.2
+   }
+  ]
+ },
+ {
+  "start": 81.2,
+  "end": 86.4,
+  "text": "limit the power of the nobility, reform the political system, and protect the state from",
+  "words": [
+   {
+    "w": " limit",
+    "s": 81.2,
+    "e": 81.8
+   },
+   {
+    "w": " the",
+    "s": 81.8,
+    "e": 82.0
+   },
+   {
+    "w": " power",
+    "s": 82.0,
+    "e": 82.26
+   },
+   {
+    "w": " of",
+    "s": 82.26,
+    "e": 82.42
+   },
+   {
+    "w": " the",
+    "s": 82.42,
+    "e": 82.52
+   },
+   {
+    "w": " nobility,",
+    "s": 82.52,
+    "e": 83.0
+   },
+   {
+    "w": " reform",
+    "s": 83.44,
+    "e": 83.82
+   },
+   {
+    "w": " the",
+    "s": 83.82,
+    "e": 84.02
+   },
+   {
+    "w": " political",
+    "s": 84.02,
+    "e": 84.4
+   },
+   {
+    "w": " system,",
+    "s": 84.4,
+    "e": 84.84
+   },
+   {
+    "w": " and",
+    "s": 85.2,
+    "e": 85.34
+   },
+   {
+    "w": " protect",
+    "s": 85.34,
+    "e": 85.72
+   },
+   {
+    "w": " the",
+    "s": 85.72,
+    "e": 85.96
+   },
+   {
+    "w": " state",
+    "s": 85.96,
+    "e": 86.2
+   },
+   {
+    "w": " from",
+    "s": 86.2,
+    "e": 86.4
+   }
+  ]
+ },
+ {
+  "start": 86.4,
+  "end": 92.3,
+  "text": "collapse. For a brief moment, Poland-Lithuania seemed ready to transform itself, but its",
+  "words": [
+   {
+    "w": " collapse.",
+    "s": 86.4,
+    "e": 86.94
+   },
+   {
+    "w": " For",
+    "s": 87.48,
+    "e": 87.66
+   },
+   {
+    "w": " a",
+    "s": 87.66,
+    "e": 87.84
+   },
+   {
+    "w": " brief",
+    "s": 87.84,
+    "e": 88.04
+   },
+   {
+    "w": " moment,",
+    "s": 88.04,
+    "e": 88.44
+   },
+   {
+    "w": " Poland",
+    "s": 88.84,
+    "e": 89.04
+   },
+   {
+    "w": "-Lithuania",
+    "s": 89.04,
+    "e": 89.64
+   },
+   {
+    "w": " seemed",
+    "s": 89.64,
+    "e": 90.02
+   },
+   {
+    "w": " ready",
+    "s": 90.02,
+    "e": 90.36
+   },
+   {
+    "w": " to",
+    "s": 90.36,
+    "e": 90.62
+   },
+   {
+    "w": " transform",
+    "s": 90.62,
+    "e": 91.0
+   },
+   {
+    "w": " itself,",
+    "s": 91.0,
+    "e": 91.58
+   },
+   {
+    "w": " but",
+    "s": 91.58,
+    "e": 92.14
+   },
+   {
+    "w": " its",
+    "s": 92.14,
+    "e": 92.3
+   }
+  ]
+ },
+ {
+  "start": 92.3,
+  "end": 98.92,
+  "text": "neighbors were alarmed. In our timeline, Russia intervened in 1792. Polish opponents of the",
+  "words": [
+   {
+    "w": " neighbors",
+    "s": 92.3,
+    "e": 92.64
+   },
+   {
+    "w": " were",
+    "s": 92.64,
+    "e": 93.0
+   },
+   {
+    "w": " alarmed.",
+    "s": 93.0,
+    "e": 93.46
+   },
+   {
+    "w": " In",
+    "s": 93.98,
+    "e": 94.12
+   },
+   {
+    "w": " our",
+    "s": 94.12,
+    "e": 94.3
+   },
+   {
+    "w": " timeline,",
+    "s": 94.3,
+    "e": 94.74
+   },
+   {
+    "w": " Russia",
+    "s": 95.16,
+    "e": 95.46
+   },
+   {
+    "w": " intervened",
+    "s": 95.46,
+    "e": 95.98
+   },
+   {
+    "w": " in",
+    "s": 95.98,
+    "e": 96.32
+   },
+   {
+    "w": " 1792.",
+    "s": 96.32,
+    "e": 97.26
+   },
+   {
+    "w": " Polish",
+    "s": 97.86,
+    "e": 98.18
+   },
+   {
+    "w": " opponents",
+    "s": 98.18,
+    "e": 98.56
+   },
+   {
+    "w": " of",
+    "s": 98.56,
+    "e": 98.8
+   },
+   {
+    "w": " the",
+    "s": 98.8,
+    "e": 98.92
+   }
+  ]
+ },
+ {
+  "start": 98.92,
+  "end": 103.72,
+  "text": "reforms formed the Targovica Confederation and helped invite Russian military intervention.",
+  "words": [
+   {
+    "w": " reforms",
+    "s": 98.92,
+    "e": 99.34
+   },
+   {
+    "w": " formed",
+    "s": 99.34,
+    "e": 99.72
+   },
+   {
+    "w": " the",
+    "s": 99.72,
+    "e": 99.9
+   },
+   {
+    "w": " Targovica",
+    "s": 99.9,
+    "e": 100.48
+   },
+   {
+    "w": " Confederation",
+    "s": 100.48,
+    "e": 101.0
+   },
+   {
+    "w": " and",
+    "s": 101.0,
+    "e": 101.58
+   },
+   {
+    "w": " helped",
+    "s": 101.58,
+    "e": 101.82
+   },
+   {
+    "w": " invite",
+    "s": 101.82,
+    "e": 102.18
+   },
+   {
+    "w": " Russian",
+    "s": 102.18,
+    "e": 102.62
+   },
+   {
+    "w": " military",
+    "s": 102.62,
+    "e": 103.1
+   },
+   {
+    "w": " intervention.",
+    "s": 103.1,
+    "e": 103.72
+   }
+  ]
+ },
+ {
+  "start": 104.18,
+  "end": 110.28,
+  "text": "The reforms were defeated. In 1793, Russia and Prussia carried out the second partition.",
+  "words": [
+   {
+    "w": " The",
+    "s": 104.18,
+    "e": 104.4
+   },
+   {
+    "w": " reforms",
+    "s": 104.4,
+    "e": 104.9
+   },
+   {
+    "w": " were",
+    "s": 104.9,
+    "e": 105.18
+   },
+   {
+    "w": " defeated.",
+    "s": 105.18,
+    "e": 105.64
+   },
+   {
+    "w": " In",
+    "s": 106.14,
+    "e": 106.34
+   },
+   {
+    "w": " 1793,",
+    "s": 106.34,
+    "e": 107.28
+   },
+   {
+    "w": " Russia",
+    "s": 107.64,
+    "e": 108.08
+   },
+   {
+    "w": " and",
+    "s": 108.08,
+    "e": 108.28
+   },
+   {
+    "w": " Prussia",
+    "s": 108.28,
+    "e": 108.68
+   },
+   {
+    "w": " carried",
+    "s": 108.68,
+    "e": 109.02
+   },
+   {
+    "w": " out",
+    "s": 109.02,
+    "e": 109.28
+   },
+   {
+    "w": " the",
+    "s": 109.28,
+    "e": 109.46
+   },
+   {
+    "w": " second",
+    "s": 109.46,
+    "e": 109.78
+   },
+   {
+    "w": " partition.",
+    "s": 109.78,
+    "e": 110.28
+   }
+  ]
+ },
+ {
+  "start": 110.28,
+  "end": 115.34,
+  "text": "Two years later, Russia, Prussia, and Austria completed the third partition.",
+  "words": [
+   {
+    "w": " Two",
+    "s": 110.28,
+    "e": 110.94
+   },
+   {
+    "w": " years",
+    "s": 110.94,
+    "e": 111.22
+   },
+   {
+    "w": " later,",
+    "s": 111.22,
+    "e": 111.56
+   },
+   {
+    "w": " Russia,",
+    "s": 112.02,
+    "e": 112.32
+   },
+   {
+    "w": " Prussia,",
+    "s": 112.62,
+    "e": 112.96
+   },
+   {
+    "w": " and",
+    "s": 113.12,
+    "e": 113.26
+   },
+   {
+    "w": " Austria",
+    "s": 113.26,
+    "e": 113.7
+   },
+   {
+    "w": " completed",
+    "s": 113.7,
+    "e": 114.28
+   },
+   {
+    "w": " the",
+    "s": 114.28,
+    "e": 114.62
+   },
+   {
+    "w": " third",
+    "s": 114.62,
+    "e": 114.82
+   },
+   {
+    "w": " partition.",
+    "s": 114.82,
+    "e": 115.34
+   }
+  ]
+ },
+ {
+  "start": 115.84,
+  "end": 120.22,
+  "text": "The Commonwealth disappeared. But now, imagine a different outcome.",
+  "words": [
+   {
+    "w": " The",
+    "s": 115.84,
+    "e": 116.0
+   },
+   {
+    "w": " Commonwealth",
+    "s": 116.0,
+    "e": 116.46
+   },
+   {
+    "w": " disappeared.",
+    "s": 116.46,
+    "e": 117.28
+   },
+   {
+    "w": " But",
+    "s": 117.98,
+    "e": 118.1
+   },
+   {
+    "w": " now,",
+    "s": 118.1,
+    "e": 118.48
+   },
+   {
+    "w": " imagine",
+    "s": 118.86,
+    "e": 119.22
+   },
+   {
+    "w": " a",
+    "s": 119.22,
+    "e": 119.52
+   },
+   {
+    "w": " different",
+    "s": 119.52,
+    "e": 119.78
+   },
+   {
+    "w": " outcome.",
+    "s": 119.78,
+    "e": 120.22
+   }
+  ]
+ },
+ {
+  "start": 120.64,
+  "end": 125.9,
+  "text": "What if the May constitution had survived? In this alternative timeline, the reformers move",
+  "words": [
+   {
+    "w": " What",
+    "s": 120.64,
+    "e": 120.92
+   },
+   {
+    "w": " if",
+    "s": 120.92,
+    "e": 121.06
+   },
+   {
+    "w": " the",
+    "s": 121.06,
+    "e": 121.26
+   },
+   {
+    "w": " May",
+    "s": 121.26,
+    "e": 121.4
+   },
+   {
+    "w": " constitution",
+    "s": 121.4,
+    "e": 121.94
+   },
+   {
+    "w": " had",
+    "s": 121.94,
+    "e": 122.3
+   },
+   {
+    "w": " survived?",
+    "s": 122.3,
+    "e": 122.82
+   },
+   {
+    "w": " In",
+    "s": 123.26,
+    "e": 123.5
+   },
+   {
+    "w": " this",
+    "s": 123.5,
+    "e": 123.74
+   },
+   {
+    "w": " alternative",
+    "s": 123.74,
+    "e": 124.2
+   },
+   {
+    "w": " timeline,",
+    "s": 124.2,
+    "e": 124.7
+   },
+   {
+    "w": " the",
+    "s": 125.02,
+    "e": 125.12
+   },
+   {
+    "w": " reformers",
+    "s": 125.12,
+    "e": 125.66
+   },
+   {
+    "w": " move",
+    "s": 125.66,
+    "e": 125.9
+   }
+  ]
+ },
+ {
+  "start": 125.9,
+  "end": 131.24,
+  "text": "faster. They build a stronger army, secure support from important nobles, and negotiate",
+  "words": [
+   {
+    "w": " faster.",
+    "s": 125.9,
+    "e": 126.44
+   },
+   {
+    "w": " They",
+    "s": 126.92,
+    "e": 127.08
+   },
+   {
+    "w": " build",
+    "s": 127.08,
+    "e": 127.26
+   },
+   {
+    "w": " a",
+    "s": 127.26,
+    "e": 127.44
+   },
+   {
+    "w": " stronger",
+    "s": 127.44,
+    "e": 127.78
+   },
+   {
+    "w": " army,",
+    "s": 127.78,
+    "e": 128.16
+   },
+   {
+    "w": " secure",
+    "s": 128.58,
+    "e": 128.8
+   },
+   {
+    "w": " support",
+    "s": 128.8,
+    "e": 129.24
+   },
+   {
+    "w": " from",
+    "s": 129.24,
+    "e": 129.48
+   },
+   {
+    "w": " important",
+    "s": 129.48,
+    "e": 129.88
+   },
+   {
+    "w": " nobles,",
+    "s": 129.88,
+    "e": 130.22
+   },
+   {
+    "w": " and",
+    "s": 130.6,
+    "e": 130.74
+   },
+   {
+    "w": " negotiate",
+    "s": 130.74,
+    "e": 131.24
+   }
+  ]
+ },
+ {
+  "start": 131.24,
+  "end": 136.32,
+  "text": "diplomatic backing from European powers. Russia still sees the Commonwealth as a threat,",
+  "words": [
+   {
+    "w": " diplomatic",
+    "s": 131.24,
+    "e": 131.82
+   },
+   {
+    "w": " backing",
+    "s": 131.82,
+    "e": 132.26
+   },
+   {
+    "w": " from",
+    "s": 132.26,
+    "e": 132.54
+   },
+   {
+    "w": " European",
+    "s": 132.54,
+    "e": 132.98
+   },
+   {
+    "w": " powers.",
+    "s": 132.98,
+    "e": 133.48
+   },
+   {
+    "w": " Russia",
+    "s": 134.02,
+    "e": 134.3
+   },
+   {
+    "w": " still",
+    "s": 134.3,
+    "e": 134.72
+   },
+   {
+    "w": " sees",
+    "s": 134.72,
+    "e": 135.0
+   },
+   {
+    "w": " the",
+    "s": 135.0,
+    "e": 135.26
+   },
+   {
+    "w": " Commonwealth",
+    "s": 135.26,
+    "e": 135.58
+   },
+   {
+    "w": " as",
+    "s": 135.58,
+    "e": 135.82
+   },
+   {
+    "w": " a",
+    "s": 135.82,
+    "e": 136.06
+   },
+   {
+    "w": " threat,",
+    "s": 136.06,
+    "e": 136.32
+   }
+  ]
+ },
+ {
+  "start": 136.32,
+  "end": 141.44,
+  "text": "but a combination of military preparation, political unity, and international pressure",
+  "words": [
+   {
+    "w": " but",
+    "s": 136.32,
+    "e": 136.78
+   },
+   {
+    "w": " a",
+    "s": 136.78,
+    "e": 136.96
+   },
+   {
+    "w": " combination",
+    "s": 136.96,
+    "e": 137.22
+   },
+   {
+    "w": " of",
+    "s": 137.22,
+    "e": 137.66
+   },
+   {
+    "w": " military",
+    "s": 137.66,
+    "e": 138.08
+   },
+   {
+    "w": " preparation,",
+    "s": 138.08,
+    "e": 138.7
+   },
+   {
+    "w": " political",
+    "s": 139.1,
+    "e": 139.44
+   },
+   {
+    "w": " unity,",
+    "s": 139.44,
+    "e": 139.88
+   },
+   {
+    "w": " and",
+    "s": 140.08,
+    "e": 140.4
+   },
+   {
+    "w": " international",
+    "s": 140.4,
+    "e": 140.94
+   },
+   {
+    "w": " pressure",
+    "s": 140.94,
+    "e": 141.44
+   }
+  ]
+ },
+ {
+  "start": 141.44,
+  "end": 147.78,
+  "text": "makes intervention far more costly. The crisis of 1792 does not destroy the new system,",
+  "words": [
+   {
+    "w": " makes",
+    "s": 141.44,
+    "e": 141.8
+   },
+   {
+    "w": " intervention",
+    "s": 141.8,
+    "e": 142.42
+   },
+   {
+    "w": " far",
+    "s": 142.42,
+    "e": 142.9
+   },
+   {
+    "w": " more",
+    "s": 142.9,
+    "e": 143.16
+   },
+   {
+    "w": " costly.",
+    "s": 143.16,
+    "e": 143.62
+   },
+   {
+    "w": " The",
+    "s": 144.16,
+    "e": 144.22
+   },
+   {
+    "w": " crisis",
+    "s": 144.22,
+    "e": 144.56
+   },
+   {
+    "w": " of",
+    "s": 144.56,
+    "e": 144.84
+   },
+   {
+    "w": " 1792",
+    "s": 144.84,
+    "e": 145.76
+   },
+   {
+    "w": " does",
+    "s": 145.76,
+    "e": 146.16
+   },
+   {
+    "w": " not",
+    "s": 146.16,
+    "e": 146.54
+   },
+   {
+    "w": " destroy",
+    "s": 146.54,
+    "e": 146.98
+   },
+   {
+    "w": " the",
+    "s": 146.98,
+    "e": 147.18
+   },
+   {
+    "w": " new",
+    "s": 147.18,
+    "e": 147.36
+   },
+   {
+    "w": " system,",
+    "s": 147.36,
+    "e": 147.78
+   }
+  ]
+ },
+ {
+  "start": 148.14,
+  "end": 152.76,
+  "text": "and without a successful Russian intervention, the second partition never happens.",
+  "words": [
+   {
+    "w": " and",
+    "s": 148.14,
+    "e": 148.44
+   },
+   {
+    "w": " without",
+    "s": 148.44,
+    "e": 148.7
+   },
+   {
+    "w": " a",
+    "s": 148.7,
+    "e": 148.9
+   },
+   {
+    "w": " successful",
+    "s": 148.9,
+    "e": 149.36
+   },
+   {
+    "w": " Russian",
+    "s": 149.36,
+    "e": 149.76
+   },
+   {
+    "w": " intervention,",
+    "s": 149.76,
+    "e": 150.34
+   },
+   {
+    "w": " the",
+    "s": 150.8,
+    "e": 150.98
+   },
+   {
+    "w": " second",
+    "s": 150.98,
+    "e": 151.26
+   },
+   {
+    "w": " partition",
+    "s": 151.26,
+    "e": 151.72
+   },
+   {
+    "w": " never",
+    "s": 151.72,
+    "e": 152.18
+   },
+   {
+    "w": " happens.",
+    "s": 152.18,
+    "e": 152.76
+   }
+  ]
+ },
+ {
+  "start": 154.3,
+  "end": 161.6,
+  "text": "The year 1795 arrives, but there is no third partition. Poland-Lithuania remains on the map.",
+  "words": [
+   {
+    "w": " The",
+    "s": 154.3,
+    "e": 154.4
+   },
+   {
+    "w": " year",
+    "s": 154.4,
+    "e": 154.68
+   },
+   {
+    "w": " 1795",
+    "s": 154.68,
+    "e": 155.8
+   },
+   {
+    "w": " arrives,",
+    "s": 155.8,
+    "e": 156.42
+   },
+   {
+    "w": " but",
+    "s": 156.86,
+    "e": 157.18
+   },
+   {
+    "w": " there",
+    "s": 157.18,
+    "e": 157.32
+   },
+   {
+    "w": " is",
+    "s": 157.32,
+    "e": 157.62
+   },
+   {
+    "w": " no",
+    "s": 157.62,
+    "e": 157.88
+   },
+   {
+    "w": " third",
+    "s": 157.88,
+    "e": 158.16
+   },
+   {
+    "w": " partition.",
+    "s": 158.16,
+    "e": 158.72
+   },
+   {
+    "w": " Poland",
+    "s": 159.28,
+    "e": 159.6
+   },
+   {
+    "w": "-Lithuania",
+    "s": 159.6,
+    "e": 160.2
+   },
+   {
+    "w": " remains",
+    "s": 160.2,
+    "e": 160.84
+   },
+   {
+    "w": " on",
+    "s": 160.84,
+    "e": 161.2
+   },
+   {
+    "w": " the",
+    "s": 161.2,
+    "e": 161.34
+   },
+   {
+    "w": " map.",
+    "s": 161.34,
+    "e": 161.6
+   }
+  ]
+ },
+ {
+  "start": 162.46,
+  "end": 168.1,
+  "text": "During the 19th century, this surviving Commonwealth could develop into a constitutional monarchy",
+  "words": [
+   {
+    "w": " During",
+    "s": 162.46,
+    "e": 163.14
+   },
+   {
+    "w": " the",
+    "s": 163.14,
+    "e": 163.36
+   },
+   {
+    "w": " 19th",
+    "s": 163.36,
+    "e": 163.84
+   },
+   {
+    "w": " century,",
+    "s": 163.84,
+    "e": 164.18
+   },
+   {
+    "w": " this",
+    "s": 164.56,
+    "e": 164.74
+   },
+   {
+    "w": " surviving",
+    "s": 164.74,
+    "e": 165.26
+   },
+   {
+    "w": " Commonwealth",
+    "s": 165.26,
+    "e": 165.78
+   },
+   {
+    "w": " could",
+    "s": 165.78,
+    "e": 166.08
+   },
+   {
+    "w": " develop",
+    "s": 166.08,
+    "e": 166.42
+   },
+   {
+    "w": " into",
+    "s": 166.42,
+    "e": 166.7
+   },
+   {
+    "w": " a",
+    "s": 166.7,
+    "e": 166.96
+   },
+   {
+    "w": " constitutional",
+    "s": 166.96,
+    "e": 167.54
+   },
+   {
+    "w": " monarchy",
+    "s": 167.54,
+    "e": 168.1
+   }
+  ]
+ },
+ {
+  "start": 168.1,
+  "end": 173.48,
+  "text": "or a federation with a stronger parliament. Its enormous territory would remain difficult",
+  "words": [
+   {
+    "w": " or",
+    "s": 168.1,
+    "e": 168.62
+   },
+   {
+    "w": " a",
+    "s": 168.62,
+    "e": 168.86
+   },
+   {
+    "w": " federation",
+    "s": 168.86,
+    "e": 169.22
+   },
+   {
+    "w": " with",
+    "s": 169.22,
+    "e": 169.48
+   },
+   {
+    "w": " a",
+    "s": 169.48,
+    "e": 169.66
+   },
+   {
+    "w": " stronger",
+    "s": 169.66,
+    "e": 169.94
+   },
+   {
+    "w": " parliament.",
+    "s": 169.94,
+    "e": 170.4
+   },
+   {
+    "w": " Its",
+    "s": 171.1,
+    "e": 171.24
+   },
+   {
+    "w": " enormous",
+    "s": 171.24,
+    "e": 171.78
+   },
+   {
+    "w": " territory",
+    "s": 171.78,
+    "e": 172.36
+   },
+   {
+    "w": " would",
+    "s": 172.36,
+    "e": 172.64
+   },
+   {
+    "w": " remain",
+    "s": 172.64,
+    "e": 173.04
+   },
+   {
+    "w": " difficult",
+    "s": 173.04,
+    "e": 173.48
+   }
+  ]
+ },
+ {
+  "start": 173.48,
+  "end": 179.36,
+  "text": "to govern. Polish, Lithuanian, Ruthenian, Jewish, and other communities would demand",
+  "words": [
+   {
+    "w": " to",
+    "s": 173.48,
+    "e": 173.72
+   },
+   {
+    "w": " govern.",
+    "s": 173.72,
+    "e": 174.0
+   },
+   {
+    "w": " Polish,",
+    "s": 174.62,
+    "e": 175.02
+   },
+   {
+    "w": " Lithuanian,",
+    "s": 175.28,
+    "e": 176.02
+   },
+   {
+    "w": " Ruthenian,",
+    "s": 176.2,
+    "e": 176.82
+   },
+   {
+    "w": " Jewish,",
+    "s": 177.16,
+    "e": 177.42
+   },
+   {
+    "w": " and",
+    "s": 177.68,
+    "e": 177.82
+   },
+   {
+    "w": " other",
+    "s": 177.82,
+    "e": 178.08
+   },
+   {
+    "w": " communities",
+    "s": 178.08,
+    "e": 178.6
+   },
+   {
+    "w": " would",
+    "s": 178.6,
+    "e": 178.92
+   },
+   {
+    "w": " demand",
+    "s": 178.92,
+    "e": 179.36
+   }
+  ]
+ },
+ {
+  "start": 179.36,
+  "end": 184.62,
+  "text": "political rights and recognition. The greatest challenge would not simply be surviving foreign",
+  "words": [
+   {
+    "w": " political",
+    "s": 179.36,
+    "e": 179.86
+   },
+   {
+    "w": " rights",
+    "s": 179.86,
+    "e": 180.22
+   },
+   {
+    "w": " and",
+    "s": 180.22,
+    "e": 180.52
+   },
+   {
+    "w": " recognition.",
+    "s": 180.52,
+    "e": 181.04
+   },
+   {
+    "w": " The",
+    "s": 181.74,
+    "e": 181.9
+   },
+   {
+    "w": " greatest",
+    "s": 181.9,
+    "e": 182.28
+   },
+   {
+    "w": " challenge",
+    "s": 182.28,
+    "e": 182.7
+   },
+   {
+    "w": " would",
+    "s": 182.7,
+    "e": 182.9
+   },
+   {
+    "w": " not",
+    "s": 182.9,
+    "e": 183.12
+   },
+   {
+    "w": " simply",
+    "s": 183.12,
+    "e": 183.5
+   },
+   {
+    "w": " be",
+    "s": 183.5,
+    "e": 183.72
+   },
+   {
+    "w": " surviving",
+    "s": 183.72,
+    "e": 184.24
+   },
+   {
+    "w": " foreign",
+    "s": 184.24,
+    "e": 184.62
+   }
+  ]
+ },
+ {
+  "start": 184.62,
+  "end": 188.94,
+  "text": "armies. It would be building a state in which different peoples could share power.",
+  "words": [
+   {
+    "w": " armies.",
+    "s": 184.62,
+    "e": 185.02
+   },
+   {
+    "w": " It",
+    "s": 185.3,
+    "e": 185.68
+   },
+   {
+    "w": " would",
+    "s": 185.68,
+    "e": 185.8
+   },
+   {
+    "w": " be",
+    "s": 185.8,
+    "e": 185.98
+   },
+   {
+    "w": " building",
+    "s": 185.98,
+    "e": 186.24
+   },
+   {
+    "w": " a",
+    "s": 186.24,
+    "e": 186.5
+   },
+   {
+    "w": " state",
+    "s": 186.5,
+    "e": 186.72
+   },
+   {
+    "w": " in",
+    "s": 186.72,
+    "e": 186.94
+   },
+   {
+    "w": " which",
+    "s": 186.94,
+    "e": 187.1
+   },
+   {
+    "w": " different",
+    "s": 187.1,
+    "e": 187.5
+   },
+   {
+    "w": " peoples",
+    "s": 187.5,
+    "e": 187.88
+   },
+   {
+    "w": " could",
+    "s": 187.88,
+    "e": 188.14
+   },
+   {
+    "w": " share",
+    "s": 188.14,
+    "e": 188.48
+   },
+   {
+    "w": " power.",
+    "s": 188.48,
+    "e": 188.94
+   }
+  ]
+ },
+ {
+  "start": 189.58,
+  "end": 194.82,
+  "text": "If the Commonwealth succeeded, it might become an important political and economic bridge between",
+  "words": [
+   {
+    "w": " If",
+    "s": 189.48,
+    "e": 189.84
+   },
+   {
+    "w": " the",
+    "s": 189.84,
+    "e": 190.08
+   },
+   {
+    "w": " Commonwealth",
+    "s": 190.08,
+    "e": 190.36
+   },
+   {
+    "w": " succeeded,",
+    "s": 190.36,
+    "e": 190.98
+   },
+   {
+    "w": " it",
+    "s": 191.42,
+    "e": 191.52
+   },
+   {
+    "w": " might",
+    "s": 191.52,
+    "e": 191.74
+   },
+   {
+    "w": " become",
+    "s": 191.74,
+    "e": 192.06
+   },
+   {
+    "w": " an",
+    "s": 192.06,
+    "e": 192.2
+   },
+   {
+    "w": " important",
+    "s": 192.2,
+    "e": 192.66
+   },
+   {
+    "w": " political",
+    "s": 192.66,
+    "e": 193.22
+   },
+   {
+    "w": " and",
+    "s": 193.22,
+    "e": 193.48
+   },
+   {
+    "w": " economic",
+    "s": 193.48,
+    "e": 194.02
+   },
+   {
+    "w": " bridge",
+    "s": 194.02,
+    "e": 194.42
+   },
+   {
+    "w": " between",
+    "s": 194.42,
+    "e": 194.82
+   }
+  ]
+ },
+ {
+  "start": 194.82,
+  "end": 200.14,
+  "text": "Western Europe and the lands to its east. Its cities could grow into major centers of trade,",
+  "words": [
+   {
+    "w": " Western",
+    "s": 194.82,
+    "e": 195.2
+   },
+   {
+    "w": " Europe",
+    "s": 195.2,
+    "e": 195.48
+   },
+   {
+    "w": " and",
+    "s": 195.48,
+    "e": 195.86
+   },
+   {
+    "w": " the",
+    "s": 195.86,
+    "e": 196.02
+   },
+   {
+    "w": " lands",
+    "s": 196.02,
+    "e": 196.22
+   },
+   {
+    "w": " to",
+    "s": 196.22,
+    "e": 196.42
+   },
+   {
+    "w": " its",
+    "s": 196.42,
+    "e": 196.56
+   },
+   {
+    "w": " east.",
+    "s": 196.56,
+    "e": 196.96
+   },
+   {
+    "w": " Its",
+    "s": 197.6,
+    "e": 197.78
+   },
+   {
+    "w": " cities",
+    "s": 197.78,
+    "e": 198.06
+   },
+   {
+    "w": " could",
+    "s": 198.06,
+    "e": 198.26
+   },
+   {
+    "w": " grow",
+    "s": 198.26,
+    "e": 198.5
+   },
+   {
+    "w": " into",
+    "s": 198.5,
+    "e": 198.72
+   },
+   {
+    "w": " major",
+    "s": 198.72,
+    "e": 199.16
+   },
+   {
+    "w": " centers",
+    "s": 199.16,
+    "e": 199.5
+   },
+   {
+    "w": " of",
+    "s": 199.5,
+    "e": 199.8
+   },
+   {
+    "w": " trade,",
+    "s": 199.8,
+    "e": 200.14
+   }
+  ]
+ },
+ {
+  "start": 200.5,
+  "end": 206.78,
+  "text": "education, and industry. Warsaw, Vilnius, and other regional capitals might develop along a",
+  "words": [
+   {
+    "w": " education,",
+    "s": 200.5,
+    "e": 200.98
+   },
+   {
+    "w": " and",
+    "s": 201.16,
+    "e": 201.44
+   },
+   {
+    "w": " industry.",
+    "s": 201.44,
+    "e": 201.92
+   },
+   {
+    "w": " Warsaw,",
+    "s": 202.58,
+    "e": 202.96
+   },
+   {
+    "w": " Vilnius,",
+    "s": 203.52,
+    "e": 203.9
+   },
+   {
+    "w": " and",
+    "s": 204.14,
+    "e": 204.28
+   },
+   {
+    "w": " other",
+    "s": 204.28,
+    "e": 204.58
+   },
+   {
+    "w": " regional",
+    "s": 204.58,
+    "e": 204.98
+   },
+   {
+    "w": " capitals",
+    "s": 204.98,
+    "e": 205.38
+   },
+   {
+    "w": " might",
+    "s": 205.38,
+    "e": 205.82
+   },
+   {
+    "w": " develop",
+    "s": 205.82,
+    "e": 206.18
+   },
+   {
+    "w": " along",
+    "s": 206.18,
+    "e": 206.56
+   },
+   {
+    "w": " a",
+    "s": 206.56,
+    "e": 206.78
+   }
+  ]
+ },
+ {
+  "start": 206.78,
+  "end": 214.18,
+  "text": "very different path. But Europe would not stand still. Napoleon would still rise, the great",
+  "words": [
+   {
+    "w": " very",
+    "s": 206.78,
+    "e": 207.12
+   },
+   {
+    "w": " different",
+    "s": 207.12,
+    "e": 207.5
+   },
+   {
+    "w": " path.",
+    "s": 207.5,
+    "e": 207.96
+   },
+   {
+    "w": " But",
+    "s": 208.98,
+    "e": 209.3
+   },
+   {
+    "w": " Europe",
+    "s": 209.3,
+    "e": 209.7
+   },
+   {
+    "w": " would",
+    "s": 209.7,
+    "e": 209.98
+   },
+   {
+    "w": " not",
+    "s": 209.98,
+    "e": 210.28
+   },
+   {
+    "w": " stand",
+    "s": 210.28,
+    "e": 210.68
+   },
+   {
+    "w": " still.",
+    "s": 210.68,
+    "e": 211.16
+   },
+   {
+    "w": " Napoleon",
+    "s": 211.6,
+    "e": 212.18
+   },
+   {
+    "w": " would",
+    "s": 212.18,
+    "e": 212.46
+   },
+   {
+    "w": " still",
+    "s": 212.46,
+    "e": 212.78
+   },
+   {
+    "w": " rise,",
+    "s": 212.78,
+    "e": 213.3
+   },
+   {
+    "w": " the",
+    "s": 213.74,
+    "e": 213.92
+   },
+   {
+    "w": " great",
+    "s": 213.92,
+    "e": 214.18
+   }
+  ]
+ },
+ {
+  "start": 214.18,
+  "end": 219.3,
+  "text": "powers would still compete, and the 19th century would bring revolutions, nationalism,",
+  "words": [
+   {
+    "w": " powers",
+    "s": 214.18,
+    "e": 214.56
+   },
+   {
+    "w": " would",
+    "s": 214.56,
+    "e": 214.74
+   },
+   {
+    "w": " still",
+    "s": 214.74,
+    "e": 215.08
+   },
+   {
+    "w": " compete,",
+    "s": 215.08,
+    "e": 215.6
+   },
+   {
+    "w": " and",
+    "s": 216.0,
+    "e": 216.2
+   },
+   {
+    "w": " the",
+    "s": 216.2,
+    "e": 216.36
+   },
+   {
+    "w": " 19th",
+    "s": 216.36,
+    "e": 216.82
+   },
+   {
+    "w": " century",
+    "s": 216.82,
+    "e": 217.12
+   },
+   {
+    "w": " would",
+    "s": 217.12,
+    "e": 217.36
+   },
+   {
+    "w": " bring",
+    "s": 217.36,
+    "e": 217.58
+   },
+   {
+    "w": " revolutions,",
+    "s": 217.58,
+    "e": 218.26
+   },
+   {
+    "w": " nationalism,",
+    "s": 218.8,
+    "e": 219.3
+   }
+  ]
+ },
+ {
+  "start": 219.5,
+  "end": 225.26,
+  "text": "and new conflicts. A surviving Poland-Lithuania would have to decide whether to remain neutral,",
+  "words": [
+   {
+    "w": " and",
+    "s": 219.5,
+    "e": 219.78
+   },
+   {
+    "w": " new",
+    "s": 219.78,
+    "e": 220.04
+   },
+   {
+    "w": " conflicts.",
+    "s": 220.04,
+    "e": 220.68
+   },
+   {
+    "w": " A",
+    "s": 221.52,
+    "e": 221.64
+   },
+   {
+    "w": " surviving",
+    "s": 221.64,
+    "e": 222.08
+   },
+   {
+    "w": " Poland",
+    "s": 222.08,
+    "e": 222.48
+   },
+   {
+    "w": "-Lithuania",
+    "s": 222.48,
+    "e": 223.02
+   },
+   {
+    "w": " would",
+    "s": 223.02,
+    "e": 223.28
+   },
+   {
+    "w": " have",
+    "s": 223.28,
+    "e": 223.5
+   },
+   {
+    "w": " to",
+    "s": 223.5,
+    "e": 223.7
+   },
+   {
+    "w": " decide",
+    "s": 223.7,
+    "e": 224.08
+   },
+   {
+    "w": " whether",
+    "s": 224.08,
+    "e": 224.32
+   },
+   {
+    "w": " to",
+    "s": 224.32,
+    "e": 224.56
+   },
+   {
+    "w": " remain",
+    "s": 224.56,
+    "e": 224.8
+   },
+   {
+    "w": " neutral,",
+    "s": 224.8,
+    "e": 225.26
+   }
+  ]
+ },
+ {
+  "start": 225.74,
+  "end": 231.34,
+  "text": "form alliances, or become a major power in its own right. Its existence could change the",
+  "words": [
+   {
+    "w": " form",
+    "s": 225.74,
+    "e": 225.94
+   },
+   {
+    "w": " alliances,",
+    "s": 225.94,
+    "e": 226.44
+   },
+   {
+    "w": " or",
+    "s": 226.72,
+    "e": 227.2
+   },
+   {
+    "w": " become",
+    "s": 227.2,
+    "e": 227.5
+   },
+   {
+    "w": " a",
+    "s": 227.5,
+    "e": 227.7
+   },
+   {
+    "w": " major",
+    "s": 227.7,
+    "e": 228.0
+   },
+   {
+    "w": " power",
+    "s": 228.0,
+    "e": 228.36
+   },
+   {
+    "w": " in",
+    "s": 228.36,
+    "e": 228.56
+   },
+   {
+    "w": " its",
+    "s": 228.56,
+    "e": 228.7
+   },
+   {
+    "w": " own",
+    "s": 228.7,
+    "e": 228.96
+   },
+   {
+    "w": " right.",
+    "s": 228.96,
+    "e": 229.24
+   },
+   {
+    "w": " Its",
+    "s": 229.82,
+    "e": 229.98
+   },
+   {
+    "w": " existence",
+    "s": 229.98,
+    "e": 230.46
+   },
+   {
+    "w": " could",
+    "s": 230.46,
+    "e": 230.72
+   },
+   {
+    "w": " change",
+    "s": 230.72,
+    "e": 231.12
+   },
+   {
+    "w": " the",
+    "s": 231.12,
+    "e": 231.34
+   }
+  ]
+ },
+ {
+  "start": 231.34,
+  "end": 237.38,
+  "text": "balance between Russia, Prussia, and Austria. A united Commonwealth might limit Russian influence",
+  "words": [
+   {
+    "w": " balance",
+    "s": 231.34,
+    "e": 231.66
+   },
+   {
+    "w": " between",
+    "s": 231.66,
+    "e": 232.04
+   },
+   {
+    "w": " Russia,",
+    "s": 232.04,
+    "e": 232.5
+   },
+   {
+    "w": " Prussia,",
+    "s": 232.88,
+    "e": 233.22
+   },
+   {
+    "w": " and",
+    "s": 233.24,
+    "e": 233.62
+   },
+   {
+    "w": " Austria.",
+    "s": 233.62,
+    "e": 234.1
+   },
+   {
+    "w": " A",
+    "s": 234.7,
+    "e": 234.88
+   },
+   {
+    "w": " united",
+    "s": 234.88,
+    "e": 235.26
+   },
+   {
+    "w": " Commonwealth",
+    "s": 235.26,
+    "e": 235.78
+   },
+   {
+    "w": " might",
+    "s": 235.78,
+    "e": 236.2
+   },
+   {
+    "w": " limit",
+    "s": 236.2,
+    "e": 236.56
+   },
+   {
+    "w": " Russian",
+    "s": 236.56,
+    "e": 236.94
+   },
+   {
+    "w": " influence",
+    "s": 236.94,
+    "e": 237.38
+   }
+  ]
+ },
+ {
+  "start": 237.38,
+  "end": 242.48,
+  "text": "in Central Europe. It might also prevent Prussia from expanding eastward in the same way it did",
+  "words": [
+   {
+    "w": " in",
+    "s": 237.38,
+    "e": 237.62
+   },
+   {
+    "w": " Central",
+    "s": 237.62,
+    "e": 237.9
+   },
+   {
+    "w": " Europe.",
+    "s": 237.9,
+    "e": 238.3
+   },
+   {
+    "w": " It",
+    "s": 238.56,
+    "e": 238.94
+   },
+   {
+    "w": " might",
+    "s": 238.94,
+    "e": 239.1
+   },
+   {
+    "w": " also",
+    "s": 239.1,
+    "e": 239.48
+   },
+   {
+    "w": " prevent",
+    "s": 239.48,
+    "e": 239.82
+   },
+   {
+    "w": " Prussia",
+    "s": 239.82,
+    "e": 240.18
+   },
+   {
+    "w": " from",
+    "s": 240.18,
+    "e": 240.4
+   },
+   {
+    "w": " expanding",
+    "s": 240.4,
+    "e": 240.86
+   },
+   {
+    "w": " eastward",
+    "s": 240.86,
+    "e": 241.38
+   },
+   {
+    "w": " in",
+    "s": 241.38,
+    "e": 241.58
+   },
+   {
+    "w": " the",
+    "s": 241.58,
+    "e": 241.78
+   },
+   {
+    "w": " same",
+    "s": 241.78,
+    "e": 241.96
+   },
+   {
+    "w": " way",
+    "s": 241.96,
+    "e": 242.14
+   },
+   {
+    "w": " it",
+    "s": 242.14,
+    "e": 242.26
+   },
+   {
+    "w": " did",
+    "s": 242.26,
+    "e": 242.48
+   }
+  ]
+ },
+ {
+  "start": 242.48,
+  "end": 246.56,
+  "text": "in our history, and the map of Europe could look radically different.",
+  "words": [
+   {
+    "w": " in",
+    "s": 242.48,
+    "e": 242.66
+   },
+   {
+    "w": " our",
+    "s": 242.66,
+    "e": 242.96
+   },
+   {
+    "w": " history,",
+    "s": 242.96,
+    "e": 243.44
+   },
+   {
+    "w": " and",
+    "s": 243.8,
+    "e": 244.14
+   },
+   {
+    "w": " the",
+    "s": 244.14,
+    "e": 244.3
+   },
+   {
+    "w": " map",
+    "s": 244.3,
+    "e": 244.46
+   },
+   {
+    "w": " of",
+    "s": 244.46,
+    "e": 244.72
+   },
+   {
+    "w": " Europe",
+    "s": 244.72,
+    "e": 244.92
+   },
+   {
+    "w": " could",
+    "s": 244.92,
+    "e": 245.3
+   },
+   {
+    "w": " look",
+    "s": 245.3,
+    "e": 245.5
+   },
+   {
+    "w": " radically",
+    "s": 245.5,
+    "e": 246.06
+   },
+   {
+    "w": " different.",
+    "s": 246.06,
+    "e": 246.56
+   }
+  ]
+ },
+ {
+  "start": 247.82,
+  "end": 252.52,
+  "text": "Would the First World War still happen? Would Germany and Russia develop in the same way?",
+  "words": [
+   {
+    "w": " Would",
+    "s": 247.82,
+    "e": 248.06
+   },
+   {
+    "w": " the",
+    "s": 248.06,
+    "e": 248.22
+   },
+   {
+    "w": " First",
+    "s": 248.22,
+    "e": 248.44
+   },
+   {
+    "w": " World",
+    "s": 248.44,
+    "e": 248.74
+   },
+   {
+    "w": " War",
+    "s": 248.74,
+    "e": 248.92
+   },
+   {
+    "w": " still",
+    "s": 248.92,
+    "e": 249.22
+   },
+   {
+    "w": " happen?",
+    "s": 249.22,
+    "e": 249.6
+   },
+   {
+    "w": " Would",
+    "s": 250.18,
+    "e": 250.38
+   },
+   {
+    "w": " Germany",
+    "s": 250.38,
+    "e": 250.76
+   },
+   {
+    "w": " and",
+    "s": 250.76,
+    "e": 250.96
+   },
+   {
+    "w": " Russia",
+    "s": 250.96,
+    "e": 251.26
+   },
+   {
+    "w": " develop",
+    "s": 251.26,
+    "e": 251.66
+   },
+   {
+    "w": " in",
+    "s": 251.66,
+    "e": 251.84
+   },
+   {
+    "w": " the",
+    "s": 251.84,
+    "e": 251.98
+   },
+   {
+    "w": " same",
+    "s": 251.98,
+    "e": 252.16
+   },
+   {
+    "w": " way?",
+    "s": 252.16,
+    "e": 252.52
+   }
+  ]
+ },
+ {
+  "start": 253.04,
+  "end": 259.36,
+  "text": "Would the borders of modern Eastern Europe ever exist? We cannot know, because this is not the",
+  "words": [
+   {
+    "w": " Would",
+    "s": 253.04,
+    "e": 253.24
+   },
+   {
+    "w": " the",
+    "s": 253.24,
+    "e": 253.42
+   },
+   {
+    "w": " borders",
+    "s": 253.42,
+    "e": 253.64
+   },
+   {
+    "w": " of",
+    "s": 253.64,
+    "e": 253.98
+   },
+   {
+    "w": " modern",
+    "s": 253.98,
+    "e": 254.24
+   },
+   {
+    "w": " Eastern",
+    "s": 254.24,
+    "e": 254.56
+   },
+   {
+    "w": " Europe",
+    "s": 254.56,
+    "e": 254.9
+   },
+   {
+    "w": " ever",
+    "s": 254.9,
+    "e": 255.3
+   },
+   {
+    "w": " exist?",
+    "s": 255.3,
+    "e": 255.84
+   },
+   {
+    "w": " We",
+    "s": 256.26,
+    "e": 256.7
+   },
+   {
+    "w": " cannot",
+    "s": 256.7,
+    "e": 257.02
+   },
+   {
+    "w": " know,",
+    "s": 257.02,
+    "e": 257.52
+   },
+   {
+    "w": " because",
+    "s": 257.84,
+    "e": 258.16
+   },
+   {
+    "w": " this",
+    "s": 258.16,
+    "e": 258.54
+   },
+   {
+    "w": " is",
+    "s": 258.54,
+    "e": 258.84
+   },
+   {
+    "w": " not",
+    "s": 258.84,
+    "e": 259.12
+   },
+   {
+    "w": " the",
+    "s": 259.12,
+    "e": 259.36
+   }
+  ]
+ },
+ {
+  "start": 259.36,
+  "end": 266.1,
+  "text": "history that happened. It is one possible path history might have taken. What we do know is",
+  "words": [
+   {
+    "w": " history",
+    "s": 259.36,
+    "e": 259.68
+   },
+   {
+    "w": " that",
+    "s": 259.68,
+    "e": 259.86
+   },
+   {
+    "w": " happened.",
+    "s": 259.86,
+    "e": 260.3
+   },
+   {
+    "w": " It",
+    "s": 260.86,
+    "e": 260.96
+   },
+   {
+    "w": " is",
+    "s": 260.96,
+    "e": 261.14
+   },
+   {
+    "w": " one",
+    "s": 261.14,
+    "e": 261.44
+   },
+   {
+    "w": " possible",
+    "s": 261.44,
+    "e": 261.96
+   },
+   {
+    "w": " path",
+    "s": 261.96,
+    "e": 262.32
+   },
+   {
+    "w": " history",
+    "s": 262.32,
+    "e": 262.82
+   },
+   {
+    "w": " might",
+    "s": 262.82,
+    "e": 263.16
+   },
+   {
+    "w": " have",
+    "s": 263.16,
+    "e": 263.38
+   },
+   {
+    "w": " taken.",
+    "s": 263.38,
+    "e": 263.74
+   },
+   {
+    "w": " What",
+    "s": 264.7,
+    "e": 264.92
+   },
+   {
+    "w": " we",
+    "s": 264.92,
+    "e": 265.12
+   },
+   {
+    "w": " do",
+    "s": 265.12,
+    "e": 265.32
+   },
+   {
+    "w": " know",
+    "s": 265.32,
+    "e": 265.66
+   },
+   {
+    "w": " is",
+    "s": 265.66,
+    "e": 266.1
+   }
+  ]
+ },
+ {
+  "start": 266.1,
+  "end": 270.98,
+  "text": "that the Polish-Lithuanian Commonwealth did not disappear because its people lacked a future.",
+  "words": [
+   {
+    "w": " that",
+    "s": 266.1,
+    "e": 266.28
+   },
+   {
+    "w": " the",
+    "s": 266.28,
+    "e": 266.5
+   },
+   {
+    "w": " Polish",
+    "s": 266.5,
+    "e": 266.8
+   },
+   {
+    "w": "-Lithuanian",
+    "s": 266.8,
+    "e": 267.52
+   },
+   {
+    "w": " Commonwealth",
+    "s": 267.52,
+    "e": 268.0
+   },
+   {
+    "w": " did",
+    "s": 268.0,
+    "e": 268.38
+   },
+   {
+    "w": " not",
+    "s": 268.38,
+    "e": 268.74
+   },
+   {
+    "w": " disappear",
+    "s": 268.74,
+    "e": 269.28
+   },
+   {
+    "w": " because",
+    "s": 269.28,
+    "e": 269.66
+   },
+   {
+    "w": " its",
+    "s": 269.66,
+    "e": 269.84
+   },
+   {
+    "w": " people",
+    "s": 269.84,
+    "e": 270.2
+   },
+   {
+    "w": " lacked",
+    "s": 270.2,
+    "e": 270.46
+   },
+   {
+    "w": " a",
+    "s": 270.46,
+    "e": 270.7
+   },
+   {
+    "w": " future.",
+    "s": 270.7,
+    "e": 270.98
+   }
+  ]
+ },
+ {
+  "start": 271.54,
+  "end": 275.22,
+  "text": "It disappeared after political weakness, foreign intervention,",
+  "words": [
+   {
+    "w": " It",
+    "s": 271.38,
+    "e": 271.74
+   },
+   {
+    "w": " disappeared",
+    "s": 271.74,
+    "e": 272.28
+   },
+   {
+    "w": " after",
+    "s": 272.28,
+    "e": 272.74
+   },
+   {
+    "w": " political",
+    "s": 272.74,
+    "e": 273.26
+   },
+   {
+    "w": " weakness,",
+    "s": 273.26,
+    "e": 273.72
+   },
+   {
+    "w": " foreign",
+    "s": 274.38,
+    "e": 274.6
+   },
+   {
+    "w": " intervention,",
+    "s": 274.6,
+    "e": 275.22
+   }
+  ]
+ },
+ {
+  "start": 275.44,
+  "end": 279.44,
+  "text": "and the ambitions of neighboring empires combined to destroy it.",
+  "words": [
+   {
+    "w": " and",
+    "s": 275.44,
+    "e": 275.84
+   },
+   {
+    "w": " the",
+    "s": 275.84,
+    "e": 275.96
+   },
+   {
+    "w": " ambitions",
+    "s": 275.96,
+    "e": 276.36
+   },
+   {
+    "w": " of",
+    "s": 276.36,
+    "e": 276.7
+   },
+   {
+    "w": " neighboring",
+    "s": 276.7,
+    "e": 277.02
+   },
+   {
+    "w": " empires",
+    "s": 277.02,
+    "e": 277.58
+   },
+   {
+    "w": " combined",
+    "s": 277.58,
+    "e": 278.2
+   },
+   {
+    "w": " to",
+    "s": 278.2,
+    "e": 278.58
+   },
+   {
+    "w": " destroy",
+    "s": 278.58,
+    "e": 279.02
+   },
+   {
+    "w": " it.",
+    "s": 279.02,
+    "e": 279.44
+   }
+  ]
+ },
+ {
+  "start": 280.28,
+  "end": 286.32,
+  "text": "But imagine looking at a map of Europe today, and seeing Poland-Lithuania still there. A",
+  "words": [
+   {
+    "w": " But",
+    "s": 280.28,
+    "e": 280.38
+   },
+   {
+    "w": " imagine",
+    "s": 280.38,
+    "e": 280.78
+   },
+   {
+    "w": " looking",
+    "s": 280.78,
+    "e": 281.12
+   },
+   {
+    "w": " at",
+    "s": 281.12,
+    "e": 281.28
+   },
+   {
+    "w": " a",
+    "s": 281.28,
+    "e": 281.44
+   },
+   {
+    "w": " map",
+    "s": 281.44,
+    "e": 281.58
+   },
+   {
+    "w": " of",
+    "s": 281.58,
+    "e": 281.82
+   },
+   {
+    "w": " Europe",
+    "s": 281.82,
+    "e": 281.98
+   },
+   {
+    "w": " today,",
+    "s": 281.98,
+    "e": 282.52
+   },
+   {
+    "w": " and",
+    "s": 283.1,
+    "e": 283.28
+   },
+   {
+    "w": " seeing",
+    "s": 283.28,
+    "e": 283.58
+   },
+   {
+    "w": " Poland",
+    "s": 283.58,
+    "e": 284.04
+   },
+   {
+    "w": "-Lithuania",
+    "s": 284.04,
+    "e": 284.58
+   },
+   {
+    "w": " still",
+    "s": 284.58,
+    "e": 285.1
+   },
+   {
+    "w": " there.",
+    "s": 285.1,
+    "e": 285.54
+   },
+   {
+    "w": " A",
+    "s": 286.18,
+    "e": 286.32
+   }
+  ]
+ },
+ {
+  "start": 286.32,
+  "end": 292.04,
+  "text": "state that survived the Age of Partitions. A different Central Europe. A different world.",
+  "words": [
+   {
+    "w": " state",
+    "s": 286.32,
+    "e": 286.66
+   },
+   {
+    "w": " that",
+    "s": 286.66,
+    "e": 286.86
+   },
+   {
+    "w": " survived",
+    "s": 286.86,
+    "e": 287.4
+   },
+   {
+    "w": " the",
+    "s": 287.4,
+    "e": 287.66
+   },
+   {
+    "w": " Age",
+    "s": 287.66,
+    "e": 287.82
+   },
+   {
+    "w": " of",
+    "s": 287.82,
+    "e": 287.98
+   },
+   {
+    "w": " Partitions.",
+    "s": 287.98,
+    "e": 288.46
+   },
+   {
+    "w": " A",
+    "s": 289.18,
+    "e": 289.38
+   },
+   {
+    "w": " different",
+    "s": 289.38,
+    "e": 289.68
+   },
+   {
+    "w": " Central",
+    "s": 289.68,
+    "e": 290.06
+   },
+   {
+    "w": " Europe.",
+    "s": 290.06,
+    "e": 290.42
+   },
+   {
+    "w": " A",
+    "s": 291.14,
+    "e": 291.3
+   },
+   {
+    "w": " different",
+    "s": 291.3,
+    "e": 291.62
+   },
+   {
+    "w": " world.",
+    "s": 291.62,
+    "e": 292.04
+   }
+  ]
+ },
+ {
+  "start": 293.12,
+  "end": 298.56,
+  "text": "What if Poland-Lithuania had never been partitioned? Would Europe be a completely different place?",
+  "words": [
+   {
+    "w": " What",
+    "s": 293.12,
+    "e": 293.34
+   },
+   {
+    "w": " if",
+    "s": 293.34,
+    "e": 293.5
+   },
+   {
+    "w": " Poland",
+    "s": 293.5,
+    "e": 293.9
+   },
+   {
+    "w": "-Lithuania",
+    "s": 293.9,
+    "e": 294.44
+   },
+   {
+    "w": " had",
+    "s": 294.44,
+    "e": 294.76
+   },
+   {
+    "w": " never",
+    "s": 294.76,
+    "e": 295.1
+   },
+   {
+    "w": " been",
+    "s": 295.1,
+    "e": 295.38
+   },
+   {
+    "w": " partitioned?",
+    "s": 295.38,
+    "e": 296.08
+   },
+   {
+    "w": " Would",
+    "s": 296.24,
+    "e": 296.46
+   },
+   {
+    "w": " Europe",
+    "s": 296.46,
+    "e": 296.78
+   },
+   {
+    "w": " be",
+    "s": 296.78,
+    "e": 297.02
+   },
+   {
+    "w": " a",
+    "s": 297.02,
+    "e": 297.38
+   },
+   {
+    "w": " completely",
+    "s": 297.38,
+    "e": 297.72
+   },
+   {
+    "w": " different",
+    "s": 297.72,
+    "e": 298.12
+   },
+   {
+    "w": " place?",
+    "s": 298.12,
+    "e": 298.56
+   }
+  ]
+ }
+]
