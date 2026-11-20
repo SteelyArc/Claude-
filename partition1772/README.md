@@ -31,6 +31,12 @@ A 1080 × 1920 documentary for TikTok, with 8 min 46 s of narration. This folder
   On-screen statistics use the published figures, marked as estimates.
 - **Duchy of Courland** is shown hatched as a Polish fief, not as core territory.
 - **Neighbours in 1772:** OHM Prussia, Russia, Ottoman Empire, Crimean Khanate, Sweden and Holy Roman Empire. The Habsburg Monarchy is the union of Bohemia, the Austrian Circle, Hungary, Transylvania and the Banat of Temesvar. No 19th-century borders are used for 1772.
+- **Croatia (checked on review):** in 1772 Croatia was **Habsburg**, not Ottoman. The Kingdom of Croatia, Slavonia and the Croatian and Slavonian Military Frontier came under Habsburg rule after the treaties of 1699 and 1718; Ottoman rule ended at the Una and Sava rivers. OHM has Slavonia and parts of the Military Frontier but no complete Croatia polygon for 1772. I therefore took the land between the mapped 1772 neighbours (Ottoman Bosnia, the Republic of Venice's Dalmatia, Ragusa, Hungary and the Austrian lands) and assigned it to the Habsburg Monarchy, then spot-checked it town by town:
+  - Habsburg: Zagreb, Karlovac, Gospić, Senj, Osijek.
+  - Ottoman: Bihać, Banja Luka, Sarajevo.
+  - Venetian: Split, Zadar, Knin.
+  
+  Venice and Ragusa are shown as neutral neighbours.
 
 ### Remaining uncertainty
 
@@ -51,6 +57,14 @@ A 1080 × 1920 documentary for TikTok, with 8 min 46 s of narration. This folder
 - Jan Matejko, *Rejtan*, 1866. This is a 19th-century painting and will be labelled as such.
 
 No portrait, document or quotation is generated or invented.
+
+## Cold-open hook (first 3.5 s)
+
+- **Frame 1:** the Commonwealth on a tilted map, with the headline "THREE POWERS. ONE COUNTRY." It says "powers" rather than "empires" because Prussia was a kingdom.
+- **The cuts:** glowing lines race along the real 1772 partition borders, and the three acquisitions tear away as lifted paper pieces in their power colours.
+- **The line:** "Divided not by battle, but by agreement." This is the narration's own point, not an invented quotation.
+- **The transition:** the pieces snap back and the camera whips out to Europe.
+- **Sound:** subtle synthesised accents (low impact, three slashes, a whoosh) sit under the narration.
 
 ## Subtitles
 

@@ -96,7 +96,7 @@ def draw_map(c, cam, a, st):
     # neutral tint on all land (states not otherwise coloured)
     if st.get('neutral', 0) > 0:
         fill_territory(c, cam, layer_path('land', 1.5), PAL['neutral'], 0.22 * st['neutral'], inner_glow=0)
-    for n in ('ottoman', 'sweden', 'hre_other'):
+    for n in ('ottoman', 'sweden', 'hre_other', 'venice'):
         if st.get('neighbours', 0) > 0:
             fill_territory(c, cam, layer_path(n), PAL['neutral'], 0.30 * st['neighbours'], inner_glow=0.6, glow_w=8)
     # the three powers (home territories)
@@ -167,6 +167,68 @@ def draw_map(c, cam, a, st):
                         alpha=st.get('cutA' + key, 1.0), glow=0.45)
 
 # ==================================================================== S1 — opening map
+HOOK_PIECES = (('gain_R', 'russia', 'cut_R', -0.80), ('gain_P', 'prussia', 'cut_P', -0.62), ('gain_A', 'austria', 'cut_A', -0.44))
+_CENT = {}
+def _centroid(lay):
+    if lay not in _CENT:
+        p = LAYERS[lay].centroid; q = LAYERS['plc_pre'].centroid
+        d = np.array([p.x - q.x, p.y - q.y]); d /= np.linalg.norm(d)
+        _CENT[lay] = (p.x, p.y, d)
+    return _CENT[lay]
+
+def hook_pieces(c, cam, a, hk):
+    """Cold open: glowing cuts slash along the real 1772 lines, then the three acquisitions tear away as lifted paper pieces."""
+    m = cam.matrix()
+    for i, (lay, col, cut, t0) in enumerate(HOOK_PIECES):
+        slash = ramp(a, t0, t0 + 0.45, ease_out_cubic)
+        colr = ramp(a, t0 + 0.25, t0 + 0.75)
+        sep = ease_out_back(ramp(a, t0 + 0.75, t0 + 1.75, lambda v: v), 1.1) * (1 - ramp(a, 2.15, 2.85, ease_in_out_quint))
+        cx, cy, d = _centroid(lay)
+        dist = 70 * sep; rot = (-3.5, 2.5, 3.0)[i] * sep
+        wm = skia.Matrix(); wm.setRotate(rot, cx, cy); wm.postTranslate(d[0] * dist, d[1] * dist)
+        path = skia.Path(layer_path(lay, 0.3)); path.transform(wm)
+        sp = skia.Path(path); sp.transform(m)
+        # shadow of the lifted piece
+        if sep > 0.01:
+            shp = skia.Paint(AntiAlias=True, Color=C(40, 24, 10), MaskFilter=skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 6 + 14 * sep))
+            shp.setAlphaf(0.45 * sep * hk); c.save(); c.translate(10 * sep, 22 * sep); c.drawPath(sp, shp); c.restore()
+        # the piece: gold (still Commonwealth) turning into the acquiring power's colour
+        pc = tuple(int(lerp(p_, q_, colr)) for p_, q_ in zip(PAL['plc'], PAL[col]))
+        fp = skia.Paint(AntiAlias=True, Color=C(*pc)); fp.setAlphaf(hk * lerp(0.62, 0.86, colr)); c.drawPath(sp, fp)
+        if colr > 0:
+            hp = skia.Paint(AntiAlias=True); o = m.mapXY(0, 0)
+            hp.setShader(hatch_shader(tuple(int(v * 0.72) for v in PAL[col]), offset=(o.x(), o.y()))); hp.setAlphaf(0.35 * colr * hk); c.drawPath(sp, hp)
+        ep = skia.Paint(AntiAlias=True, Color=C(*[int(v * .55) for v in PAL[col]]), Style=skia.Paint.kStroke_Style, StrokeWidth=2.2)
+        ep.setAlphaf(hk * (0.4 + 0.6 * colr)); c.drawPath(sp, ep)
+        # the cut itself: a white-hot line racing along the real border
+        if slash > 0 and sep < 0.3:
+            cp = skia.Path(layer_path(cut, 0.3)); cp.transform(wm)
+            draw_border(c, cam, cp, (255, 236, 196), 3.6, t=slash, alpha=hk * (1 - sep / 0.3), glow=0.9, double=False)
+
+def hook_text(c, a, hk):
+    top_haze(c, hk, y1=560)
+    def slam(text, y, t0, f, col, tracking):
+        k = ramp(a, t0, t0 + 0.38, lambda v: v)
+        if k <= 0: return
+        s = lerp(1.5, 1.0, ease_out_expo(k))
+        c.save(); c.translate(W / 2, y); c.scale(s, s)
+        draw_text(c, text, 0, 0, f, C(*col), tracking=tracking, alpha=hk * clamp(k * 2.5) * (1 - ramp(a, 2.35, 2.9)), halo=C(*PAL['paper'], 200), halo_w=10,
+                  shadow=(C(60, 30, 10, 90), 12, 0, 6))
+        c.restore()
+    out = 1 - ramp(a, 2.35, 2.9)
+    if out <= 0: return
+    c.saveLayer(None, skia.Paint(Alphaf=out)) if False else c.save()
+    draw_text(c, '1772', W / 2, 168, font(CAPS, 50), C(140, 52, 36), tracking=0.5, alpha=hk * out * ramp(a, -1.1, -0.8))
+    slam('THREE POWERS.', 268, -1.12, font(CAPS_B, 84), PAL['ink'], 0.06)
+    slam('ONE COUNTRY.', 368, -0.45, font(CAPS_B, 84), (140, 52, 36), 0.06)
+    lt = ramp(a, 0.55, 1.6)
+    draw_text(c, 'Divided not by battle, but by agreement.', W / 2, 452, font(SERIF_I, 48), C(*PAL['ink']), alpha=hk * out,
+              reveal=lt, stagger=0.6, rise=10, halo=C(*PAL['paper'], 200), halo_w=8)
+    c.restore()
+    # quick fade of the whole block
+    if out < 1:
+        pass
+
 class S1:
     lead = 1.0; a0 = 0.0; a1 = 31.95; tail = 0.8
     dur = lead + (a1 - a0) + tail
@@ -178,7 +240,9 @@ class S1:
         plc = Cam(170, 175, 0.66, rot=0, tilt=0, oy=40)
         plc2 = Cam(180, 170, 0.69, rot=0, tilt=0, oy=40)
         wide = Cam(110, 300, 0.56, rot=0, tilt=4, oy=40)
-        cam = cam_path([(-1, europe, None), (15.8, europe2, ease_in_out_sine), (21.0, plc, ease_in_out_quint), (28.4, plc2, ease_in_out_sine),
+        hook0 = Cam(150, 165, 0.80, rot=-3, tilt=16, oy=110)
+        hook1 = Cam(160, 170, 0.90, rot=-1, tilt=12, oy=110)
+        cam = cam_path([(-1.0, hook0, None), (2.5, hook1, ease_out_cubic), (3.9, europe, ease_in_out_quint), (15.8, europe2, ease_in_out_sine), (21.0, plc, ease_in_out_quint), (28.4, plc2, ease_in_out_sine),
                         (31.0, wide, ease_in_out_quint), (33.0, Cam(105, 305, 0.565, tilt=4, oy=40), ease_in_out_sine)], a)
         cam = drift(cam, a, amp=5)
         powers = 1 - 0.45 * ramp(a, 17.0, 21.0)
@@ -193,8 +257,18 @@ class S1:
                   gdl=ramp(a, 22.6, 23.2), gdl_t=ramp(a, 22.6, 25.0),
                   rivers=ramp(a, 18.5, 20.5), rivers_t=ramp(a, 18.5, 23.5, ease_in_out_sine))
         if a < 17.4: st['plc'] = 0
+        hk = 1 - ramp(a, 2.7, 3.7)                 # cold-open hook weight
+        if hk > 0:
+            for k in 'PRA': st['pow' + k] = max(st['pow' + k] if a > 8.8 else 0, 0.85 * hk); st['powrev' + k] = 1
+            st['powsolid'] = 0.0 if a < 8.8 else st['powsolid']
+            st['plc'] = hk; st['plc_layer'] = 'plc_rem'; st['plcrev'] = 1; st['courland'] = hk
+            st['plc_base'] = max(st['plc_base'], 0.9 * hk)
+            st['plc_border'] = max(st['plc_border'], hk); st['plc_border_t'] = 1
+        st['plc_base'] = max(st['plc_base'], 0.55 * (1 - ramp(a, 3.4, 5.0))) if a > 2.7 else st['plc_base']
         draw_map(c, cam, a, st)
+        if hk > 0: hook_pieces(c, cam, a, hk)
         horizon_haze(c, cam)
+        if hk > 0: hook_text(c, a, hk)
         # foreshadow: the three future losses glimmer as dotted outlines
         fs = window(a, 24.4, 28.6, 0.8, 1.2)
         if fs > 0:
@@ -243,12 +317,11 @@ class S1:
                     c.drawCircle(tip.x(), tip.y(), 12, gp)
             world_city(c, cam, 'St Petersburg', ramp(a, 31.0, 31.9), pulse=ramp(a, 31.3, 32.8, lambda v: v), size=34, dx=18, dy=-14, align='left', color=(90, 40, 25))
         # date intro & title
-        date_card(c, a + 0.2, 'SUMMER', '1772', None, y=420, size=170, alpha=1 - ramp(a, 6.6, 8.0))
+        date_card(c, a - 3.6, 'SUMMER', '1772', None, y=420, size=170, alpha=ramp(a, 3.6, 3.7, lambda v: v) * (1 - ramp(a, 7.8, 8.7)))
         title_card(c, a - 13.6, 'THE FIRST PARTITION', 'of Poland–Lithuania', y=300, alpha=ramp(a, 13.6, 13.7, lambda v: v) * (1 - ramp(a, 19.6, 21.0)))
         FIN.apply(c, t, cam)
         draw_sub(c, a)
         # fade from black
-        fade(c, 1 - ramp(t, 0.0, 1.4))
         fade(c, ramp(t, self.dur - 0.5, self.dur))
 
 def top_haze(c, k, y1=420):

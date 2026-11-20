@@ -1,7 +1,7 @@
 """Build all cartographic layers in a Lambert azimuthal equal-area projection (km units).
 Sources: OpenHistoricalMap (CC0), RISTAT 1897 districts (Kessler & Markevich, CC0), Natural Earth (PD)."""
 import json, pickle, numpy as np, shapely
-from shapely.geometry import shape, box, Point, LineString, MultiLineString
+from shapely.geometry import shape, box, Point, LineString, MultiLineString, Polygon
 from shapely.ops import unary_union, linemerge
 from pyproj import Transformer, Geod
 import build_geo
@@ -17,7 +17,7 @@ lakes=unary_union([shape(f['geometry']).buffer(0) for f in json.load(open(D+'ne_
 land=unary_union(shapely.make_valid(land)); landmask=land.difference(lakes)
 R={}
 for id,n in [(2961392,'plc_pre'),(2692511,'plc_post'),(2748498,'prussia_pre'),(2748497,'prussia_post'),(2851879,'russia_pre'),(2851992,'russia_post'),
-             (2748048,'galicia'),(2748039,'netze'),(2964455,'hungary'),(2830395,'bohemia'),(2830883,'austrian_circle'),(2746687,'ottoman'),(2849499,'crimea'),(2851880,'sweden'),(2830353,'hre'),(2696443,'warmia'),(2696308,'gdl'),(2878295,'transylvania'),(2747562,'banat'),(2746839,'banat_mf')]:
+             (2748048,'galicia'),(2748039,'netze'),(2964455,'hungary'),(2830395,'bohemia'),(2830883,'austrian_circle'),(2746687,'ottoman'),(2849499,'crimea'),(2851880,'sweden'),(2830353,'hre'),(2696443,'warmia'),(2696308,'gdl'),(2878295,'transylvania'),(2747562,'banat'),(2746839,'banat_mf'),(2746424,'slavonia'),(2746812,'slav_mf'),(2746847,'varazdin'),(2799670,'venice'),(2830352,'ragusa')]:
     try: R[n]=build_geo.rel(id)[0].intersection(BB)
     except FileNotFoundError: pass
 F=json.load(open(D+'ristat/distr1897.geojson'))['features']
@@ -34,7 +34,14 @@ plc_post=R['plc_post']
 gain_P=plc_pre.intersection(R['prussia_post']); gain_A=plc_pre.intersection(R['galicia'])
 gain_R=plc_pre.difference(plc_post).difference(gain_P).difference(gain_A)
 gain_R=unary_union([p for p in getattr(gain_R,'geoms',[gain_R]) if AREA(p)>100 and p.representative_point().x>25.5])
-habsburg=unary_union([R['bohemia'],R['austrian_circle'],R['hungary'],R['transylvania'],R['banat'],R['banat_mf']]).difference(plc_pre)
+habsburg=unary_union([R['bohemia'],R['austrian_circle'],R['hungary'],R['transylvania'],R['banat'],R['banat_mf'],R['slavonia'],R['slav_mf'],R['varazdin']]).difference(plc_pre)
+# Kingdom of Croatia + Croatian Military Frontier (Habsburg since 1699/1718): no complete OHM polygon for 1772, so take the land
+# between the mapped neighbours (Ottoman Bosnia, Venice, Ragusa, Hungary, Austrian lands) inside the Croatian frame.
+cro_box=Polygon([(13.4,44.0),(19.6,44.0),(19.6,46.6),(13.4,46.6)])
+others=unary_union([R['ottoman'],R['venice'],R['ragusa']])
+croatia=cro_box.intersection(land).difference(others).difference(habsburg)
+croatia=unary_union([p for p in getattr(croatia,'geoms',[croatia]) if AREA(p)>50])
+habsburg=unary_union([habsburg,croatia]).difference(plc_pre)
 L={}
 def clip(g): return g.intersection(landmask).buffer(0)
 L['plc_pre']=clip(plc_pre); L['plc_post']=clip(plc_post); L['courland']=clip(courland)
@@ -44,12 +51,12 @@ L['warmia']=clip(gain_P.intersection(R['warmia'])); L['netze']=clip(gain_P.inter
 L['royal_prussia']=clip(gain_P.difference(R['warmia']).difference(R['netze']))
 L['prussia_pre']=clip(R['prussia_pre'].difference(plc_pre)); L['russia_pre']=clip(russia_pre.difference(plc_pre))
 L['habsburg']=clip(habsburg); L['ottoman']=clip(R['ottoman'].union(R['crimea']).difference(plc_pre))
-L['sweden']=clip(R['sweden']); L['hre_other']=clip(R['hre'].difference(habsburg).difference(R['prussia_pre']))
+L['sweden']=clip(R['sweden']); L['venice']=clip(R['venice'].union(R['ragusa'])); L['hre_other']=clip(R['hre'].difference(habsburg).difference(R['prussia_pre']).difference(R['venice']))
 L['gdl_pre']=clip(R['gdl'].union(corr).difference(courland))
 L['land']=land; L['lakes']=lakes
 print('Areas (km2, land-clipped):')
 for k in ['plc_pre','plc_pre_core','courland','plc_post','gain_P','gain_R','gain_A','royal_prussia','warmia','netze','gdl_pre']: print(f'  {k:14s} {AREA(L[k]):9.0f}')
-print('  correction added to Commonwealth', AREA(corr))
+print('  correction added to Commonwealth', AREA(corr)); print('  Croatian gap filled as Habsburg', AREA(croatia))
 # new borders cut in 1772 = parts of post boundary not on pre boundary
 def cutline(gain):
     l=plc_post.boundary.intersection(gain.buffer(0.01)); l=l.difference(plc_pre.boundary.buffer(0.02))
