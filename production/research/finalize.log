@@ -1,1 +1,55 @@
 render start Fri Nov 20 14:57:07 UTC 2026
+chunk 2: 0/787  1s
+chunk 3: 0/786  1s
+chunk 1: 0/786  1s
+chunk 0: 0/787  1s
+chunk 3: 300/786  163s
+chunk 2: 300/787  163s
+chunk 1: 300/786  176s
+chunk 0: 300/787  187s
+chunk 3: 600/786  314s
+chunk 2: 600/787  334s
+chunk 1: 600/786  334s
+chunk 0: 600/787  344s
+chunk 4: 0/787  1s
+chunk 5: 0/786  1s
+chunk 6: 0/787  1s
+chunk 7: 0/786  0s
+chunk 6: 300/787  148s
+chunk 7: 300/786  153s
+chunk 5: 300/786  177s
+chunk 4: 300/787  227s
+chunk 6: 600/787  316s
+chunk 7: 600/786  332s
+chunk 5: 600/786  364s
+chunk 4: 600/787  414s
+chunk 8: 0/787  1s
+chunk 9: 0/787  1s
+chunk 10: 0/786  0s
+chunk 11: 0/787  1s
+chunk 9: 300/787  162s
+chunk 10: 300/786  164s
+chunk 8: 300/787  215s
+chunk 11: 300/787  182s
+chunk 9: 600/787  323s
+chunk 10: 600/786  337s
+chunk 8: 600/787  418s
+chunk 12: 0/786  1s
+chunk 11: 600/787  365s
+chunk 13: 0/787  1s
+chunk 14: 0/786  1s
+chunk 15: 0/787  1s
+chunk 14: 300/786  164s
+chunk 13: 300/787  167s
+chunk 12: 300/786  256s
+chunk 13: 600/787  330s
+chunk 15: 300/787  209s
+chunk 14: 600/786  378s
+chunk 12: 600/786  443s
+chunk 15: 600/787  371s
+video done 12585 frames
+ffmpeg -v error -y -i previews/final/chunks/video.mp4 -i audio/narration_original.mp3 -stream_loop -1 -i audio/music/original_score.wav -filter_complex [1:a]aformat=sample_rates=48000:channel_layouts=stereo,apad=whole_dur=419.5,asplit=2[voice][sc];[2:a]atrim=start=0.0,asetpts=PTS-STARTPTS,aformat=sample_rates=48000:channel_layouts=stereo,afade=t=in:st=0:d=1.5,afade=t=out:st=417.50:d=2.0[mus];[mus][sc]sidechaincompress=threshold=0.02:ratio=6:attack=60:release=700:makeup=1[ducked];[voice][ducked]amix=inputs=2:duration=first:normalize=0:weights=1 1[a] -map 0:v -map [a] -c:v libx264 -preset slow -crf 18 -maxrate 6500k -bufsize 13000k -pix_fmt yuv420p -profile:v high -r 30 -c:a aac -b:a 192k -t 419.5 -movflags +faststart previews/final/Partitions_of_Poland-Lithuania_1793-1795_vertical.mp4
+stream|codec_name=h264|profile=High|width=1080|height=1920|pix_fmt=yuv420p|r_frame_rate=30/1
+stream|codec_name=aac|profile=LC|sample_rate=48000|channels=2|r_frame_rate=0/0
+format|duration=419.500000|size=243648036|bit_rate=4646446
+FINALIZE DONE Fri Nov 20 15:38:59 UTC 2026

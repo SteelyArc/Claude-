@@ -8,7 +8,7 @@
 | Audio codec | AAC-LC, 48 kHz stereo, 192 kb/s ✓ |
 | Container | MP4 with faststart ✓ |
 | Duration | 419.5 s (6 min 59.5 s), within the 10 min limit ✓ |
-| File size | 243.4 MB, within the 400 MB limit ✓ |
+| File size | 243.6 MB, within the 400 MB limit ✓ |
 | Full decode | 0 errors ✓ |
 | Narration complete and unchanged | Full 418.93 s present. Cross-correlation with the original MP3 is 0.985–0.994 at 0:05, 2:30, 5:00 and 6:45; the small difference is the music bed ✓ |
 | Audio sync | 0.0 ms lag at all four test points ✓ |

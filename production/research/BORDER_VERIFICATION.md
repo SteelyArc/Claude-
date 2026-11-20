@@ -43,3 +43,9 @@ City sanity checks: Gdańsk and Toruń stay Polish until 1793 and pass to Prussi
 5. **Context borders outside the Commonwealth** (Habsburg lands, Ottoman Empire, Sweden and the Holy Roman Empire) come from OHM and modern Natural Earth outlines. They are shown for orientation only and were not verified individually.
 6. **Coastlines** are modern (Natural Earth). The differences are negligible at these scales.
 7. **Targowica:** the place where the confederation was proclaimed on 14 May 1792 could not be geolocated reliably, so it is **not pinned** on any map. The confederation was signed in St Petersburg on 27 April 1792.
+
+## Context borders, revised after review
+- **Habsburg Monarchy:** now includes Transylvania (OHM 2878295), the Banat of Temeswar (2747562), the Banat Military Frontier (2746839) and Bačka/Syrmia (unassigned land between the Danube and the Sava, bounded by the Ottoman frontier). Croatia-Slavonia is approximated by modern Croatia north of 44.55°N (orientation only).
+- **Ottoman Empire, 1773:** OHM 2746687 (1718–1774, which includes the vassal Crimean Khanate) plus Bukovina (Moldavian until the Habsburg occupation of 1774/75). From 1791–92, the Russian outline after the Treaty of Jassy (January 1792) applies.
+- **Republic of Venice:** Istria, Dalmatia and Albania (Kotor) shown as a separate state. **Republic of Ragusa** shown separately.
+- Check: no unassigned land larger than ~500 km² remains inside any map frame.
