@@ -23,6 +23,11 @@ def _poly(cv, cam, key, geom, kind, alpha=1.0, ribbon_a=0.5):
     fill(cv, p, PAL[f], alpha); ribbon(cv, cam, PATHS.get_ext(key, geom), PAL[e], 18, ribbon_a * alpha)
 
 def _neutral(cv, cam, st, tag):
+    for k in ('venice', 'ragusa'):
+        if k in st and not st[k].is_empty:
+            p = PATHS.get_path(f'{tag}_{k}', st[k]); fill(cv, p, PAL[k], 0.95)
+            ribbon(cv, cam, PATHS.get_ext(f'{tag}_{k}', st[k]), PAL['venice_edge'], 10, 0.35)
+            stroke(cv, cam, p, PAL['ink'], 1.1, 0.7)
     for k in ('other', 'hre', 'saxony', 'sweden', 'denmark'):
         if k not in st: continue
         p = PATHS.get_path(f'{tag}_{k}', st[k]); fill(cv, p, PAL['neutral'], 0.9)

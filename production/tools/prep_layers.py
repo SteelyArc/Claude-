@@ -97,6 +97,10 @@ stages['1795'] = dict(stages['1793'], plt=P(RUMP93.difference(COURLAND)),
 for _st in stages.values():
     _pol = unary_union([v for k, v in _st.items() if k in ('plt', 'courland', 'prussia', 'russia', 'habsburg', 'ottoman', 'hre', 'saxony', 'sweden', 'denmark')])
     _st['other'] = P(land, 300).difference(_pol.buffer(800)).buffer(0)
+    _rag = _st['other'].intersection(P(box(17.35, 42.45, 18.47, 42.98)))          # Republic of Ragusa (Dubrovnik)
+    _ven = _st['other'].intersection(P(box(13.3, 42.0, 19.5, 46.0))).difference(_rag)  # Venetian Istria, Dalmatia, Albania
+    _st['ragusa'] = _rag.buffer(0); _st['venice'] = _ven.buffer(0)
+    _st['other'] = _st['other'].difference(P(box(13.3, 42.0, 19.5, 46.0))).buffer(0)
 layers = {'land': P(land, 300), 'lakes': P(lakes, 200), 'rivers': rivers, 'stages': stages,
           'gains': {'93_pru': P(G93_PRU), '93_rus': P(G93_RUS), '95_pru': P(G95_PRU), '95_aut': P(G95_AUT),
                     '95_rus': P(G95_RUS_MAIN), '95_rus_courland': P(G95_RUS_COURLAND)},

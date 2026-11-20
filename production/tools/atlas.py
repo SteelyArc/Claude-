@@ -21,7 +21,7 @@ def C(hexs, a=1.0):
 PAL = {
     'paper': '#EFE5CF', 'paper_dark': '#D9C9A6', 'ink': '#3B2E22', 'ink_soft': '#6B5843',
     'sea': '#C3CEC8', 'sea_line': '#7D9692', 'river': '#7F9AA2', 'lake': '#BFCBC6',
-    'neutral': '#E4D9C0', 'neutral2': '#DCD0B5',
+    'neutral': '#E4D9C0', 'neutral2': '#DCD0B5', 'venice': '#C3B4C6', 'venice_edge': '#7E6886', 'ragusa': '#D3C2A6',
     'plt': '#DDB86F', 'plt_edge': '#9C7426',
     'russia': '#A5B28C', 'russia_edge': '#5C6E45',
     'prussia': '#8FA2B6', 'prussia_edge': '#46607A',
@@ -250,10 +250,20 @@ def draw_physical_overlay(cv, cam):
         stroke(cv, cam, PATHS.get_path('riv' + str(id(r['geom'])), r['geom']), PAL['river'], w, 0.85)
     cv.restore()
 
+def minor_state_labels(cv, cam, alpha=0.9):
+    """Small labels for minor states on the Adriatic, visible in the lower-left of wide frames."""
+    x, y = cam.to_screen(*xy(16.55, 43.75))
+    if -200 < x < W + 200 and -200 < y < H + 200:
+        cv.save(); cv.translate(x, y); cv.rotate(46)
+        draw_text(cv, 'VENICE', 0, 0, font('caps', 17), C(PAL['venice_edge']), align='center', tracking=0.25, alpha=alpha,
+                  halo=skia.Color4f(0.95, 0.91, 0.82, 0.4), halo_w=4)
+        cv.restore()
+
 def coast_line(cv, cam):
     L = layers(); cv.save(); cam.apply(cv)
     stroke(cv, cam, PATHS.get_path('land', L['land']), '#5E716E', 1.1, 0.85)
     cv.restore()
+    minor_state_labels(cv, cam)
 
 def vignette(cv, strength=0.55):
     sh = skia.GradientShader.MakeRadial(skia.Point(W / 2, H * 0.46), H * 0.72,
