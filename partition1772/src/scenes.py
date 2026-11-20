@@ -347,6 +347,14 @@ PORTRAITS = {
                       power='russia', key='Russian Empire', credit='After Alexander Roslin · 1780s · Kunsthistorisches Museum, Vienna'),
     'frederick': dict(file='frederick.jpg', face=(0.505, 0.235), name='Frederick II', role='KING OF PRUSSIA', dates='Reigned 1740 – 1786',
                       power='prussia', key='Kingdom of Prussia', credit='Johann Georg Ziesenis · 1763 · Sanssouci Palace, Potsdam'),
+    'stanislaw': dict(file='stanislaw.png', face=(0.45, 0.105), zoom=2.3, name='Stanisław August', role='KING OF POLAND', dates='Reigned 1764 – 1795',
+                      power='plc', key='Polish–Lithuanian Commonwealth', credit='Marcello Bacciarelli · 1764 · Royal Castle, Warsaw'),
+    'stanislaw_dark': dict(file='stanislaw.png', face=(0.45, 0.105), zoom=2.6, desat=0.55, expo=0.85, name='Stanisław August', role='KING OF POLAND',
+                      dates='Facing the partitioning powers', power='plc', key='Polish–Lithuanian Commonwealth', credit='Marcello Bacciarelli · 1764 · Royal Castle, Warsaw'),
+    'augustus3': dict(file='augustus3.jpg', face=(0.51, 0.234), zoom=1.35, name='Augustus III', role='KING OF POLAND', dates='Reigned 1733 – 1763',
+                      power='plc', key='Died 5 October 1763', credit='Louis de Silvestre · after 1733 · Wilanów Palace Museum, Warsaw'),
+    'repnin': dict(file='repnin_1779.jpg', face=(0.44, 0.40), zoom=1.05, name='Nicholas Repnin', role='RUSSIAN AMBASSADOR IN WARSAW', dates='Envoy 1763 – 1768',
+                   power='russia', key='Russian Empire', credit='Anonymous print · 1779 · Austrian National Library, Vienna'),
     'maria': dict(file='maria_theresa.jpg', face=(0.548, 0.28), name='Maria Theresa', role='HABSBURG MONARCH', dates='Reigned 1740 – 1780',
                   note='Co-ruler with her son Joseph II from 1765', power='austria', key='Habsburg Monarchy',
                   credit='Martin van Meytens · 1759 · Academy of Fine Arts, Vienna'),
@@ -361,7 +369,7 @@ def portrait(c, key, lt, dur, alpha=1.0, exit_t=0.0):
     push = ramp(lt, 0, dur + 1.5, lambda v: v)
     fx, fy = P['face']
     # framing: face sits at (540, 560); scale so image width ≈ 1.25 W, growing slowly
-    s = (W * 1.22 / iw) * (1.0 + 0.10 * push + 0.05 * (1 - emerge))
+    s = (W * 1.22 / iw) * P.get('zoom', 1.0) * (1.0 + 0.10 * push + 0.05 * (1 - emerge))
     ox = W / 2 - fx * iw * s + 18 * math.sin(lt * 0.25)
     oy = 600 - fy * ih * s - 30 * push - 40 * exit_t
     c.saveLayer(None, None)
@@ -369,8 +377,10 @@ def portrait(c, key, lt, dur, alpha=1.0, exit_t=0.0):
     c.save(); c.concat(m)
     p = skia.Paint(); p.setAlphaf(alpha)
     # exposure: start underexposed & warm, rise to normal
-    ex = lerp(0.25, 1.0, emerge)
-    p.setColorFilter(skia.ColorFilters.Matrix([ex * 1.02, 0, 0, 0, 0, 0, ex, 0, 0, 0, 0, 0, ex * 0.94, 0, 0, 0, 0, 0, 1, 0]))
+    ex = lerp(0.25, 1.0, emerge) * P.get('expo', 1.0)
+    ds = P.get('desat', 0.0); lr, lg, lb = 0.2126 * ds, 0.7152 * ds, 0.0722 * ds
+    p.setColorFilter(skia.ColorFilters.Matrix([ex * (1.02 - ds + lr), ex * lg, ex * lb, 0, 0, ex * lr, ex * (1 - ds + lg), ex * lb, 0, 0,
+                                               ex * lr, ex * lg, ex * (0.94 - ds + lb), 0, 0, 0, 0, 0, 1, 0]))
     c.drawImage(img, 0, 0, skia.SamplingOptions(skia.FilterMode.kLinear, skia.MipmapMode.kLinear), p)
     c.restore()
     # light pool mask (DstIn): radial from the face, radius grows

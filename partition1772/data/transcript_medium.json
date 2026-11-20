@@ -1,0 +1,7506 @@
+[
+ {
+  "start": 0.0,
+  "end": 5.44,
+  "text": " In the summer of 1772, three of Europe's most powerful monarchies agreed to divide",
+  "words": [
+   {
+    "w": " In",
+    "s": 0.0,
+    "e": 0.16
+   },
+   {
+    "w": " the",
+    "s": 0.16,
+    "e": 0.36
+   },
+   {
+    "w": " summer",
+    "s": 0.36,
+    "e": 0.58
+   },
+   {
+    "w": " of",
+    "s": 0.58,
+    "e": 0.86
+   },
+   {
+    "w": " 1772,",
+    "s": 0.86,
+    "e": 1.9
+   },
+   {
+    "w": " three",
+    "s": 2.48,
+    "e": 2.62
+   },
+   {
+    "w": " of",
+    "s": 2.62,
+    "e": 2.82
+   },
+   {
+    "w": " Europe's",
+    "s": 2.82,
+    "e": 3.16
+   },
+   {
+    "w": " most",
+    "s": 3.16,
+    "e": 3.48
+   },
+   {
+    "w": " powerful",
+    "s": 3.48,
+    "e": 3.96
+   },
+   {
+    "w": " monarchies",
+    "s": 3.96,
+    "e": 4.6
+   },
+   {
+    "w": " agreed",
+    "s": 4.6,
+    "e": 4.92
+   },
+   {
+    "w": " to",
+    "s": 4.92,
+    "e": 5.16
+   },
+   {
+    "w": " divide",
+    "s": 5.16,
+    "e": 5.44
+   }
+  ]
+ },
+ {
+  "start": 5.44,
+  "end": 8.1,
+  "text": " large parts of a neighboring state between themselves.",
+  "words": [
+   {
+    "w": " large",
+    "s": 5.44,
+    "e": 5.84
+   },
+   {
+    "w": " parts",
+    "s": 5.84,
+    "e": 6.2
+   },
+   {
+    "w": " of",
+    "s": 6.2,
+    "e": 6.32
+   },
+   {
+    "w": " a",
+    "s": 6.32,
+    "e": 6.5
+   },
+   {
+    "w": " neighboring",
+    "s": 6.5,
+    "e": 6.74
+   },
+   {
+    "w": " state",
+    "s": 6.74,
+    "e": 7.14
+   },
+   {
+    "w": " between",
+    "s": 7.14,
+    "e": 7.52
+   },
+   {
+    "w": " themselves.",
+    "s": 7.52,
+    "e": 8.1
+   }
+  ]
+ },
+ {
+  "start": 8.68,
+  "end": 13.2,
+  "text": " The Kingdom of Prussia, the Russian Empire, and the Habsburg Monarchy were about to",
+  "words": [
+   {
+    "w": " The",
+    "s": 8.68,
+    "e": 8.84
+   },
+   {
+    "w": " Kingdom",
+    "s": 8.84,
+    "e": 9.04
+   },
+   {
+    "w": " of",
+    "s": 9.04,
+    "e": 9.26
+   },
+   {
+    "w": " Prussia,",
+    "s": 9.26,
+    "e": 9.66
+   },
+   {
+    "w": " the",
+    "s": 10.02,
+    "e": 10.18
+   },
+   {
+    "w": " Russian",
+    "s": 10.18,
+    "e": 10.44
+   },
+   {
+    "w": " Empire,",
+    "s": 10.44,
+    "e": 10.88
+   },
+   {
+    "w": " and",
+    "s": 11.14,
+    "e": 11.28
+   },
+   {
+    "w": " the",
+    "s": 11.28,
+    "e": 11.44
+   },
+   {
+    "w": " Habsburg",
+    "s": 11.44,
+    "e": 11.88
+   },
+   {
+    "w": " Monarchy",
+    "s": 11.88,
+    "e": 12.36
+   },
+   {
+    "w": " were",
+    "s": 12.36,
+    "e": 12.7
+   },
+   {
+    "w": " about",
+    "s": 12.7,
+    "e": 12.94
+   },
+   {
+    "w": " to",
+    "s": 12.94,
+    "e": 13.2
+   }
+  ]
+ },
+ {
+  "start": 13.2,
+  "end": 16.48,
+  "text": " carry out what became known as the First Partition of Poland.",
+  "words": [
+   {
+    "w": " carry",
+    "s": 13.2,
+    "e": 13.4
+   },
+   {
+    "w": " out",
+    "s": 13.4,
+    "e": 13.64
+   },
+   {
+    "w": " what",
+    "s": 13.64,
+    "e": 13.78
+   },
+   {
+    "w": " became",
+    "s": 13.78,
+    "e": 14.1
+   },
+   {
+    "w": " known",
+    "s": 14.1,
+    "e": 14.5
+   },
+   {
+    "w": " as",
+    "s": 14.5,
+    "e": 14.74
+   },
+   {
+    "w": " the",
+    "s": 14.74,
+    "e": 15.0
+   },
+   {
+    "w": " First",
+    "s": 15.0,
+    "e": 15.26
+   },
+   {
+    "w": " Partition",
+    "s": 15.26,
+    "e": 15.76
+   },
+   {
+    "w": " of",
+    "s": 15.76,
+    "e": 16.0
+   },
+   {
+    "w": " Poland.",
+    "s": 16.0,
+    "e": 16.48
+   }
+  ]
+ },
+ {
+  "start": 16.96,
+  "end": 21.06,
+  "text": " It was one of the most significant territorial changes in 18th century Europe.",
+  "words": [
+   {
+    "w": " It",
+    "s": 16.96,
+    "e": 17.14
+   },
+   {
+    "w": " was",
+    "s": 17.14,
+    "e": 17.28
+   },
+   {
+    "w": " one",
+    "s": 17.28,
+    "e": 17.44
+   },
+   {
+    "w": " of",
+    "s": 17.44,
+    "e": 17.54
+   },
+   {
+    "w": " the",
+    "s": 17.54,
+    "e": 17.66
+   },
+   {
+    "w": " most",
+    "s": 17.66,
+    "e": 17.88
+   },
+   {
+    "w": " significant",
+    "s": 17.88,
+    "e": 18.48
+   },
+   {
+    "w": " territorial",
+    "s": 18.48,
+    "e": 19.06
+   },
+   {
+    "w": " changes",
+    "s": 19.06,
+    "e": 19.52
+   },
+   {
+    "w": " in",
+    "s": 19.52,
+    "e": 19.9
+   },
+   {
+    "w": " 18th",
+    "s": 19.9,
+    "e": 20.62
+   },
+   {
+    "w": " century",
+    "s": 20.62,
+    "e": 20.62
+   },
+   {
+    "w": " Europe.",
+    "s": 20.62,
+    "e": 21.06
+   }
+  ]
+ },
+ {
+  "start": 21.48,
+  "end": 25.64,
+  "text": " A state that had once been among the largest on the continent was losing vast areas",
+  "words": [
+   {
+    "w": " A",
+    "s": 21.48,
+    "e": 21.62
+   },
+   {
+    "w": " state",
+    "s": 21.62,
+    "e": 21.88
+   },
+   {
+    "w": " that",
+    "s": 21.88,
+    "e": 22.04
+   },
+   {
+    "w": " had",
+    "s": 22.04,
+    "e": 22.16
+   },
+   {
+    "w": " once",
+    "s": 22.16,
+    "e": 22.4
+   },
+   {
+    "w": " been",
+    "s": 22.4,
+    "e": 22.6
+   },
+   {
+    "w": " among",
+    "s": 22.6,
+    "e": 22.8
+   },
+   {
+    "w": " the",
+    "s": 22.8,
+    "e": 23.04
+   },
+   {
+    "w": " largest",
+    "s": 23.04,
+    "e": 23.38
+   },
+   {
+    "w": " on",
+    "s": 23.38,
+    "e": 23.62
+   },
+   {
+    "w": " the",
+    "s": 23.62,
+    "e": 23.82
+   },
+   {
+    "w": " continent",
+    "s": 23.82,
+    "e": 24.14
+   },
+   {
+    "w": " was",
+    "s": 24.14,
+    "e": 24.44
+   },
+   {
+    "w": " losing",
+    "s": 24.44,
+    "e": 24.72
+   },
+   {
+    "w": " vast",
+    "s": 24.72,
+    "e": 25.28
+   },
+   {
+    "w": " areas",
+    "s": 25.28,
+    "e": 25.64
+   }
+  ]
+ },
+ {
+  "start": 25.64,
+  "end": 30.4,
+  "text": " of its territory, not through a single decisive battle, but through an agreement negotiated",
+  "words": [
+   {
+    "w": " of",
+    "s": 25.64,
+    "e": 25.78
+   },
+   {
+    "w": " its",
+    "s": 25.78,
+    "e": 25.92
+   },
+   {
+    "w": " territory,",
+    "s": 25.92,
+    "e": 26.46
+   },
+   {
+    "w": " not",
+    "s": 26.82,
+    "e": 27.06
+   },
+   {
+    "w": " through",
+    "s": 27.06,
+    "e": 27.24
+   },
+   {
+    "w": " a",
+    "s": 27.24,
+    "e": 27.44
+   },
+   {
+    "w": " single",
+    "s": 27.44,
+    "e": 27.7
+   },
+   {
+    "w": " decisive",
+    "s": 27.7,
+    "e": 28.1
+   },
+   {
+    "w": " battle,",
+    "s": 28.1,
+    "e": 28.58
+   },
+   {
+    "w": " but",
+    "s": 28.8,
+    "e": 29.02
+   },
+   {
+    "w": " through",
+    "s": 29.02,
+    "e": 29.2
+   },
+   {
+    "w": " an",
+    "s": 29.2,
+    "e": 29.34
+   },
+   {
+    "w": " agreement",
+    "s": 29.34,
+    "e": 29.72
+   },
+   {
+    "w": " negotiated",
+    "s": 29.72,
+    "e": 30.4
+   }
+  ]
+ },
+ {
+  "start": 30.4,
+  "end": 31.8,
+  "text": " by its powerful neighbors.",
+  "words": [
+   {
+    "w": " by",
+    "s": 30.4,
+    "e": 30.72
+   },
+   {
+    "w": " its",
+    "s": 30.72,
+    "e": 30.9
+   },
+   {
+    "w": " powerful",
+    "s": 30.9,
+    "e": 31.34
+   },
+   {
+    "w": " neighbors.",
+    "s": 31.34,
+    "e": 31.8
+   }
+  ]
+ },
+ {
+  "start": 32.42,
+  "end": 35.14,
+  "text": " But how had Poland-Lithuania become so vulnerable?",
+  "words": [
+   {
+    "w": " But",
+    "s": 32.42,
+    "e": 32.6
+   },
+   {
+    "w": " how",
+    "s": 32.6,
+    "e": 32.98
+   },
+   {
+    "w": " had",
+    "s": 32.98,
+    "e": 33.18
+   },
+   {
+    "w": " Poland",
+    "s": 33.18,
+    "e": 33.5
+   },
+   {
+    "w": "-Lithuania",
+    "s": 33.5,
+    "e": 34.06
+   },
+   {
+    "w": " become",
+    "s": 34.06,
+    "e": 34.44
+   },
+   {
+    "w": " so",
+    "s": 34.44,
+    "e": 34.68
+   },
+   {
+    "w": " vulnerable?",
+    "s": 34.68,
+    "e": 35.14
+   }
+  ]
+ },
+ {
+  "start": 35.68,
+  "end": 39.26,
+  "text": " Why were its political institutions unable to prevent foreign interference?",
+  "words": [
+   {
+    "w": " Why",
+    "s": 35.68,
+    "e": 35.92
+   },
+   {
+    "w": " were",
+    "s": 35.92,
+    "e": 36.08
+   },
+   {
+    "w": " its",
+    "s": 36.08,
+    "e": 36.26
+   },
+   {
+    "w": " political",
+    "s": 36.26,
+    "e": 36.64
+   },
+   {
+    "w": " institutions",
+    "s": 36.64,
+    "e": 37.3
+   },
+   {
+    "w": " unable",
+    "s": 37.3,
+    "e": 37.78
+   },
+   {
+    "w": " to",
+    "s": 37.78,
+    "e": 38.08
+   },
+   {
+    "w": " prevent",
+    "s": 38.08,
+    "e": 38.36
+   },
+   {
+    "w": " foreign",
+    "s": 38.36,
+    "e": 38.68
+   },
+   {
+    "w": " interference?",
+    "s": 38.68,
+    "e": 39.26
+   }
+  ]
+ },
+ {
+  "start": 39.72,
+  "end": 44.82,
+  "text": " And what motivated three monarchies, despite their own rivalries, to cooperate in dividing",
+  "words": [
+   {
+    "w": " And",
+    "s": 39.72,
+    "e": 39.94
+   },
+   {
+    "w": " what",
+    "s": 39.94,
+    "e": 40.18
+   },
+   {
+    "w": " motivated",
+    "s": 40.18,
+    "e": 40.72
+   },
+   {
+    "w": " three",
+    "s": 40.72,
+    "e": 41.18
+   },
+   {
+    "w": " monarchies,",
+    "s": 41.18,
+    "e": 41.9
+   },
+   {
+    "w": " despite",
+    "s": 42.08,
+    "e": 42.4
+   },
+   {
+    "w": " their",
+    "s": 42.4,
+    "e": 42.62
+   },
+   {
+    "w": " own",
+    "s": 42.62,
+    "e": 42.82
+   },
+   {
+    "w": " rivalries,",
+    "s": 42.82,
+    "e": 43.4
+   },
+   {
+    "w": " to",
+    "s": 43.62,
+    "e": 43.74
+   },
+   {
+    "w": " cooperate",
+    "s": 43.74,
+    "e": 44.24
+   },
+   {
+    "w": " in",
+    "s": 44.24,
+    "e": 44.52
+   },
+   {
+    "w": " dividing",
+    "s": 44.52,
+    "e": 44.82
+   }
+  ]
+ },
+ {
+  "start": 44.82,
+  "end": 45.44,
+  "text": " its lands?",
+  "words": [
+   {
+    "w": " its",
+    "s": 44.82,
+    "e": 45.04
+   },
+   {
+    "w": " lands?",
+    "s": 45.04,
+    "e": 45.44
+   }
+  ]
+ },
+ {
+  "start": 45.88,
+  "end": 50.64,
+  "text": " To understand the events of 1772, we have to go back more than a century.",
+  "words": [
+   {
+    "w": " To",
+    "s": 45.88,
+    "e": 46.1
+   },
+   {
+    "w": " understand",
+    "s": 46.1,
+    "e": 46.62
+   },
+   {
+    "w": " the",
+    "s": 46.62,
+    "e": 46.78
+   },
+   {
+    "w": " events",
+    "s": 46.78,
+    "e": 47.04
+   },
+   {
+    "w": " of",
+    "s": 47.04,
+    "e": 47.28
+   },
+   {
+    "w": " 1772,",
+    "s": 47.28,
+    "e": 48.22
+   },
+   {
+    "w": " we",
+    "s": 48.6,
+    "e": 48.82
+   },
+   {
+    "w": " have",
+    "s": 48.82,
+    "e": 49.06
+   },
+   {
+    "w": " to",
+    "s": 49.06,
+    "e": 49.22
+   },
+   {
+    "w": " go",
+    "s": 49.22,
+    "e": 49.36
+   },
+   {
+    "w": " back",
+    "s": 49.36,
+    "e": 49.6
+   },
+   {
+    "w": " more",
+    "s": 49.6,
+    "e": 49.94
+   },
+   {
+    "w": " than",
+    "s": 49.94,
+    "e": 50.1
+   },
+   {
+    "w": " a",
+    "s": 50.1,
+    "e": 50.36
+   },
+   {
+    "w": " century.",
+    "s": 50.36,
+    "e": 50.64
+   }
+  ]
+ },
+ {
+  "start": 51.4,
+  "end": 56.32,
+  "text": " The Polish-Lithuanian Commonwealth had been created in 1569 through the Union of Lublin.",
+  "words": [
+   {
+    "w": " The",
+    "s": 51.12,
+    "e": 51.44
+   },
+   {
+    "w": " Polish",
+    "s": 51.44,
+    "e": 51.8
+   },
+   {
+    "w": "-Lithuanian",
+    "s": 51.8,
+    "e": 52.5
+   },
+   {
+    "w": " Commonwealth",
+    "s": 52.5,
+    "e": 52.94
+   },
+   {
+    "w": " had",
+    "s": 52.94,
+    "e": 53.2
+   },
+   {
+    "w": " been",
+    "s": 53.2,
+    "e": 53.36
+   },
+   {
+    "w": " created",
+    "s": 53.36,
+    "e": 53.74
+   },
+   {
+    "w": " in",
+    "s": 53.74,
+    "e": 53.94
+   },
+   {
+    "w": " 1569",
+    "s": 53.94,
+    "e": 55.0
+   },
+   {
+    "w": " through",
+    "s": 55.0,
+    "e": 55.32
+   },
+   {
+    "w": " the",
+    "s": 55.32,
+    "e": 55.54
+   },
+   {
+    "w": " Union",
+    "s": 55.54,
+    "e": 55.76
+   },
+   {
+    "w": " of",
+    "s": 55.76,
+    "e": 55.98
+   },
+   {
+    "w": " Lublin.",
+    "s": 55.98,
+    "e": 56.32
+   }
+  ]
+ },
+ {
+  "start": 56.76,
+  "end": 61.34,
+  "text": " It united the Kingdom of Poland and the Grand Duchy of Lithuania under a common elected",
+  "words": [
+   {
+    "w": " It",
+    "s": 56.76,
+    "e": 56.92
+   },
+   {
+    "w": " united",
+    "s": 56.92,
+    "e": 57.26
+   },
+   {
+    "w": " the",
+    "s": 57.26,
+    "e": 57.52
+   },
+   {
+    "w": " Kingdom",
+    "s": 57.52,
+    "e": 57.68
+   },
+   {
+    "w": " of",
+    "s": 57.68,
+    "e": 57.9
+   },
+   {
+    "w": " Poland",
+    "s": 57.9,
+    "e": 58.24
+   },
+   {
+    "w": " and",
+    "s": 58.24,
+    "e": 58.54
+   },
+   {
+    "w": " the",
+    "s": 58.54,
+    "e": 58.7
+   },
+   {
+    "w": " Grand",
+    "s": 58.7,
+    "e": 59.02
+   },
+   {
+    "w": " Duchy",
+    "s": 59.02,
+    "e": 59.26
+   },
+   {
+    "w": " of",
+    "s": 59.26,
+    "e": 59.4
+   },
+   {
+    "w": " Lithuania",
+    "s": 59.4,
+    "e": 59.9
+   },
+   {
+    "w": " under",
+    "s": 59.9,
+    "e": 60.3
+   },
+   {
+    "w": " a",
+    "s": 60.3,
+    "e": 60.58
+   },
+   {
+    "w": " common",
+    "s": 60.58,
+    "e": 60.84
+   },
+   {
+    "w": " elected",
+    "s": 60.84,
+    "e": 61.34
+   }
+  ]
+ },
+ {
+  "start": 61.34,
+  "end": 62.38,
+  "text": " monarch and parliament.",
+  "words": [
+   {
+    "w": " monarch",
+    "s": 61.34,
+    "e": 61.66
+   },
+   {
+    "w": " and",
+    "s": 61.66,
+    "e": 61.98
+   },
+   {
+    "w": " parliament.",
+    "s": 61.98,
+    "e": 62.38
+   }
+  ]
+ },
+ {
+  "start": 62.8,
+  "end": 67.28,
+  "text": " It covered an enormous territory, stretching across much of central and eastern Europe.",
+  "words": [
+   {
+    "w": " It",
+    "s": 62.8,
+    "e": 62.94
+   },
+   {
+    "w": " covered",
+    "s": 62.94,
+    "e": 63.2
+   },
+   {
+    "w": " an",
+    "s": 63.2,
+    "e": 63.44
+   },
+   {
+    "w": " enormous",
+    "s": 63.44,
+    "e": 63.94
+   },
+   {
+    "w": " territory,",
+    "s": 63.94,
+    "e": 64.58
+   },
+   {
+    "w": " stretching",
+    "s": 64.78,
+    "e": 65.12
+   },
+   {
+    "w": " across",
+    "s": 65.12,
+    "e": 65.5
+   },
+   {
+    "w": " much",
+    "s": 65.5,
+    "e": 65.82
+   },
+   {
+    "w": " of",
+    "s": 65.82,
+    "e": 66.06
+   },
+   {
+    "w": " central",
+    "s": 66.06,
+    "e": 66.38
+   },
+   {
+    "w": " and",
+    "s": 66.38,
+    "e": 66.62
+   },
+   {
+    "w": " eastern",
+    "s": 66.62,
+    "e": 66.9
+   },
+   {
+    "w": " Europe.",
+    "s": 66.9,
+    "e": 67.28
+   }
+  ]
+ },
+ {
+  "start": 67.7,
+  "end": 73.28,
+  "text": " Its population included Poles, Lithuanians, Ruthenians, Jews, Germans, and many other",
+  "words": [
+   {
+    "w": " Its",
+    "s": 67.7,
+    "e": 67.84
+   },
+   {
+    "w": " population",
+    "s": 67.84,
+    "e": 68.34
+   },
+   {
+    "w": " included",
+    "s": 68.34,
+    "e": 68.76
+   },
+   {
+    "w": " Poles,",
+    "s": 68.76,
+    "e": 69.28
+   },
+   {
+    "w": " Lithuanians,",
+    "s": 69.64,
+    "e": 70.28
+   },
+   {
+    "w": " Ruthenians,",
+    "s": 70.48,
+    "e": 71.08
+   },
+   {
+    "w": " Jews,",
+    "s": 71.44,
+    "e": 71.66
+   },
+   {
+    "w": " Germans,",
+    "s": 72.06,
+    "e": 72.4
+   },
+   {
+    "w": " and",
+    "s": 72.5,
+    "e": 72.72
+   },
+   {
+    "w": " many",
+    "s": 72.72,
+    "e": 73.04
+   },
+   {
+    "w": " other",
+    "s": 73.04,
+    "e": 73.28
+   }
+  ]
+ },
+ {
+  "start": 73.28,
+  "end": 73.82,
+  "text": " communities.",
+  "words": [
+   {
+    "w": " communities.",
+    "s": 73.28,
+    "e": 73.82
+   }
+  ]
+ },
+ {
+  "start": 74.32,
+  "end": 77.96,
+  "text": " Different languages, religions, and traditions existed within its borders.",
+  "words": [
+   {
+    "w": " Different",
+    "s": 74.32,
+    "e": 74.54
+   },
+   {
+    "w": " languages,",
+    "s": 74.54,
+    "e": 75.08
+   },
+   {
+    "w": " religions,",
+    "s": 75.36,
+    "e": 75.72
+   },
+   {
+    "w": " and",
+    "s": 75.94,
+    "e": 76.08
+   },
+   {
+    "w": " traditions",
+    "s": 76.08,
+    "e": 76.52
+   },
+   {
+    "w": " existed",
+    "s": 76.52,
+    "e": 77.1
+   },
+   {
+    "w": " within",
+    "s": 77.1,
+    "e": 77.4
+   },
+   {
+    "w": " its",
+    "s": 77.4,
+    "e": 77.62
+   },
+   {
+    "w": " borders.",
+    "s": 77.62,
+    "e": 77.96
+   }
+  ]
+ },
+ {
+  "start": 78.60000000000001,
+  "end": 81.88,
+  "text": " The Commonwealth had a political system that was unusual for its time.",
+  "words": [
+   {
+    "w": " The",
+    "s": 78.38000000000001,
+    "e": 78.68
+   },
+   {
+    "w": " Commonwealth",
+    "s": 78.68,
+    "e": 79.08
+   },
+   {
+    "w": " had",
+    "s": 79.08,
+    "e": 79.3
+   },
+   {
+    "w": " a",
+    "s": 79.3,
+    "e": 79.46
+   },
+   {
+    "w": " political",
+    "s": 79.46,
+    "e": 79.8
+   },
+   {
+    "w": " system",
+    "s": 79.8,
+    "e": 80.18
+   },
+   {
+    "w": " that",
+    "s": 80.18,
+    "e": 80.4
+   },
+   {
+    "w": " was",
+    "s": 80.4,
+    "e": 80.62
+   },
+   {
+    "w": " unusual",
+    "s": 80.62,
+    "e": 81.16
+   },
+   {
+    "w": " for",
+    "s": 81.16,
+    "e": 81.42
+   },
+   {
+    "w": " its",
+    "s": 81.42,
+    "e": 81.58
+   },
+   {
+    "w": " time.",
+    "s": 81.58,
+    "e": 81.88
+   }
+  ]
+ },
+ {
+  "start": 82.32,
+  "end": 86.1,
+  "text": " The king was elected by the nobility, and important decisions were made by the same,",
+  "words": [
+   {
+    "w": " The",
+    "s": 82.32,
+    "e": 82.46
+   },
+   {
+    "w": " king",
+    "s": 82.46,
+    "e": 82.6
+   },
+   {
+    "w": " was",
+    "s": 82.6,
+    "e": 82.82
+   },
+   {
+    "w": " elected",
+    "s": 82.82,
+    "e": 83.1
+   },
+   {
+    "w": " by",
+    "s": 83.1,
+    "e": 83.32
+   },
+   {
+    "w": " the",
+    "s": 83.32,
+    "e": 83.46
+   },
+   {
+    "w": " nobility,",
+    "s": 83.46,
+    "e": 83.88
+   },
+   {
+    "w": " and",
+    "s": 84.1,
+    "e": 84.3
+   },
+   {
+    "w": " important",
+    "s": 84.3,
+    "e": 84.66
+   },
+   {
+    "w": " decisions",
+    "s": 84.66,
+    "e": 85.08
+   },
+   {
+    "w": " were",
+    "s": 85.08,
+    "e": 85.3
+   },
+   {
+    "w": " made",
+    "s": 85.3,
+    "e": 85.44
+   },
+   {
+    "w": " by",
+    "s": 85.44,
+    "e": 85.62
+   },
+   {
+    "w": " the",
+    "s": 85.62,
+    "e": 85.8
+   },
+   {
+    "w": " same,",
+    "s": 85.8,
+    "e": 86.1
+   }
+  ]
+ },
+ {
+  "start": 86.42,
+  "end": 87.24,
+  "text": " the national parliament.",
+  "words": [
+   {
+    "w": " the",
+    "s": 86.42,
+    "e": 86.54
+   },
+   {
+    "w": " national",
+    "s": 86.54,
+    "e": 86.84
+   },
+   {
+    "w": " parliament.",
+    "s": 86.84,
+    "e": 87.24
+   }
+  ]
+ },
+ {
+  "start": 87.64,
+  "end": 90.44,
+  "text": " The noble class enjoyed extensive political privileges.",
+  "words": [
+   {
+    "w": " The",
+    "s": 87.64,
+    "e": 87.82
+   },
+   {
+    "w": " noble",
+    "s": 87.82,
+    "e": 88.04
+   },
+   {
+    "w": " class",
+    "s": 88.04,
+    "e": 88.36
+   },
+   {
+    "w": " enjoyed",
+    "s": 88.36,
+    "e": 88.74
+   },
+   {
+    "w": " extensive",
+    "s": 88.74,
+    "e": 89.42
+   },
+   {
+    "w": " political",
+    "s": 89.42,
+    "e": 89.94
+   },
+   {
+    "w": " privileges.",
+    "s": 89.94,
+    "e": 90.44
+   }
+  ]
+ },
+ {
+  "start": 90.92,
+  "end": 94.44,
+  "text": " These freedoms were considered essential to the Commonwealth's political identity.",
+  "words": [
+   {
+    "w": " These",
+    "s": 90.92,
+    "e": 91.12
+   },
+   {
+    "w": " freedoms",
+    "s": 91.12,
+    "e": 91.42
+   },
+   {
+    "w": " were",
+    "s": 91.42,
+    "e": 91.68
+   },
+   {
+    "w": " considered",
+    "s": 91.68,
+    "e": 92.04
+   },
+   {
+    "w": " essential",
+    "s": 92.04,
+    "e": 92.58
+   },
+   {
+    "w": " to",
+    "s": 92.58,
+    "e": 92.84
+   },
+   {
+    "w": " the",
+    "s": 92.84,
+    "e": 93.04
+   },
+   {
+    "w": " Commonwealth's",
+    "s": 93.04,
+    "e": 93.58
+   },
+   {
+    "w": " political",
+    "s": 93.58,
+    "e": 93.92
+   },
+   {
+    "w": " identity.",
+    "s": 93.92,
+    "e": 94.44
+   }
+  ]
+ },
+ {
+  "start": 94.78,
+  "end": 97.36,
+  "text": " But the system also contained serious weaknesses.",
+  "words": [
+   {
+    "w": " But",
+    "s": 94.78,
+    "e": 95.0
+   },
+   {
+    "w": " the",
+    "s": 95.0,
+    "e": 95.16
+   },
+   {
+    "w": " system",
+    "s": 95.16,
+    "e": 95.42
+   },
+   {
+    "w": " also",
+    "s": 95.42,
+    "e": 95.9
+   },
+   {
+    "w": " contained",
+    "s": 95.9,
+    "e": 96.3
+   },
+   {
+    "w": " serious",
+    "s": 96.3,
+    "e": 96.92
+   },
+   {
+    "w": " weaknesses.",
+    "s": 96.92,
+    "e": 97.36
+   }
+  ]
+ },
+ {
+  "start": 98.04,
+  "end": 101.32,
+  "text": " One of the most controversial institutions was the Librem Vito.",
+  "words": [
+   {
+    "w": " One",
+    "s": 98.04,
+    "e": 98.24
+   },
+   {
+    "w": " of",
+    "s": 98.24,
+    "e": 98.32
+   },
+   {
+    "w": " the",
+    "s": 98.32,
+    "e": 98.44
+   },
+   {
+    "w": " most",
+    "s": 98.44,
+    "e": 98.68
+   },
+   {
+    "w": " controversial",
+    "s": 98.68,
+    "e": 99.34
+   },
+   {
+    "w": " institutions",
+    "s": 99.34,
+    "e": 100.04
+   },
+   {
+    "w": " was",
+    "s": 100.04,
+    "e": 100.34
+   },
+   {
+    "w": " the",
+    "s": 100.34,
+    "e": 100.6
+   },
+   {
+    "w": " Librem",
+    "s": 100.6,
+    "e": 100.94
+   },
+   {
+    "w": " Vito.",
+    "s": 100.94,
+    "e": 101.32
+   }
+  ]
+ },
+ {
+  "start": 101.84,
+  "end": 106.16,
+  "text": " Under this principle, a single deputy could object to a parliamentary decision and bring",
+  "words": [
+   {
+    "w": " Under",
+    "s": 101.84,
+    "e": 102.02
+   },
+   {
+    "w": " this",
+    "s": 102.02,
+    "e": 102.24
+   },
+   {
+    "w": " principle,",
+    "s": 102.24,
+    "e": 102.66
+   },
+   {
+    "w": " a",
+    "s": 102.96,
+    "e": 103.16
+   },
+   {
+    "w": " single",
+    "s": 103.16,
+    "e": 103.44
+   },
+   {
+    "w": " deputy",
+    "s": 103.44,
+    "e": 103.82
+   },
+   {
+    "w": " could",
+    "s": 103.82,
+    "e": 104.08
+   },
+   {
+    "w": " object",
+    "s": 104.08,
+    "e": 104.38
+   },
+   {
+    "w": " to",
+    "s": 104.38,
+    "e": 104.6
+   },
+   {
+    "w": " a",
+    "s": 104.6,
+    "e": 104.86
+   },
+   {
+    "w": " parliamentary",
+    "s": 104.86,
+    "e": 105.18
+   },
+   {
+    "w": " decision",
+    "s": 105.18,
+    "e": 105.7
+   },
+   {
+    "w": " and",
+    "s": 105.7,
+    "e": 106.02
+   },
+   {
+    "w": " bring",
+    "s": 106.02,
+    "e": 106.16
+   }
+  ]
+ },
+ {
+  "start": 106.16,
+  "end": 107.96,
+  "text": " an entire session to an end.",
+  "words": [
+   {
+    "w": " an",
+    "s": 106.16,
+    "e": 106.26
+   },
+   {
+    "w": " entire",
+    "s": 106.26,
+    "e": 106.84
+   },
+   {
+    "w": " session",
+    "s": 106.84,
+    "e": 107.26
+   },
+   {
+    "w": " to",
+    "s": 107.26,
+    "e": 107.48
+   },
+   {
+    "w": " an",
+    "s": 107.48,
+    "e": 107.66
+   },
+   {
+    "w": " end.",
+    "s": 107.66,
+    "e": 107.96
+   }
+  ]
+ },
+ {
+  "start": 108.44,
+  "end": 112.78,
+  "text": " Originally intended to protect the political rights of the nobility, the practice increasingly",
+  "words": [
+   {
+    "w": " Originally",
+    "s": 108.44,
+    "e": 108.76
+   },
+   {
+    "w": " intended",
+    "s": 108.76,
+    "e": 109.14
+   },
+   {
+    "w": " to",
+    "s": 109.14,
+    "e": 109.42
+   },
+   {
+    "w": " protect",
+    "s": 109.42,
+    "e": 109.74
+   },
+   {
+    "w": " the",
+    "s": 109.74,
+    "e": 109.92
+   },
+   {
+    "w": " political",
+    "s": 109.92,
+    "e": 110.28
+   },
+   {
+    "w": " rights",
+    "s": 110.28,
+    "e": 110.56
+   },
+   {
+    "w": " of",
+    "s": 110.56,
+    "e": 110.7
+   },
+   {
+    "w": " the",
+    "s": 110.7,
+    "e": 110.82
+   },
+   {
+    "w": " nobility,",
+    "s": 110.82,
+    "e": 111.26
+   },
+   {
+    "w": " the",
+    "s": 111.6,
+    "e": 111.78
+   },
+   {
+    "w": " practice",
+    "s": 111.78,
+    "e": 112.04
+   },
+   {
+    "w": " increasingly",
+    "s": 112.04,
+    "e": 112.78
+   }
+  ]
+ },
+ {
+  "start": 112.78,
+  "end": 114.48,
+  "text": " made effective government difficult.",
+  "words": [
+   {
+    "w": " made",
+    "s": 112.78,
+    "e": 113.06
+   },
+   {
+    "w": " effective",
+    "s": 113.06,
+    "e": 113.5
+   },
+   {
+    "w": " government",
+    "s": 113.5,
+    "e": 113.9
+   },
+   {
+    "w": " difficult.",
+    "s": 113.9,
+    "e": 114.48
+   }
+  ]
+ },
+ {
+  "start": 114.98,
+  "end": 119.64,
+  "text": " Parliamentary sessions could be disrupted, reforms blocked, and political decisions delayed.",
+  "words": [
+   {
+    "w": " Parliamentary",
+    "s": 114.98,
+    "e": 115.28
+   },
+   {
+    "w": " sessions",
+    "s": 115.28,
+    "e": 115.76
+   },
+   {
+    "w": " could",
+    "s": 115.76,
+    "e": 115.96
+   },
+   {
+    "w": " be",
+    "s": 115.96,
+    "e": 116.08
+   },
+   {
+    "w": " disrupted,",
+    "s": 116.08,
+    "e": 116.6
+   },
+   {
+    "w": " reforms",
+    "s": 117.02,
+    "e": 117.38
+   },
+   {
+    "w": " blocked,",
+    "s": 117.38,
+    "e": 117.82
+   },
+   {
+    "w": " and",
+    "s": 118.04,
+    "e": 118.22
+   },
+   {
+    "w": " political",
+    "s": 118.22,
+    "e": 118.6
+   },
+   {
+    "w": " decisions",
+    "s": 118.6,
+    "e": 119.12
+   },
+   {
+    "w": " delayed.",
+    "s": 119.12,
+    "e": 119.64
+   }
+  ]
+ },
+ {
+  "start": 120.24,
+  "end": 123.06,
+  "text": " Foreign powers soon learned how to exploit these divisions.",
+  "words": [
+   {
+    "w": " Foreign",
+    "s": 120.24,
+    "e": 120.46
+   },
+   {
+    "w": " powers",
+    "s": 120.46,
+    "e": 120.86
+   },
+   {
+    "w": " soon",
+    "s": 120.86,
+    "e": 121.26
+   },
+   {
+    "w": " learned",
+    "s": 121.26,
+    "e": 121.6
+   },
+   {
+    "w": " how",
+    "s": 121.6,
+    "e": 121.78
+   },
+   {
+    "w": " to",
+    "s": 121.78,
+    "e": 121.92
+   },
+   {
+    "w": " exploit",
+    "s": 121.92,
+    "e": 122.36
+   },
+   {
+    "w": " these",
+    "s": 122.36,
+    "e": 122.6
+   },
+   {
+    "w": " divisions.",
+    "s": 122.6,
+    "e": 123.06
+   }
+  ]
+ },
+ {
+  "start": 123.78,
+  "end": 128.1,
+  "text": " During the 18th century, the Commonwealth became increasingly dependent on its neighbors.",
+  "words": [
+   {
+    "w": " During",
+    "s": 123.78,
+    "e": 123.98
+   },
+   {
+    "w": " the",
+    "s": 123.98,
+    "e": 124.18
+   },
+   {
+    "w": " 18th",
+    "s": 124.18,
+    "e": 124.64
+   },
+   {
+    "w": " century,",
+    "s": 124.64,
+    "e": 124.94
+   },
+   {
+    "w": " the",
+    "s": 125.26,
+    "e": 125.42
+   },
+   {
+    "w": " Commonwealth",
+    "s": 125.42,
+    "e": 125.72
+   },
+   {
+    "w": " became",
+    "s": 125.72,
+    "e": 126.14
+   },
+   {
+    "w": " increasingly",
+    "s": 126.14,
+    "e": 126.96
+   },
+   {
+    "w": " dependent",
+    "s": 126.96,
+    "e": 127.32
+   },
+   {
+    "w": " on",
+    "s": 127.32,
+    "e": 127.6
+   },
+   {
+    "w": " its",
+    "s": 127.6,
+    "e": 127.78
+   },
+   {
+    "w": " neighbors.",
+    "s": 127.78,
+    "e": 128.1
+   }
+  ]
+ },
+ {
+  "start": 128.54,
+  "end": 132.58,
+  "text": " Russia in particular gained enormous influence over Polish politics.",
+  "words": [
+   {
+    "w": " Russia",
+    "s": 128.54,
+    "e": 128.84
+   },
+   {
+    "w": " in",
+    "s": 128.84,
+    "e": 129.06
+   },
+   {
+    "w": " particular",
+    "s": 129.06,
+    "e": 129.7
+   },
+   {
+    "w": " gained",
+    "s": 129.7,
+    "e": 130.1
+   },
+   {
+    "w": " enormous",
+    "s": 130.1,
+    "e": 130.8
+   },
+   {
+    "w": " influence",
+    "s": 130.8,
+    "e": 131.4
+   },
+   {
+    "w": " over",
+    "s": 131.4,
+    "e": 131.66
+   },
+   {
+    "w": " Polish",
+    "s": 131.66,
+    "e": 132.02
+   },
+   {
+    "w": " politics.",
+    "s": 132.02,
+    "e": 132.58
+   }
+  ]
+ },
+ {
+  "start": 133.3,
+  "end": 137.36,
+  "text": " Its armies and diplomats played an important role in determining the country's political",
+  "words": [
+   {
+    "w": " Its",
+    "s": 132.94,
+    "e": 133.32
+   },
+   {
+    "w": " armies",
+    "s": 133.32,
+    "e": 133.7
+   },
+   {
+    "w": " and",
+    "s": 133.7,
+    "e": 133.98
+   },
+   {
+    "w": " diplomats",
+    "s": 133.98,
+    "e": 134.44
+   },
+   {
+    "w": " played",
+    "s": 134.44,
+    "e": 134.74
+   },
+   {
+    "w": " an",
+    "s": 134.74,
+    "e": 134.94
+   },
+   {
+    "w": " important",
+    "s": 134.94,
+    "e": 135.34
+   },
+   {
+    "w": " role",
+    "s": 135.34,
+    "e": 135.72
+   },
+   {
+    "w": " in",
+    "s": 135.72,
+    "e": 135.94
+   },
+   {
+    "w": " determining",
+    "s": 135.94,
+    "e": 136.34
+   },
+   {
+    "w": " the",
+    "s": 136.34,
+    "e": 136.6
+   },
+   {
+    "w": " country's",
+    "s": 136.6,
+    "e": 137.04
+   },
+   {
+    "w": " political",
+    "s": 137.04,
+    "e": 137.36
+   }
+  ]
+ },
+ {
+  "start": 137.36,
+  "end": 137.86,
+  "text": " direction.",
+  "words": [
+   {
+    "w": " direction.",
+    "s": 137.36,
+    "e": 137.86
+   }
+  ]
+ },
+ {
+  "start": 138.46,
+  "end": 144.66,
+  "text": " After the death of King Augustus III in 1763, the question of succession once again became",
+  "words": [
+   {
+    "w": " After",
+    "s": 138.46,
+    "e": 138.66
+   },
+   {
+    "w": " the",
+    "s": 138.66,
+    "e": 138.9
+   },
+   {
+    "w": " death",
+    "s": 138.9,
+    "e": 139.08
+   },
+   {
+    "w": " of",
+    "s": 139.08,
+    "e": 139.32
+   },
+   {
+    "w": " King",
+    "s": 139.32,
+    "e": 139.48
+   },
+   {
+    "w": " Augustus",
+    "s": 139.48,
+    "e": 139.98
+   },
+   {
+    "w": " III",
+    "s": 139.98,
+    "e": 140.42
+   },
+   {
+    "w": " in",
+    "s": 140.42,
+    "e": 140.78
+   },
+   {
+    "w": " 1763,",
+    "s": 140.78,
+    "e": 141.82
+   },
+   {
+    "w": " the",
+    "s": 142.4,
+    "e": 142.54
+   },
+   {
+    "w": " question",
+    "s": 142.54,
+    "e": 142.86
+   },
+   {
+    "w": " of",
+    "s": 142.86,
+    "e": 143.04
+   },
+   {
+    "w": " succession",
+    "s": 143.04,
+    "e": 143.5
+   },
+   {
+    "w": " once",
+    "s": 143.5,
+    "e": 143.92
+   },
+   {
+    "w": " again",
+    "s": 143.92,
+    "e": 144.32
+   },
+   {
+    "w": " became",
+    "s": 144.32,
+    "e": 144.66
+   }
+  ]
+ },
+ {
+  "start": 144.66,
+  "end": 146.12,
+  "text": " a European power struggle.",
+  "words": [
+   {
+    "w": " a",
+    "s": 144.66,
+    "e": 144.9
+   },
+   {
+    "w": " European",
+    "s": 144.9,
+    "e": 145.28
+   },
+   {
+    "w": " power",
+    "s": 145.28,
+    "e": 145.68
+   },
+   {
+    "w": " struggle.",
+    "s": 145.68,
+    "e": 146.12
+   }
+  ]
+ },
+ {
+  "start": 146.68,
+  "end": 152.4,
+  "text": " With Russian support, Stanis\u0142aw August Poniatowski was elected king in 1764.",
+  "words": [
+   {
+    "w": " With",
+    "s": 146.68,
+    "e": 146.84
+   },
+   {
+    "w": " Russian",
+    "s": 146.84,
+    "e": 147.18
+   },
+   {
+    "w": " support,",
+    "s": 147.18,
+    "e": 147.68
+   },
+   {
+    "w": " Stanis\u0142aw",
+    "s": 148.18,
+    "e": 148.66
+   },
+   {
+    "w": " August",
+    "s": 148.66,
+    "e": 149.12
+   },
+   {
+    "w": " Poniatowski",
+    "s": 149.12,
+    "e": 149.8
+   },
+   {
+    "w": " was",
+    "s": 149.8,
+    "e": 150.24
+   },
+   {
+    "w": " elected",
+    "s": 150.24,
+    "e": 150.6
+   },
+   {
+    "w": " king",
+    "s": 150.6,
+    "e": 150.92
+   },
+   {
+    "w": " in",
+    "s": 150.92,
+    "e": 151.28
+   },
+   {
+    "w": " 1764.",
+    "s": 151.28,
+    "e": 152.4
+   }
+  ]
+ },
+ {
+  "start": 152.9,
+  "end": 155.34,
+  "text": " Poniatowski hoped to modernize the state.",
+  "words": [
+   {
+    "w": " Poniatowski",
+    "s": 152.9,
+    "e": 153.56
+   },
+   {
+    "w": " hoped",
+    "s": 153.56,
+    "e": 153.96
+   },
+   {
+    "w": " to",
+    "s": 153.96,
+    "e": 154.34
+   },
+   {
+    "w": " modernize",
+    "s": 154.34,
+    "e": 154.84
+   },
+   {
+    "w": " the",
+    "s": 154.84,
+    "e": 155.08
+   },
+   {
+    "w": " state.",
+    "s": 155.08,
+    "e": 155.34
+   }
+  ]
+ },
+ {
+  "start": 155.88,
+  "end": 161.04,
+  "text": " He supported administrative, economic, and educational reforms, and wanted to strengthen",
+  "words": [
+   {
+    "w": " He",
+    "s": 155.88,
+    "e": 156.02
+   },
+   {
+    "w": " supported",
+    "s": 156.02,
+    "e": 156.44
+   },
+   {
+    "w": " administrative,",
+    "s": 156.44,
+    "e": 157.12
+   },
+   {
+    "w": " economic,",
+    "s": 157.56,
+    "e": 157.98
+   },
+   {
+    "w": " and",
+    "s": 158.28,
+    "e": 158.5
+   },
+   {
+    "w": " educational",
+    "s": 158.5,
+    "e": 159.1
+   },
+   {
+    "w": " reforms,",
+    "s": 159.1,
+    "e": 159.68
+   },
+   {
+    "w": " and",
+    "s": 159.92,
+    "e": 160.2
+   },
+   {
+    "w": " wanted",
+    "s": 160.2,
+    "e": 160.42
+   },
+   {
+    "w": " to",
+    "s": 160.42,
+    "e": 160.68
+   },
+   {
+    "w": " strengthen",
+    "s": 160.68,
+    "e": 161.04
+   }
+  ]
+ },
+ {
+  "start": 161.04,
+  "end": 162.66,
+  "text": " the authority of the central government.",
+  "words": [
+   {
+    "w": " the",
+    "s": 161.04,
+    "e": 161.22
+   },
+   {
+    "w": " authority",
+    "s": 161.22,
+    "e": 161.64
+   },
+   {
+    "w": " of",
+    "s": 161.64,
+    "e": 161.84
+   },
+   {
+    "w": " the",
+    "s": 161.84,
+    "e": 162.0
+   },
+   {
+    "w": " central",
+    "s": 162.0,
+    "e": 162.26
+   },
+   {
+    "w": " government.",
+    "s": 162.26,
+    "e": 162.66
+   }
+  ]
+ },
+ {
+  "start": 163.22,
+  "end": 167.76,
+  "text": " However, these ambitions threatened powerful interests at home and abroad.",
+  "words": [
+   {
+    "w": " However,",
+    "s": 163.22,
+    "e": 163.56
+   },
+   {
+    "w": " these",
+    "s": 164.02,
+    "e": 164.24
+   },
+   {
+    "w": " ambitions",
+    "s": 164.24,
+    "e": 164.7
+   },
+   {
+    "w": " threatened",
+    "s": 164.7,
+    "e": 165.26
+   },
+   {
+    "w": " powerful",
+    "s": 165.26,
+    "e": 165.88
+   },
+   {
+    "w": " interests",
+    "s": 165.88,
+    "e": 166.36
+   },
+   {
+    "w": " at",
+    "s": 166.36,
+    "e": 166.56
+   },
+   {
+    "w": " home",
+    "s": 166.56,
+    "e": 166.9
+   },
+   {
+    "w": " and",
+    "s": 166.9,
+    "e": 167.28
+   },
+   {
+    "w": " abroad.",
+    "s": 167.28,
+    "e": 167.76
+   }
+  ]
+ },
+ {
+  "start": 168.3,
+  "end": 173.02,
+  "text": " Russia, under Empress Catherine II, wanted to preserve its influence over the Commonwealth.",
+  "words": [
+   {
+    "w": " Russia,",
+    "s": 168.3,
+    "e": 168.64
+   },
+   {
+    "w": " under",
+    "s": 168.92,
+    "e": 169.14
+   },
+   {
+    "w": " Empress",
+    "s": 169.14,
+    "e": 169.48
+   },
+   {
+    "w": " Catherine",
+    "s": 169.48,
+    "e": 169.86
+   },
+   {
+    "w": " II,",
+    "s": 169.86,
+    "e": 170.3
+   },
+   {
+    "w": " wanted",
+    "s": 170.76,
+    "e": 170.94
+   },
+   {
+    "w": " to",
+    "s": 170.94,
+    "e": 171.18
+   },
+   {
+    "w": " preserve",
+    "s": 171.18,
+    "e": 171.52
+   },
+   {
+    "w": " its",
+    "s": 171.52,
+    "e": 171.74
+   },
+   {
+    "w": " influence",
+    "s": 171.74,
+    "e": 172.2
+   },
+   {
+    "w": " over",
+    "s": 172.2,
+    "e": 172.44
+   },
+   {
+    "w": " the",
+    "s": 172.44,
+    "e": 172.66
+   },
+   {
+    "w": " Commonwealth.",
+    "s": 172.66,
+    "e": 173.02
+   }
+  ]
+ },
+ {
+  "start": 173.7,
+  "end": 179.6,
+  "text": " Prussia, ruled by Frederick II, also had little interest in seeing a stronger Polish-Lithuanian",
+  "words": [
+   {
+    "w": " Prussia,",
+    "s": 173.7,
+    "e": 174.12
+   },
+   {
+    "w": " ruled",
+    "s": 174.48,
+    "e": 174.58
+   },
+   {
+    "w": " by",
+    "s": 174.58,
+    "e": 174.78
+   },
+   {
+    "w": " Frederick",
+    "s": 174.78,
+    "e": 175.16
+   },
+   {
+    "w": " II,",
+    "s": 175.16,
+    "e": 175.6
+   },
+   {
+    "w": " also",
+    "s": 176.06,
+    "e": 176.34
+   },
+   {
+    "w": " had",
+    "s": 176.34,
+    "e": 176.56
+   },
+   {
+    "w": " little",
+    "s": 176.56,
+    "e": 176.92
+   },
+   {
+    "w": " interest",
+    "s": 176.92,
+    "e": 177.32
+   },
+   {
+    "w": " in",
+    "s": 177.32,
+    "e": 177.56
+   },
+   {
+    "w": " seeing",
+    "s": 177.56,
+    "e": 177.76
+   },
+   {
+    "w": " a",
+    "s": 177.76,
+    "e": 178.02
+   },
+   {
+    "w": " stronger",
+    "s": 178.02,
+    "e": 178.4
+   },
+   {
+    "w": " Polish",
+    "s": 178.4,
+    "e": 178.9
+   },
+   {
+    "w": "-Lithuanian",
+    "s": 178.9,
+    "e": 179.6
+   }
+  ]
+ },
+ {
+  "start": 179.6,
+  "end": 181.5,
+  "text": " state emerge between its territories.",
+  "words": [
+   {
+    "w": " state",
+    "s": 179.6,
+    "e": 179.94
+   },
+   {
+    "w": " emerge",
+    "s": 179.94,
+    "e": 180.36
+   },
+   {
+    "w": " between",
+    "s": 180.36,
+    "e": 180.76
+   },
+   {
+    "w": " its",
+    "s": 180.76,
+    "e": 180.98
+   },
+   {
+    "w": " territories.",
+    "s": 180.98,
+    "e": 181.5
+   }
+  ]
+ },
+ {
+  "start": 182.06,
+  "end": 187.68,
+  "text": " In 1767, Russian pressure forced the Polish parliament to accept political arrangements",
+  "words": [
+   {
+    "w": " In",
+    "s": 182.06,
+    "e": 182.22
+   },
+   {
+    "w": " 1767,",
+    "s": 182.22,
+    "e": 183.46
+   },
+   {
+    "w": " Russian",
+    "s": 183.96,
+    "e": 184.28
+   },
+   {
+    "w": " pressure",
+    "s": 184.28,
+    "e": 184.64
+   },
+   {
+    "w": " forced",
+    "s": 184.64,
+    "e": 185.14
+   },
+   {
+    "w": " the",
+    "s": 185.14,
+    "e": 185.3
+   },
+   {
+    "w": " Polish",
+    "s": 185.3,
+    "e": 185.64
+   },
+   {
+    "w": " parliament",
+    "s": 185.64,
+    "e": 185.98
+   },
+   {
+    "w": " to",
+    "s": 185.98,
+    "e": 186.28
+   },
+   {
+    "w": " accept",
+    "s": 186.28,
+    "e": 186.64
+   },
+   {
+    "w": " political",
+    "s": 186.64,
+    "e": 187.16
+   },
+   {
+    "w": " arrangements",
+    "s": 187.16,
+    "e": 187.68
+   }
+  ]
+ },
+ {
+  "start": 187.68,
+  "end": 192.62,
+  "text": " that protected the rights of religious dissenters and maintained important elements of the existing",
+  "words": [
+   {
+    "w": " that",
+    "s": 187.68,
+    "e": 187.9
+   },
+   {
+    "w": " protected",
+    "s": 187.9,
+    "e": 188.44
+   },
+   {
+    "w": " the",
+    "s": 188.44,
+    "e": 188.66
+   },
+   {
+    "w": " rights",
+    "s": 188.66,
+    "e": 188.86
+   },
+   {
+    "w": " of",
+    "s": 188.86,
+    "e": 189.06
+   },
+   {
+    "w": " religious",
+    "s": 189.06,
+    "e": 189.38
+   },
+   {
+    "w": " dissenters",
+    "s": 189.38,
+    "e": 190.04
+   },
+   {
+    "w": " and",
+    "s": 190.04,
+    "e": 190.5
+   },
+   {
+    "w": " maintained",
+    "s": 190.5,
+    "e": 190.94
+   },
+   {
+    "w": " important",
+    "s": 190.94,
+    "e": 191.42
+   },
+   {
+    "w": " elements",
+    "s": 191.42,
+    "e": 191.9
+   },
+   {
+    "w": " of",
+    "s": 191.9,
+    "e": 192.08
+   },
+   {
+    "w": " the",
+    "s": 192.08,
+    "e": 192.22
+   },
+   {
+    "w": " existing",
+    "s": 192.22,
+    "e": 192.62
+   }
+  ]
+ },
+ {
+  "start": 192.62,
+  "end": 193.5,
+  "text": " political system.",
+  "words": [
+   {
+    "w": " political",
+    "s": 192.62,
+    "e": 193.04
+   },
+   {
+    "w": " system.",
+    "s": 193.04,
+    "e": 193.5
+   }
+  ]
+ },
+ {
+  "start": 194.04,
+  "end": 199.44,
+  "text": " The Russian ambassador, Nicholas Repnin, used intimidation and political pressure to influence",
+  "words": [
+   {
+    "w": " The",
+    "s": 194.04,
+    "e": 194.16
+   },
+   {
+    "w": " Russian",
+    "s": 194.16,
+    "e": 194.46
+   },
+   {
+    "w": " ambassador,",
+    "s": 194.46,
+    "e": 195.02
+   },
+   {
+    "w": " Nicholas",
+    "s": 195.48,
+    "e": 195.7
+   },
+   {
+    "w": " Repnin,",
+    "s": 195.7,
+    "e": 196.16
+   },
+   {
+    "w": " used",
+    "s": 196.5,
+    "e": 196.72
+   },
+   {
+    "w": " intimidation",
+    "s": 196.72,
+    "e": 197.42
+   },
+   {
+    "w": " and",
+    "s": 197.42,
+    "e": 197.86
+   },
+   {
+    "w": " political",
+    "s": 197.86,
+    "e": 198.32
+   },
+   {
+    "w": " pressure",
+    "s": 198.32,
+    "e": 198.7
+   },
+   {
+    "w": " to",
+    "s": 198.7,
+    "e": 198.94
+   },
+   {
+    "w": " influence",
+    "s": 198.94,
+    "e": 199.44
+   }
+  ]
+ },
+ {
+  "start": 199.44,
+  "end": 200.16,
+  "text": " the proceedings.",
+  "words": [
+   {
+    "w": " the",
+    "s": 199.44,
+    "e": 199.62
+   },
+   {
+    "w": " proceedings.",
+    "s": 199.62,
+    "e": 200.16
+   }
+  ]
+ },
+ {
+  "start": 200.68,
+  "end": 205.42,
+  "text": " For many Polish nobles, this was an unacceptable violation of their country's independence.",
+  "words": [
+   {
+    "w": " For",
+    "s": 200.68,
+    "e": 200.88
+   },
+   {
+    "w": " many",
+    "s": 200.88,
+    "e": 201.14
+   },
+   {
+    "w": " Polish",
+    "s": 201.14,
+    "e": 201.54
+   },
+   {
+    "w": " nobles,",
+    "s": 201.54,
+    "e": 201.8
+   },
+   {
+    "w": " this",
+    "s": 202.22,
+    "e": 202.38
+   },
+   {
+    "w": " was",
+    "s": 202.38,
+    "e": 202.56
+   },
+   {
+    "w": " an",
+    "s": 202.56,
+    "e": 202.72
+   },
+   {
+    "w": " unacceptable",
+    "s": 202.72,
+    "e": 203.5
+   },
+   {
+    "w": " violation",
+    "s": 203.5,
+    "e": 204.14
+   },
+   {
+    "w": " of",
+    "s": 204.14,
+    "e": 204.36
+   },
+   {
+    "w": " their",
+    "s": 204.36,
+    "e": 204.52
+   },
+   {
+    "w": " country's",
+    "s": 204.52,
+    "e": 204.94
+   },
+   {
+    "w": " independence.",
+    "s": 204.94,
+    "e": 205.42
+   }
+  ]
+ },
+ {
+  "start": 206.22,
+  "end": 211.26,
+  "text": " In 1768, opponents of Russian interference formed the Confederation of Bar.",
+  "words": [
+   {
+    "w": " In",
+    "s": 206.22,
+    "e": 206.34
+   },
+   {
+    "w": " 1768,",
+    "s": 206.34,
+    "e": 207.46
+   },
+   {
+    "w": " opponents",
+    "s": 207.8,
+    "e": 208.2
+   },
+   {
+    "w": " of",
+    "s": 208.2,
+    "e": 208.46
+   },
+   {
+    "w": " Russian",
+    "s": 208.46,
+    "e": 208.76
+   },
+   {
+    "w": " interference",
+    "s": 208.76,
+    "e": 209.3
+   },
+   {
+    "w": " formed",
+    "s": 209.3,
+    "e": 209.74
+   },
+   {
+    "w": " the",
+    "s": 209.74,
+    "e": 209.96
+   },
+   {
+    "w": " Confederation",
+    "s": 209.96,
+    "e": 210.52
+   },
+   {
+    "w": " of",
+    "s": 210.52,
+    "e": 211.04
+   },
+   {
+    "w": " Bar.",
+    "s": 211.04,
+    "e": 211.26
+   }
+  ]
+ },
+ {
+  "start": 211.74,
+  "end": 216.2,
+  "text": " This movement was made up of nobles who claimed to defend the Catholic faith, traditional",
+  "words": [
+   {
+    "w": " This",
+    "s": 211.74,
+    "e": 212.08
+   },
+   {
+    "w": " movement",
+    "s": 212.08,
+    "e": 212.4
+   },
+   {
+    "w": " was",
+    "s": 212.4,
+    "e": 212.66
+   },
+   {
+    "w": " made",
+    "s": 212.66,
+    "e": 212.82
+   },
+   {
+    "w": " up",
+    "s": 212.82,
+    "e": 212.98
+   },
+   {
+    "w": " of",
+    "s": 212.98,
+    "e": 213.22
+   },
+   {
+    "w": " nobles",
+    "s": 213.22,
+    "e": 213.54
+   },
+   {
+    "w": " who",
+    "s": 213.54,
+    "e": 213.74
+   },
+   {
+    "w": " claimed",
+    "s": 213.74,
+    "e": 214.06
+   },
+   {
+    "w": " to",
+    "s": 214.06,
+    "e": 214.26
+   },
+   {
+    "w": " defend",
+    "s": 214.26,
+    "e": 214.54
+   },
+   {
+    "w": " the",
+    "s": 214.54,
+    "e": 214.72
+   },
+   {
+    "w": " Catholic",
+    "s": 214.72,
+    "e": 215.06
+   },
+   {
+    "w": " faith,",
+    "s": 215.06,
+    "e": 215.4
+   },
+   {
+    "w": " traditional",
+    "s": 215.82,
+    "e": 216.2
+   }
+  ]
+ },
+ {
+  "start": 216.2,
+  "end": 218.58,
+  "text": " liberties, and the independence of the Commonwealth.",
+  "words": [
+   {
+    "w": " liberties,",
+    "s": 216.2,
+    "e": 216.62
+   },
+   {
+    "w": " and",
+    "s": 216.88,
+    "e": 217.08
+   },
+   {
+    "w": " the",
+    "s": 217.08,
+    "e": 217.24
+   },
+   {
+    "w": " independence",
+    "s": 217.24,
+    "e": 217.8
+   },
+   {
+    "w": " of",
+    "s": 217.8,
+    "e": 218.04
+   },
+   {
+    "w": " the",
+    "s": 218.04,
+    "e": 218.22
+   },
+   {
+    "w": " Commonwealth.",
+    "s": 218.22,
+    "e": 218.58
+   }
+  ]
+ },
+ {
+  "start": 219.24,
+  "end": 223.14,
+  "text": " They took up arms against the king and the Russian influence surrounding his government.",
+  "words": [
+   {
+    "w": " They",
+    "s": 219.24,
+    "e": 219.36
+   },
+   {
+    "w": " took",
+    "s": 219.36,
+    "e": 219.54
+   },
+   {
+    "w": " up",
+    "s": 219.54,
+    "e": 219.72
+   },
+   {
+    "w": " arms",
+    "s": 219.72,
+    "e": 220.06
+   },
+   {
+    "w": " against",
+    "s": 220.06,
+    "e": 220.34
+   },
+   {
+    "w": " the",
+    "s": 220.34,
+    "e": 220.6
+   },
+   {
+    "w": " king",
+    "s": 220.6,
+    "e": 220.78
+   },
+   {
+    "w": " and",
+    "s": 220.78,
+    "e": 221.16
+   },
+   {
+    "w": " the",
+    "s": 221.16,
+    "e": 221.36
+   },
+   {
+    "w": " Russian",
+    "s": 221.36,
+    "e": 221.62
+   },
+   {
+    "w": " influence",
+    "s": 221.62,
+    "e": 222.1
+   },
+   {
+    "w": " surrounding",
+    "s": 222.1,
+    "e": 222.56
+   },
+   {
+    "w": " his",
+    "s": 222.56,
+    "e": 222.78
+   },
+   {
+    "w": " government.",
+    "s": 222.78,
+    "e": 223.14
+   }
+  ]
+ },
+ {
+  "start": 223.62,
+  "end": 229.22,
+  "text": " The resulting conflict, known as the War of the Bar Confederation, lasted until 1772.",
+  "words": [
+   {
+    "w": " The",
+    "s": 223.62,
+    "e": 223.74
+   },
+   {
+    "w": " resulting",
+    "s": 223.74,
+    "e": 224.1
+   },
+   {
+    "w": " conflict,",
+    "s": 224.1,
+    "e": 224.7
+   },
+   {
+    "w": " known",
+    "s": 225.02,
+    "e": 225.14
+   },
+   {
+    "w": " as",
+    "s": 225.14,
+    "e": 225.32
+   },
+   {
+    "w": " the",
+    "s": 225.32,
+    "e": 225.5
+   },
+   {
+    "w": " War",
+    "s": 225.5,
+    "e": 225.7
+   },
+   {
+    "w": " of",
+    "s": 225.7,
+    "e": 225.88
+   },
+   {
+    "w": " the",
+    "s": 225.88,
+    "e": 226.12
+   },
+   {
+    "w": " Bar",
+    "s": 226.12,
+    "e": 226.2
+   },
+   {
+    "w": " Confederation,",
+    "s": 226.2,
+    "e": 226.78
+   },
+   {
+    "w": " lasted",
+    "s": 227.34,
+    "e": 227.6
+   },
+   {
+    "w": " until",
+    "s": 227.6,
+    "e": 227.98
+   },
+   {
+    "w": " 1772.",
+    "s": 227.98,
+    "e": 229.22
+   }
+  ]
+ },
+ {
+  "start": 229.82,
+  "end": 231.92,
+  "text": " The fighting further weakened the Commonwealth.",
+  "words": [
+   {
+    "w": " The",
+    "s": 229.82,
+    "e": 229.98
+   },
+   {
+    "w": " fighting",
+    "s": 229.98,
+    "e": 230.32
+   },
+   {
+    "w": " further",
+    "s": 230.32,
+    "e": 230.88
+   },
+   {
+    "w": " weakened",
+    "s": 230.88,
+    "e": 231.22
+   },
+   {
+    "w": " the",
+    "s": 231.22,
+    "e": 231.5
+   },
+   {
+    "w": " Commonwealth.",
+    "s": 231.5,
+    "e": 231.92
+   }
+  ]
+ },
+ {
+  "start": 232.58,
+  "end": 237.1,
+  "text": " Russian forces intervened repeatedly, while the conflict attracted the attention of neighboring",
+  "words": [
+   {
+    "w": " Russian",
+    "s": 232.58,
+    "e": 232.88
+   },
+   {
+    "w": " forces",
+    "s": 232.88,
+    "e": 233.28
+   },
+   {
+    "w": " intervened",
+    "s": 233.28,
+    "e": 233.82
+   },
+   {
+    "w": " repeatedly,",
+    "s": 233.82,
+    "e": 234.56
+   },
+   {
+    "w": " while",
+    "s": 234.8,
+    "e": 235.02
+   },
+   {
+    "w": " the",
+    "s": 235.02,
+    "e": 235.2
+   },
+   {
+    "w": " conflict",
+    "s": 235.2,
+    "e": 235.56
+   },
+   {
+    "w": " attracted",
+    "s": 235.56,
+    "e": 235.98
+   },
+   {
+    "w": " the",
+    "s": 235.98,
+    "e": 236.18
+   },
+   {
+    "w": " attention",
+    "s": 236.18,
+    "e": 236.58
+   },
+   {
+    "w": " of",
+    "s": 236.58,
+    "e": 236.82
+   },
+   {
+    "w": " neighboring",
+    "s": 236.82,
+    "e": 237.1
+   }
+  ]
+ },
+ {
+  "start": 237.1,
+  "end": 237.66,
+  "text": " powers.",
+  "words": [
+   {
+    "w": " powers.",
+    "s": 237.1,
+    "e": 237.66
+   }
+  ]
+ },
+ {
+  "start": 238.18,
+  "end": 242.9,
+  "text": " At the same time, Russia was fighting the Ottoman Empire in a major war that had begun",
+  "words": [
+   {
+    "w": " At",
+    "s": 238.18,
+    "e": 238.32
+   },
+   {
+    "w": " the",
+    "s": 238.32,
+    "e": 238.46
+   },
+   {
+    "w": " same",
+    "s": 238.46,
+    "e": 238.66
+   },
+   {
+    "w": " time,",
+    "s": 238.66,
+    "e": 239.14
+   },
+   {
+    "w": " Russia",
+    "s": 239.42,
+    "e": 239.66
+   },
+   {
+    "w": " was",
+    "s": 239.66,
+    "e": 239.88
+   },
+   {
+    "w": " fighting",
+    "s": 239.88,
+    "e": 240.12
+   },
+   {
+    "w": " the",
+    "s": 240.12,
+    "e": 240.4
+   },
+   {
+    "w": " Ottoman",
+    "s": 240.4,
+    "e": 240.68
+   },
+   {
+    "w": " Empire",
+    "s": 240.68,
+    "e": 241.12
+   },
+   {
+    "w": " in",
+    "s": 241.12,
+    "e": 241.4
+   },
+   {
+    "w": " a",
+    "s": 241.4,
+    "e": 241.68
+   },
+   {
+    "w": " major",
+    "s": 241.68,
+    "e": 241.94
+   },
+   {
+    "w": " war",
+    "s": 241.94,
+    "e": 242.26
+   },
+   {
+    "w": " that",
+    "s": 242.26,
+    "e": 242.46
+   },
+   {
+    "w": " had",
+    "s": 242.46,
+    "e": 242.6
+   },
+   {
+    "w": " begun",
+    "s": 242.6,
+    "e": 242.9
+   }
+  ]
+ },
+ {
+  "start": 242.9,
+  "end": 244.2,
+  "text": " in 1768.",
+  "words": [
+   {
+    "w": " in",
+    "s": 242.9,
+    "e": 243.18
+   },
+   {
+    "w": " 1768.",
+    "s": 243.18,
+    "e": 244.2
+   }
+  ]
+ },
+ {
+  "start": 244.2,
+  "end": 248.06,
+  "text": " Russian victories threatened the balance of power in southeastern Europe.",
+  "words": [
+   {
+    "w": " Russian",
+    "s": 244.2,
+    "e": 244.96
+   },
+   {
+    "w": " victories",
+    "s": 244.96,
+    "e": 245.46
+   },
+   {
+    "w": " threatened",
+    "s": 245.46,
+    "e": 246.0
+   },
+   {
+    "w": " the",
+    "s": 246.0,
+    "e": 246.22
+   },
+   {
+    "w": " balance",
+    "s": 246.22,
+    "e": 246.46
+   },
+   {
+    "w": " of",
+    "s": 246.46,
+    "e": 246.72
+   },
+   {
+    "w": " power",
+    "s": 246.72,
+    "e": 246.94
+   },
+   {
+    "w": " in",
+    "s": 246.94,
+    "e": 247.18
+   },
+   {
+    "w": " southeastern",
+    "s": 247.18,
+    "e": 247.58
+   },
+   {
+    "w": " Europe.",
+    "s": 247.58,
+    "e": 248.06
+   }
+  ]
+ },
+ {
+  "start": 248.62,
+  "end": 253.58,
+  "text": " Austria, ruled by Maria Theresa, became increasingly concerned about Russian expansion",
+  "words": [
+   {
+    "w": " Austria,",
+    "s": 248.62,
+    "e": 249.04
+   },
+   {
+    "w": " ruled",
+    "s": 249.32,
+    "e": 249.48
+   },
+   {
+    "w": " by",
+    "s": 249.48,
+    "e": 249.7
+   },
+   {
+    "w": " Maria",
+    "s": 249.7,
+    "e": 249.96
+   },
+   {
+    "w": " Theresa,",
+    "s": 249.96,
+    "e": 250.42
+   },
+   {
+    "w": " became",
+    "s": 250.9,
+    "e": 251.14
+   },
+   {
+    "w": " increasingly",
+    "s": 251.14,
+    "e": 251.9
+   },
+   {
+    "w": " concerned",
+    "s": 251.9,
+    "e": 252.4
+   },
+   {
+    "w": " about",
+    "s": 252.4,
+    "e": 252.72
+   },
+   {
+    "w": " Russian",
+    "s": 252.72,
+    "e": 253.06
+   },
+   {
+    "w": " expansion",
+    "s": 253.06,
+    "e": 253.58
+   }
+  ]
+ },
+ {
+  "start": 253.58,
+  "end": 256.62,
+  "text": " and its possible consequences for Habsburg interests.",
+  "words": [
+   {
+    "w": " and",
+    "s": 253.58,
+    "e": 254.06
+   },
+   {
+    "w": " its",
+    "s": 254.06,
+    "e": 254.2
+   },
+   {
+    "w": " possible",
+    "s": 254.2,
+    "e": 254.68
+   },
+   {
+    "w": " consequences",
+    "s": 254.68,
+    "e": 255.38
+   },
+   {
+    "w": " for",
+    "s": 255.38,
+    "e": 255.66
+   },
+   {
+    "w": " Habsburg",
+    "s": 255.66,
+    "e": 256.08
+   },
+   {
+    "w": " interests.",
+    "s": 256.08,
+    "e": 256.62
+   }
+  ]
+ },
+ {
+  "start": 257.36,
+  "end": 260.96,
+  "text": " This created an opportunity for Frederick II of Prussia.",
+  "words": [
+   {
+    "w": " This",
+    "s": 257.36,
+    "e": 257.58
+   },
+   {
+    "w": " created",
+    "s": 257.58,
+    "e": 258.04
+   },
+   {
+    "w": " an",
+    "s": 258.04,
+    "e": 258.28
+   },
+   {
+    "w": " opportunity",
+    "s": 258.28,
+    "e": 258.9
+   },
+   {
+    "w": " for",
+    "s": 258.9,
+    "e": 259.3
+   },
+   {
+    "w": " Frederick",
+    "s": 259.3,
+    "e": 259.68
+   },
+   {
+    "w": " II",
+    "s": 259.68,
+    "e": 260.16
+   },
+   {
+    "w": " of",
+    "s": 260.16,
+    "e": 260.5
+   },
+   {
+    "w": " Prussia.",
+    "s": 260.5,
+    "e": 260.96
+   }
+  ]
+ },
+ {
+  "start": 261.2,
+  "end": 265.82,
+  "text": " Frederick wanted to prevent Austria and Russia from becoming involved in a wider conflict.",
+  "words": [
+   {
+    "w": " Frederick",
+    "s": 261.2,
+    "e": 261.54
+   },
+   {
+    "w": " wanted",
+    "s": 261.54,
+    "e": 261.88
+   },
+   {
+    "w": " to",
+    "s": 261.88,
+    "e": 262.14
+   },
+   {
+    "w": " prevent",
+    "s": 262.14,
+    "e": 262.38
+   },
+   {
+    "w": " Austria",
+    "s": 262.38,
+    "e": 262.96
+   },
+   {
+    "w": " and",
+    "s": 262.96,
+    "e": 263.2
+   },
+   {
+    "w": " Russia",
+    "s": 263.2,
+    "e": 263.54
+   },
+   {
+    "w": " from",
+    "s": 263.54,
+    "e": 263.82
+   },
+   {
+    "w": " becoming",
+    "s": 263.82,
+    "e": 264.18
+   },
+   {
+    "w": " involved",
+    "s": 264.18,
+    "e": 264.56
+   },
+   {
+    "w": " in",
+    "s": 264.56,
+    "e": 264.8
+   },
+   {
+    "w": " a",
+    "s": 264.8,
+    "e": 265.06
+   },
+   {
+    "w": " wider",
+    "s": 265.06,
+    "e": 265.24
+   },
+   {
+    "w": " conflict.",
+    "s": 265.24,
+    "e": 265.82
+   }
+  ]
+ },
+ {
+  "start": 266.38,
+  "end": 271.1,
+  "text": " He also sought a territorial connection between Brandenburg and his eastern territories",
+  "words": [
+   {
+    "w": " He",
+    "s": 266.38,
+    "e": 266.52
+   },
+   {
+    "w": " also",
+    "s": 266.52,
+    "e": 266.94
+   },
+   {
+    "w": " sought",
+    "s": 266.94,
+    "e": 267.26
+   },
+   {
+    "w": " a",
+    "s": 267.26,
+    "e": 267.54
+   },
+   {
+    "w": " territorial",
+    "s": 267.54,
+    "e": 268.02
+   },
+   {
+    "w": " connection",
+    "s": 268.02,
+    "e": 268.56
+   },
+   {
+    "w": " between",
+    "s": 268.56,
+    "e": 269.02
+   },
+   {
+    "w": " Brandenburg",
+    "s": 269.02,
+    "e": 269.64
+   },
+   {
+    "w": " and",
+    "s": 269.64,
+    "e": 269.94
+   },
+   {
+    "w": " his",
+    "s": 269.94,
+    "e": 270.12
+   },
+   {
+    "w": " eastern",
+    "s": 270.12,
+    "e": 270.56
+   },
+   {
+    "w": " territories",
+    "s": 270.56,
+    "e": 271.1
+   }
+  ]
+ },
+ {
+  "start": 271.1,
+  "end": 271.9,
+  "text": " in Prussia.",
+  "words": [
+   {
+    "w": " in",
+    "s": 271.1,
+    "e": 271.38
+   },
+   {
+    "w": " Prussia.",
+    "s": 271.38,
+    "e": 271.9
+   }
+  ]
+ },
+ {
+  "start": 271.9,
+  "end": 276.78,
+  "text": " Rather than allow the rivalry between the great powers to develop into a European war,",
+  "words": [
+   {
+    "w": " Rather",
+    "s": 271.9,
+    "e": 272.56
+   },
+   {
+    "w": " than",
+    "s": 272.56,
+    "e": 272.82
+   },
+   {
+    "w": " allow",
+    "s": 272.82,
+    "e": 273.06
+   },
+   {
+    "w": " the",
+    "s": 273.06,
+    "e": 273.26
+   },
+   {
+    "w": " rivalry",
+    "s": 273.26,
+    "e": 273.7
+   },
+   {
+    "w": " between",
+    "s": 273.7,
+    "e": 274.08
+   },
+   {
+    "w": " the",
+    "s": 274.08,
+    "e": 274.24
+   },
+   {
+    "w": " great",
+    "s": 274.24,
+    "e": 274.48
+   },
+   {
+    "w": " powers",
+    "s": 274.48,
+    "e": 274.82
+   },
+   {
+    "w": " to",
+    "s": 274.82,
+    "e": 275.06
+   },
+   {
+    "w": " develop",
+    "s": 275.06,
+    "e": 275.38
+   },
+   {
+    "w": " into",
+    "s": 275.38,
+    "e": 275.7
+   },
+   {
+    "w": " a",
+    "s": 275.7,
+    "e": 275.94
+   },
+   {
+    "w": " European",
+    "s": 275.94,
+    "e": 276.32
+   },
+   {
+    "w": " war,",
+    "s": 276.32,
+    "e": 276.78
+   }
+  ]
+ },
+ {
+  "start": 277.16,
+  "end": 281.56,
+  "text": " he promoted a solution that would come at the expense of the Polish-Lithuanian Commonwealth.",
+  "words": [
+   {
+    "w": " he",
+    "s": 277.16,
+    "e": 277.3
+   },
+   {
+    "w": " promoted",
+    "s": 277.3,
+    "e": 277.68
+   },
+   {
+    "w": " a",
+    "s": 277.68,
+    "e": 277.9
+   },
+   {
+    "w": " solution",
+    "s": 277.9,
+    "e": 278.28
+   },
+   {
+    "w": " that",
+    "s": 278.28,
+    "e": 278.52
+   },
+   {
+    "w": " would",
+    "s": 278.52,
+    "e": 278.7
+   },
+   {
+    "w": " come",
+    "s": 278.7,
+    "e": 278.9
+   },
+   {
+    "w": " at",
+    "s": 278.9,
+    "e": 279.04
+   },
+   {
+    "w": " the",
+    "s": 279.04,
+    "e": 279.18
+   },
+   {
+    "w": " expense",
+    "s": 279.18,
+    "e": 279.58
+   },
+   {
+    "w": " of",
+    "s": 279.58,
+    "e": 279.82
+   },
+   {
+    "w": " the",
+    "s": 279.82,
+    "e": 279.96
+   },
+   {
+    "w": " Polish",
+    "s": 279.96,
+    "e": 280.34
+   },
+   {
+    "w": "-Lithuanian",
+    "s": 280.34,
+    "e": 281.08
+   },
+   {
+    "w": " Commonwealth.",
+    "s": 281.08,
+    "e": 281.56
+   }
+  ]
+ },
+ {
+  "start": 282.12,
+  "end": 287.42,
+  "text": " The idea of partitioning Poland-Lithuania had become a practical political project.",
+  "words": [
+   {
+    "w": " The",
+    "s": 282.12,
+    "e": 282.22
+   },
+   {
+    "w": " idea",
+    "s": 282.22,
+    "e": 282.62
+   },
+   {
+    "w": " of",
+    "s": 282.62,
+    "e": 282.92
+   },
+   {
+    "w": " partitioning",
+    "s": 282.92,
+    "e": 283.68
+   },
+   {
+    "w": " Poland",
+    "s": 283.68,
+    "e": 284.02
+   },
+   {
+    "w": "-Lithuania",
+    "s": 284.02,
+    "e": 284.64
+   },
+   {
+    "w": " had",
+    "s": 284.64,
+    "e": 285.02
+   },
+   {
+    "w": " become",
+    "s": 285.02,
+    "e": 285.28
+   },
+   {
+    "w": " a",
+    "s": 285.28,
+    "e": 285.5
+   },
+   {
+    "w": " practical",
+    "s": 285.5,
+    "e": 286.16
+   },
+   {
+    "w": " political",
+    "s": 286.16,
+    "e": 286.8
+   },
+   {
+    "w": " project.",
+    "s": 286.8,
+    "e": 287.42
+   }
+  ]
+ },
+ {
+  "start": 287.88,
+  "end": 291.36,
+  "text": " In 1772, the three powers reached an agreement.",
+  "words": [
+   {
+    "w": " In",
+    "s": 287.88,
+    "e": 288.06
+   },
+   {
+    "w": " 1772,",
+    "s": 288.06,
+    "e": 289.16
+   },
+   {
+    "w": " the",
+    "s": 289.6,
+    "e": 289.68
+   },
+   {
+    "w": " three",
+    "s": 289.68,
+    "e": 289.98
+   },
+   {
+    "w": " powers",
+    "s": 289.98,
+    "e": 290.36
+   },
+   {
+    "w": " reached",
+    "s": 290.36,
+    "e": 290.74
+   },
+   {
+    "w": " an",
+    "s": 290.74,
+    "e": 290.98
+   },
+   {
+    "w": " agreement.",
+    "s": 290.98,
+    "e": 291.36
+   }
+  ]
+ },
+ {
+  "start": 291.92,
+  "end": 296.84,
+  "text": " Russia, Prussia, and Austria would each take large portions of Commonwealth territory.",
+  "words": [
+   {
+    "w": " Russia,",
+    "s": 291.92,
+    "e": 292.24
+   },
+   {
+    "w": " Prussia,",
+    "s": 292.64,
+    "e": 292.94
+   },
+   {
+    "w": " and",
+    "s": 293.08,
+    "e": 293.24
+   },
+   {
+    "w": " Austria",
+    "s": 293.24,
+    "e": 293.8
+   },
+   {
+    "w": " would",
+    "s": 293.8,
+    "e": 294.18
+   },
+   {
+    "w": " each",
+    "s": 294.18,
+    "e": 294.48
+   },
+   {
+    "w": " take",
+    "s": 294.48,
+    "e": 294.76
+   },
+   {
+    "w": " large",
+    "s": 294.76,
+    "e": 295.14
+   },
+   {
+    "w": " portions",
+    "s": 295.14,
+    "e": 295.58
+   },
+   {
+    "w": " of",
+    "s": 295.58,
+    "e": 295.86
+   },
+   {
+    "w": " Commonwealth",
+    "s": 295.86,
+    "e": 296.22
+   },
+   {
+    "w": " territory.",
+    "s": 296.22,
+    "e": 296.84
+   }
+  ]
+ },
+ {
+  "start": 297.44000000000005,
+  "end": 302.14,
+  "text": " Their armies moved into the areas they intended to annex, establishing control before the",
+  "words": [
+   {
+    "w": " Their",
+    "s": 297.12,
+    "e": 297.48
+   },
+   {
+    "w": " armies",
+    "s": 297.48,
+    "e": 297.84
+   },
+   {
+    "w": " moved",
+    "s": 297.84,
+    "e": 298.2
+   },
+   {
+    "w": " into",
+    "s": 298.2,
+    "e": 298.44
+   },
+   {
+    "w": " the",
+    "s": 298.44,
+    "e": 298.66
+   },
+   {
+    "w": " areas",
+    "s": 298.66,
+    "e": 298.92
+   },
+   {
+    "w": " they",
+    "s": 298.92,
+    "e": 299.14
+   },
+   {
+    "w": " intended",
+    "s": 299.14,
+    "e": 299.48
+   },
+   {
+    "w": " to",
+    "s": 299.48,
+    "e": 299.76
+   },
+   {
+    "w": " annex,",
+    "s": 299.76,
+    "e": 300.06
+   },
+   {
+    "w": " establishing",
+    "s": 300.44,
+    "e": 300.92
+   },
+   {
+    "w": " control",
+    "s": 300.92,
+    "e": 301.46
+   },
+   {
+    "w": " before",
+    "s": 301.46,
+    "e": 301.88
+   },
+   {
+    "w": " the",
+    "s": 301.88,
+    "e": 302.14
+   }
+  ]
+ },
+ {
+  "start": 302.14,
+  "end": 303.94,
+  "text": " Polish government could effectively resist.",
+  "words": [
+   {
+    "w": " Polish",
+    "s": 302.14,
+    "e": 302.42
+   },
+   {
+    "w": " government",
+    "s": 302.42,
+    "e": 302.78
+   },
+   {
+    "w": " could",
+    "s": 302.78,
+    "e": 303.04
+   },
+   {
+    "w": " effectively",
+    "s": 303.04,
+    "e": 303.48
+   },
+   {
+    "w": " resist.",
+    "s": 303.48,
+    "e": 303.94
+   }
+  ]
+ },
+ {
+  "start": 304.56,
+  "end": 310.22,
+  "text": " On the 5th of August, 1772, representatives of the three monarchies signed the Partition Treaty.",
+  "words": [
+   {
+    "w": " On",
+    "s": 304.56,
+    "e": 304.68
+   },
+   {
+    "w": " the",
+    "s": 304.68,
+    "e": 304.84
+   },
+   {
+    "w": " 5th",
+    "s": 304.84,
+    "e": 305.1
+   },
+   {
+    "w": " of",
+    "s": 305.1,
+    "e": 305.2
+   },
+   {
+    "w": " August,",
+    "s": 305.2,
+    "e": 305.48
+   },
+   {
+    "w": " 1772,",
+    "s": 305.76,
+    "e": 306.64
+   },
+   {
+    "w": " representatives",
+    "s": 307.12,
+    "e": 307.54
+   },
+   {
+    "w": " of",
+    "s": 307.54,
+    "e": 307.88
+   },
+   {
+    "w": " the",
+    "s": 307.88,
+    "e": 308.02
+   },
+   {
+    "w": " three",
+    "s": 308.02,
+    "e": 308.32
+   },
+   {
+    "w": " monarchies",
+    "s": 308.32,
+    "e": 308.88
+   },
+   {
+    "w": " signed",
+    "s": 308.88,
+    "e": 309.26
+   },
+   {
+    "w": " the",
+    "s": 309.26,
+    "e": 309.48
+   },
+   {
+    "w": " Partition",
+    "s": 309.48,
+    "e": 309.9
+   },
+   {
+    "w": " Treaty.",
+    "s": 309.9,
+    "e": 310.22
+   }
+  ]
+ },
+ {
+  "start": 310.72,
+  "end": 314.96,
+  "text": " The first partition of Poland-Lithuania had become a reality.",
+  "words": [
+   {
+    "w": " The",
+    "s": 310.72,
+    "e": 310.84
+   },
+   {
+    "w": " first",
+    "s": 310.84,
+    "e": 311.24
+   },
+   {
+    "w": " partition",
+    "s": 311.24,
+    "e": 311.78
+   },
+   {
+    "w": " of",
+    "s": 311.78,
+    "e": 312.1
+   },
+   {
+    "w": " Poland",
+    "s": 312.1,
+    "e": 312.58
+   },
+   {
+    "w": "-Lithuania",
+    "s": 312.58,
+    "e": 313.18
+   },
+   {
+    "w": " had",
+    "s": 313.18,
+    "e": 313.68
+   },
+   {
+    "w": " become",
+    "s": 313.68,
+    "e": 314.12
+   },
+   {
+    "w": " a",
+    "s": 314.12,
+    "e": 314.46
+   },
+   {
+    "w": " reality.",
+    "s": 314.46,
+    "e": 314.96
+   }
+  ]
+ },
+ {
+  "start": 315.52,
+  "end": 317.54,
+  "text": " Each power gained different territories.",
+  "words": [
+   {
+    "w": " Each",
+    "s": 315.52,
+    "e": 315.72
+   },
+   {
+    "w": " power",
+    "s": 315.72,
+    "e": 316.1
+   },
+   {
+    "w": " gained",
+    "s": 316.1,
+    "e": 316.46
+   },
+   {
+    "w": " different",
+    "s": 316.46,
+    "e": 316.92
+   },
+   {
+    "w": " territories.",
+    "s": 316.92,
+    "e": 317.54
+   }
+  ]
+ },
+ {
+  "start": 318.06,
+  "end": 322.38,
+  "text": " Prussia received royal Prussia, with the important exceptions of the cities of Danzig",
+  "words": [
+   {
+    "w": " Prussia",
+    "s": 318.06,
+    "e": 318.44
+   },
+   {
+    "w": " received",
+    "s": 318.44,
+    "e": 318.9
+   },
+   {
+    "w": " royal",
+    "s": 318.9,
+    "e": 319.32
+   },
+   {
+    "w": " Prussia,",
+    "s": 319.32,
+    "e": 319.8
+   },
+   {
+    "w": " with",
+    "s": 319.9,
+    "e": 320.14
+   },
+   {
+    "w": " the",
+    "s": 320.14,
+    "e": 320.3
+   },
+   {
+    "w": " important",
+    "s": 320.3,
+    "e": 320.66
+   },
+   {
+    "w": " exceptions",
+    "s": 320.66,
+    "e": 321.1
+   },
+   {
+    "w": " of",
+    "s": 321.1,
+    "e": 321.38
+   },
+   {
+    "w": " the",
+    "s": 321.38,
+    "e": 321.56
+   },
+   {
+    "w": " cities",
+    "s": 321.56,
+    "e": 321.74
+   },
+   {
+    "w": " of",
+    "s": 321.74,
+    "e": 322.02
+   },
+   {
+    "w": " Danzig",
+    "s": 322.02,
+    "e": 322.38
+   }
+  ]
+ },
+ {
+  "start": 322.38,
+  "end": 324.86,
+  "text": " and Thorn, which remained outside its control.",
+  "words": [
+   {
+    "w": " and",
+    "s": 322.38,
+    "e": 322.6
+   },
+   {
+    "w": " Thorn,",
+    "s": 322.6,
+    "e": 323.02
+   },
+   {
+    "w": " which",
+    "s": 323.28,
+    "e": 323.44
+   },
+   {
+    "w": " remained",
+    "s": 323.44,
+    "e": 323.72
+   },
+   {
+    "w": " outside",
+    "s": 323.72,
+    "e": 324.2
+   },
+   {
+    "w": " its",
+    "s": 324.2,
+    "e": 324.44
+   },
+   {
+    "w": " control.",
+    "s": 324.44,
+    "e": 324.86
+   }
+  ]
+ },
+ {
+  "start": 324.86,
+  "end": 328.12,
+  "text": " It also gained territories in northern Greater Poland.",
+  "words": [
+   {
+    "w": " It",
+    "s": 324.86,
+    "e": 325.44
+   },
+   {
+    "w": " also",
+    "s": 325.44,
+    "e": 325.82
+   },
+   {
+    "w": " gained",
+    "s": 325.82,
+    "e": 326.1
+   },
+   {
+    "w": " territories",
+    "s": 326.1,
+    "e": 326.64
+   },
+   {
+    "w": " in",
+    "s": 326.64,
+    "e": 327.02
+   },
+   {
+    "w": " northern",
+    "s": 327.02,
+    "e": 327.32
+   },
+   {
+    "w": " Greater",
+    "s": 327.32,
+    "e": 327.64
+   },
+   {
+    "w": " Poland.",
+    "s": 327.64,
+    "e": 328.12
+   }
+  ]
+ },
+ {
+  "start": 328.64,
+  "end": 331.72,
+  "text": " These acquisitions were particularly important to Frederick II.",
+  "words": [
+   {
+    "w": " These",
+    "s": 328.64,
+    "e": 328.86
+   },
+   {
+    "w": " acquisitions",
+    "s": 328.86,
+    "e": 329.34
+   },
+   {
+    "w": " were",
+    "s": 329.34,
+    "e": 329.64
+   },
+   {
+    "w": " particularly",
+    "s": 329.64,
+    "e": 330.22
+   },
+   {
+    "w": " important",
+    "s": 330.22,
+    "e": 330.78
+   },
+   {
+    "w": " to",
+    "s": 330.78,
+    "e": 331.02
+   },
+   {
+    "w": " Frederick",
+    "s": 331.02,
+    "e": 331.3
+   },
+   {
+    "w": " II.",
+    "s": 331.3,
+    "e": 331.72
+   }
+  ]
+ },
+ {
+  "start": 332.22,
+  "end": 336.78,
+  "text": " They strengthened the connection between Brandenburg and East Prussia, and gave Prussia greater",
+  "words": [
+   {
+    "w": " They",
+    "s": 332.22,
+    "e": 332.32
+   },
+   {
+    "w": " strengthened",
+    "s": 332.32,
+    "e": 332.74
+   },
+   {
+    "w": " the",
+    "s": 332.74,
+    "e": 332.98
+   },
+   {
+    "w": " connection",
+    "s": 332.98,
+    "e": 333.32
+   },
+   {
+    "w": " between",
+    "s": 333.32,
+    "e": 333.7
+   },
+   {
+    "w": " Brandenburg",
+    "s": 333.7,
+    "e": 334.32
+   },
+   {
+    "w": " and",
+    "s": 334.32,
+    "e": 334.6
+   },
+   {
+    "w": " East",
+    "s": 334.6,
+    "e": 334.9
+   },
+   {
+    "w": " Prussia,",
+    "s": 334.9,
+    "e": 335.38
+   },
+   {
+    "w": " and",
+    "s": 335.46,
+    "e": 335.8
+   },
+   {
+    "w": " gave",
+    "s": 335.8,
+    "e": 335.96
+   },
+   {
+    "w": " Prussia",
+    "s": 335.96,
+    "e": 336.36
+   },
+   {
+    "w": " greater",
+    "s": 336.36,
+    "e": 336.78
+   }
+  ]
+ },
+ {
+  "start": 336.78,
+  "end": 341.0,
+  "text": " control over important trade routes along the Baltic coast and the Lower Vistula.",
+  "words": [
+   {
+    "w": " control",
+    "s": 336.78,
+    "e": 337.26
+   },
+   {
+    "w": " over",
+    "s": 337.26,
+    "e": 337.58
+   },
+   {
+    "w": " important",
+    "s": 337.58,
+    "e": 338.08
+   },
+   {
+    "w": " trade",
+    "s": 338.08,
+    "e": 338.42
+   },
+   {
+    "w": " routes",
+    "s": 338.42,
+    "e": 338.7
+   },
+   {
+    "w": " along",
+    "s": 338.7,
+    "e": 339.0
+   },
+   {
+    "w": " the",
+    "s": 339.0,
+    "e": 339.18
+   },
+   {
+    "w": " Baltic",
+    "s": 339.18,
+    "e": 339.52
+   },
+   {
+    "w": " coast",
+    "s": 339.52,
+    "e": 339.86
+   },
+   {
+    "w": " and",
+    "s": 339.86,
+    "e": 340.16
+   },
+   {
+    "w": " the",
+    "s": 340.16,
+    "e": 340.34
+   },
+   {
+    "w": " Lower",
+    "s": 340.34,
+    "e": 340.54
+   },
+   {
+    "w": " Vistula.",
+    "s": 340.54,
+    "e": 341.0
+   }
+  ]
+ },
+ {
+  "start": 341.54,
+  "end": 346.38,
+  "text": " Russia acquired extensive territories in the Northeast, including areas of the Grand Duchy",
+  "words": [
+   {
+    "w": " Russia",
+    "s": 341.54,
+    "e": 341.86
+   },
+   {
+    "w": " acquired",
+    "s": 341.86,
+    "e": 342.4
+   },
+   {
+    "w": " extensive",
+    "s": 342.4,
+    "e": 343.02
+   },
+   {
+    "w": " territories",
+    "s": 343.02,
+    "e": 343.6
+   },
+   {
+    "w": " in",
+    "s": 343.6,
+    "e": 343.82
+   },
+   {
+    "w": " the",
+    "s": 343.82,
+    "e": 343.98
+   },
+   {
+    "w": " Northeast,",
+    "s": 343.98,
+    "e": 344.32
+   },
+   {
+    "w": " including",
+    "s": 344.68,
+    "e": 345.06
+   },
+   {
+    "w": " areas",
+    "s": 345.06,
+    "e": 345.46
+   },
+   {
+    "w": " of",
+    "s": 345.46,
+    "e": 345.68
+   },
+   {
+    "w": " the",
+    "s": 345.68,
+    "e": 345.86
+   },
+   {
+    "w": " Grand",
+    "s": 345.86,
+    "e": 346.12
+   },
+   {
+    "w": " Duchy",
+    "s": 346.12,
+    "e": 346.38
+   }
+  ]
+ },
+ {
+  "start": 346.38,
+  "end": 348.42,
+  "text": " of Lithuania and the Eastern Commonwealth.",
+  "words": [
+   {
+    "w": " of",
+    "s": 346.38,
+    "e": 346.5
+   },
+   {
+    "w": " Lithuania",
+    "s": 346.5,
+    "e": 347.0
+   },
+   {
+    "w": " and",
+    "s": 347.0,
+    "e": 347.38
+   },
+   {
+    "w": " the",
+    "s": 347.38,
+    "e": 347.58
+   },
+   {
+    "w": " Eastern",
+    "s": 347.58,
+    "e": 347.88
+   },
+   {
+    "w": " Commonwealth.",
+    "s": 347.88,
+    "e": 348.42
+   }
+  ]
+ },
+ {
+  "start": 349.02,
+  "end": 354.04,
+  "text": " Although Russia received the largest geographical share, its main objective was also political.",
+  "words": [
+   {
+    "w": " Although",
+    "s": 349.02,
+    "e": 349.24
+   },
+   {
+    "w": " Russia",
+    "s": 349.24,
+    "e": 349.62
+   },
+   {
+    "w": " received",
+    "s": 349.62,
+    "e": 350.0
+   },
+   {
+    "w": " the",
+    "s": 350.0,
+    "e": 350.24
+   },
+   {
+    "w": " largest",
+    "s": 350.24,
+    "e": 350.56
+   },
+   {
+    "w": " geographical",
+    "s": 350.56,
+    "e": 351.22
+   },
+   {
+    "w": " share,",
+    "s": 351.22,
+    "e": 351.62
+   },
+   {
+    "w": " its",
+    "s": 351.94,
+    "e": 352.08
+   },
+   {
+    "w": " main",
+    "s": 352.08,
+    "e": 352.38
+   },
+   {
+    "w": " objective",
+    "s": 352.38,
+    "e": 352.76
+   },
+   {
+    "w": " was",
+    "s": 352.76,
+    "e": 353.06
+   },
+   {
+    "w": " also",
+    "s": 353.06,
+    "e": 353.54
+   },
+   {
+    "w": " political.",
+    "s": 353.54,
+    "e": 354.04
+   }
+  ]
+ },
+ {
+  "start": 354.04,
+  "end": 358.54,
+  "text": " Maintaining its dominant influence over the remaining Polish-Lithuanian state.",
+  "words": [
+   {
+    "w": " Maintaining",
+    "s": 354.04,
+    "e": 354.94
+   },
+   {
+    "w": " its",
+    "s": 354.94,
+    "e": 355.14
+   },
+   {
+    "w": " dominant",
+    "s": 355.14,
+    "e": 355.6
+   },
+   {
+    "w": " influence",
+    "s": 355.6,
+    "e": 356.1
+   },
+   {
+    "w": " over",
+    "s": 356.1,
+    "e": 356.4
+   },
+   {
+    "w": " the",
+    "s": 356.4,
+    "e": 356.6
+   },
+   {
+    "w": " remaining",
+    "s": 356.6,
+    "e": 357.02
+   },
+   {
+    "w": " Polish",
+    "s": 357.02,
+    "e": 357.52
+   },
+   {
+    "w": "-Lithuanian",
+    "s": 357.52,
+    "e": 358.2
+   },
+   {
+    "w": " state.",
+    "s": 358.2,
+    "e": 358.54
+   }
+  ]
+ },
+ {
+  "start": 359.08,
+  "end": 363.32,
+  "text": " Austria took territories in the south, including large parts of the region that would become",
+  "words": [
+   {
+    "w": " Austria",
+    "s": 359.08,
+    "e": 359.44
+   },
+   {
+    "w": " took",
+    "s": 359.44,
+    "e": 359.7
+   },
+   {
+    "w": " territories",
+    "s": 359.7,
+    "e": 360.2
+   },
+   {
+    "w": " in",
+    "s": 360.2,
+    "e": 360.42
+   },
+   {
+    "w": " the",
+    "s": 360.42,
+    "e": 360.66
+   },
+   {
+    "w": " south,",
+    "s": 360.66,
+    "e": 360.88
+   },
+   {
+    "w": " including",
+    "s": 361.22,
+    "e": 361.54
+   },
+   {
+    "w": " large",
+    "s": 361.54,
+    "e": 361.92
+   },
+   {
+    "w": " parts",
+    "s": 361.92,
+    "e": 362.22
+   },
+   {
+    "w": " of",
+    "s": 362.22,
+    "e": 362.34
+   },
+   {
+    "w": " the",
+    "s": 362.34,
+    "e": 362.48
+   },
+   {
+    "w": " region",
+    "s": 362.48,
+    "e": 362.72
+   },
+   {
+    "w": " that",
+    "s": 362.72,
+    "e": 362.9
+   },
+   {
+    "w": " would",
+    "s": 362.9,
+    "e": 363.02
+   },
+   {
+    "w": " become",
+    "s": 363.02,
+    "e": 363.32
+   }
+  ]
+ },
+ {
+  "start": 363.32,
+  "end": 364.34,
+  "text": " known as Galicia.",
+  "words": [
+   {
+    "w": " known",
+    "s": 363.32,
+    "e": 363.64
+   },
+   {
+    "w": " as",
+    "s": 363.64,
+    "e": 363.88
+   },
+   {
+    "w": " Galicia.",
+    "s": 363.88,
+    "e": 364.34
+   }
+  ]
+ },
+ {
+  "start": 364.84,
+  "end": 369.58,
+  "text": " For the Habsburg monarchy, these lands offered strategic advantages, additional resources,",
+  "words": [
+   {
+    "w": " For",
+    "s": 364.84,
+    "e": 364.96
+   },
+   {
+    "w": " the",
+    "s": 364.96,
+    "e": 365.08
+   },
+   {
+    "w": " Habsburg",
+    "s": 365.08,
+    "e": 365.5
+   },
+   {
+    "w": " monarchy,",
+    "s": 365.5,
+    "e": 365.92
+   },
+   {
+    "w": " these",
+    "s": 366.34,
+    "e": 366.52
+   },
+   {
+    "w": " lands",
+    "s": 366.52,
+    "e": 366.78
+   },
+   {
+    "w": " offered",
+    "s": 366.78,
+    "e": 367.16
+   },
+   {
+    "w": " strategic",
+    "s": 367.16,
+    "e": 367.72
+   },
+   {
+    "w": " advantages,",
+    "s": 367.72,
+    "e": 368.28
+   },
+   {
+    "w": " additional",
+    "s": 368.7,
+    "e": 369.0
+   },
+   {
+    "w": " resources,",
+    "s": 369.0,
+    "e": 369.58
+   }
+  ]
+ },
+ {
+  "start": 369.8,
+  "end": 371.94,
+  "text": " and a stronger position in central Europe.",
+  "words": [
+   {
+    "w": " and",
+    "s": 369.8,
+    "e": 370.06
+   },
+   {
+    "w": " a",
+    "s": 370.06,
+    "e": 370.24
+   },
+   {
+    "w": " stronger",
+    "s": 370.24,
+    "e": 370.56
+   },
+   {
+    "w": " position",
+    "s": 370.56,
+    "e": 371.02
+   },
+   {
+    "w": " in",
+    "s": 371.02,
+    "e": 371.32
+   },
+   {
+    "w": " central",
+    "s": 371.32,
+    "e": 371.6
+   },
+   {
+    "w": " Europe.",
+    "s": 371.6,
+    "e": 371.94
+   }
+  ]
+ },
+ {
+  "start": 372.42,
+  "end": 375.04,
+  "text": " The partition was not simply a division of land.",
+  "words": [
+   {
+    "w": " The",
+    "s": 372.42,
+    "e": 372.54
+   },
+   {
+    "w": " partition",
+    "s": 372.54,
+    "e": 372.92
+   },
+   {
+    "w": " was",
+    "s": 372.92,
+    "e": 373.2
+   },
+   {
+    "w": " not",
+    "s": 373.2,
+    "e": 373.5
+   },
+   {
+    "w": " simply",
+    "s": 373.5,
+    "e": 373.98
+   },
+   {
+    "w": " a",
+    "s": 373.98,
+    "e": 374.18
+   },
+   {
+    "w": " division",
+    "s": 374.18,
+    "e": 374.44
+   },
+   {
+    "w": " of",
+    "s": 374.44,
+    "e": 374.7
+   },
+   {
+    "w": " land.",
+    "s": 374.7,
+    "e": 375.04
+   }
+  ]
+ },
+ {
+  "start": 375.38,
+  "end": 379.74,
+  "text": " It was an attempt by three monarchies to reshape the balance of power in Europe.",
+  "words": [
+   {
+    "w": " It",
+    "s": 375.38,
+    "e": 375.52
+   },
+   {
+    "w": " was",
+    "s": 375.52,
+    "e": 375.66
+   },
+   {
+    "w": " an",
+    "s": 375.66,
+    "e": 375.82
+   },
+   {
+    "w": " attempt",
+    "s": 375.82,
+    "e": 376.08
+   },
+   {
+    "w": " by",
+    "s": 376.08,
+    "e": 376.32
+   },
+   {
+    "w": " three",
+    "s": 376.32,
+    "e": 376.72
+   },
+   {
+    "w": " monarchies",
+    "s": 376.72,
+    "e": 377.36
+   },
+   {
+    "w": " to",
+    "s": 377.36,
+    "e": 377.56
+   },
+   {
+    "w": " reshape",
+    "s": 377.56,
+    "e": 378.12
+   },
+   {
+    "w": " the",
+    "s": 378.12,
+    "e": 378.36
+   },
+   {
+    "w": " balance",
+    "s": 378.36,
+    "e": 378.6
+   },
+   {
+    "w": " of",
+    "s": 378.6,
+    "e": 378.9
+   },
+   {
+    "w": " power",
+    "s": 378.9,
+    "e": 379.1
+   },
+   {
+    "w": " in",
+    "s": 379.1,
+    "e": 379.4
+   },
+   {
+    "w": " Europe.",
+    "s": 379.4,
+    "e": 379.74
+   }
+  ]
+ },
+ {
+  "start": 379.74,
+  "end": 384.64,
+  "text": " The Commonwealth lost almost one-third of its territory and approximately one-third",
+  "words": [
+   {
+    "w": " The",
+    "s": 379.74,
+    "e": 380.3
+   },
+   {
+    "w": " Commonwealth",
+    "s": 380.3,
+    "e": 380.72
+   },
+   {
+    "w": " lost",
+    "s": 380.72,
+    "e": 381.16
+   },
+   {
+    "w": " almost",
+    "s": 381.16,
+    "e": 381.52
+   },
+   {
+    "w": " one",
+    "s": 381.52,
+    "e": 382.06
+   },
+   {
+    "w": "-third",
+    "s": 382.06,
+    "e": 382.24
+   },
+   {
+    "w": " of",
+    "s": 382.24,
+    "e": 382.42
+   },
+   {
+    "w": " its",
+    "s": 382.42,
+    "e": 382.58
+   },
+   {
+    "w": " territory",
+    "s": 382.58,
+    "e": 383.1
+   },
+   {
+    "w": " and",
+    "s": 383.1,
+    "e": 383.44
+   },
+   {
+    "w": " approximately",
+    "s": 383.44,
+    "e": 383.9
+   },
+   {
+    "w": " one",
+    "s": 383.9,
+    "e": 384.42
+   },
+   {
+    "w": "-third",
+    "s": 384.42,
+    "e": 384.64
+   }
+  ]
+ },
+ {
+  "start": 384.64,
+  "end": 387.6,
+  "text": " of its population, yet it did not disappear.",
+  "words": [
+   {
+    "w": " of",
+    "s": 384.64,
+    "e": 384.82
+   },
+   {
+    "w": " its",
+    "s": 384.82,
+    "e": 385.0
+   },
+   {
+    "w": " population,",
+    "s": 385.0,
+    "e": 385.56
+   },
+   {
+    "w": " yet",
+    "s": 385.84,
+    "e": 386.24
+   },
+   {
+    "w": " it",
+    "s": 386.24,
+    "e": 386.62
+   },
+   {
+    "w": " did",
+    "s": 386.62,
+    "e": 386.76
+   },
+   {
+    "w": " not",
+    "s": 386.76,
+    "e": 387.04
+   },
+   {
+    "w": " disappear.",
+    "s": 387.04,
+    "e": 387.6
+   }
+  ]
+ },
+ {
+  "start": 388.16,
+  "end": 393.18,
+  "text": " The Polish king, Stanis\u0142aw August Poniatowski, and the remaining government were confronted",
+  "words": [
+   {
+    "w": " The",
+    "s": 388.16,
+    "e": 388.26
+   },
+   {
+    "w": " Polish",
+    "s": 388.26,
+    "e": 388.6
+   },
+   {
+    "w": " king,",
+    "s": 388.6,
+    "e": 388.96
+   },
+   {
+    "w": " Stanis\u0142aw",
+    "s": 389.36,
+    "e": 389.9
+   },
+   {
+    "w": " August",
+    "s": 389.9,
+    "e": 390.32
+   },
+   {
+    "w": " Poniatowski,",
+    "s": 390.32,
+    "e": 390.96
+   },
+   {
+    "w": " and",
+    "s": 391.26,
+    "e": 391.5
+   },
+   {
+    "w": " the",
+    "s": 391.5,
+    "e": 391.64
+   },
+   {
+    "w": " remaining",
+    "s": 391.64,
+    "e": 391.98
+   },
+   {
+    "w": " government",
+    "s": 391.98,
+    "e": 392.48
+   },
+   {
+    "w": " were",
+    "s": 392.48,
+    "e": 392.74
+   },
+   {
+    "w": " confronted",
+    "s": 392.74,
+    "e": 393.18
+   }
+  ]
+ },
+ {
+  "start": 393.18,
+  "end": 395.94,
+  "text": " with a decision they had little power to influence.",
+  "words": [
+   {
+    "w": " with",
+    "s": 393.18,
+    "e": 393.48
+   },
+   {
+    "w": " a",
+    "s": 393.48,
+    "e": 393.64
+   },
+   {
+    "w": " decision",
+    "s": 393.64,
+    "e": 394.0
+   },
+   {
+    "w": " they",
+    "s": 394.0,
+    "e": 394.24
+   },
+   {
+    "w": " had",
+    "s": 394.24,
+    "e": 394.44
+   },
+   {
+    "w": " little",
+    "s": 394.44,
+    "e": 394.84
+   },
+   {
+    "w": " power",
+    "s": 394.84,
+    "e": 395.16
+   },
+   {
+    "w": " to",
+    "s": 395.16,
+    "e": 395.42
+   },
+   {
+    "w": " influence.",
+    "s": 395.42,
+    "e": 395.94
+   }
+  ]
+ },
+ {
+  "start": 396.58,
+  "end": 401.36,
+  "text": " The partitioning powers demanded that the same formally approve their territorial acquisitions.",
+  "words": [
+   {
+    "w": " The",
+    "s": 396.58,
+    "e": 396.7
+   },
+   {
+    "w": " partitioning",
+    "s": 396.7,
+    "e": 397.28
+   },
+   {
+    "w": " powers",
+    "s": 397.28,
+    "e": 397.54
+   },
+   {
+    "w": " demanded",
+    "s": 397.54,
+    "e": 398.18
+   },
+   {
+    "w": " that",
+    "s": 398.18,
+    "e": 398.44
+   },
+   {
+    "w": " the",
+    "s": 398.44,
+    "e": 398.7
+   },
+   {
+    "w": " same",
+    "s": 398.7,
+    "e": 398.88
+   },
+   {
+    "w": " formally",
+    "s": 398.88,
+    "e": 399.46
+   },
+   {
+    "w": " approve",
+    "s": 399.46,
+    "e": 399.9
+   },
+   {
+    "w": " their",
+    "s": 399.9,
+    "e": 400.18
+   },
+   {
+    "w": " territorial",
+    "s": 400.18,
+    "e": 400.72
+   },
+   {
+    "w": " acquisitions.",
+    "s": 400.72,
+    "e": 401.36
+   }
+  ]
+ },
+ {
+  "start": 402.12,
+  "end": 407.82,
+  "text": " In 1773, a special parliamentary session was convened under heavy pressure from the occupying",
+  "words": [
+   {
+    "w": " In",
+    "s": 402.12,
+    "e": 402.3
+   },
+   {
+    "w": " 1773,",
+    "s": 402.3,
+    "e": 403.28
+   },
+   {
+    "w": " a",
+    "s": 403.72,
+    "e": 403.88
+   },
+   {
+    "w": " special",
+    "s": 403.88,
+    "e": 404.24
+   },
+   {
+    "w": " parliamentary",
+    "s": 404.24,
+    "e": 404.78
+   },
+   {
+    "w": " session",
+    "s": 404.78,
+    "e": 405.22
+   },
+   {
+    "w": " was",
+    "s": 405.22,
+    "e": 405.42
+   },
+   {
+    "w": " convened",
+    "s": 405.42,
+    "e": 405.84
+   },
+   {
+    "w": " under",
+    "s": 405.84,
+    "e": 406.18
+   },
+   {
+    "w": " heavy",
+    "s": 406.18,
+    "e": 406.64
+   },
+   {
+    "w": " pressure",
+    "s": 406.64,
+    "e": 406.98
+   },
+   {
+    "w": " from",
+    "s": 406.98,
+    "e": 407.24
+   },
+   {
+    "w": " the",
+    "s": 407.24,
+    "e": 407.4
+   },
+   {
+    "w": " occupying",
+    "s": 407.4,
+    "e": 407.82
+   }
+  ]
+ },
+ {
+  "start": 407.82,
+  "end": 408.32,
+  "text": " powers.",
+  "words": [
+   {
+    "w": " powers.",
+    "s": 407.82,
+    "e": 408.32
+   }
+  ]
+ },
+ {
+  "start": 409.12,
+  "end": 410.1,
+  "text": " Some deputies resisted.",
+  "words": [
+   {
+    "w": " Some",
+    "s": 408.82,
+    "e": 409.14
+   },
+   {
+    "w": " deputies",
+    "s": 409.14,
+    "e": 409.54
+   },
+   {
+    "w": " resisted.",
+    "s": 409.54,
+    "e": 410.1
+   }
+  ]
+ },
+ {
+  "start": 410.68,
+  "end": 415.22,
+  "text": " One of the most famous acts of protest came from Tadeusz Reitam, who attempted to prevent",
+  "words": [
+   {
+    "w": " One",
+    "s": 410.68,
+    "e": 410.8
+   },
+   {
+    "w": " of",
+    "s": 410.8,
+    "e": 410.9
+   },
+   {
+    "w": " the",
+    "s": 410.9,
+    "e": 411.0
+   },
+   {
+    "w": " most",
+    "s": 411.0,
+    "e": 411.2
+   },
+   {
+    "w": " famous",
+    "s": 411.2,
+    "e": 411.66
+   },
+   {
+    "w": " acts",
+    "s": 411.66,
+    "e": 411.92
+   },
+   {
+    "w": " of",
+    "s": 411.92,
+    "e": 412.16
+   },
+   {
+    "w": " protest",
+    "s": 412.16,
+    "e": 412.5
+   },
+   {
+    "w": " came",
+    "s": 412.5,
+    "e": 412.78
+   },
+   {
+    "w": " from",
+    "s": 412.78,
+    "e": 413.04
+   },
+   {
+    "w": " Tadeusz",
+    "s": 413.04,
+    "e": 413.6
+   },
+   {
+    "w": " Reitam,",
+    "s": 413.6,
+    "e": 413.96
+   },
+   {
+    "w": " who",
+    "s": 414.2,
+    "e": 414.32
+   },
+   {
+    "w": " attempted",
+    "s": 414.32,
+    "e": 414.62
+   },
+   {
+    "w": " to",
+    "s": 414.62,
+    "e": 414.9
+   },
+   {
+    "w": " prevent",
+    "s": 414.9,
+    "e": 415.22
+   }
+  ]
+ },
+ {
+  "start": 415.22,
+  "end": 416.54,
+  "text": " the proceedings from continuing.",
+  "words": [
+   {
+    "w": " the",
+    "s": 415.22,
+    "e": 415.44
+   },
+   {
+    "w": " proceedings",
+    "s": 415.44,
+    "e": 415.8
+   },
+   {
+    "w": " from",
+    "s": 415.8,
+    "e": 416.06
+   },
+   {
+    "w": " continuing.",
+    "s": 416.06,
+    "e": 416.54
+   }
+  ]
+ },
+ {
+  "start": 417.3,
+  "end": 419.54,
+  "text": " But resistance could not stop the process.",
+  "words": [
+   {
+    "w": " But",
+    "s": 417.3,
+    "e": 417.46
+   },
+   {
+    "w": " resistance",
+    "s": 417.46,
+    "e": 417.96
+   },
+   {
+    "w": " could",
+    "s": 417.96,
+    "e": 418.26
+   },
+   {
+    "w": " not",
+    "s": 418.26,
+    "e": 418.58
+   },
+   {
+    "w": " stop",
+    "s": 418.58,
+    "e": 418.9
+   },
+   {
+    "w": " the",
+    "s": 418.9,
+    "e": 419.1
+   },
+   {
+    "w": " process.",
+    "s": 419.1,
+    "e": 419.54
+   }
+  ]
+ },
+ {
+  "start": 420.14,
+  "end": 425.16,
+  "text": " On the 30th of September, 1773, the same ratified the partition treaties.",
+  "words": [
+   {
+    "w": " On",
+    "s": 420.14,
+    "e": 420.26
+   },
+   {
+    "w": " the",
+    "s": 420.26,
+    "e": 420.46
+   },
+   {
+    "w": " 30th",
+    "s": 420.46,
+    "e": 420.86
+   },
+   {
+    "w": " of",
+    "s": 420.86,
+    "e": 420.96
+   },
+   {
+    "w": " September,",
+    "s": 420.96,
+    "e": 421.42
+   },
+   {
+    "w": " 1773,",
+    "s": 421.78,
+    "e": 422.64
+   },
+   {
+    "w": " the",
+    "s": 423.1,
+    "e": 423.22
+   },
+   {
+    "w": " same",
+    "s": 423.22,
+    "e": 423.54
+   },
+   {
+    "w": " ratified",
+    "s": 423.54,
+    "e": 424.14
+   },
+   {
+    "w": " the",
+    "s": 424.14,
+    "e": 424.36
+   },
+   {
+    "w": " partition",
+    "s": 424.36,
+    "e": 424.72
+   },
+   {
+    "w": " treaties.",
+    "s": 424.72,
+    "e": 425.16
+   }
+  ]
+ },
+ {
+  "start": 425.76,
+  "end": 430.46,
+  "text": " The loss of territory had now been given formal parliamentary approval.",
+  "words": [
+   {
+    "w": " The",
+    "s": 425.76,
+    "e": 425.9
+   },
+   {
+    "w": " loss",
+    "s": 425.9,
+    "e": 426.22
+   },
+   {
+    "w": " of",
+    "s": 426.22,
+    "e": 426.48
+   },
+   {
+    "w": " territory",
+    "s": 426.48,
+    "e": 426.98
+   },
+   {
+    "w": " had",
+    "s": 426.98,
+    "e": 427.4
+   },
+   {
+    "w": " now",
+    "s": 427.4,
+    "e": 427.76
+   },
+   {
+    "w": " been",
+    "s": 427.76,
+    "e": 427.98
+   },
+   {
+    "w": " given",
+    "s": 427.98,
+    "e": 428.28
+   },
+   {
+    "w": " formal",
+    "s": 428.28,
+    "e": 428.96
+   },
+   {
+    "w": " parliamentary",
+    "s": 428.96,
+    "e": 429.74
+   },
+   {
+    "w": " approval.",
+    "s": 429.74,
+    "e": 430.46
+   }
+  ]
+ },
+ {
+  "start": 430.98,
+  "end": 434.88,
+  "text": " For the people living in the annexed regions, the consequences were immediate.",
+  "words": [
+   {
+    "w": " For",
+    "s": 430.98,
+    "e": 431.2
+   },
+   {
+    "w": " the",
+    "s": 431.2,
+    "e": 431.32
+   },
+   {
+    "w": " people",
+    "s": 431.32,
+    "e": 431.56
+   },
+   {
+    "w": " living",
+    "s": 431.56,
+    "e": 431.84
+   },
+   {
+    "w": " in",
+    "s": 431.84,
+    "e": 432.02
+   },
+   {
+    "w": " the",
+    "s": 432.02,
+    "e": 432.18
+   },
+   {
+    "w": " annexed",
+    "s": 432.18,
+    "e": 432.44
+   },
+   {
+    "w": " regions,",
+    "s": 432.44,
+    "e": 432.88
+   },
+   {
+    "w": " the",
+    "s": 433.24,
+    "e": 433.42
+   },
+   {
+    "w": " consequences",
+    "s": 433.42,
+    "e": 433.98
+   },
+   {
+    "w": " were",
+    "s": 433.98,
+    "e": 434.32
+   },
+   {
+    "w": " immediate.",
+    "s": 434.32,
+    "e": 434.88
+   }
+  ]
+ },
+ {
+  "start": 435.46,
+  "end": 439.78,
+  "text": " They found themselves under new rulers, new administrations, and new legal systems.",
+  "words": [
+   {
+    "w": " They",
+    "s": 435.14,
+    "e": 435.5
+   },
+   {
+    "w": " found",
+    "s": 435.5,
+    "e": 435.76
+   },
+   {
+    "w": " themselves",
+    "s": 435.76,
+    "e": 436.12
+   },
+   {
+    "w": " under",
+    "s": 436.12,
+    "e": 436.42
+   },
+   {
+    "w": " new",
+    "s": 436.42,
+    "e": 436.7
+   },
+   {
+    "w": " rulers,",
+    "s": 436.7,
+    "e": 437.08
+   },
+   {
+    "w": " new",
+    "s": 437.48,
+    "e": 437.62
+   },
+   {
+    "w": " administrations,",
+    "s": 437.62,
+    "e": 438.26
+   },
+   {
+    "w": " and",
+    "s": 438.52,
+    "e": 438.76
+   },
+   {
+    "w": " new",
+    "s": 438.76,
+    "e": 438.96
+   },
+   {
+    "w": " legal",
+    "s": 438.96,
+    "e": 439.24
+   },
+   {
+    "w": " systems.",
+    "s": 439.24,
+    "e": 439.78
+   }
+  ]
+ },
+ {
+  "start": 440.4,
+  "end": 444.3,
+  "text": " Taxes, military obligations, and government institutions changed.",
+  "words": [
+   {
+    "w": " Taxes,",
+    "s": 440.4,
+    "e": 440.7
+   },
+   {
+    "w": " military",
+    "s": 441.12,
+    "e": 441.54
+   },
+   {
+    "w": " obligations,",
+    "s": 441.54,
+    "e": 442.12
+   },
+   {
+    "w": " and",
+    "s": 442.38,
+    "e": 442.54
+   },
+   {
+    "w": " government",
+    "s": 442.54,
+    "e": 442.88
+   },
+   {
+    "w": " institutions",
+    "s": 442.88,
+    "e": 443.56
+   },
+   {
+    "w": " changed.",
+    "s": 443.56,
+    "e": 444.3
+   }
+  ]
+ },
+ {
+  "start": 444.88,
+  "end": 448.8,
+  "text": " Communities that had previously belonged to one political state were now separated",
+  "words": [
+   {
+    "w": " Communities",
+    "s": 444.88,
+    "e": 445.26
+   },
+   {
+    "w": " that",
+    "s": 445.26,
+    "e": 445.52
+   },
+   {
+    "w": " had",
+    "s": 445.52,
+    "e": 445.64
+   },
+   {
+    "w": " previously",
+    "s": 445.64,
+    "e": 446.18
+   },
+   {
+    "w": " belonged",
+    "s": 446.18,
+    "e": 446.54
+   },
+   {
+    "w": " to",
+    "s": 446.54,
+    "e": 446.8
+   },
+   {
+    "w": " one",
+    "s": 446.8,
+    "e": 447.0
+   },
+   {
+    "w": " political",
+    "s": 447.0,
+    "e": 447.38
+   },
+   {
+    "w": " state",
+    "s": 447.38,
+    "e": 447.78
+   },
+   {
+    "w": " were",
+    "s": 447.78,
+    "e": 448.08
+   },
+   {
+    "w": " now",
+    "s": 448.08,
+    "e": 448.26
+   },
+   {
+    "w": " separated",
+    "s": 448.26,
+    "e": 448.8
+   }
+  ]
+ },
+ {
+  "start": 448.8,
+  "end": 449.72,
+  "text": " by new borders.",
+  "words": [
+   {
+    "w": " by",
+    "s": 448.8,
+    "e": 449.08
+   },
+   {
+    "w": " new",
+    "s": 449.08,
+    "e": 449.3
+   },
+   {
+    "w": " borders.",
+    "s": 449.3,
+    "e": 449.72
+   }
+  ]
+ },
+ {
+  "start": 450.3,
+  "end": 454.72,
+  "text": " In Prussian territories, German administrative structures were introduced, and the monarchy",
+  "words": [
+   {
+    "w": " In",
+    "s": 450.3,
+    "e": 450.46
+   },
+   {
+    "w": " Prussian",
+    "s": 450.46,
+    "e": 450.82
+   },
+   {
+    "w": " territories,",
+    "s": 450.82,
+    "e": 451.34
+   },
+   {
+    "w": " German",
+    "s": 451.76,
+    "e": 452.04
+   },
+   {
+    "w": " administrative",
+    "s": 452.04,
+    "e": 452.62
+   },
+   {
+    "w": " structures",
+    "s": 452.62,
+    "e": 453.06
+   },
+   {
+    "w": " were",
+    "s": 453.06,
+    "e": 453.3
+   },
+   {
+    "w": " introduced,",
+    "s": 453.3,
+    "e": 453.8
+   },
+   {
+    "w": " and",
+    "s": 454.02,
+    "e": 454.22
+   },
+   {
+    "w": " the",
+    "s": 454.22,
+    "e": 454.4
+   },
+   {
+    "w": " monarchy",
+    "s": 454.4,
+    "e": 454.72
+   }
+  ]
+ },
+ {
+  "start": 454.72,
+  "end": 457.46,
+  "text": " strengthened its control over the newly acquired lands.",
+  "words": [
+   {
+    "w": " strengthened",
+    "s": 454.72,
+    "e": 455.3
+   },
+   {
+    "w": " its",
+    "s": 455.3,
+    "e": 455.52
+   },
+   {
+    "w": " control",
+    "s": 455.52,
+    "e": 455.9
+   },
+   {
+    "w": " over",
+    "s": 455.9,
+    "e": 456.22
+   },
+   {
+    "w": " the",
+    "s": 456.22,
+    "e": 456.4
+   },
+   {
+    "w": " newly",
+    "s": 456.4,
+    "e": 456.64
+   },
+   {
+    "w": " acquired",
+    "s": 456.64,
+    "e": 456.96
+   },
+   {
+    "w": " lands.",
+    "s": 456.96,
+    "e": 457.46
+   }
+  ]
+ },
+ {
+  "start": 457.94,
+  "end": 462.72,
+  "text": " In the Austrian territories, the Habsburg government established its own provincial administration.",
+  "words": [
+   {
+    "w": " In",
+    "s": 457.94,
+    "e": 458.14
+   },
+   {
+    "w": " the",
+    "s": 458.14,
+    "e": 458.28
+   },
+   {
+    "w": " Austrian",
+    "s": 458.28,
+    "e": 458.68
+   },
+   {
+    "w": " territories,",
+    "s": 458.68,
+    "e": 459.26
+   },
+   {
+    "w": " the",
+    "s": 459.64,
+    "e": 459.76
+   },
+   {
+    "w": " Habsburg",
+    "s": 459.76,
+    "e": 460.18
+   },
+   {
+    "w": " government",
+    "s": 460.18,
+    "e": 460.52
+   },
+   {
+    "w": " established",
+    "s": 460.52,
+    "e": 461.08
+   },
+   {
+    "w": " its",
+    "s": 461.08,
+    "e": 461.28
+   },
+   {
+    "w": " own",
+    "s": 461.28,
+    "e": 461.58
+   },
+   {
+    "w": " provincial",
+    "s": 461.58,
+    "e": 462.0
+   },
+   {
+    "w": " administration.",
+    "s": 462.0,
+    "e": 462.72
+   }
+  ]
+ },
+ {
+  "start": 463.42,
+  "end": 467.5,
+  "text": " In the Russian acquisitions, the imperial authorities extended their influence over",
+  "words": [
+   {
+    "w": " In",
+    "s": 463.1,
+    "e": 463.44
+   },
+   {
+    "w": " the",
+    "s": 463.44,
+    "e": 463.58
+   },
+   {
+    "w": " Russian",
+    "s": 463.58,
+    "e": 463.92
+   },
+   {
+    "w": " acquisitions,",
+    "s": 463.92,
+    "e": 464.42
+   },
+   {
+    "w": " the",
+    "s": 464.96,
+    "e": 465.04
+   },
+   {
+    "w": " imperial",
+    "s": 465.04,
+    "e": 465.48
+   },
+   {
+    "w": " authorities",
+    "s": 465.48,
+    "e": 465.98
+   },
+   {
+    "w": " extended",
+    "s": 465.98,
+    "e": 466.54
+   },
+   {
+    "w": " their",
+    "s": 466.54,
+    "e": 466.8
+   },
+   {
+    "w": " influence",
+    "s": 466.8,
+    "e": 467.2
+   },
+   {
+    "w": " over",
+    "s": 467.2,
+    "e": 467.5
+   }
+  ]
+ },
+ {
+  "start": 467.5,
+  "end": 469.82,
+  "text": " lands that had previously belonged to the Commonwealth.",
+  "words": [
+   {
+    "w": " lands",
+    "s": 467.5,
+    "e": 467.84
+   },
+   {
+    "w": " that",
+    "s": 467.84,
+    "e": 468.02
+   },
+   {
+    "w": " had",
+    "s": 468.02,
+    "e": 468.18
+   },
+   {
+    "w": " previously",
+    "s": 468.18,
+    "e": 468.72
+   },
+   {
+    "w": " belonged",
+    "s": 468.72,
+    "e": 469.1
+   },
+   {
+    "w": " to",
+    "s": 469.1,
+    "e": 469.3
+   },
+   {
+    "w": " the",
+    "s": 469.3,
+    "e": 469.48
+   },
+   {
+    "w": " Commonwealth.",
+    "s": 469.48,
+    "e": 469.82
+   }
+  ]
+ },
+ {
+  "start": 470.48,
+  "end": 473.42,
+  "text": " But the first partition did not bring stability to the region.",
+  "words": [
+   {
+    "w": " But",
+    "s": 470.48,
+    "e": 470.58
+   },
+   {
+    "w": " the",
+    "s": 470.58,
+    "e": 470.76
+   },
+   {
+    "w": " first",
+    "s": 470.76,
+    "e": 471.02
+   },
+   {
+    "w": " partition",
+    "s": 471.02,
+    "e": 471.46
+   },
+   {
+    "w": " did",
+    "s": 471.46,
+    "e": 471.74
+   },
+   {
+    "w": " not",
+    "s": 471.74,
+    "e": 472.06
+   },
+   {
+    "w": " bring",
+    "s": 472.06,
+    "e": 472.3
+   },
+   {
+    "w": " stability",
+    "s": 472.3,
+    "e": 472.8
+   },
+   {
+    "w": " to",
+    "s": 472.8,
+    "e": 473.02
+   },
+   {
+    "w": " the",
+    "s": 473.02,
+    "e": 473.16
+   },
+   {
+    "w": " region.",
+    "s": 473.16,
+    "e": 473.42
+   }
+  ]
+ },
+ {
+  "start": 473.98,
+  "end": 478.22,
+  "text": " The remaining Commonwealth still existed, and many of its political leaders recognized",
+  "words": [
+   {
+    "w": " The",
+    "s": 473.98,
+    "e": 474.14
+   },
+   {
+    "w": " remaining",
+    "s": 474.14,
+    "e": 474.46
+   },
+   {
+    "w": " Commonwealth",
+    "s": 474.46,
+    "e": 474.98
+   },
+   {
+    "w": " still",
+    "s": 474.98,
+    "e": 475.38
+   },
+   {
+    "w": " existed,",
+    "s": 475.38,
+    "e": 475.86
+   },
+   {
+    "w": " and",
+    "s": 476.2,
+    "e": 476.3
+   },
+   {
+    "w": " many",
+    "s": 476.3,
+    "e": 476.58
+   },
+   {
+    "w": " of",
+    "s": 476.58,
+    "e": 476.72
+   },
+   {
+    "w": " its",
+    "s": 476.72,
+    "e": 476.86
+   },
+   {
+    "w": " political",
+    "s": 476.86,
+    "e": 477.26
+   },
+   {
+    "w": " leaders",
+    "s": 477.26,
+    "e": 477.6
+   },
+   {
+    "w": " recognized",
+    "s": 477.6,
+    "e": 478.22
+   }
+  ]
+ },
+ {
+  "start": 478.22,
+  "end": 481.8,
+  "text": " that fundamental reforms were necessary if the state was to survive.",
+  "words": [
+   {
+    "w": " that",
+    "s": 478.22,
+    "e": 478.48
+   },
+   {
+    "w": " fundamental",
+    "s": 478.48,
+    "e": 479.12
+   },
+   {
+    "w": " reforms",
+    "s": 479.12,
+    "e": 479.58
+   },
+   {
+    "w": " were",
+    "s": 479.58,
+    "e": 479.82
+   },
+   {
+    "w": " necessary",
+    "s": 479.82,
+    "e": 480.42
+   },
+   {
+    "w": " if",
+    "s": 480.42,
+    "e": 480.7
+   },
+   {
+    "w": " the",
+    "s": 480.7,
+    "e": 480.88
+   },
+   {
+    "w": " state",
+    "s": 480.88,
+    "e": 481.02
+   },
+   {
+    "w": " was",
+    "s": 481.02,
+    "e": 481.2
+   },
+   {
+    "w": " to",
+    "s": 481.2,
+    "e": 481.38
+   },
+   {
+    "w": " survive.",
+    "s": 481.38,
+    "e": 481.8
+   }
+  ]
+ },
+ {
+  "start": 482.38,
+  "end": 485.38,
+  "text": " The experience of 1772 became a warning.",
+  "words": [
+   {
+    "w": " The",
+    "s": 482.38,
+    "e": 482.52
+   },
+   {
+    "w": " experience",
+    "s": 482.52,
+    "e": 483.04
+   },
+   {
+    "w": " of",
+    "s": 483.04,
+    "e": 483.26
+   },
+   {
+    "w": " 1772",
+    "s": 483.26,
+    "e": 484.22
+   },
+   {
+    "w": " became",
+    "s": 484.22,
+    "e": 484.72
+   },
+   {
+    "w": " a",
+    "s": 484.72,
+    "e": 485.08
+   },
+   {
+    "w": " warning.",
+    "s": 485.08,
+    "e": 485.38
+   }
+  ]
+ },
+ {
+  "start": 485.92,
+  "end": 490.82,
+  "text": " A country divided by internal political conflicts and weakened by foreign interference could",
+  "words": [
+   {
+    "w": " A",
+    "s": 485.92,
+    "e": 486.08
+   },
+   {
+    "w": " country",
+    "s": 486.08,
+    "e": 486.36
+   },
+   {
+    "w": " divided",
+    "s": 486.36,
+    "e": 486.82
+   },
+   {
+    "w": " by",
+    "s": 486.82,
+    "e": 487.06
+   },
+   {
+    "w": " internal",
+    "s": 487.06,
+    "e": 487.56
+   },
+   {
+    "w": " political",
+    "s": 487.56,
+    "e": 487.94
+   },
+   {
+    "w": " conflicts",
+    "s": 487.94,
+    "e": 488.56
+   },
+   {
+    "w": " and",
+    "s": 488.56,
+    "e": 488.8
+   },
+   {
+    "w": " weakened",
+    "s": 488.8,
+    "e": 489.16
+   },
+   {
+    "w": " by",
+    "s": 489.16,
+    "e": 489.46
+   },
+   {
+    "w": " foreign",
+    "s": 489.46,
+    "e": 489.76
+   },
+   {
+    "w": " interference",
+    "s": 489.76,
+    "e": 490.38
+   },
+   {
+    "w": " could",
+    "s": 490.38,
+    "e": 490.82
+   }
+  ]
+ },
+ {
+  "start": 490.82,
+  "end": 493.26,
+  "text": " lose its independence piece by piece.",
+  "words": [
+   {
+    "w": " lose",
+    "s": 490.82,
+    "e": 491.1
+   },
+   {
+    "w": " its",
+    "s": 491.1,
+    "e": 491.32
+   },
+   {
+    "w": " independence",
+    "s": 491.32,
+    "e": 491.84
+   },
+   {
+    "w": " piece",
+    "s": 491.84,
+    "e": 492.36
+   },
+   {
+    "w": " by",
+    "s": 492.36,
+    "e": 492.7
+   },
+   {
+    "w": " piece.",
+    "s": 492.7,
+    "e": 493.26
+   }
+  ]
+ },
+ {
+  "start": 493.66,
+  "end": 497.5,
+  "text": " In the following decades, reformers attempted to rebuild the Commonwealth.",
+  "words": [
+   {
+    "w": " In",
+    "s": 493.66,
+    "e": 493.92
+   },
+   {
+    "w": " the",
+    "s": 493.92,
+    "e": 494.06
+   },
+   {
+    "w": " following",
+    "s": 494.06,
+    "e": 494.36
+   },
+   {
+    "w": " decades,",
+    "s": 494.36,
+    "e": 494.94
+   },
+   {
+    "w": " reformers",
+    "s": 495.5,
+    "e": 495.8
+   },
+   {
+    "w": " attempted",
+    "s": 495.8,
+    "e": 496.16
+   },
+   {
+    "w": " to",
+    "s": 496.16,
+    "e": 496.48
+   },
+   {
+    "w": " rebuild",
+    "s": 496.48,
+    "e": 496.82
+   },
+   {
+    "w": " the",
+    "s": 496.82,
+    "e": 497.12
+   },
+   {
+    "w": " Commonwealth.",
+    "s": 497.12,
+    "e": 497.5
+   }
+  ]
+ },
+ {
+  "start": 498.18,
+  "end": 503.42,
+  "text": " Their efforts would eventually lead to the Constitution of the 3rd of May in 1791, one",
+  "words": [
+   {
+    "w": " Their",
+    "s": 498.18,
+    "e": 498.34
+   },
+   {
+    "w": " efforts",
+    "s": 498.34,
+    "e": 498.64
+   },
+   {
+    "w": " would",
+    "s": 498.64,
+    "e": 498.84
+   },
+   {
+    "w": " eventually",
+    "s": 498.84,
+    "e": 499.32
+   },
+   {
+    "w": " lead",
+    "s": 499.32,
+    "e": 499.62
+   },
+   {
+    "w": " to",
+    "s": 499.62,
+    "e": 499.78
+   },
+   {
+    "w": " the",
+    "s": 499.78,
+    "e": 499.98
+   },
+   {
+    "w": " Constitution",
+    "s": 499.98,
+    "e": 500.56
+   },
+   {
+    "w": " of",
+    "s": 500.56,
+    "e": 500.84
+   },
+   {
+    "w": " the",
+    "s": 500.84,
+    "e": 501.04
+   },
+   {
+    "w": " 3rd",
+    "s": 501.04,
+    "e": 501.3
+   },
+   {
+    "w": " of",
+    "s": 501.3,
+    "e": 501.36
+   },
+   {
+    "w": " May",
+    "s": 501.36,
+    "e": 501.62
+   },
+   {
+    "w": " in",
+    "s": 501.62,
+    "e": 501.92
+   },
+   {
+    "w": " 1791,",
+    "s": 501.92,
+    "e": 502.82
+   },
+   {
+    "w": " one",
+    "s": 503.3,
+    "e": 503.42
+   }
+  ]
+ },
+ {
+  "start": 503.42,
+  "end": 506.88,
+  "text": " of the most important constitutional reforms in European history.",
+  "words": [
+   {
+    "w": " of",
+    "s": 503.42,
+    "e": 503.48
+   },
+   {
+    "w": " the",
+    "s": 503.48,
+    "e": 503.6
+   },
+   {
+    "w": " most",
+    "s": 503.6,
+    "e": 503.82
+   },
+   {
+    "w": " important",
+    "s": 503.82,
+    "e": 504.38
+   },
+   {
+    "w": " constitutional",
+    "s": 504.38,
+    "e": 505.1
+   },
+   {
+    "w": " reforms",
+    "s": 505.1,
+    "e": 505.64
+   },
+   {
+    "w": " in",
+    "s": 505.64,
+    "e": 505.92
+   },
+   {
+    "w": " European",
+    "s": 505.92,
+    "e": 506.34
+   },
+   {
+    "w": " history.",
+    "s": 506.34,
+    "e": 506.88
+   }
+  ]
+ },
+ {
+  "start": 507.38,
+  "end": 512.14,
+  "text": " But the neighboring powers would not accept the emergence of a stronger Polish-Lithuanian state.",
+  "words": [
+   {
+    "w": " But",
+    "s": 507.38,
+    "e": 507.56
+   },
+   {
+    "w": " the",
+    "s": 507.56,
+    "e": 507.74
+   },
+   {
+    "w": " neighboring",
+    "s": 507.74,
+    "e": 508.0
+   },
+   {
+    "w": " powers",
+    "s": 508.0,
+    "e": 508.4
+   },
+   {
+    "w": " would",
+    "s": 508.4,
+    "e": 508.64
+   },
+   {
+    "w": " not",
+    "s": 508.64,
+    "e": 508.96
+   },
+   {
+    "w": " accept",
+    "s": 508.96,
+    "e": 509.4
+   },
+   {
+    "w": " the",
+    "s": 509.4,
+    "e": 509.6
+   },
+   {
+    "w": " emergence",
+    "s": 509.6,
+    "e": 509.92
+   },
+   {
+    "w": " of",
+    "s": 509.92,
+    "e": 510.16
+   },
+   {
+    "w": " a",
+    "s": 510.16,
+    "e": 510.36
+   },
+   {
+    "w": " stronger",
+    "s": 510.36,
+    "e": 510.7
+   },
+   {
+    "w": " Polish",
+    "s": 510.7,
+    "e": 511.14
+   },
+   {
+    "w": "-Lithuanian",
+    "s": 511.14,
+    "e": 511.82
+   },
+   {
+    "w": " state.",
+    "s": 511.82,
+    "e": 512.14
+   }
+  ]
+ },
+ {
+  "start": 512.72,
+  "end": 516.64,
+  "text": " Further partitions would follow in 1793 and 1795.",
+  "words": [
+   {
+    "w": " Further",
+    "s": 512.72,
+    "e": 512.94
+   },
+   {
+    "w": " partitions",
+    "s": 512.94,
+    "e": 513.42
+   },
+   {
+    "w": " would",
+    "s": 513.42,
+    "e": 513.66
+   },
+   {
+    "w": " follow",
+    "s": 513.66,
+    "e": 514.0
+   },
+   {
+    "w": " in",
+    "s": 514.0,
+    "e": 514.36
+   },
+   {
+    "w": " 1793",
+    "s": 514.36,
+    "e": 515.24
+   },
+   {
+    "w": " and",
+    "s": 515.24,
+    "e": 515.68
+   },
+   {
+    "w": " 1795.",
+    "s": 515.68,
+    "e": 516.64
+   }
+  ]
+ },
+ {
+  "start": 517.4399999999999,
+  "end": 522.2,
+  "text": " The first partition of 1772 was therefore not the end of Poland-Lithuania.",
+  "words": [
+   {
+    "w": " The",
+    "s": 517.1700000000001,
+    "e": 517.48
+   },
+   {
+    "w": " first",
+    "s": 517.48,
+    "e": 517.78
+   },
+   {
+    "w": " partition",
+    "s": 517.78,
+    "e": 518.24
+   },
+   {
+    "w": " of",
+    "s": 518.24,
+    "e": 518.46
+   },
+   {
+    "w": " 1772",
+    "s": 518.46,
+    "e": 519.5
+   },
+   {
+    "w": " was",
+    "s": 519.5,
+    "e": 519.84
+   },
+   {
+    "w": " therefore",
+    "s": 519.84,
+    "e": 520.22
+   },
+   {
+    "w": " not",
+    "s": 520.22,
+    "e": 520.62
+   },
+   {
+    "w": " the",
+    "s": 520.62,
+    "e": 520.9
+   },
+   {
+    "w": " end",
+    "s": 520.9,
+    "e": 521.14
+   },
+   {
+    "w": " of",
+    "s": 521.14,
+    "e": 521.32
+   },
+   {
+    "w": " Poland",
+    "s": 521.32,
+    "e": 521.6
+   },
+   {
+    "w": "-Lithuania.",
+    "s": 521.6,
+    "e": 522.2
+   }
+  ]
+ },
+ {
+  "start": 522.88,
+  "end": 525.78,
+  "text": " It was the beginning of the final struggle for its survival.",
+  "words": [
+   {
+    "w": " It",
+    "s": 522.88,
+    "e": 523.0
+   },
+   {
+    "w": " was",
+    "s": 523.0,
+    "e": 523.14
+   },
+   {
+    "w": " the",
+    "s": 523.14,
+    "e": 523.3
+   },
+   {
+    "w": " beginning",
+    "s": 523.3,
+    "e": 523.68
+   },
+   {
+    "w": " of",
+    "s": 523.68,
+    "e": 524.0
+   },
+   {
+    "w": " the",
+    "s": 524.0,
+    "e": 524.16
+   },
+   {
+    "w": " final",
+    "s": 524.16,
+    "e": 524.5
+   },
+   {
+    "w": " struggle",
+    "s": 524.5,
+    "e": 524.92
+   },
+   {
+    "w": " for",
+    "s": 524.92,
+    "e": 525.18
+   },
+   {
+    "w": " its",
+    "s": 525.18,
+    "e": 525.34
+   },
+   {
+    "w": " survival.",
+    "s": 525.34,
+    "e": 525.78
+   }
+  ]
+ }
+]

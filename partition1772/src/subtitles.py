@@ -3,13 +3,13 @@ import json, re, skia
 from engine import *
 
 FIX = {'Thorne,': 'Thorn,', 'Thorne': 'Thorn', 'royal': 'Royal', 'neighboring': 'neighbouring', 'neighbors.': 'neighbours.',
-       'neighbors': 'neighbours', 'monarchy': 'Monarchy', 'monarchy,': 'Monarchy,', 'monarchy.': 'Monarchy.', 'northeast,': 'north-east,', 'northeast': 'north-east', 'southeastern': 'south-eastern', 'Vito.': 'Veto.', 'Vito': 'Veto',
+       'neighbors': 'neighbours', 'monarchy': 'Monarchy', 'monarchy,': 'Monarchy,', 'monarchy.': 'Monarchy.', 'northeast,': 'north-east,', 'northeast': 'north-east', 'Northeast,': 'north-east,', 'modernize': 'modernise', 'recognized': 'recognised', 'neighboring': 'neighbouring', 'southeastern': 'south-eastern', 'Vito.': 'Veto.', 'Vito': 'Veto',
        'Tadeuszuretan,': 'Tadeusz Rejtan,', 'centre': 'centre'}
 CTX_FIX = [(('Habsburg', 'monarchy'), 'Monarchy'), (('Habsburg', 'monarchy,'), 'Monarchy,')]
 MAXC = 34
 
 def words():
-    T = json.load(open(D + 'transcript.json'))
+    T = json.load(open(D + 'transcript_medium.json'))
     out = []
     for s in T:
         for w in s['words']:
@@ -21,25 +21,33 @@ def words():
     for i in range(len(out) - 1, 0, -1):          # '18th century Europe' -> '18th-century Europe'
         if out[i - 1]['w'] == '18th' and out[i]['w'] == 'century':
             out[i - 1]['w'] = '18th-century'; out[i - 1]['e'] = out[i]['e']; del out[i]
-    # verified against a second (medium.en) transcription: words dropped by the first pass
-    for i, w in enumerate(out):
-        if w['w'] == 'Not' and abs(w['s'] - 25.88) < 0.2:
-            w['w'] = 'not'
-            out[i:i] = [{'w': 'its', 's': 25.78, 'e': 25.92}, {'w': 'territory,', 's': 25.92, 'e': 26.6}]
-            break
+    # two-word corrections
+    i = 0
+    while i < len(out) - 1:
+        a_, b_ = out[i]['w'], out[i + 1]['w']
+        if a_ == 'Librem' and b_.startswith('Vito'):
+            out[i]['w'] = 'liberum'; out[i + 1]['w'] = 'veto' + b_[4:]
+        if a_ == 'Tadeusz' and b_.startswith('Reitam'):
+            out[i + 1]['w'] = 'Rejtan' + b_[6:]
+        if a_ == 'Partition' and b_.startswith('Treaty'):
+            out[i]['w'] = 'partition'; out[i + 1]['w'] = 'treaty' + b_[6:]
+        if a_ == 'the' and b_ == 'Eastern':
+            out[i + 1]['w'] = 'eastern'
+        i += 1
     for i, w in enumerate(out):
         prev = out[i - 1]['w'] if i else ''
         if w['w'] in ('monarchy', 'monarchy,', 'monarchy.') and prev != 'Habsburg':
             continue                                # only capitalise 'Habsburg Monarchy'
         if w['w'] == 'royal' and not (i + 1 < len(out) and out[i + 1]['w'].startswith('Prussia')):
             continue
-        if w['w'] == 'same' and prev == 'the' and i + 1 < len(out) and out[i + 1]['w'] in ('formally', 'ratified', 'the'):
-            w['w'] = 'Sejm'; continue
+        if w['w'] in ('same', 'same,') and prev == 'the' and i + 1 < len(out) and out[i + 1]['w'] in ('formally', 'ratified', 'the', 'national'):
+            w['w'] = w['w'].replace('same', 'Sejm'); continue
+        if w['w'] == 'same,' and prev == 'the': w['w'] = 'Sejm,'; continue
         w['w'] = FIX.get(w['w'], w['w'])
     return out
 
 NOBREAK_AFTER = {'Catherine', 'Frederick', 'Maria', 'East', 'Grand', 'Greater', 'Lower', 'Royal', 'Habsburg', 'Russian', 'Baltic',
-                 'the', 'a', 'an', 'of', 'its', 'to', 'by', 'in', 'on', 'with', 'Empress', 'King', '18th', 'one', 'Stanisław', 'August', 'Poland-Lithuania', 'and', '18th-century'}
+                 'the', 'a', 'an', 'of', 'its', 'to', 'by', 'in', 'on', 'with', 'Empress', 'King', '18th', 'one', 'Stanisław', 'August', 'Poland-Lithuania', 'and', '18th-century', 'Tadeusz', 'Nicholas', 'King', 'Augustus', 'Union', '3rd'}
 GOOD_BEFORE = {'and', 'but', 'which', 'with', 'over', 'in', 'of', 'to', 'that', 'between', 'including', 'along', 'for', 'into', 'by', 'not', 'yet',
                'had', 'was', 'were', 'also', 'became', 'about', 'wanted', 'signed', 'received', 'gained'}
 

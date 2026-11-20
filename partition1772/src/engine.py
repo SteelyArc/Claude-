@@ -41,7 +41,7 @@ def ease_in_out_quint(t):
 def ramp(t, a, b, f=smoother):
     """0 before a, 1 after b, eased in between."""
     if b <= a: return 1.0 if t >= a else 0.0
-    return f((t - a) / (b - a))
+    return f(clamp((t - a) / (b - a)))
 def window(t, a, b, fi=0.6, fo=0.6):
     return ramp(t, a, a + fi) * (1 - ramp(t, b - fo, b))
 
@@ -481,11 +481,11 @@ class Finish:
 
     def apply(self, c, t, cam=None, vignette=0.55, grain=1.0, light=1.0, dust=1.0, warm=1.0):
         # paper grain (overlay)
-        p = skia.Paint(BlendMode=skia.BlendMode.kOverlay); p.setAlphaf(0.55 * grain)
+        p = skia.Paint(BlendMode=skia.BlendMode.kOverlay); p.setAlphaf(0.38 * grain)
         c.drawImage(self.grain, 0, 0, skia.SamplingOptions(), p)
         # animated fine film grain
         fi = self.film[int(t * 24) % len(self.film)]
-        p2 = skia.Paint(BlendMode=skia.BlendMode.kOverlay); p2.setAlphaf(0.10 * grain)
+        p2 = skia.Paint(BlendMode=skia.BlendMode.kOverlay); p2.setAlphaf(0.035 * grain)
         c.drawImageRect(fi, skia.Rect(0, 0, W, H), skia.SamplingOptions(skia.FilterMode.kLinear), p2)
         # soft key light from upper-left, slowly breathing
         if light > 0:
@@ -505,7 +505,7 @@ class Finish:
                 px = (x * W + t * 9 * depth + (cam.cx * cam.scale * 0.04 * depth if cam else 0)) % W
                 py = (y * H - t * 14 * depth + 30 * math.sin(t * 0.3 + ph * 6)) % H
                 r = 1.0 + 2.6 * z * s
-                a = (0.10 + 0.25 * z) * (0.5 + 0.5 * math.sin(t * 0.8 + ph * 9)) * dust
+                a = (0.06 + 0.16 * z) * (0.5 + 0.5 * math.sin(t * 0.8 + ph * 9)) * dust
                 dp = skia.Paint(AntiAlias=True, Color=C(255, 246, 225), MaskFilter=skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 0.8 + 2.5 * z))
                 dp.setAlphaf(a); c.drawCircle(px, py, r, dp)
 

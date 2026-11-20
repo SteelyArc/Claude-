@@ -17,7 +17,7 @@ lakes=unary_union([shape(f['geometry']).buffer(0) for f in json.load(open(D+'ne_
 land=unary_union(shapely.make_valid(land)); landmask=land.difference(lakes)
 R={}
 for id,n in [(2961392,'plc_pre'),(2692511,'plc_post'),(2748498,'prussia_pre'),(2748497,'prussia_post'),(2851879,'russia_pre'),(2851992,'russia_post'),
-             (2748048,'galicia'),(2748039,'netze'),(2964455,'hungary'),(2830395,'bohemia'),(2830883,'austrian_circle'),(2746687,'ottoman'),(2849499,'crimea'),(2851880,'sweden'),(2830353,'hre'),(2696443,'warmia'),(2696308,'gdl'),(2878295,'transylvania'),(2747562,'banat'),(2746839,'banat_mf'),(2746424,'slavonia'),(2746812,'slav_mf'),(2746847,'varazdin'),(2799670,'venice'),(2830352,'ragusa')]:
+             (2748048,'galicia'),(2748039,'netze'),(2964455,'hungary'),(2830395,'bohemia'),(2830883,'austrian_circle'),(2746687,'ottoman'),(2849499,'crimea'),(2851880,'sweden'),(2830353,'hre'),(2696443,'warmia'),(2696308,'gdl'),(2878295,'transylvania'),(2747562,'banat'),(2746839,'banat_mf'),(2746424,'slavonia'),(2746812,'slav_mf'),(2746847,'varazdin'),(2799670,'venice'),(2830352,'ragusa'),(2692495,'plc1569'),(2692510,'plc1793')]:
     try: R[n]=build_geo.rel(id)[0].intersection(BB)
     except FileNotFoundError: pass
 F=json.load(open(D+'ristat/distr1897.geojson'))['features']
@@ -54,6 +54,15 @@ L['habsburg']=clip(habsburg); L['ottoman']=clip(R['ottoman'].union(R['crimea']).
 L['sweden']=clip(R['sweden']); L['venice']=clip(R['venice'].union(R['ragusa'])); L['hre_other']=clip(R['hre'].difference(habsburg).difference(R['prussia_pre']).difference(R['venice']))
 L['gdl_pre']=clip(R['gdl'].union(corr).difference(courland))
 L['land']=land; L['lakes']=lakes
+# 1569 (Union of Lublin) and 1793 (after the Second Partition)
+p69=R['plc1569']
+L['plc1569']=clip(p69); L['gdl1569']=clip(p69.intersection(R['gdl'])); L['crown1569']=clip(p69.difference(R['gdl']))
+p93=R['plc1793']
+L['plc1793']=clip(p93.difference(courland))
+lost93=clip(plc_pre.difference(courland).difference(gain_P).difference(gain_R).difference(gain_A).difference(p93))
+parts=[p for p in getattr(lost93,'geoms',[lost93]) if AREA(p)>200]
+L['gain93_P']=unary_union([p for p in parts if p.representative_point().x<21.6]) ; L['gain93_R']=unary_union([p for p in parts if p.representative_point().x>=21.6])
+print('  1569 area', AREA(L['plc1569']), ' 1793 remaining', AREA(L['plc1793']), ' 1793 to Prussia', AREA(L['gain93_P']), ' to Russia', AREA(L['gain93_R']))
 print('Areas (km2, land-clipped):')
 for k in ['plc_pre','plc_pre_core','courland','plc_post','gain_P','gain_R','gain_A','royal_prussia','warmia','netze','gdl_pre']: print(f'  {k:14s} {AREA(L[k]):9.0f}')
 print('  correction added to Commonwealth', AREA(corr)); print('  Croatian gap filled as Habsburg', AREA(croatia))
@@ -99,7 +108,7 @@ cities={'Warsaw':(21.012,52.230),'Kraków':(19.937,50.062),'Vilnius':(25.280,54.
  'Marienburg':(19.028,54.039),'Bromberg':(18.008,53.123),'Frauenburg':(19.678,54.358),'Poznań':(16.925,52.406),'Lublin':(22.568,51.246),'Kamieniec':(26.585,48.679),
  'Kiev':(30.523,50.450),'Smolensk':(32.045,54.782),'Minsk':(27.567,53.900),'Grodno':(23.829,53.677),'Brest':(23.686,52.097),'Lutsk':(25.325,50.747),'Zamość':(23.252,50.723),
  'Breslau':(17.038,51.108),'Stettin':(14.553,53.428),'Mitau':(23.722,56.651),'Istanbul':(28.979,41.008),'Stockholm':(18.068,59.329),'Prague':(14.421,50.088),'Buda':(19.040,47.498),
- 'Bełz':(24.013,50.381),'Halicz':(24.721,49.125),'Przemyśl':(22.768,49.784),'Tarnów':(20.986,50.012),'Wieliczka':(20.065,49.987),'Rzeszów':(22.004,50.041),'Podgórze':(19.958,50.042),'Gomel':(30.990,52.430),'Orsha':(30.420,54.510),'Nevel':(29.92,56.02),'Velizh':(31.1,55.6),'Sebezh':(28.49,56.29)}
+ 'Bełz':(24.013,50.381),'Halicz':(24.721,49.125),'Przemyśl':(22.768,49.784),'Tarnów':(20.986,50.012),'Wieliczka':(20.065,49.987),'Rzeszów':(22.004,50.041),'Podgórze':(19.958,50.042),'Gomel':(30.990,52.430),'Lublin_c':(22.568,51.246),'Bar':(27.68,49.07),'Częstochowa':(19.12,50.81),'Kagul':(28.20,45.90),'Larga':(28.13,46.35),'Bucharest':(26.10,44.43),'Iași':(27.60,47.16),'Bender':(29.48,46.83),'Orsha':(30.420,54.510),'Nevel':(29.92,56.02),'Velizh':(31.1,55.6),'Sebezh':(28.49,56.29)}
 P['cities']={k:pt(*v) for k,v in cities.items()}
 P['meta']={'proj':'+proj=laea +lat_0=52 +lon_0=22 +units=km'}
 pickle.dump(P,open(D+'layers.pkl','wb'))

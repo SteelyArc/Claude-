@@ -90,3 +90,43 @@ Subtitles are burned into the video by `src/subtitles.py`:
 | Habsburg Monarchy | ochre | Same as Prussia |
 | 1772 acquisitions | the acquiring power's colour | Solid fill with fine hatching |
 | Neutral neighbours | pale grey-green | Light wash |
+
+
+## Final version (full narration, 8 min 50 s)
+
+`src/film.py` puts the whole film on one narration clock, with designed transitions between chapters (dissolve, dip to black, dip to parchment). `src/render_film.py` renders it in parallel chunks. `work/assemble_film.sh` muxes the video with the soundtrack (narration plus synthesised hook sound design from `src/sfx.py`).
+
+| Time | Chapter | Visual material |
+|---|---|---|
+| 0:00 | Cold open and the Commonwealth in 1772 | animated map |
+| 0:33 | Three questions | *Picture of Europe for July 1772* (British print, 1772) |
+| 0:47 | Rewind to 1569 | animated timeline |
+| 0:52 | Union of Lublin | 1569 map (OHM), the Crown and Lithuania joining |
+| 1:19 | Elected monarchy | J.-P. Norblin (attr.), election field at Wola, c. 1790, Wawel |
+| 1:27 | The Sejm | English engraving, 1698, National Library of Poland |
+| 1:39 | Liberum veto | animated hemicycle diagram ("Nie pozwalam!") |
+| 2:01 | Foreign influence | map with diplomatic and military vectors |
+| 2:19 | Augustus III † 1763 | Louis de Silvestre, after 1733, Wilanów |
+| 2:25 | Election of 1764 | Bernardo Bellotto, 1778, Royal Castle Warsaw |
+| 2:34 | Stanisław August | Marcello Bacciarelli, 1764 |
+| 2:49 | Catherine II, Frederick II | portraits |
+| 3:03 | 1767: Russian pressure | map, then N. Repnin (anonymous print, 1779, ÖNB) |
+| 3:27 | Confederation of Bar (1768–72) | map, Bar, timeline |
+| 3:59 | Russo-Turkish War (1768–74) | map, Larga and Kagul 1770 |
+| 4:09 | Maria Theresa; the three powers | portraits, triptych |
+| 4:22 | Frederick's plan | Royal Prussia gap; cameo of Prince Henry (Tischbein, 1769) |
+| 4:49 | Agreement and occupation | map with army vectors; cameo of Kaunitz (Liotard) |
+| 5:05 | 5 August 1772 | *Le Gâteau des Rois*, 1773 |
+| 5:16 | The three acquisitions | animated partition map |
+| 6:13 | Before and after | animated comparison |
+| 6:29 | The king, the demand, the Partition Sejm, Rejtan | Bacciarelli; diagram; Jan Matejko, *Rejtan* (1866, labelled as a later painting) |
+| 7:01 | 30 September 1773: ratification | map, seal |
+| 7:12 | Consequences | West Prussia; Galicia and Lodomeria; Pskov and Mogilev governorates; Kraków and the Vistula border |
+| 7:51 | A warning | remaining Commonwealth |
+| 8:14 | Constitution of 3 May 1791 | Kazimierz Wojniakowski, 1806, National Museum Warsaw |
+| 8:28 | 1793 and 1795 | timeline; the Commonwealth fades (no unverified 1793 lines are drawn) |
+| 8:38 | Finale and credits | |
+
+**Why there is no 1793 boundary:** the OHM 1793 geometry gives Russia about 192,000 km² in the Second Partition, against about 250,000 km² in standard references. I therefore don't draw it. The narration only mentions the later partitions, so the film shows them as clearly labelled dates while the remaining Commonwealth fades. They are never mixed up with the borders of 1772.
+
+**Transcript:** the subtitles now use a second, larger-model transcription (medium.en). It recovers the sentence "The experience of 1772 became a warning", which the first pass dropped.
