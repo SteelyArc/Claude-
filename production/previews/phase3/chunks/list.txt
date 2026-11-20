@@ -1,4 +1,0 @@
-file '/home/user/Claude-/production/previews/phase3/chunks/c0.mp4'
-file '/home/user/Claude-/production/previews/phase3/chunks/c1.mp4'
-file '/home/user/Claude-/production/previews/phase3/chunks/c2.mp4'
-file '/home/user/Claude-/production/previews/phase3/chunks/c3.mp4'
