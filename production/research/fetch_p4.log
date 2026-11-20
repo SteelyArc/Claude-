@@ -1,1 +1,1 @@
-retry 429 wait 900
+retry 429 wait 1500

@@ -23,11 +23,12 @@ def render(midi, out):
     run(['ffmpeg', '-v', 'error', '-y', '-i', raw, '-af',
          'lowpass=f=5200,highpass=f=70,aecho=0.8:0.6:120|260:0.22|0.14,loudnorm=I=-30:TP=-6:LRA=9', '-ar', '44100', '-ac', '2', out])
 
-def mux(video, narr, music, out, ss=None, to=None, music_offset=0.0):
+def mux(video, narr, music, out, ss=None, to=None, music_offset=0.0, full=None):
     nin = ['-ss', str(ss), '-to', str(to)] if ss is not None else []
-    dur = (to - ss) if ss is not None else None
+    dur = (to - ss) if ss is not None else full
     fade_out = f',afade=t=out:st={dur - 2.0:.2f}:d=2.0' if dur else ''
-    fc = (f"[1:a]aformat=sample_rates=48000:channel_layouts=stereo,asplit=2[voice][sc];"
+    pad = f",apad=whole_dur={full}" if full else ""
+    fc = (f"[1:a]aformat=sample_rates=48000:channel_layouts=stereo{pad},asplit=2[voice][sc];"
           f"[2:a]atrim=start={music_offset},asetpts=PTS-STARTPTS,aformat=sample_rates=48000:channel_layouts=stereo,"
           f"afade=t=in:st=0:d=1.5{fade_out}[mus];"
           f"[mus][sc]sidechaincompress=threshold=0.02:ratio=6:attack=60:release=700:makeup=1[ducked];"
@@ -35,7 +36,7 @@ def mux(video, narr, music, out, ss=None, to=None, music_offset=0.0):
     run(['ffmpeg', '-v', 'error', '-y', '-i', video, *nin, '-i', narr, '-stream_loop', '-1', '-i', music,
          '-filter_complex', fc, '-map', '0:v', '-map', '[a]',
          '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-maxrate', '6500k', '-bufsize', '13000k', '-pix_fmt', 'yuv420p',
-         '-profile:v', 'high', '-r', '30', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out])
+         '-profile:v', 'high', '-r', '30', '-c:a', 'aac', '-b:a', '192k', *(['-t', str(full)] if full else ['-shortest']), '-movflags', '+faststart', out])
 
 if __name__ == '__main__':
     if sys.argv[1] == 'render':
@@ -43,5 +44,6 @@ if __name__ == '__main__':
     else:
         a = sys.argv[2:]; kw = {}
         if '--ss' in a: kw['ss'] = float(a[a.index('--ss') + 1]); kw['to'] = float(a[a.index('--to') + 1])
+        if '--full' in a: kw['full'] = float(a[a.index('--full') + 1])
         if '--music-offset' in a: kw['music_offset'] = float(a[a.index('--music-offset') + 1])
         mux(a[0], a[1], a[2], a[3], **kw)

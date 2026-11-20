@@ -18,10 +18,10 @@ for t in sys.argv[2:]:
                 assert len(data) > 1000, 'short read'
                 open(path, 'wb').write(data); break
             except urllib.error.HTTPError as e:
-                wt = max(2 * int(e.headers.get('retry-after', 60)), 900); print('retry', e.code, 'wait', wt, flush=True); time.sleep(wt)
+                wt = max(2 * int(e.headers.get('retry-after', 60)), 1500); print('retry', e.code, 'wait', wt, flush=True); time.sleep(wt)
             except Exception as e: print('retry', e); time.sleep(20)
         if not os.path.exists(path): print('FAILED', t, flush=True); continue
-        time.sleep(20)
+        time.sleep(1500)
         rec = dict(file=path, fetched_url=url, **{k: it[k] for k in ('title', 'page', 'url', 'license', 'artist', 'date', 'desc', 'credit')})
         open('assets/SOURCES.jsonl', 'a').write(json.dumps(rec, ensure_ascii=False) + '\n')
     print(os.path.getsize(path) // 1024, 'KB', it['license'], fn, flush=True)
