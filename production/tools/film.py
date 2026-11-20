@@ -42,6 +42,10 @@ A = {
     'laurie': lambda: asset('1794 Laurie and Whittle Map of Poland and Lithuania after Second Partition - Geographicus - Poland-lauriewhittle-1794.jpg'),
     'cary': lambda: asset('A new map of Poland, and the Grand Duchy of Lithuania, shewing their dismemberments and divisions between Austria (IA dr a-new-map-of-poland-and-the-grand-duchy-of-lithuania-shewing-their-dismem-00644021).jpg'),
     'grodno_map': lambda: asset('LOC_Grodno_Governorate_map_c1800.jpg'),
+    'varsovie': lambda: asset('LOC_Plan_de_Varsovie_RizziZannoni_atlas.jpg'),
+    'rz_general': lambda: asset('LOC_RizziZannoni_1772_Carte_de_la_Pologne_general.jpg'),
+    'procession': lambda: asset('LOC_Constitution_procession_after_Matejko_picture.jpg'),
+    'kosc_full': lambda: asset('LOC_Kosciuszko_full_engraving.jpg'),
     'catherine': lambda: asset('LOC_Catherine_II_Townley_picture.jpg'),
     'king': lambda: asset('LOC_Stanislaus_II_Augustus_Fogg_after_Bacciarelli_picture.jpg'),
 }
@@ -148,12 +152,12 @@ def s1_map(a):
 
 # =============================================================== SCENE 2 — political crisis
 def s2_warsaw(a):
-    return painting(a, img('bellotto'), 48.9, 70.6, (0.22, 0.55), (0.62, 0.5), 1.0, 1.12,
-                    'Bernardo Bellotto, View of Warsaw from the Royal Castle, 1773',
+    return painting(a, img('varsovie'), 48.9, 70.6, (0.38, 0.5), (0.58, 0.52), 1.0, 1.15,
+                    'Plan de Varsovie, from G. A. Rizzi-Zannoni’s atlas of Poland, 1772 · Library of Congress',
                     kws=(('A WEAK GOVERNMENT', 53.9, 760), ('FOREIGN INFLUENCE', 56.6, 870), ('THE CALL FOR REFORM', 61.6, 980)))
 
 def s2_manuscript(a):
-    return doc(a, img('manuscript'), 70.0, 81.2, (0.5, 0.22), 1.45, 'Manuscript of the Government Act of 3 May 1791 · Wikimedia Commons (CC0)',
+    return doc(a, img('procession'), 70.0, 81.2, (0.55, 0.45), 1.6, 'Stanisław August going to swear the Constitution, after Jan Matejko · Library of Congress',
                card=('THE CONSTITUTION', '3 May 1791', 'adopted by the Great Sejm in Warsaw', 72.0))
 
 def s2_matejko(a):
@@ -184,7 +188,7 @@ def s2_king(a):
                     cards=(('24 JULY 1792', 'The King joins Targowica', None, 125.6, 131.6),))
 
 def s2_overturned(a):
-    return doc(a, img('manuscript'), 131.4, 137.9, (0.5, 0.35), 1.25, 'Manuscript of the Government Act of 3 May 1791 · Wikimedia Commons (CC0)',
+    return doc(a, img('procession'), 131.4, 137.9, (0.5, 0.45), 1.3, 'Stanisław August going to swear the Constitution, after Jan Matejko · Library of Congress',
                desat=eseg(a, 131.4, 134.0) * 0.85, bright=1 - 0.35 * eseg(a, 131.4, 135.0), kw=('THE CONSTITUTION IS OVERTURNED', 131.6, 980))
 
 # =============================================================== SCENE 3 — the Second Partition
@@ -235,10 +239,7 @@ def s3_map(a):
                                    ('Annexed by Prussia, 1793', ACQ('prussia'), True)], eseg(a, 165.0, 166.0) * (1 - eseg(a, 184.6, 185.4))), extra=ex)
 
 def s3_laurie(a):
-    im = img('laurie') or img('lotter')
-    cap = ('Laurie & Whittle, London, 1794: Poland and Lithuania after the Second Partition' if img('laurie') is not None
-           else 'T. C. Lotter, Magnus Ducatus Lithuaniae, Augsburg, c. 1778 · Library of Congress')
-    return doc(a, im, 196.0, 206.6, (0.55, 0.5), 1.5, cap, kw=('SOVEREIGNTY LOST', 199.3, 330))
+    return doc(a, img('rz_general'), 196.0, 206.6, (0.48, 0.45), 1.7, 'G. A. Rizzi-Zannoni, Carte de la Pologne, 1772 · Library of Congress', kw=('SOVEREIGNTY LOST', 199.3, 330))
 
 # =============================================================== SCENE 4/5 — the Kościuszko Uprising
 def s4_title(a):
@@ -284,17 +285,15 @@ def s4_map_fall(a):
                   cap=('Warsaw capitulates · 5 November 1794', 275.8, 280.2))
 
 def s4_oath(a):
-    return painting(a, img('oath'), 227.4, 237.3, (0.5, 0.55), (0.42, 0.5), 1.0, 1.15,
-                    'Michał Stachowicz, Kościuszko’s Oath on the Kraków Market Square (1797)',
-                    card=('KRAKÓW', '24 March 1794', 'the Act of Uprising is proclaimed', 227.6))
+    return s4_map(a, lambda a: 1, None, [(227.4, C4K), (236.8, Camera.lonlat(20.0, 50.2, 2.3))],
+                  cap=('Kraków Market Square, 24 March 1794: the Act of Uprising is proclaimed', 227.6, 237.2))
 def s4_raclawice(a):
-    return painting(a, img('raclawice'), 240.2, 250.0, (0.25, 0.5), (0.6, 0.5), 1.0, 1.1,
-                    'Jan Matejko, Kościuszko at Racławice (painted 1888)',
-                    card=('RACŁAWICE', '4 April 1794', 'victory over Russian troops', 240.6))
+    return doc(a, img('kosc_full'), 240.2, 250.0, (0.5, 0.42), 1.25, 'Tadeusz Kościuszko, General en Chef des Armées Polonaises · engraving, Library of Congress',
+               card=('RACŁAWICE', '4 April 1794', 'victory over Russian troops', 240.6))
 def s4_maciejowice(a):
-    return painting(a, img('maciejowice'), 263.8, 271.0, (0.4, 0.5), (0.55, 0.5), 1.0, 1.1,
-                    'Jan Bogumił Plersch, Kościuszko in the Battle of Maciejowice',
-                    card=('MACIEJOWICE', '10 October 1794', 'Kościuszko is wounded and captured', 264.2), desat=0.2)
+    up = lambda a: 5 + (a > 268.6)
+    return s4_map(a, up, (5, 269.0), [(263.8, C4), (267.5, Camera.lonlat(21.6, 51.8, 2.0))], sepia=0.3 * eseg(a, 266, 270.5),
+                  cap=('10 October 1794 · Kościuszko is wounded and captured', 264.2, 271.0))
 
 # =============================================================== SCENE 6 — the Third Partition (+7: abdication)
 def s6_trio(a):
@@ -305,7 +304,9 @@ def s6_trio(a):
                         note=('Treaties of 3 January and 24 October 1795', 285.2, 1585))
 
 def s6_doc(a):
-    cary = img('cary')
+    P.IMG['doc'] = 'LOC_RizziZannoni_1772_Carte_de_la_Pologne_general.jpg'; P.DOC_FOCUS = (0.45, 0.5); P.DOC_ZOOM = 1.45
+    P.DOC_CAPTION = 'G. A. Rizzi-Zannoni, Carte de la Pologne, 1772 · Library of Congress'
+    cary = None
     if cary is not None:
         P.IMG['doc'] = os.path.basename(glob.glob(os.path.join(ARC, commons_name('A new map of Poland, and the Grand Duchy')[:40] + '*'))[0])
         P.DOC_FOCUS = (0.5, 0.45); P.DOC_ZOOM = 1.5
@@ -333,13 +334,13 @@ def s8_grodno(a):
                kw=('NEW LAWS · NEW ADMINISTRATIONS', 352.0, 330))
 
 def s8_memory(a):
-    return painting(a, img('bellotto'), 359.5, 371.5, (0.62, 0.5), (0.35, 0.52), 1.12, 1.0,
-                    'Bernardo Bellotto, View of Warsaw from the Royal Castle, 1773', desat=0.55, bright=0.85,
+    return painting(a, img('varsovie'), 359.5, 371.5, (0.3, 0.9), (0.7, 0.9), 1.25, 1.12,
+                    'Plan de Varsovie, from G. A. Rizzi-Zannoni’s atlas of Poland, 1772 · Library of Congress', desat=0.55, bright=0.85,
                     kws=(('THE MEMORY ENDURES', 366.0, 980),))
 
 def s8_uprisings(a):
-    return painting(a, img('oath'), 371.0, 379.8, (0.42, 0.5), (0.55, 0.52), 1.08, 1.0,
-                    'Michał Stachowicz, Kościuszko’s Oath on the Kraków Market Square (1797)', desat=0.45, bright=0.9,
+    return painting(a, img('procession'), 371.0, 379.8, (0.42, 0.5), (0.58, 0.5), 1.0, 1.06,
+                    'Stanisław August going to swear the Constitution, after Jan Matejko · Library of Congress', desat=0.45, bright=0.9,
                     kws=(('1830–31 · 1863–64', 371.8, 900), ('UPRISINGS CONTINUE', 372.6, 1000)))
 
 def s8_lithuania(a):
@@ -390,8 +391,7 @@ TIMELINE = [
     (5.2, s1_map, 'deckle', 1.0),
     (48.9, s2_warsaw, 'fade', 0.9),
     (70.0, s2_manuscript, 'deckle', 0.9),
-    (80.7, s2_matejko, 'fade', 0.8),
-    (96.3, lambda a: s2_map(a, 1), 'fade', 0.8),
+    (80.7, lambda a: s2_map(a, 1), 'fade', 0.8),
     (102.2, s2_catherine, 'deckle', 0.9),
     (111.0, lambda a: s2_map(a, 2), 'fade', 0.8),
     (123.8, s2_king, 'deckle', 0.9),
