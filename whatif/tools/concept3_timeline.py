@@ -118,7 +118,7 @@ KEYS = [(0.0, 120), (2.9, 330), (3.9, 1340), (5.3, 1420), (6.3, 2120), (7.4, 226
 
 def cam_y(t):
     for (t0, y0), (t1, y1) in zip(KEYS, KEYS[1:]):
-        if t <= t1: return lerp(y0, y1, eexp(seg(t, t0, t1)) * 0.7 + ease(seg(t, t0, t1)) * 0.3)
+        if t <= t1: return lerp(y0, y1, eexp(seg(t, t0, t1)) * 0.35 + ease(seg(t, t0, t1)) * 0.65)
     return KEYS[-1][1]
 
 
@@ -233,4 +233,4 @@ POST = Post(grain=0.02, vignette=0.28, bloom=0.0, ca=0.0010, seed=5)
 if __name__ == '__main__':
     out = f'{ROOT}/previews/concepts/concept3_animated_timeline.mp4'
     render(scene, 11.5, out, POST, stills=(2.4, 5.0, 6.5, 9.4, 11.3), still_dir=f'{ROOT}/previews/concepts',
-           mb=5, workers=4, scene_mod='concept3_timeline')
+           mb=16, workers=4, scene_mod='concept3_timeline')

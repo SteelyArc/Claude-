@@ -294,7 +294,7 @@ def frame(scene, f, mb=1, shutter=0.5):
     """Render frame f with temporal motion blur: mb sub-frames spread over the shutter (0.5 = 180 degrees)."""
     acc = None
     for i in range(mb):
-        tt = f / FPS + (((i + 0.5) / mb - 0.5) * shutter / FPS if mb > 1 else 0.0)
+        tt = max(0.0, f / FPS + (((i + 0.5) / mb - 0.5) * shutter / FPS if mb > 1 else 0.0))
         arr, surf = new_canvas()
         with surf as c:
             scene(c, tt, f)
