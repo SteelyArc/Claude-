@@ -1,7 +1,7 @@
 """Download Commons originals listed in research/commons_candidates.json (metadata already recorded there),
 append licence records to assets/SOURCES.jsonl. usage: fetch_from_candidates.py OUTDIR "File:..." ..."""
 import json, sys, os, re, time, urllib.request, urllib.error
-UA = "HistoricalDocResearch/1.0 (educational documentary research)"
+UA = "ClaudeCode-DocumentaryResearch/1.0 (https://claude.ai/code; low-volume, one request at a time)"
 cand = {it['title']: it for items in json.load(open('research/commons_candidates.json')).values() for it in items}
 out = sys.argv[1]; os.makedirs(out, exist_ok=True)
 for t in sys.argv[2:]:
@@ -18,10 +18,10 @@ for t in sys.argv[2:]:
                 assert len(data) > 1000, 'short read'
                 open(path, 'wb').write(data); break
             except urllib.error.HTTPError as e:
-                wt = int(e.headers.get('retry-after', 60)) + 5; print('retry', e.code, 'wait', wt, flush=True); time.sleep(wt)
+                wt = max(2 * int(e.headers.get('retry-after', 60)), 900); print('retry', e.code, 'wait', wt, flush=True); time.sleep(wt)
             except Exception as e: print('retry', e); time.sleep(20)
         if not os.path.exists(path): print('FAILED', t, flush=True); continue
-        time.sleep(8)
+        time.sleep(20)
         rec = dict(file=path, fetched_url=url, **{k: it[k] for k in ('title', 'page', 'url', 'license', 'artist', 'date', 'desc', 'credit')})
         open('assets/SOURCES.jsonl', 'a').write(json.dumps(rec, ensure_ascii=False) + '\n')
     print(os.path.getsize(path) // 1024, 'KB', it['license'], fn, flush=True)
