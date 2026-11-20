@@ -3,4 +3,4 @@ data/ohm/
 data/ne/
 data/geo/[0-9]*.geojson
 __pycache__/
-production/previews/phase3/chunks/
+previews/phase3/chunks/
