@@ -1,0 +1,21 @@
+# large or regenerable artefacts
+data/ohm_*.json
+data/ne_*.geojson
+data/hb_*.geojson
+data/dem/
+data/dem5/
+data/ristat/r_*
+data/base_*.png
+data/landmask_*.npy
+data/layers.pkl
+data/polys.json
+work/seg/
+work/a/
+work/*.f32
+work/*.wav
+work/*.log
+render/
+assets/raw/*.json
+assets/raw/*.sh
+assets/raw/*.log
+__pycache__/
