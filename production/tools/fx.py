@@ -26,7 +26,7 @@ def dark_desk(cv, t=0.0):
     cv.drawRect(skia.Rect(0, 0, W, H), skia.Paint(Shader=sh))
 
 # ------------------------------------------------------------------ document animation
-def document(cv, img, t, focus=(0.5, 0.5), zoom0=1.0, zoom1=1.0, tilt0=0.32, settle=(0.0, 0.45), sweep=(0.15, 0.6), width_frac=0.92):
+def document(cv, img, t, focus=(0.5, 0.5), zoom0=1.0, zoom1=1.0, tilt0=0.32, settle=(0.0, 0.45), sweep=(0.15, 0.6), width_frac=0.92, desat=0.0, bright=1.0, cy_frac=0.53):
     """Paper document lifting from a perspective tilt to flat, then a slow push towards `focus`.
     t: 0..1 progress of the shot."""
     iw, ih = img.width(), img.height()
@@ -35,7 +35,7 @@ def document(cv, img, t, focus=(0.5, 0.5), zoom0=1.0, zoom1=1.0, tilt0=0.32, set
     pw = W * width_frac * z; ph = pw * ih / iw
     fx, fy = focus
     cx = W / 2 - (fx - 0.5) * pw * ease(t) * (1 - 1 / max(z, 1e-3)) * 1.0
-    cy = H * 0.53 - (fy - 0.5) * ph * ease(t) * (1 - 1 / max(z, 1e-3)) * 1.0
+    cy = H * cy_frac - (fy - 0.5) * ph * ease(t) * (1 - 1 / max(z, 1e-3)) * 1.0
     # trapezoid: top edge recedes (rotation about the horizontal axis)
     shrink = 0.22 * tilt; lift = 140 * tilt
     tl = (cx - pw / 2 * (1 - shrink), cy - ph / 2 + ph * 0.18 * tilt + lift); tr = (cx + pw / 2 * (1 - shrink), tl[1])
@@ -49,7 +49,7 @@ def document(cv, img, t, focus=(0.5, 0.5), zoom0=1.0, zoom1=1.0, tilt0=0.32, set
                                    MaskFilter=skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 30)))
     cv.restore()
     cv.save(); cv.concat(m)
-    cv.drawImage(img, 0, 0, SAMP, skia.Paint(AntiAlias=True))
+    cv.drawImage(img, 0, 0, SAMP, skia.Paint(AntiAlias=True, ColorFilter=_cf(desat, bright)))
     # light sweep across the paper
     s = seg(t, *sweep)
     if 0 < s < 1:
@@ -218,3 +218,41 @@ def deckle_wipe(a, b, p):
 
 def crossfade(a, b, p):
     p = ease(p); return (a.astype(np.float32) * (1 - p) + b.astype(np.float32) * p).astype(np.uint8)
+
+# ------------------------------------------------------------------ painting pan (landscape canvases in a 9:16 frame)
+def painting_shot(cv, img, t, p0=(0.3, 0.5), p1=(0.7, 0.5), z0=1.0, z1=1.12, depth=0.025, tint=0.0, desat=0.0, bright=1.0):
+    """Fill the frame height with the canvas and travel from focus p0 to p1 (normalised image coords).
+    A feathered copy around the current focus scales slightly faster -> gentle 2.5D depth."""
+    iw, ih = img.width(), img.height(); te = ease(t)
+    z = z0 + (z1 - z0) * te
+    s = max(H / ih, W / iw) * z
+    fx = (p0[0] + (p1[0] - p0[0]) * te) * iw; fy = (p0[1] + (p1[1] - p0[1]) * te) * ih
+    # clamp so the canvas always covers the frame
+    fx = min(max(fx, W / 2 / s), iw - W / 2 / s); fy = min(max(fy, H / 2 / s), ih - H / 2 / s)
+    cf = _cf(desat, bright, tint)
+    def plane(sc, mask=False):
+        cv.save(); cv.translate(W / 2, H / 2); cv.scale(sc, sc); cv.translate(-fx, -fy)
+        if mask:
+            cv.saveLayer(skia.Rect(0, 0, iw, ih), None)
+            cv.drawImage(img, 0, 0, SAMP, skia.Paint(ColorFilter=cf))
+            r = min(W, H) * 0.42 / sc
+            cv.drawPaint(skia.Paint(Shader=skia.GradientShader.MakeRadial(skia.Point(fx, fy), r, [skia.Color4f(0, 0, 0, 1), skia.Color4f(0, 0, 0, 0)], [0.3, 1.0]),
+                                    BlendMode=skia.BlendMode.kDstIn))
+            cv.restore()
+        else:
+            cv.drawImage(img, 0, 0, SAMP, skia.Paint(ColorFilter=cf))
+        cv.restore()
+    plane(s)
+    if depth: plane(s * (1 + depth * te), True)
+
+def dark_band(cv, y0, y1, a=0.75):
+    sh = skia.GradientShader.MakeLinear([skia.Point(0, y0), skia.Point(0, y1)],
+                                        [skia.Color4f(0.08, 0.05, 0.03, 0), skia.Color4f(0.08, 0.05, 0.03, a), skia.Color4f(0.08, 0.05, 0.03, 0)], [0, 0.5, 1])
+    cv.drawRect(skia.Rect(0, y0, W, y1), skia.Paint(Shader=sh))
+
+def keyword(cv, text, t_in, y, alpha=1.0, size=58, dark=True):
+    a = alpha * eseg(t_in, 0, 1)
+    if a <= 0: return
+    cv.save(); cv.translate(0, (1 - eseg(t_in, 0, 1)) * 24)
+    draw_text(cv, text, W / 2, y, font('caps', size * 0.62), '#EAD7A8' if dark else PAL['gold'], align='center', tracking=0.3, alpha=a, shadow=dark)
+    cv.restore()

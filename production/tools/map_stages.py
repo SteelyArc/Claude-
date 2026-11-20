@@ -209,11 +209,15 @@ def stage_final(cv, cam, a=None):
              ('g93_pru', g['93_pru'], 'prussia', '93'), ('g93_rus', g['93_rus'], 'russia', '93'),
              ('g95_pru', g['95_pru'], 'prussia', '95'), ('g95_rus', g['95_rus'], 'russia', '95'), ('g95_rus_courland', g['95_rus_courland'], 'russia', '95'),
              ('g95_aut', g['95_aut'], 'habsburg', '95')]
+    if a.get('plt_base', 0) > 0:  # optional: show the 1772 Commonwealth in gold beneath (for sequential reveal)
+        _poly(cv, cam, 'plt_pre72_fill', L['plt_pre72'], 'plt', alpha=a['plt_base'], ribbon_a=0.5)
     for key, geom, pw, yr in parts:
+        al = a.get('y' + yr, 1.0)
+        if al <= 0: continue
         pth = PATHS.get_path(key, geom); f, e = POW[pw]
-        fill(cv, pth, lighten(PAL[f], tones[yr]) if tones[yr] else darken(PAL[f], 0.1)); ribbon(cv, cam, pth, PAL[e], 12, 0.3)
+        fill(cv, pth, lighten(PAL[f], tones[yr]) if tones[yr] else darken(PAL[f], 0.1), al); ribbon(cv, cam, pth, PAL[e], 12, 0.3 * al)
     for key, geom, pw, yr in parts:
-        stroke(cv, cam, PATHS.get_path(key, geom), PAL['ink'], 0.9, 0.35, dash=[4, 5])
+        if a.get('y' + yr, 1.0) > 0: stroke(cv, cam, PATHS.get_path(key, geom), PAL['ink'], 0.9, 0.35 * a.get('y' + yr, 1.0), dash=[4, 5])
     _borders(cv, cam, [('f_rus', st['russia95']), ('f_pru', st['prussia95']), ('f_habs', L['stages']['1793']['habsburg'])], 1.6, 0.9)
     stroke(cv, cam, PATHS.get_path('plt_pre72', L['plt_pre72']), PAL['plt_edge'], 3.2, 0.95 * a.get('outline', 1))
     stroke(cv, cam, PATHS.get_path('plt_pre72', L['plt_pre72']), '#F3E3B5', 1.0, 0.9 * a.get('outline', 1))
@@ -230,3 +234,13 @@ def labels_final(cv, cam, al=1.0):
 
 def lifted_tone(pw, yr):
     return {'72': darken(PAL[POW[pw][0]], 0.1), '93': lighten(PAL[POW[pw][0]], 0.22), '95': lighten(PAL[POW[pw][0]], 0.45)}[yr]
+
+def glow(cv, cam, key, geom, color, alpha):
+    """Pulsing emphasis along a power's border (used when the narration names it)."""
+    if alpha <= 0 or geom is None: return
+    cv.save(); cam.apply(cv); p = PATHS.get_ext(key, geom)
+    col = C(color)
+    cv.drawPath(p, skia.Paint(AntiAlias=True, Style=skia.Paint.kStroke_Style, StrokeWidth=cam.px(14), StrokeJoin=skia.Paint.kRound_Join,
+                              Color4f=skia.Color4f(col.fR, col.fG, col.fB, 0.55 * alpha), MaskFilter=skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 8, False)))
+    cv.drawPath(p, skia.Paint(AntiAlias=True, Style=skia.Paint.kStroke_Style, StrokeWidth=cam.px(2.6), Color4f=skia.Color4f(col.fR, col.fG, col.fB, 0.9 * alpha)))
+    cv.restore()

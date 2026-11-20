@@ -8,15 +8,18 @@ import numpy as np
 from multiprocessing import Pool
 
 FPS = 30
+DOC_FOCUS = (0.16, 0.16); DOC_ZOOM = 2.1
+DOC_CAPTION = 'T. C. Lotter, Magnus Ducatus Lithuaniae, Augsburg, c. 1778 · Library of Congress'
 A0, A1 = 287.3, 329.7            # narration window (seconds of the original audio)
 N = int(round((A1 - A0) * FPS))
 ARC = os.path.join(ROOT, 'assets', 'archive')
 IMG = {
     'doc': 'Lotter_1778_Magnus_Ducatus_Lithuaniae_LOC.jpg',
     'king': 'LOC_Stanislaus_II_Augustus_Fogg_after_Bacciarelli_picture.jpg',
+    'catherine_full': 'LOC_Catherine_II_Townley_picture.jpg',
     'catherine': 'LOC_Catherine_II_Townley_mezzotint_after_Cunningham.jpg',
     'fw2': 'LOC_Friedrich_Wilhelm_II_Tardieu_after_Bornet.jpg',
-    'francis': 'NONE_no_authentic_portrait_available',
+    'francis': 'Ketterlinus_Francis_II_1792_NGA.jpg',
 }
 # face centres (normalised) for medallion / portrait framing — set after inspecting each image
 FACE = {'king': (0.5, 0.3), 'catherine': (0.5, 0.25), 'fw2': (0.5, 0.28), 'francis': (0.5, 0.22)}
@@ -49,11 +52,11 @@ def shot_document(a, fi):
     s = new_surface(); cv = s.getCanvas(); dark_desk(cv)
     t = seg(a, A0, 292.2); im = img('doc')
     if im is not None:
-        document(cv, im, t, focus=(0.16, 0.16), zoom0=1.0, zoom1=2.1, tilt0=0.35, settle=(0.0, 0.5), sweep=(0.2, 0.75))
+        document(cv, im, t, focus=DOC_FOCUS, zoom0=1.0, zoom1=DOC_ZOOM, tilt0=0.35, settle=(0.0, 0.5), sweep=(0.2, 0.75))
     al = eseg(a, A0 + 0.2, A0 + 1.0)
     draw_text(cv, 'THE FINAL DIVISION', W / 2, 250, font('caps', 46), '#E7D3A2', align='center', tracking=0.32, alpha=al, shadow=True)
     draw_text(cv, '1795', W / 2, 330, font('serif_bold', 60), '#F4EAD2', align='center', alpha=al, shadow=True)
-    caption(cv, 'T. C. Lotter, Magnus Ducatus Lithuaniae, Augsburg, c. 1778 · Library of Congress', alpha=al * 0.95, y=1585, dark=True)
+    caption(cv, DOC_CAPTION, alpha=al * 0.95, y=1585, dark=True)
     finish(cv, fi, 0.5); return s
 
 MED = {'catherine': (850, 1395, 'Catherine II', 'Russia', 292.0), 'fw2': (230, 1395, 'Frederick William II', 'Prussia', 294.7),
@@ -82,7 +85,8 @@ def shot_map1795(a, fi):
     for k, (x, y, nm, sub, t_in) in MED.items():
         im = img(k)
         al = eseg(a, t_in, t_in + 0.8); pop = 1 + 0.06 * (1 - eseg(a, t_in, t_in + 0.8)) + 0.05 * hl
-        medallion(cv, im, x, y - 20 * (1 - al), 100 * pop, face=FACE.get(k, (0.5, 0.3)), zoom=2.0, alpha=al, name=nm, sub=sub, tint=True)
+        fc = FACE.get(k, (0.5, 0.3, 3.0))
+        medallion(cv, im, x, y - 20 * (1 - al), 100 * pop, face=fc[:2], zoom=fc[2] if len(fc) > 2 else 3.0, alpha=al, name=nm, sub=sub, tint=True)
     # statement on 'ceased to exist'
     al = eseg(a, 306.1, 306.9) * (1 - eseg(a, 312.6, 313.2))
     if al > 0:
@@ -94,7 +98,7 @@ def shot_portrait(a, fi):
     s = new_surface(); cv = s.getCanvas(); cv.drawColor(C('#1E1610'))
     im = img('king'); t = seg(a, 313.3, 323.4)
     if im is not None:
-        parallax_portrait(cv, im, t, face=FACE['king'], push=(1.0, 1.10), depth=0.05, desat=0.0, tint=1 - 0.6 * eseg(a, 318.5, 322.8))
+        parallax_portrait(cv, im, t, face=tuple(FACE['king'][:2]), push=(1.0, 1.10), depth=0.05, desat=0.0, tint=1 - 0.6 * eseg(a, 318.5, 322.8))
     dust(cv, a, alpha=0.3)
     name_card(cv, 'Stanisław August Poniatowski', 'King of Poland and Grand Duke of Lithuania, 1764–1795', seg(a, 314.3, 315.3), y=1345)
     al = eseg(a, 316.1, 316.9) * (1 - eseg(a, 319.7, 320.2))
