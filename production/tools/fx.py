@@ -35,7 +35,7 @@ def document(cv, img, t, focus=(0.5, 0.5), zoom0=1.0, zoom1=1.0, tilt0=0.32, set
     pw = W * width_frac * z; ph = pw * ih / iw
     fx, fy = focus
     cx = W / 2 - (fx - 0.5) * pw * ease(t) * (1 - 1 / max(z, 1e-3)) * 1.0
-    cy = H * 0.47 - (fy - 0.5) * ph * ease(t) * (1 - 1 / max(z, 1e-3)) * 1.0
+    cy = H * 0.53 - (fy - 0.5) * ph * ease(t) * (1 - 1 / max(z, 1e-3)) * 1.0
     # trapezoid: top edge recedes (rotation about the horizontal axis)
     shrink = 0.22 * tilt; lift = 140 * tilt
     tl = (cx - pw / 2 * (1 - shrink), cy - ph / 2 + ph * 0.18 * tilt + lift); tr = (cx + pw / 2 * (1 - shrink), tl[1])
@@ -64,22 +64,22 @@ def document(cv, img, t, focus=(0.5, 0.5), zoom0=1.0, zoom1=1.0, tilt0=0.32, set
     cv.restore()
 
 # ------------------------------------------------------------------ 2.5D parallax portrait
-def parallax_portrait(cv, img, t, face=(0.5, 0.32), push=(1.0, 1.09), depth=0.045, desat=0.0, drift=(0, -40)):
+def parallax_portrait(cv, img, t, face=(0.5, 0.32), push=(1.0, 1.09), depth=0.045, desat=0.0, drift=(0, -40), tint=0.0):
     """Painting as layered planes: blurred backdrop, painting plane, and a feathered foreground
     plane around the sitter that scales faster -> gentle depth without inventing image content."""
     iw, ih = img.width(), img.height(); te = ease(t)
     # backdrop: same painting, enlarged & blurred & darkened (fills 9:16 frame)
     bs = max(W / iw, H / ih) * 1.25 * (1 + 0.04 * te)
     cv.save(); cv.translate(W / 2 + drift[0] * 0.3 * te, H / 2 + drift[1] * 0.3 * te); cv.scale(bs, bs); cv.translate(-iw / 2, -ih / 2)
-    cv.drawImage(img, 0, 0, SAMP, skia.Paint(ImageFilter=skia.ImageFilters.Blur(28 / bs, 28 / bs), ColorFilter=_cf(desat, 0.55)))
+    cv.drawImage(img, 0, 0, SAMP, skia.Paint(ImageFilter=skia.ImageFilters.Blur(28 / bs, 28 / bs), ColorFilter=_cf(desat, 0.55, tint)))
     cv.restore()
     # painting plane: fit width with margin, sitter's face kept in upper third
-    base = (W * 1.02) / iw
+    base = (W * 1.06) / iw
     def plane(scale_mul, alpha_mask=None):
         s = base * scale_mul
         fx, fy = face[0] * iw, face[1] * ih
-        cv.save(); cv.translate(W / 2 + drift[0] * te, H * 0.36 + drift[1] * te); cv.scale(s, s); cv.translate(-fx, -fy)
-        paint = skia.Paint(AntiAlias=True, ColorFilter=_cf(desat, 1.0))
+        cv.save(); cv.translate(W / 2 + (fx - iw / 2) * s + drift[0] * te, H * 0.36 + drift[1] * te); cv.scale(s, s); cv.translate(-fx, -fy)
+        paint = skia.Paint(AntiAlias=True, ColorFilter=_cf(desat, 1.0, tint))
         if alpha_mask is not None:
             cv.saveLayer(skia.Rect(0, 0, iw, ih), None)
             cv.drawImage(img, 0, 0, SAMP, paint)
@@ -92,8 +92,8 @@ def parallax_portrait(cv, img, t, face=(0.5, 0.32), push=(1.0, 1.09), depth=0.04
     # frame shadow for the painting plane
     plane(z)
     def mask(iw, ih, fx, fy):
-        r = max(iw, ih) * 0.42
-        return skia.GradientShader.MakeRadial(skia.Point(fx, fy + ih * 0.12), r, [skia.Color4f(0, 0, 0, 1), skia.Color4f(0, 0, 0, 0)], [0.45, 1.0])
+        r = min(iw, ih) * 0.33
+        return skia.GradientShader.MakeRadial(skia.Point(fx, fy + ih * 0.06), r, [skia.Color4f(0, 0, 0, 1), skia.Color4f(0, 0, 0, 0)], [0.35, 1.0])
     plane(z * (1 + depth * te), mask)
     # soft edge so the painting melts into the backdrop
     top = H * 0.36 - face[1] * ih * base * z; bot = top + ih * base * z
@@ -102,7 +102,14 @@ def parallax_portrait(cv, img, t, face=(0.5, 0.32), push=(1.0, 1.09), depth=0.04
         if inv: cols = cols[::-1]
         cv.drawRect(skia.Rect(0, y0, W, y1), skia.Paint(Shader=skia.GradientShader.MakeLinear([skia.Point(0, y0), skia.Point(0, y1)], cols)))
 
-def _cf(desat, bright):
+def _cf(desat, bright, tint=0.0):
+    if tint:
+        k = tint; base = [[0.393, 0.769, 0.189], [0.349, 0.686, 0.168], [0.272, 0.534, 0.131]]
+        ident = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+        m = []
+        for i in range(3):
+            m += [(base[i][j] * 0.92 * k + ident[i][j] * (1 - k)) * bright for j in range(3)] + [0, 0]
+        return skia.ColorFilters.Matrix(m + [0, 0, 0, 1, 0])
     d = desat; s = 1 - d
     lum = (0.299, 0.587, 0.114)
     m = []
@@ -120,17 +127,23 @@ def dust(cv, t, seed=3, n=60, alpha=0.35):
                                                          MaskFilter=skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 1.2)))
 
 # ------------------------------------------------------------------ medallion cameo
-def medallion(cv, img, cx, cy, r, face=(0.5, 0.3), zoom=2.4, alpha=1.0, name=None, sub=None, label_side='below'):
+def medallion(cv, img, cx, cy, r, face=(0.5, 0.3), zoom=2.4, alpha=1.0, name=None, sub=None, label_side='below', tint=False):
     if alpha <= 0: return
-    iw, ih = img.width(), img.height(); rx, ry = r * 0.82, r
+    rx, ry = r * 0.82, r
     oval = skia.Rect(cx - rx, cy - ry, cx + rx, cy + ry)
     cv.saveLayerAlpha(None, int(255 * alpha))
     cv.drawOval(oval.makeOutset(10, 10), skia.Paint(AntiAlias=True, Color4f=skia.Color4f(0, 0, 0, 0.45),
                                                     MaskFilter=skia.MaskFilter.MakeBlur(skia.kNormal_BlurStyle, 16)))
     cv.save(); p = skia.Path(); p.addOval(oval); cv.clipPath(p, skia.ClipOp.kIntersect, True)
-    s = (2 * ry) / ih * zoom
-    cv.translate(cx, cy); cv.scale(s, s); cv.translate(-face[0] * iw, -face[1] * ih)
-    cv.drawImage(img, 0, 0, SAMP); cv.restore()
+    if img is not None:
+        iw, ih = img.width(), img.height(); s = (2 * ry) / ih * zoom
+        cv.translate(cx, cy); cv.scale(s, s); cv.translate(-face[0] * iw, -face[1] * ih)
+        cv.drawImage(img, 0, 0, SAMP, skia.Paint(ColorFilter=_cf(0, 1.0, 0.9 if tint else 0)))
+    else:  # no authentic portrait available: plain engraved-paper roundel with the name only
+        cv.drawOval(oval, skia.Paint(AntiAlias=True, Shader=skia.GradientShader.MakeRadial(skia.Point(cx, cy - ry * 0.3), ry * 1.3,
+                    [C('#F3E8CC'), C('#D6C29A')])))
+        draw_text(cv, (name or '').split()[0][:1] + (' ' + (name or '').split()[-1] if name and len(name.split()) > 1 else ''), cx, cy + 14, font('serif_bold', 44), PAL['gold'], align='center')
+    cv.restore()
     gold = skia.GradientShader.MakeSweep(cx, cy, [C('#8A6A2E'), C('#E9CF8A'), C('#7A5A22'), C('#F2DC9C'), C('#8A6A2E')])
     cv.drawOval(oval.makeOutset(4, 4), skia.Paint(AntiAlias=True, Style=skia.Paint.kStroke_Style, StrokeWidth=7, Shader=gold))
     cv.drawOval(oval.makeOutset(11, 11), skia.Paint(AntiAlias=True, Style=skia.Paint.kStroke_Style, StrokeWidth=1.6, Shader=gold))
@@ -161,6 +174,10 @@ def date_card(cv, top, main, sub, t_in, alpha=1.0, y=470, dark=True):
     a = alpha * eseg(t_in, 0, 1)
     if a <= 0: return
     col_main = '#F4EAD2' if dark else PAL['ink']; col_sub = '#E2CD9C' if dark else PAL['gold']
+    if dark:
+        sh = skia.GradientShader.MakeLinear([skia.Point(0, y - 170), skia.Point(0, y + 140)],
+             [skia.Color4f(0.08, 0.05, 0.03, 0), skia.Color4f(0.08, 0.05, 0.03, 0.78 * a), skia.Color4f(0.08, 0.05, 0.03, 0)], [0, 0.5, 1])
+        cv.drawRect(skia.Rect(0, y - 170, W, y + 140), skia.Paint(Shader=sh))
     draw_text(cv, top, W / 2, y - 64, font('caps', 30), col_sub, align='center', tracking=0.4, alpha=a)
     draw_text(cv, main, W / 2, y + 10, font('serif_bold', 70), col_main, align='center', alpha=a, shadow=dark)
     if sub: draw_text(cv, sub, W / 2, y + 62, font('italic', 34), col_sub, align='center', alpha=a)

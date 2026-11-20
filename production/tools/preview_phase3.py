@@ -12,11 +12,11 @@ A0, A1 = 287.3, 329.7            # narration window (seconds of the original aud
 N = int(round((A1 - A0) * FPS))
 ARC = os.path.join(ROOT, 'assets', 'archive')
 IMG = {
-    'cary': 'A_new_map_of_Poland_and_the_Grand_Duchy_of_Lithuania_shewing_their_dismemberments.jpg',
-    'king': 'Marcello_Bacciarelli_-_Portrait_of_Stanis_aw_August_Poniatowski_with_hourglass_-.jpg',
-    'catherine': 'Catherine_II_by_J.B.Lampi_1793_Hermitage_.jpg',
-    'fw2': 'Anton_Graff_-_Frederick_William_II_of_Prussia.png',
-    'francis': 'Christian_Wilhelm_Ketterlinus_Francis_II_Holy_Roman_Emperor_1792_NGA_78568.jpg',
+    'doc': 'Lotter_1778_Magnus_Ducatus_Lithuaniae_LOC.jpg',
+    'king': 'LOC_Stanislaus_II_Augustus_Fogg_after_Bacciarelli_picture.jpg',
+    'catherine': 'LOC_Catherine_II_Townley_mezzotint_after_Cunningham.jpg',
+    'fw2': 'LOC_Friedrich_Wilhelm_II_Tardieu_after_Bornet.jpg',
+    'francis': 'NONE_no_authentic_portrait_available',
 }
 # face centres (normalised) for medallion / portrait framing — set after inspecting each image
 FACE = {'king': (0.5, 0.3), 'catherine': (0.5, 0.25), 'fw2': (0.5, 0.28), 'francis': (0.5, 0.22)}
@@ -24,7 +24,7 @@ FACE.update(json.load(open(os.path.join(ROOT, 'research', 'faces.json'))) if os.
 
 def img(k):
     import glob
-    m = sorted(glob.glob(os.path.join(ARC, IMG[k][:40] + '*')))
+    m = [os.path.join(ARC, IMG[k])] if os.path.exists(os.path.join(ARC, IMG[k])) else sorted(glob.glob(os.path.join(ARC, IMG[k][:40] + '*')))
     return load_image(m[0]) if m and os.path.getsize(m[0]) > 1000 else None
 
 C_RUMP = Camera.lonlat(24.4, 53.0, 0.98)
@@ -47,13 +47,13 @@ def finish(cv, fi, vig=0.45):
 # ------------------------------------------------------------------ shots
 def shot_document(a, fi):
     s = new_surface(); cv = s.getCanvas(); dark_desk(cv)
-    t = seg(a, A0, 292.2); im = img('cary')
+    t = seg(a, A0, 292.2); im = img('doc')
     if im is not None:
-        document(cv, im, t, focus=(0.5, 0.5), zoom0=1.0, zoom1=1.55, tilt0=0.35, settle=(0.0, 0.5), sweep=(0.2, 0.75))
+        document(cv, im, t, focus=(0.16, 0.16), zoom0=1.0, zoom1=2.1, tilt0=0.35, settle=(0.0, 0.5), sweep=(0.2, 0.75))
     al = eseg(a, A0 + 0.2, A0 + 1.0)
-    draw_text(cv, 'THE FINAL DIVISION', W / 2, 330, font('caps', 46), '#E7D3A2', align='center', tracking=0.32, alpha=al, shadow=True)
-    draw_text(cv, '1795', W / 2, 410, font('serif_bold', 60), '#F4EAD2', align='center', alpha=al, shadow=True)
-    caption(cv, 'John Cary, A New Map of Poland … shewing their dismemberments, London, 1799', alpha=al * 0.95, y=1585, dark=True)
+    draw_text(cv, 'THE FINAL DIVISION', W / 2, 250, font('caps', 46), '#E7D3A2', align='center', tracking=0.32, alpha=al, shadow=True)
+    draw_text(cv, '1795', W / 2, 330, font('serif_bold', 60), '#F4EAD2', align='center', alpha=al, shadow=True)
+    caption(cv, 'T. C. Lotter, Magnus Ducatus Lithuaniae, Augsburg, c. 1778 · Library of Congress', alpha=al * 0.95, y=1585, dark=True)
     finish(cv, fi, 0.5); return s
 
 MED = {'catherine': (850, 1395, 'Catherine II', 'Russia', 292.0), 'fw2': (230, 1395, 'Frederick William II', 'Prussia', 294.7),
@@ -81,28 +81,27 @@ def shot_map1795(a, fi):
         cv.drawRect(skia.Rect(0, 1180, W, H), skia.Paint(Shader=sh))
     for k, (x, y, nm, sub, t_in) in MED.items():
         im = img(k)
-        if im is None: continue
         al = eseg(a, t_in, t_in + 0.8); pop = 1 + 0.06 * (1 - eseg(a, t_in, t_in + 0.8)) + 0.05 * hl
-        medallion(cv, im, x, y - 20 * (1 - al), 100 * pop, face=FACE[k], zoom=2.2, alpha=al, name=nm, sub=sub)
+        medallion(cv, im, x, y - 20 * (1 - al), 100 * pop, face=FACE.get(k, (0.5, 0.3)), zoom=2.0, alpha=al, name=nm, sub=sub, tint=True)
     # statement on 'ceased to exist'
     al = eseg(a, 306.1, 306.9) * (1 - eseg(a, 312.6, 313.2))
     if al > 0:
         caption(cv, 'The Polish–Lithuanian state ceases to exist as an independent state', alpha=al, y=425)
-    source_line(cv, 'Borders: OpenHistoricalMap (CC0), verified against atlas reference · Portraits: Wikimedia Commons (PD / CC0)')
+    source_line(cv, 'Borders: OpenHistoricalMap (CC0), verified against atlas reference · Portraits: Library of Congress (public domain)')
     plate_frame(cv); film_grain(cv, fi, 0.05); return s
 
 def shot_portrait(a, fi):
     s = new_surface(); cv = s.getCanvas(); cv.drawColor(C('#1E1610'))
     im = img('king'); t = seg(a, 313.3, 323.4)
     if im is not None:
-        parallax_portrait(cv, im, t, face=FACE['king'], push=(1.0, 1.10), depth=0.05, desat=0.55 * eseg(a, 318.5, 322.8))
+        parallax_portrait(cv, im, t, face=FACE['king'], push=(1.0, 1.10), depth=0.05, desat=0.0, tint=1 - 0.6 * eseg(a, 318.5, 322.8))
     dust(cv, a, alpha=0.3)
     name_card(cv, 'Stanisław August Poniatowski', 'King of Poland and Grand Duke of Lithuania, 1764–1795', seg(a, 314.3, 315.3), y=1345)
     al = eseg(a, 316.1, 316.9) * (1 - eseg(a, 319.7, 320.2))
     date_card(cv, 'ABDICATION · GRODNO', '25 November 1795', None, seg(a, 316.1, 316.9), alpha=al, y=430)
     al2 = eseg(a, 320.3, 321.0)
     date_card(cv, 'TAKEN TO RUSSIA', 'St Petersburg', 'left Grodno in 1797 · died there in 1798', seg(a, 320.3, 321.0), alpha=al2, y=430)
-    caption(cv, 'Marcello Bacciarelli, Portrait of Stanisław August with an hourglass · National Museum in Warsaw', alpha=0.85 * eseg(a, 314.6, 315.4), y=1585, dark=True)
+    caption(cv, 'Engraving by A. Fogg after Marcello Bacciarelli · Library of Congress', alpha=0.85 * eseg(a, 314.6, 315.4), y=1585, dark=True)
     finish(cv, fi, 0.5); return s
 
 def shot_final(a, fi):
