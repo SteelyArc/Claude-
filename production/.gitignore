@@ -5,3 +5,4 @@ data/geo/[0-9]*.geojson
 __pycache__/
 previews/phase3/chunks/
 audio/music/*.wav
+previews/final/chunks/
