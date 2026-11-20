@@ -3,3 +3,5 @@ __pycache__/
 data/relief.npz
 data/relief_hi.npz
 data/relief_hi_rgb.npy
+previews/concepts/tmp*/
+data/relief_hi_preview.png
