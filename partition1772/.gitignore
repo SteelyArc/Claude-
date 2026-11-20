@@ -21,3 +21,5 @@ assets/raw/*.log
 __pycache__/
 work/*.mp4
 work/concat.txt
+work/fseg/
+work/film_*.txt
