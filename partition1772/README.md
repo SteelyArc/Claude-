@@ -52,6 +52,20 @@ A 1080 × 1920 documentary for TikTok, with 8 min 46 s of narration. This folder
 
 No portrait, document or quotation is generated or invented.
 
+## Subtitles
+
+Subtitles are burned into the video by `src/subtitles.py`:
+
+- **Timing:** word-timed cues taken from the narration transcript.
+- **Line breaks:** phrase-aware, at most 34 characters per line. The breaker never splits names such as "Catherine II" or "East Prussia".
+- **Style:** EB Garamond on a translucent dark plate. Spoken words brighten as the narrator reads them.
+- **Position:** centred at y ≈ 1468 px, inside TikTok's safe area (above the caption and music strip, clear of the right-hand icon rail). Cards and title blocks were moved above this band.
+- **Text corrections to the automatic transcript:**
+  - Thorne → Thorn, royal Prussia → Royal Prussia, Habsburg monarchy → Habsburg Monarchy, the same → the Sejm, Liberum Vito → Liberum Veto.
+  - British spelling throughout.
+  - The dropped words "its territory" at 0:25 were restored after a second, larger model confirmed them.
+- **Separate file:** `render/partition1772_preview.srt` holds the same cues for platforms where you upload captions yourself.
+
 ## Colour system (consistent throughout)
 
 | Territory | Colour | Treatment |

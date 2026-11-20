@@ -3,6 +3,7 @@
 import math, skia, numpy as np
 from shapely.geometry import LineString
 from engine import *
+from subtitles import draw_sub
 
 BASE = None; FIN = None
 def init():
@@ -245,6 +246,7 @@ class S1:
         date_card(c, a + 0.2, 'SUMMER', '1772', None, y=420, size=170, alpha=1 - ramp(a, 6.6, 8.0))
         title_card(c, a - 13.6, 'THE FIRST PARTITION', 'of Poland–Lithuania', y=300, alpha=ramp(a, 13.6, 13.7, lambda v: v) * (1 - ramp(a, 19.6, 21.0)))
         FIN.apply(c, t, cam)
+        draw_sub(c, a)
         # fade from black
         fade(c, 1 - ramp(t, 0.0, 1.4))
         fade(c, ramp(t, self.dur - 0.5, self.dur))
@@ -306,7 +308,7 @@ def portrait(c, key, lt, dur, alpha=1.0, exit_t=0.0):
     sh3 = skia.GradientShader.MakeLinear([(0, max(0, oy)), (0, max(0, oy) + 260)], [C(0, 0, 0, 0), C(0, 0, 0, 255)])
     c.drawRect(skia.Rect(0, 0, W, H), skia.Paint(Shader=sh3, BlendMode=skia.BlendMode.kDstIn))
     # bottom feather into darkness (room for typography)
-    sh2 = skia.GradientShader.MakeLinear([(0, 1050), (0, 1360)], [C(0, 0, 0, 255), C(0, 0, 0, 0)])
+    sh2 = skia.GradientShader.MakeLinear([(0, 930), (0, 1230)], [C(0, 0, 0, 255), C(0, 0, 0, 0)])
     c.drawRect(skia.Rect(0, 0, W, H), skia.Paint(Shader=sh2, BlendMode=skia.BlendMode.kDstIn))
     c.restore()
     # warm rim light sweeping once across the portrait
@@ -317,7 +319,7 @@ def portrait(c, key, lt, dur, alpha=1.0, exit_t=0.0):
         c.drawRect(skia.Rect(0, 0, W, 1300), skia.Paint(Shader=g, BlendMode=skia.BlendMode.kScreen))
     # typography block
     tb = alpha * (1 - exit_t)
-    ty = 1325
+    ty = 1190
     col = PAL[P['power']]
     draw_text(c, P['role'], W / 2, ty - 92, font(SC, 36), C(214, 190, 146), tracking=0.42, alpha=tb, reveal=ramp(lt, 0.9, 2.0), stagger=0.8, rise=8)
     draw_text(c, P['name'], W / 2, ty, font(SERIF, 104), C(246, 236, 214), tracking=0.03, alpha=tb, reveal=ramp(lt, 1.1, 2.5), stagger=0.7, rise=22,
@@ -336,7 +338,7 @@ def portrait(c, key, lt, dur, alpha=1.0, exit_t=0.0):
         c.drawRect(skia.Rect(x0, ky - 20, x0 + 34 * ease_out_cubic(kt), ky + 6), p)
         draw_text(c, P['key'], x0 + 50, ky + 4, font(SC_M, 30), C(214, 196, 160), align='left', tracking=0.2, alpha=tb * kt)
     # credit (authentic source)
-    draw_text(c, P['credit'], W / 2, 1150, font(BODY_I, 23), C(220, 205, 180), align='center', alpha=0.7 * tb * ramp(lt, 3.0, 4.0))
+    draw_text(c, P['credit'], W / 2, 1020, font(BODY_I, 23), C(220, 205, 180), align='center', alpha=0.7 * tb * ramp(lt, 3.0, 4.0))
 
 def triptych(c, lt, focus=None, focus_t=0.0):
     order = ['frederick', 'catherine', 'maria']
@@ -399,6 +401,8 @@ class S2:
         if a > tt - 0.2:
             triptych(c, a - tt + 0.2, focus='frederick', focus_t=ramp(a, at(259.2), at(259.9)))
         FIN.apply(c, t, None, vignette=0.75, grain=0.9, light=0.4, dust=1.4)
+        if a < 13.10: draw_sub(c, 168.40 + a, lo=168.40, hi=181.50)
+        else: draw_sub(c, 248.50 + (a - 13.10), lo=248.50, hi=261.05)
         fade(c, 1 - ramp(t, 0, 0.8))
         fade(c, ramp(t, self.dur - 0.6, self.dur))
 
@@ -471,7 +475,7 @@ class S3:
         c.restore()
         # figure annotations: four plates in the frame corners, leader lines to each figure
         slots = {'Stanisław August': (70, 590, 'left'), 'Joseph II': (W - 70, 590, 'right'),
-                 'Catherine II': (70, 1400, 'left'), 'Frederick II': (W - 70, 1400, 'right')}
+                 'Catherine II': (70, 1290, 'left'), 'Frederick II': (W - 70, 1290, 'right')}
         for i, (name, sub, (px, py), _) in enumerate(CAKE['figs']):
             lt = window(a, 306.9 + i * 0.45, 311.4, 0.8, 0.6)
             if lt <= 0: continue
@@ -489,12 +493,13 @@ class S3:
                   shadow=(C(0, 0, 0, 170), 12, 0, 5))
         draw_text(c, 'Partition conventions signed by Russia, Prussia and Austria', W / 2, 372, font(BODY_I, 31), C(222, 206, 176), alpha=top_a,
                   reveal=ramp(a, 306.2, 307.6), stagger=0.4)
-        bot = skia.GradientShader.MakeLinear([(0, 1300), (0, 1700)], [C(14, 10, 7, 0), C(14, 10, 7, 235)])
+        bot = skia.GradientShader.MakeLinear([(0, 1020), (0, 1330)], [C(14, 10, 7, 0), C(14, 10, 7, 235)])
         c.drawRect(skia.Rect(0, 1300, W, H), skia.Paint(Shader=bot))
         cap_a = ramp(a, 311.8, 313.0)
-        draw_text(c, '“The Troelfth Cake” · Le Gâteau des Rois', W / 2, 1478, font(SERIF_I, 40), C(240, 228, 204), reveal=cap_a, stagger=0.5, rise=6)
-        draw_text(c, 'Engraving by Noël Le Mire after Jean-Michel Moreau, 1773', W / 2, 1528, font(BODY, 27), C(206, 190, 160), alpha=cap_a)
+        draw_text(c, '“The Troelfth Cake” · Le Gâteau des Rois', W / 2, 1300, font(SERIF_I, 40), C(240, 228, 204), reveal=cap_a, stagger=0.5, rise=6)
+        draw_text(c, 'Engraving by Noël Le Mire after Jean-Michel Moreau, 1773', W / 2, 1348, font(BODY, 27), C(206, 190, 160), alpha=cap_a)
         FIN.apply(c, t, None, vignette=0.7, grain=0.8, light=0.5, dust=1.0)
+        draw_sub(c, a, lo=304.30, hi=315.35)
         fade(c, 1 - ramp(t, 0, 0.7))
         fade(c, ramp(t, self.dur - 0.55, self.dur), color=PAL['paper'])
 
@@ -597,7 +602,7 @@ class S4:
         world_label(c, cam, 330, 450, 'Dvina', 32, rv, fontname=SERIF_I, tracking=0.1, color=(40, 80, 104))
         world_label(c, cam, 455, 170, 'Drut', 30, rv, fontname=SERIF_I, tracking=0.1, color=(40, 80, 104))
         world_label(c, cam, 590, 15, 'Dnieper', 32, rv, fontname=SERIF_I, tracking=0.1, color=(40, 80, 104))
-        bar_card(c, a - 349.0, y=1290, alpha=1 - ramp(a, 357.6, 358.6))
+        bar_card(c, a - 349.0, y=1105, alpha=1 - ramp(a, 357.6, 358.6))
         # --- Austria
         al = window(a, 363.6, 372.25, 1.2, 0.01)
         world_label(c, cam, 110, -300, 'GALICIA', 58, al, tracking=0.32, color=(102, 66, 16))
@@ -611,6 +616,7 @@ class S4:
         world_city(c, cam, 'Wieliczka', ramp(a, 368.8, 369.8), sub='salt mines', dx=16, dy=40, size=30, color=(80, 50, 14))
         # legend once all three are visible
         FIN.apply(c, t + 40, cam)
+        draw_sub(c, a)
         fade(c, 1 - ramp(t, 0, 0.6), color=PAL['paper'])
 
 # ==================================================================== S5 — before / after
@@ -657,10 +663,10 @@ class S5:
         # proportional bar: the Commonwealth's territory split
         bt = ramp(a, 382.6, 384.6)
         if bt > 0:
-            x0, y0, wbar = 90, 1330, 900
+            x0, y0, wbar = 90, 1190, 900
             ca = 1 - ramp(a, 388.8, 389.6)
-            card(c, 60, 1250, 960, 260, alpha=ca * ramp(a, 382.4, 383.0))
-            draw_text(c, 'TERRITORY OF THE COMMONWEALTH, 1772', W / 2, 1300, font(SC, 28), C(*PAL['ink']), tracking=0.22, alpha=ca, reveal=ramp(a, 382.6, 383.4))
+            card(c, 60, 1110, 960, 260, alpha=ca * ramp(a, 382.4, 383.0))
+            draw_text(c, 'TERRITORY OF THE COMMONWEALTH, 1772', W / 2, 1160, font(SC, 28), C(*PAL['ink']), tracking=0.22, alpha=ca, reveal=ramp(a, 382.6, 383.4))
             tot = 733000.0
             segs = [('plc', 522000), ('russia', 92000), ('austria', 83000), ('prussia', 36000)]
             xx = x0
@@ -683,6 +689,7 @@ class S5:
         world_label(c, cam, 30, 60, 'POLISH–LITHUANIAN', 44, window(a, 385.9, 390.0, 1.2, 0.8), tracking=0.2)
         world_label(c, cam, 30, 60 - 72, 'COMMONWEALTH', 44, window(a, 386.1, 390.0, 1.2, 0.8), tracking=0.2)
         FIN.apply(c, t + 100, cam)
+        draw_sub(c, a)
         fade(c, ramp(t, self.dur - 1.2, self.dur))
 
 SCENES = {'S1': S1(), 'S2': S2(), 'S3': S3(), 'S4': S4(), 'S5': S5()}
