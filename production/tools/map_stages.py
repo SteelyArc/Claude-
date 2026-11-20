@@ -176,7 +176,7 @@ def stage_1795(cv, cam, a=None):
         rv = a.get(key, 1.0)
         if rv <= 0: continue
         pth = PATHS.get_path('g' + gk, g[gk]); f, e = POW[pw]
-        fill(cv, pth, lighten(PAL[f], 0.42), rv); ribbon(cv, cam, pth, PAL[e], 14, 0.4 * rv)
+        fill(cv, pth, lighten(PAL[f], 0.28), rv); ribbon(cv, cam, pth, PAL[e], 14, 0.4 * rv)
         hatch(cv, cam, pth, PAL[e], 10, 1.2, 0.38 * rv, angle=-45, reveal=rv)
     _borders(cv, cam, [('1793_russia', L['stages']['1793']['russia']), ('1793_prussia', L['stages']['1793']['prussia']), ('1793_habsburg', L['stages']['1793']['habsburg'])])
     for gk in ('95_rus', '95_rus_courland', '95_pru', '95_aut'):
