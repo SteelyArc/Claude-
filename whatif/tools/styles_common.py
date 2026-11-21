@@ -42,7 +42,7 @@ def phase(t):
 
 
 def year_at(t):
-    return {'hook': None, 'c1770': '1770', '1772': '1772', '1793': '1793', '1795': '1795', 'pivot': '1791', 'alt': '1791'}[phase(t)]
+    return {'hook': None, 'c1770': '1770', '1772': '1772', '1793': '1793', '1795': '1795', 'pivot': '1795', 'alt': '1791'}[phase(t)]
 
 
 def status_at(t):

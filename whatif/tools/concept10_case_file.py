@@ -151,6 +151,8 @@ def map_print(c, t):
     else:
         for i, (yr, pw, g, o, rad) in enumerate(ORIG):
             if yr == '1772': hatch(c, tpath(path(g), MM), MARK[pw], 1.0, i * 5 + 1)
+            elif t < 8.4:
+                c.saveLayerAlpha(None, int(255 * (1 - seg(t, 7.8, 8.4)))); hatch(c, tpath(path(g), MM), MARK[pw], 1.0, i * 5 + 1); c.restore()
         k = ease(seg(t, 8.1, 9.3)); p = tpath(path(PLT91), MM)
         hl = stroke(rgb('#ffe100', 0.55), 22); hl.setBlendMode(skia.BlendMode.kMultiply)
         te = skia.TrimPathEffect.Make(0, max(0.001, k)) if k < 1 else None
