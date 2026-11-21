@@ -102,6 +102,9 @@ for (t0, v0), (t1, v1) in zip(K, K[1:]):
 for w0 in ('dangerously weak', 'russia increasingly', 'opportunities', '3rd', 'brief moment', 'napoleon'):
     add(swish(), C(w0) - 0.6, 0.12)
 add(swish(), C('warsaw', 201) - 0.9, 0.12)
+for tt_ in (C('in our timeline') + 0.4, C('first modern') - 0.2, C('in 1793') - 0.2, C('two years later') + 0.2, C('stronger army') - 0.3,
+            C('19th century') - 0.2, C('federation') - 0.3, C('lacked a future') - 1.2):
+    add(swish(), tt_ - 0.3, 0.11)
 # gold moments
 for w0, g in (('may constitution', 0.14), ('remains on the map', 0.14), ('still there', 0.12), ('a different world', 0.10)):
     add(shimmer(2.6, 1175), C(w0) - 0.2, g)

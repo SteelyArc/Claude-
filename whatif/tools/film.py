@@ -128,6 +128,18 @@ KT = {'72p': _k72(), '72r': _k72(), '72a': _k72(), '93p': _k93(), '93r': _k93(0.
       '95p': _k95(), '95r': _k95(0.1), '95c': _k95(0.1), '95a': _k95(0.2)}
 
 
+def emphasis(name, t):
+    """1 while an annexation is happening and ~3 s after; then 0 (the land simply belongs to the neighbour).
+    Kept on during the documented recap, where the partitions are the subject."""
+    if C('what we do know') <= t < C('imagine looking') + 0.2: return 1.0
+    tend = None
+    for a, b in zip(KT[name], KT[name][1:]):
+        kind = b[2] if len(b) > 2 else None
+        if b[0] <= t and kind in ('annex', 'cut') and b[1] == 1: tend = b[0]
+    if tend is None: return 1.0
+    return 1 - seg(t, tend + 2.6, tend + 3.8)
+
+
 def plate_state(name, t):
     """(k, h, kind): annexation level, lift height 0..1, transition kind."""
     ks = KT[name]
@@ -180,7 +192,11 @@ _PICS = {}
 PIC_DEF = {'const': ('constitution_1791.jpg', 'constitution_1791'), 'king': ('stanislaw.png', 'stanislaw'),
            'elect': ('bellotto_election.jpg', 'bellotto_election'), 'cath': ('catherine.jpg', 'catherine'),
            'fred': ('frederick.jpg', 'frederick'), 'mt': ('maria_theresa.jpg', 'maria_theresa'),
-           'napo': ('napoleon_premier_consul_LOC.jpg', 'napoleon_premier_consul_LOC'), 'plan': ('LOC_Plan_de_Varsovie_RizziZannoni_atlas.jpg', None)}
+           'napo': ('napoleon_premier_consul_LOC.jpg', 'napoleon_premier_consul_LOC'), 'plan': ('LOC_Plan_de_Varsovie_RizziZannoni_atlas.jpg', None),
+           'cake': ('kings_cake.jpg', None), 'matejko': ('LOC_Stanislaus_Augustus_to_church_Constitution_1791.jpg', None),
+           'fw2': ('LOC_Friedrich_Wilhelm_II_Tardieu_after_Bornet.jpg', None), 'fr2': ('Ketterlinus_Francis_II_1792_NGA.jpg', None),
+           'kosc': ('LOC_Kosciuszko_picture.jpg', None), 'rizzi': ('LOC_RizziZannoni_1772_Carte_de_la_Pologne_general.jpg', None),
+           'lotter': ('Lotter_1778_Magnus_Ducatus_Lithuaniae_LOC.jpg', None), 'sayer': ('sayer_map.jpg', None)}
 
 
 def pic(k):
@@ -188,7 +204,7 @@ def pic(k):
     return _PICS[k]
 
 
-def plate(c, t, key, t0, t1, x, y, w, h, title, credit, focus=(0.5, 0.4), z=(1.0, 1.12), par=(30, -30), dolly=(0.0, 0.12)):
+def plate(c, t, key, t0, t1, x, y, w, h, title, credit, focus=(0.5, 0.4), z=(1.0, 1.12), par=(30, -30), dolly=(0.0, 0.12), ts=38):
     """framed painting floating above the atlas: rises in, slow 2.5D push, fades out. (x, y) = top-left."""
     a = win(t, t0, t1, 0.7, 0.6)
     if a <= 0: return
@@ -205,10 +221,10 @@ def plate(c, t, key, t0, t1, x, y, w, h, title, credit, focus=(0.5, 0.4), z=(1.0
     gl = skia.Paint(); gl.setBlendMode(skia.BlendMode.kScreen); gx = lerp(-w, w, (t * 0.12 + x / 997) % 1.0)   # slow glass sheen
     gl.setShader(lin_grad((gx - 160, -h / 2), (gx + 160, h / 2), [rgb('#ffffff', 0), rgb('#ffffff', 0.06 * a), rgb('#ffffff', 0)], [0, .5, 1]))
     c.drawRect(skia.Rect(-w / 2, -h / 2, w / 2, h / 2), gl)
-    yy = h / 2 + 52
-    text(c, title, -w / 2, yy, font('CG-SemiBold.ttf', 38), rgb('#f6ecd9', a), align='l', reveal=seg(t, t0 + 0.3, t0 + 1.3), shadow=rgb('#000000', 0.9 * a))
+    yy = h / 2 + 14 + ts
+    text(c, title, -w / 2, yy, font('CG-SemiBold.ttf', ts), rgb('#f6ecd9', a), align='l', reveal=seg(t, t0 + 0.3, t0 + 1.3), shadow=rgb('#000000', 0.9 * a))
     for i, ln in enumerate(credit.split(' | ')):
-        text(c, ln, -w / 2, yy + 34 + i * 28, font('SourceSans3-Regular.ttf', 23), rgb('#cfc4b0', 0.9 * a), align='l', shadow=rgb('#000000', 0.9 * a))
+        text(c, ln, -w / 2, yy + ts * 0.9 + i * 28, font('SourceSans3-Regular.ttf', 23 if ts >= 34 else 20), rgb('#cfc4b0', 0.9 * a), align='l', shadow=rgb('#000000', 0.9 * a))
     c.restore()
 
 
@@ -415,7 +431,11 @@ def scene(c, t, f):
             if kind == 'fail' and h > 0.3:
                 c.drawPath(bp, stroke(rgb('#ffe2a0', 0.8 * h * vis), 3, glow=3))
         else:
-            A1.glass(c, bp, hexcol, 0.80 * vis * (1 if gd < 0.5 else 0.6), 0.9 * vis, hexcol, 1.4)
+            e = emphasis(n, t)
+            if e > 0: A1.glass(c, bp, hexcol, 0.80 * vis * e * (1 if gd < 0.5 else 0.6), 0.9 * vis * e, hexcol, 1.4)
+            if e < 1 and not n.startswith('72'):   # 1772 gains already belong to the neighbours' 1791 outline
+                ec = {'prussia': '#9ab8d8', 'russia': '#a9bf8f', 'habsburg': '#d6b48a'}[pw]
+                A1.glass(c, bp, PAL[pw], 0.40 * vis * (1 - e), 0.5 * vis * (1 - e), ec, 1)
     # ---------------- outlines
     trace_k = eout(seg(t, 0.6, 3.0), 2) * (1 - seg(t, C('imagine'), C('imagine') + 0.6))
     A1.trace(c, tpath(outline(L['plt_pre72']), M), trace_k, w=3.0)
@@ -523,7 +543,7 @@ def world_overlays(c, t, cam, M):
                     kk = seg(t, C('share power') - 2.0 + i * 0.25, C('share power') + i * 0.25)
                     wline(c, M, pos[names[i]], pos[names[j % len(names)]], kk, rgb('#ffcf7a'), 1.4, 0.15, na * 0.8)
     # Crown / Grand Duchy (documented names of the two parts; no internal line drawn)
-    fa = win(t, C('federation') - 0.3, C('enormous') + 1.0, 0.6, 0.8)
+    fa = win(t, C('enormous') - 0.3, C('polish lithuanian ruthenian'), 0.6, 0.8)
     wlabel(c, cam, 21.2, 50.7, 'CROWN OF POLAND', font('Cinzel-Bold.ttf', 34), rgb('#ffe3ad'), fa, 6, reveal=seg(t, C('federation') - 0.3, C('federation') + 0.5))
     wlabel(c, cam, 26.6, 54.4, 'GRAND DUCHY OF LITHUANIA', font('Cinzel-Bold.ttf', 30), rgb('#ffe3ad'), fa, 5, reveal=seg(t, C('federation'), C('federation') + 0.8))
     # distance rings (enormous territory)
@@ -631,7 +651,9 @@ def screen_overlays(c, t, cam):
     card(c, t, C('imagine') + 0.3, C('warsaw') - 0.3, 'IMAGINE', ['Never erased', 'from the map'], None, 400, 'hyp', 76)
     card(c, t, C('great political capitals') - 0.1, C('russia prussia and austria') - 0.2, 'IMAGINE', ['Warsaw, a great', 'European capital'], None, 400, 'hyp', 70)
     # ---- in our timeline
-    card(c, t, C('in our timeline'), C('different turn') - 0.3, 'IN OUR TIMELINE', ['It disappeared'], 'at the end of the 18th century', 400, 'doc', 80)
+    card(c, t, C('in our timeline'), C('different turn') - 0.3, 'IN OUR TIMELINE', ['It', 'disappeared'], 'at the end of | the 18th century', 400, 'doc', 80, x=92)
+    plate(c, t, 'cake', C('in our timeline') + 0.4, C('different turn') - 0.2, 640, 380, 320, 487, 'The Troelfth Cake, 1773',
+          'Le Mire after Moreau | satire of the First Partition', focus=(0.5, 0.45), z=(1.0, 1.12))
     card(c, t, C('different turn') - 0.4, C('alternative world') - 0.2, 'BUT', ['What if history', 'took another turn?'], None, 400, 'hyp', 74)
     card(c, t, C('alternative world') - 0.1, C('once one') - 1.0, 'RETURN TO', ['1791'], None, 400, 'doc', 96)
     card(c, t, C('once one') + 0.2, C('peoples') - 0.3, 'IN 1770', ['c. 730,000 km²'], 'one of the largest states in Europe', 400, 'doc', 84)
@@ -645,8 +667,10 @@ def screen_overlays(c, t, cam):
     plate(c, t, 'mt', C('prussia and austria', 60) + 0.3, C('opportunities') + 1.6, 588, 420, 400, 540, 'Maria Theresa of Austria', 'Martin van Meytens, 1759 | Academy of Fine Arts, Vienna', focus=(0.5, 0.3), z=(1.0, 1.12))
     # ---- constitution
     card(c, t, C('then came') + 0.2, C('3rd') - 0.2, '', ['A moment that could', 'have changed everything'], None, 420, 'doc', 64)
-    plate(c, t, 'const', C('3rd') - 0.3, C('strengthen') - 0.1, 92, 380, 896, 640, 'The Constitution of 3 May 1791',
+    plate(c, t, 'const', C('3rd') - 0.3, C('first modern') + 0.3, 92, 380, 896, 640, 'The Constitution of 3 May 1791',
           'Kazimierz Wojniakowski, painted 1806 · National Museum, Warsaw', focus=(0.5, 0.55), z=(1.05, 1.35), par=(-60, 60), dolly=(0.0, 0.18))
+    plate(c, t, 'matejko', C('first modern') - 0.2, C('strengthen') - 0.1, 92, 380, 896, 556, 'The king swears the Constitution, 3 May 1791',
+          'after Jan Matejko, painted 1891 · Library of Congress', focus=(0.5, 0.5), z=(1.05, 1.22), par=(0, 0), dolly=(0, 0))
     card(c, t, C('new constitution') + 0.4, C('strengthen') - 0.1, '3 MAY 1791', [], 'One of the first modern written | constitutions in Europe', 1290, 'doc', 60)
     for i, (w0, s) in enumerate((('strengthen', 'A stronger central government'), ('limit', 'Liberum veto abolished'), ('reform the', 'Separation of powers'), ('collapse', 'Hereditary throne, to end royal elections'))):
         a = win(t, C(w0) - 0.2, C('brief moment') + 0.2, 0.4, 0.5)
@@ -658,10 +682,16 @@ def screen_overlays(c, t, cam):
           'Marcello Bacciarelli, 1764 · Royal Castle, Warsaw', focus=(0.47, 0.22), z=(1.0, 1.3), par=(30, -30), dolly=(0, 0.12))
     # ---- intervention
     card(c, t, C('targovica') - 0.4, C('in 1793') - 0.1, 'APRIL–MAY 1792', ['Targowica', 'Confederation'], 'Magnates opposed to the reforms | turned to Catherine II', 400, 'doc', 76)
+    plate(c, t, 'cath', C('in 1793') - 0.2, C('two years later') + 0.1, 130, 380, 330, 420, 'Catherine II', 'Russia', focus=(0.5, 0.3), z=(1.0, 1.1), ts=32)
+    plate(c, t, 'fw2', C('in 1793') + 0.3, C('two years later') + 0.1, 620, 380, 330, 420, 'Frederick William II', 'Prussia · engraving after Bornet', focus=(0.5, 0.33), z=(1.0, 1.1), ts=32)
+    for i, (k_, nm, sub) in enumerate((('cath', 'Catherine II', 'Russia'), ('fw2', 'Frederick William II', 'Prussia'), ('fr2', 'Francis II', 'Austria · Ketterlinus, 1792'))):
+        plate(c, t, k_, C('two years later') + 0.2 + i * 0.35, C('third partition') + 0.5, 92 + i * 312, 380, 270, 360, nm, sub.split(' · ')[0], focus=(0.5, 0.32), z=(1.0, 1.08), ts=26)
     card(c, t, C('commonwealth disappeared') - 0.2, C('imagine a different') - 0.3, '1795', ['The Commonwealth', 'disappeared'], None, 400, 'doc', 80)
     # ---- alternative
     card(c, t, C('imagine a different') - 0.1, C('move') - 0.2, 'BUT NOW', ['Imagine a', 'different outcome'], None, 400, 'hyp', 78)
     card(c, t, C('move') - 0.3, C('threat') - 0.3, 'IN THIS ALTERNATE TIMELINE', ['The reformers', 'move faster'], 'A stronger army · loyal nobles | diplomatic backing', 400, 'hyp', 74)
+    plate(c, t, 'kosc', C('stronger army') - 0.3, C('important nobles') + 0.3, 600, 640, 340, 400, 'Tadeusz Kościuszko',
+          'fought for the Commonwealth in 1792 and 1794 | engraving c. 1820 · Library of Congress', focus=(0.5, 0.4), z=(1.0, 1.1))
     for i, (w0, s) in enumerate((('military preparation', 'Military preparation'), ('political', 'Political unity'), ('international', 'International pressure'))):
         a = win(t, C(w0, 136) - 0.2, C('crisis') - 0.2, 0.3, 0.5)
         if a > 0: A1.gold_text(c, s, W / 2, 470 + i * 84, font('CG-SemiBold.ttf', 62), a, seg(t, C(w0, 136) - 0.2, C(w0, 136) + 0.6), 0.5, seg(t, C(w0, 136), C(w0, 136) + 1.5))
@@ -671,6 +701,10 @@ def screen_overlays(c, t, cam):
         A1.gold_text(c, 'STILL ON', W / 2, 470, font('Cinzel-Bold.ttf', 110), rem, seg(t, C('remains on the map') - 0.3, C('remains on the map') + 0.5), 12, seg(t, C('remains on the map'), C('remains on the map') + 1.8))
         A1.gold_text(c, 'THE MAP', W / 2, 590, font('Cinzel-Bold.ttf', 110), rem, seg(t, C('remains on the map') - 0.1, C('remains on the map') + 0.7), 12, seg(t, C('remains on the map') + 0.2, C('remains on the map') + 2.0))
     # ---- 19th century
+    plate(c, t, 'rizzi', C('19th century') - 0.2, C('constitutional monarchy') - 0.2, 92, 380, 896, 560, 'Carte de la Pologne, 1772',
+          'Giovanni Antonio Rizzi-Zannoni · Library of Congress', focus=(0.5, 0.5), z=(1.05, 1.3), par=(0, 0), dolly=(0, 0))
+    plate(c, t, 'lotter', C('federation') - 0.3, C('enormous') - 0.2, 320, 670, 440, 384, 'Grand Duchy of Lithuania, c. 1778',
+          'Tobias Conrad Lotter, Augsburg · Library of Congress', focus=(0.5, 0.5), z=(1.0, 1.2), par=(0, 0), dolly=(0, 0))
     card(c, t, C('constitutional monarchy') - 0.3, C('enormous') - 0.3, 'IN THE 19TH CENTURY', ['A constitutional', 'monarchy?'], 'or a federation with a stronger parliament', 400, 'hyp', 72)
     card(c, t, C('enormous') - 0.2, C('polish lithuanian ruthenian') - 0.3, '', ['Hard to govern'], 'more than 1,000 km from west to east', 420, 'hyp', 76)
     card(c, t, C('recognition') - 1.2, C('greatest challenge') - 0.2, 'MANY PEOPLES', ['Rights and', 'recognition'], None, 400, 'hyp', 74)
@@ -720,7 +754,9 @@ def screen_overlays(c, t, cam):
             text(c, 'what happened', W / 2 - 24, 1040, font('SourceSans3-SemiBold.ttf', 26), rgb('#fff1dc', cq * seg(fk, 0.6, 1)), align='r', spacing=3)
             text(c, 'one possible path', W / 2 + 270, 1040, font('SourceSans3-SemiBold.ttf', 26), rgb('#ffd98f', cq * seg(fk, 0.6, 1)), align='l', spacing=3)
     # ---- what we do know
-    card(c, t, C('what we do know') - 0.1, C('political weakness') - 0.3, 'WHAT WE DO KNOW', ['It did not lack', 'a future'], None, 400, 'doc', 76)
+    card(c, t, C('what we do know') - 0.1, C('lacked a future') - 1.0, 'WHAT WE DO KNOW', ['It did not lack', 'a future'], None, 400, 'doc', 76)
+    plate(c, t, 'sayer', C('lacked a future') - 1.2, C('political weakness') - 0.2, 92, 380, 896, 660, 'The Kingdom of Poland with its dismembered provinces',
+          'Robert Sayer, London, 1787', focus=(0.5, 0.5), z=(1.05, 1.3), par=(0, 0), dolly=(0, 0))
     for i, (w0, s) in enumerate((('political weakness', 'Political weakness'), ('foreign intervention', 'Foreign intervention'), ('ambitions', 'Imperial ambition'))):
         a = win(t, C(w0) - 0.2, C('imagine looking') - 0.4, 0.3, 0.6)
         if a > 0: text(c, s, W / 2, 470 + i * 96, font('Cinzel-Bold.ttf', 62), rgb('#fff1dc', a), spacing=3, reveal=seg(t, C(w0) - 0.2, C(w0) + 0.5), shadow=rgb('#000000', 0.95))
