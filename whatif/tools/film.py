@@ -490,7 +490,7 @@ def world_overlays(c, t, cam, M):
     wlabel(c, cam, 19.5, 48.0, 'HABSBURG MONARCHY', sc, rgb('#f0d7b4'), la, 5)
     wlabel(c, cam, 18.3, 56.4, 'Baltic Sea', font('CG-MediumItalic.ttf', 40), rgb('#86b0c9'), la, 4)
     # hypothetical intro: the three powers named
-    for nm, lon, lat, w0 in (('RUSSIA', 31.5, 54.5, 'russia prussia and austria'), ('PRUSSIA', 17.0, 52.5, 'prussia'), ('AUSTRIA', 21.0, 48.6, 'austria')):
+    for nm, lon, lat, w0 in (('RUSSIA', 31.5, 54.5, 'russia prussia and austria'), ('PRUSSIA', 15.6, 53.1, 'prussia'), ('AUSTRIA', 21.0, 48.6, 'austria')):
         t0 = C(w0, 18.0)
         a = win(t, t0 - 0.1, C('in our timeline') + 0.2, 0.3, 0.6)
         wlabel(c, cam, lon, lat, nm, font('Cinzel-Bold.ttf', 46), rgb('#fff1dc'), a, 6, reveal=seg(t, t0 - 0.1, t0 + 0.5), glow=rgb('#ffb347', 0.25 * a))
@@ -500,7 +500,7 @@ def world_overlays(c, t, cam, M):
     wlabel(c, cam, 27.4, 51.3, 'POLISH–LITHUANIAN', big, rgb('#fff1dc'), pla, 7)
     wlabel(c, cam, 27.4, 51.3, 'COMMONWEALTH', big, rgb('#fff1dc'), pla, 9, dy=38)
     # Warsaw spotlight (Imagine ... Warsaw ... capitals)
-    wa = win(t, C('warsaw') - 0.4, C('in our timeline'), 0.5, 0.8)
+    wa = win(t, C('warsaw') - 0.4, C('russia prussia and austria') + 0.4, 0.5, 0.7)
     if wa > 0:
         wx, wy = cam.pt(*CITIES['Warsaw'])
         for i in range(3):
