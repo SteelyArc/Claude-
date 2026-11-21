@@ -484,7 +484,7 @@ def scene(c, t, f):
 def world_overlays(c, t, cam, M):
     sc = font('CormorantSC-SemiBold.ttf', 34)
     # neighbour names
-    la = seg(t, 2.9, 3.8) * (1 - 0.6 * goldness(t)) * (1 - win(t, C('first world war') - 0.2, C('what we do know'), 0.8, 0.8)) * (1 - seg(t, C('imagine looking') - 0.2, C('imagine looking') + 0.8))
+    la = seg(t, 2.9, 3.8) * (1 - 0.6 * goldness(t)) * (1 - win(t, C('russia prussia and austria') - 0.4, C('in our timeline') + 0.4, 0.4, 0.6)) * (1 - win(t, C('first world war') - 0.2, C('what we do know'), 0.8, 0.8)) * (1 - seg(t, C('imagine looking') - 0.2, C('imagine looking') + 0.8))
     wlabel(c, cam, 16.6, 53.0, 'PRUSSIA', sc, rgb('#cfe0f2'), la, 8)
     wlabel(c, cam, 32.6, 56.6, 'RUSSIAN EMPIRE', sc, rgb('#d8e8c6'), la, 6)
     wlabel(c, cam, 19.5, 48.0, 'HABSBURG MONARCHY', sc, rgb('#f0d7b4'), la, 5)
