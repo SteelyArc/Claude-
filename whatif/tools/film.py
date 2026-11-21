@@ -351,8 +351,8 @@ def wline(c, M, a_ll, b_ll, k, col, w=2.0, bend=0.18, a=1.0, dash=None):
 
 
 # ================================================================ geography of labels
-PEOPLES = [('Polish', 19.6, 51.0), ('Lithuanian', 23.6, 55.4), ('Ruthenian', 27.6, 50.6), ('Jewish', 23.8, 51.9),
-           ('German', 18.4, 53.7), ('Armenian', 24.6, 49.3), ('Tatar', 25.9, 54.0), ('Latvian', 26.8, 56.2)]
+PEOPLES = [('Polish', 19.6, 51.0), ('Lithuanian', 23.6, 55.4), ('Ruthenian', 27.6, 50.6), ('Jewish', 26.7, 51.75),
+           ('German', 18.4, 53.7), ('Armenian', 26.3, 48.9), ('Tatar', 25.9, 54.0), ('Latvian', 26.8, 56.2)]
 CAPITALS = [('Berlin', 'l'), ('Vienna', 'l'), ('St Petersburg', 'r'), ('Moscow', 'r')]
 REGION = [('Kraków', 'l'), ('Lwów', 'r'), ('Gdańsk', 'l'), ('Vilnius', 'r'), ('Grodno', 'r')]
 
@@ -652,7 +652,7 @@ def screen_overlays(c, t, cam):
     card(c, t, C('great political capitals') - 0.1, C('russia prussia and austria') - 0.2, 'IMAGINE', ['Warsaw, a great', 'European capital'], None, 400, 'hyp', 70)
     # ---- in our timeline
     card(c, t, C('in our timeline'), C('different turn') - 0.3, 'IN OUR TIMELINE', ['It', 'disappeared'], 'at the end of | the 18th century', 400, 'doc', 80, x=92)
-    plate(c, t, 'cake', C('in our timeline') + 0.4, C('different turn') - 0.2, 640, 380, 320, 487, 'The Troelfth Cake, 1773',
+    plate(c, t, 'cake', C('in our timeline') + 0.4, C('different turn') - 0.2, 640, 380, 320, 487, 'The Twelfth Cake, 1773',
           'Le Mire after Moreau | satire of the First Partition', focus=(0.5, 0.45), z=(1.0, 1.12))
     card(c, t, C('different turn') - 0.4, C('alternative world') - 0.2, 'BUT', ['What if history', 'took another turn?'], None, 400, 'hyp', 74)
     card(c, t, C('alternative world') - 0.1, C('once one') - 1.0, 'RETURN TO', ['1791'], None, 400, 'doc', 96)
