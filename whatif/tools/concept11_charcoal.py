@@ -138,8 +138,8 @@ def scene(c, t, f):
         hand(c, 'been partitioned?', W / 2, 1730, 72, '#7a2a1a', a, seg(t, 0.8, 1.6), -2)
         ul = skia.Path(); ul.moveTo(280, 1760); ul.cubicTo(450, 1748, 650, 1772, 820, 1752); sketch(c, ul, '#7a2a1a', seg(t, 1.4, 1.9) * a, 3, 2, 0.8, 9)
     yr = year_at(t)
-    if yr and 2.0 < t < 7.2:
-        a = seg(t, 2.0, 2.3) * (1 - seg(t, 6.9, 7.2))
+    if yr and 2.0 < t < 6.9:
+        a = seg(t, 2.0, 2.3) * (1 - seg(t, 6.5, 6.85))
         b = {'1770': 2.0, '1772': 3.2, '1793': 4.4, '1795': 5.6}[yr]
         hand(c, f'c. {yr}' if yr == '1770' else yr, W / 2, 1660, 150, CHAR, a, seg(t, b, b + 0.4), -2)
         hand(c, YEAR_LABEL.get(yr, 'before the partitions').lower(), W / 2, 1750, 64, '#7a2a1a', a, seg(t, b + 0.2, b + 0.7), -2)

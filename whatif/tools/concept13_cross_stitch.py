@@ -171,8 +171,8 @@ def scene(c, t, f):
         stitched_text(c, 'Poland–Lithuania had never', W / 2, 1640, 52, '#2b2b2b', a * seg(t, 0.5, 0.9), 'EBG-Italic.ttf', 1)
         stitched_text(c, 'been partitioned?', W / 2, 1706, 52, '#2b2b2b', a * seg(t, 0.7, 1.1), 'EBG-Italic.ttf', 1)
     yr = year_at(t)
-    if yr and 2.0 < t < 7.2:
-        a = seg(t, 2.0, 2.3) * (1 - seg(t, 6.9, 7.2))
+    if yr and 2.0 < t < 6.9:
+        a = seg(t, 2.0, 2.3) * (1 - seg(t, 6.5, 6.85))
         label_patch(c, W / 2, 1590, 640, 240, a)
         stitched_text(c, yr, W / 2, 1600, 110, '#2b2b2b', a, sp=8)
         stitched_text(c, YEAR_LABEL.get(yr, 'BEFORE THE PARTITIONS'), W / 2, 1664, 32, '#b3192b', a, 'SourceSans3-SemiBold.ttf', 5)

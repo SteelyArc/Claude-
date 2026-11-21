@@ -127,9 +127,9 @@ def scene(c, t, f):
         neon_text(c, 'POLAND–LITHUANIA HAD NEVER', W / 2, 1715, 40, NEON['white'], flick(t, 0.6, 102, 0.4) * (1 - seg(t, 2.0, 2.4)), 'SourceSans3-SemiBold.ttf', 6)
         neon_text(c, 'BEEN PARTITIONED?', W / 2, 1780, 40, NEON['gold'], flick(t, 0.9, 103, 0.4) * (1 - seg(t, 2.0, 2.4)), 'SourceSans3-SemiBold.ttf', 6)
     yr = year_at(t)
-    if yr and 2.0 < t < 7.2:
+    if yr and 2.0 < t < 6.9:
         b0 = {'1770': 2.0, '1772': 3.2, '1793': 4.4, '1795': 5.6}[yr]
-        b = flick(t, b0, int(yr), 0.35) * (1 - seg(t, 6.9, 7.2))
+        b = flick(t, b0, int(yr), 0.35) * (1 - seg(t, 6.5, 6.85))
         neon_text(c, yr, W / 2, 1680, 150, NEON['white'], b, DISP, 8)
         neon_text(c, YEAR_LABEL.get(yr, 'BEFORE THE PARTITIONS'), W / 2, 1770, 38, NEON['plt'], b, 'SourceSans3-SemiBold.ttf', 8)
     if 6.9 < t < 8.4:

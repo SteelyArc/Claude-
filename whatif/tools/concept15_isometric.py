@@ -108,8 +108,8 @@ def scene(c, t, f):
         text(c, 'POLAND–LITHUANIA HAD NEVER', W / 2, 1640, font('SourceSans3-SemiBold.ttf', 50), rgb('#1d2433', a), spacing=4, reveal=seg(t, 0.4, 1.1))
         text(c, 'BEEN PARTITIONED?', W / 2, 1710, font('SourceSans3-SemiBold.ttf', 50), rgb('#e4505c', a), spacing=4, reveal=seg(t, 0.6, 1.3))
     yr = year_at(t)
-    if yr and 2.0 < t < 7.2:
-        a = seg(t, 2.0, 2.4) * (1 - seg(t, 6.9, 7.2))
+    if yr and 2.0 < t < 6.9:
+        a = seg(t, 2.0, 2.4) * (1 - seg(t, 6.5, 6.85))
         text(c, yr, W / 2, 1700, font('SourceSans3-Regular.ttf', 180), rgb('#1d2433', a), spacing=10)
         text(c, YEAR_LABEL.get(yr, 'BEFORE THE PARTITIONS'), W / 2, 1780, font('SourceSans3-SemiBold.ttf', 36), rgb('#e4505c', a), spacing=10)
     if 6.9 < t < 8.4:
