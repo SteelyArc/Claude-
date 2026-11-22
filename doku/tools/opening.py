@@ -24,7 +24,8 @@ from visual_test import GRAIN, VIG, clamp, comp, ease, ease_out, layer
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 FPS = 30
-AUDIO_START = 1.0
+AUDIO_START = float(os.environ.get("AUDIO_START", "0.0"))
+D = AUDIO_START - 1.0  # shift of all speech-synced timings (designed for a 1.0 s start)
 SPEECH = os.path.join(ROOT, "audio", "krupp_speech_british_pathe.mp3")
 FILM_P = os.path.join(ROOT, "archive", "film", "Why_We_Fight.1.Prelude_to_War.webm.480p.vp9.webm")
 FILM_N = os.path.join(ROOT, "archive", "film", "Why_We_Fight.2.The_Nazis_Strike.webm.480p.vp9.webm")
@@ -62,7 +63,7 @@ def sub_layers():
     out = []
     fde, fen = font(SERIF_I, 30), font(SANS_B, 44)
     cx = (SAFE_X0 + SAFE_X1) / 2
-    for s, e, de, en in SUBS:
+    for s, e, de, en in [(a + D, b + D, c, d_) for a, b, c, d_ in SUBS]:
         def draw(d, de=de, en=en):
             de_l = wrap(d, de, fde, SAFE_X1 - SAFE_X0 - 20)
             en_l = wrap(d, en, fen, SAFE_X1 - SAFE_X0 - 20)
@@ -226,6 +227,8 @@ def build_shots(geo):
         (25.4, 27.6, "photo", Image.open(os.path.join(PHOTOS, ph("Bundesarchiv_Bild_102_14439"))),
          "Hitler before the Reichstag · Enabling Act, 23 Mar 1933", credit_bundesarchiv(ph("Bundesarchiv_Bild_102_14439"))),
     ]
+    shots = [(a + D, b + D) + tuple(rest) for a, b, *rest in shots]
+    shots[0] = (0.0,) + shots[0][1:]
     return shots
 
 
@@ -261,7 +264,7 @@ def build_audio(total, cuts, path, sr=48000):
     for c in cuts:
         s, e = max(0, int((c - 0.25) * sr)), min(n, int((c + 0.25) * sr))
         out[s:e] += 0.18 * soft[s:e] * np.sin(np.linspace(0, np.pi, e - s)) ** 2
-    for at, amp in ((0.0, 0.5), (27.6, 0.55), (28.2, 0.35)):
+    for at, amp in ((0.0, 0.5), (27.6 + D, 0.55), (28.2 + D, 0.35)):
         s = int(at * sr)
         L = min(int(2.5 * sr), n - s)
         tt = np.arange(L) / sr
@@ -298,10 +301,8 @@ def main():
                              d.text((SAFE_X0 + 16, 208), "● HISTORICAL AUDIO · ORIGINAL GERMAN", font=font(MONO, 24), fill=PAPER)))
     l_src = layer(lambda d: d.text((SAFE_X0, 258), "Hitler to Krupp workers, Essen, c. 1935/36 · British Pathé, film ID 604.06",
                                    font=font(MONO_L, 20), fill=(200, 190, 170)))
-    l_ctx = layer(lambda d: (text_c(d, 860, "HISTORICAL DOCUMENTARY", font(MONO, 30), GOLD, w=1000),
-                             text_c(d, 910, "Contains original Nazi-era propaganda,", font(SERIF_I, 36), PAPER, w=1000),
-                             text_c(d, 956, "shown for education and context.", font(SERIF_I, 36), PAPER, w=1000)))
-    cuts = [s[0] for s in shots] + [27.6, TITLE_START]
+    l_ctx = layer(lambda d: d.text((SAFE_X0, 286), "Historical documentary · contains Nazi-era propaganda, shown for education", font=font(MONO_L, 19), fill=(170, 160, 140)))
+    cuts = [s[0] for s in shots[1:]] + [27.6 + D, TITLE_START]
     tmp = tempfile.mkdtemp()
     wav = os.environ.get("OPENING_WAV") or os.path.join(tmp, "a.wav")
     build_audio(TOTAL, cuts, wav)
@@ -344,8 +345,9 @@ def main():
             for s, e, L in subs:
                 if s - 0.1 <= T <= e + 0.25:
                     f = comp(f, L, min(ease((T - s + 0.1) / 0.15), 1 - ease((T - e) / 0.25)))
-            if T > 27.3:
-                f *= 1 - ease((T - 27.3) / 0.3)
+            f = comp(f, l_ctx, 1 - ease((T - 6.0) / 0.5))
+            if T > 27.3 + D:
+                f *= 1 - ease((T - 27.3 - D) / 0.3)
         else:
             f = title.frame((T - TITLE_START) / (TOTAL - TITLE_START))
         img = finish(f, i, zoom, center)
