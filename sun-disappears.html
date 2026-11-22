@@ -223,6 +223,52 @@ for(let i=0;i<9;i++){const l=makeLamp();l.position.set(-40+i*10,0,ROADZ+3.4);gSc
 const cars=[];for(let i=0;i<8;i++){const c=makeCar();const dir=i%2?-1:1;c.rotation.y=dir>0?0:Math.PI;gScene.add(c);cars.push({c,x0:-50+i*12.5,dir,z:ROADZ+(dir>0?0.9:-0.9)});}
 const people=[];for(let i=0;i<14;i++){const p=makePerson();p.position.set(-30+i*4.5+R(-1,1),0,ROADZ+2.95+R(-0.2,0.15));p.rotation.y=R(-1,1);gScene.add(p);people.push({p,ph:R(0,6.28)});}
 const clouds=[];for(let i=0;i<10;i++){const c=makeCloud();c.position.set(0,R(11,19),R(-45,-15));gScene.add(c);clouds.push({c,x0:R(-70,70)});}
+
+// ---------- FUN LAYER (ground): birds, sunbather, reactions, phones, beanies ----------
+const birds=[];
+for(let i=0;i<8;i++){const g=new THREE.Group();const b=new THREE.Mesh(new THREE.SphereGeometry(0.16,12,8),M.dark);b.scale.set(1.7,1,1);g.add(b);
+  const mk=(z)=>{const p=new THREE.Group();const w=new THREE.Mesh(rbox(0.16,0.04,0.55,0.02),M.dark);w.position.z=z;p.add(w);g.add(p);return p;};
+  const pl=mk(0.28), pr=mk(-0.28); shadowed(g,true,false); gScene.add(g);
+  birds.push({g,pl,pr,x0:R(-30,30),y:R(7,11),z:R(-12,-3),ph:R(0,6),sp:R(2.2,3.4)});}
+const sunbather=new THREE.Group(); sunbather.position.set(-3.7,0,4.0); sunbather.rotation.y=0.35; gScene.add(sunbather);
+{const towel=new THREE.Mesh(rbox(1.0,0.05,2.0,0.02),mat('#ff9fd1'));towel.position.y=0.03;sunbather.add(towel);
+ const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,2.3,8),M.white);pole.position.set(0.8,1.15,-0.4);sunbather.add(pole);
+ const can=new THREE.Mesh(new THREE.ConeGeometry(1.25,0.55,12),mat('#4ecdc4',{roughness:0.7}));can.position.set(0.8,2.3,-0.4);sunbather.add(can);
+ shadowed(sunbather);}
+const lounger=makePerson(); const shades=new THREE.Mesh(rbox(0.3,0.08,0.06,0.02),M.dark); shades.position.set(0,0.72,0.13); lounger.add(shades);
+const loungerPivot=new THREE.Group(); loungerPivot.position.set(0,0.12,0.7); loungerPivot.add(lounger); sunbather.add(loungerPivot);
+// people closest to the camera react when the light goes out
+const watchers=people.slice().sort((a,b)=>Math.abs(a.p.position.x-1.4)-Math.abs(b.p.position.x-1.4)).slice(0,4);
+const bubbles=watchers.map(()=>{const l=makeLabel(null,'?!',{accent:'#ff6b5a',worldH:0.62});gScene.add(l);l.userData.base=l.scale.clone();return l;});
+const phoneMat=new THREE.MeshStandardMaterial({color:lin('#ffffff'),emissive:lin('#ffffff'),emissiveIntensity:2});
+const beamMat=new THREE.MeshBasicMaterial({color:lin('#fff4c2'),transparent:true,opacity:0.22,blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false});
+const phones=watchers.map(w=>{const g=new THREE.Group();const ph=new THREE.Mesh(rbox(0.1,0.18,0.03,0.015),phoneMat);g.add(ph);
+  const beam=new THREE.Mesh(new THREE.ConeGeometry(0.9,3.2,24,1,true).translate(0,-1.6,0),beamMat);beam.rotation.x=-Math.PI/2-0.5;beam.position.z=0.02;g.add(beam);
+  g.position.set(0.12,0.5,0.22);w.p.add(g);return g;});
+const hats=people.map(o=>{const h=new THREE.Mesh(new THREE.SphereGeometry(0.17,16,10,0,Math.PI*2,0,Math.PI/2),pick([mat('#ff6b5a'),mat('#4ecdc4'),mat('#FFD43B')]));h.position.y=0.76;h.scale.y=1.1;o.p.add(h);return h;});
+function updateGroundFun(t,sc){
+  const daylight=t<T_OUT;
+  birds.forEach(b=>{b.g.visible=sc===3||(sc===5&&daylight);if(!b.g.visible)return;
+    b.g.position.set(camP.x+wrapS(b.x0+b.sp*t-camP.x,60),b.y+0.3*Math.sin(t*1.5+b.ph),b.z);
+    const f=0.9*Math.sin(t*11+b.ph);b.pl.rotation.x=f;b.pr.rotation.x=-f;});
+  sunbather.visible=sc!==7;
+  const sit=easeOut((t-T_OUT-0.25)/0.3);
+  loungerPivot.rotation.x=-Math.PI/2*(1-sit)+0.15*Math.sin(clamp((t-T_OUT-0.25)/0.5)*Math.PI)*sit;
+  people.forEach((o,i)=>{
+    let y=0.05*Math.abs(Math.sin(t*4+o.ph));
+    if(sc===3) y+=0.35*Math.pow(Math.max(0,Math.sin(t*2.1+o.ph*3)),12);
+    const u=t-T_OUT-0.05-(o.ph%1)*0.15; if(u>0&&u<0.55) y+=1.0*Math.sin(Math.PI*u/0.55);
+    o.p.position.y=y;
+    hats[i].visible=sc===7;
+    if(o.x0===undefined) o.x0=o.p.position.x;
+    if(sc===7){o.p.scale.set(1.35,1,1.35);o.p.position.x=o.x0+0.025*Math.sin(t*63+o.ph*9);} else {o.p.scale.set(1,1,1);o.p.position.x=o.x0;}
+  });
+  watchers.forEach((w,i)=>{const l=bubbles[i];const a=t-T_OUT-0.2-i*0.12;l.visible=sc===5&&a>0;
+    if(l.visible){const k=easeOut(a/0.25)*(1+0.25*Math.sin(clamp(a/0.4)*Math.PI));l.scale.copy(l.userData.base).multiplyScalar(k);l.position.set(w.p.position.x,w.p.position.y+1.35+0.08*Math.sin(t*6+i),w.p.position.z);}
+    phones[i].visible=sc===5&&t>T_OUT+1.4+i*0.25;});
+  // comedic punch-in when the light goes out
+  gCam.fov=55-8*Math.sin(Math.PI*clamp((t-T_OUT)/1.1)); gCam.updateProjectionMatrix();
+}
 // pond + growing ice
 const POND={x:-1.0,z:5.2,r:2.5};
 const pond=new THREE.Mesh(new THREE.CircleGeometry(POND.r,64),mat('#3b9be0',{roughness:0.25}));pond.rotation.x=-Math.PI/2;pond.position.set(POND.x,0.03,POND.z);pond.receiveShadow=true;gScene.add(pond);
@@ -337,6 +383,103 @@ const front=new THREE.Mesh(new THREE.PlaneGeometry(1,1),ringMat('#ffd76a')); fro
 const lblFront=makeLabel('LAST SUNLIGHT + GRAVITY CHANGE','300,000 km/s',{worldH:0.5}); sScene.add(lblFront);
 
 /* ============================================================
+   FUN LAYER — cartoon faces, props and gags (space)
+   ============================================================ */
+const faceW=mat('#ffffff',{roughness:0.35}), faceK=mat('#1b1a2b',{roughness:0.4});
+const cheekM=new THREE.MeshStandardMaterial({color:lin('#ff8fa3'),roughness:0.8,transparent:true,opacity:0.75});
+function makeFace(R,parent){
+  const f=new THREE.Group(); const F={f,R,eyes:[],pupils:[],brows:[]};
+  for(const s of [-1,1]){
+    const e=new THREE.Mesh(new THREE.SphereGeometry(0.2*R,24,16),faceW); e.position.set(s*0.3*R,0.22*R,1.0*R); f.add(e); F.eyes.push(e);
+    const p=new THREE.Mesh(new THREE.SphereGeometry(0.095*R,16,12),faceK); f.add(p); F.pupils.push(p);
+    const b=new THREE.Mesh(rbox(0.28*R,0.06*R,0.06*R,0.025*R),faceK); b.position.set(s*0.3*R,0.52*R,1.0*R); f.add(b); F.brows.push(b);
+    const c=new THREE.Mesh(new THREE.SphereGeometry(0.09*R,16,10),cheekM); c.scale.set(1.4,0.8,0.4); c.position.set(s*0.52*R,-0.04*R,1.0*R); f.add(c);
+  }
+  F.smile=new THREE.Mesh(new THREE.TorusGeometry(0.22*R,0.04*R,10,36,Math.PI),faceK); f.add(F.smile);
+  F.o=new THREE.Mesh(new THREE.SphereGeometry(0.12*R,20,14),faceK); F.o.position.set(0,-0.22*R,1.05*R); f.add(F.o);
+  parent.add(f); return F;
+}
+function setFace(F,{open=1,look=[0,0],brow=0,mouth='smile',ms=1,frown=false}){
+  const R=F.R;
+  F.eyes.forEach(e=>e.scale.set(1,1.15*Math.max(0.06,open),0.55));
+  F.pupils.forEach((p,i)=>{const s=i?1:-1;p.position.set(s*0.3*R+look[0]*R,0.2*R+look[1]*R,1.12*R);p.scale.set(1,Math.max(0.05,Math.min(1,open*1.4)),0.5);p.visible=open>0.2;});
+  F.brows.forEach((b,i)=>{const s=i?1:-1;b.position.y=(0.52+0.1*brow)*R;b.rotation.z=s*(-0.28*brow);});
+  F.smile.visible=mouth==='smile'; F.smile.rotation.z=frown?0:Math.PI; F.smile.position.set(0,(frown?-0.34:-0.1)*R,1.06*R); F.smile.scale.setScalar(ms);
+  F.o.visible=mouth==='o'; F.o.scale.set(ms,1.3*ms,0.35);
+}
+const earthFace=makeFace(GR,sScene);
+// Sun: face, rotating corona, cool sunglasses
+const sunFace=makeFace(1.2,sunGroup);
+const corona=new THREE.Group(); sunFace.f.add(corona);
+{const cm=new THREE.MeshBasicMaterial({color:lin('#ffc84a'),toneMapped:false});
+ for(let i=0;i<14;i++){const a=i/14*Math.PI*2;const c=new THREE.Mesh(new THREE.ConeGeometry(0.17,0.5,12),cm);c.position.set(1.52*Math.cos(a),1.52*Math.sin(a),-0.2);c.rotation.z=a-Math.PI/2;corona.add(c);}}
+const glasses=new THREE.Group(); sScene.add(glasses);
+{const gm=mat('#15141f',{roughness:0.15,metalness:0.3});
+ for(const s of [-1,1]){const l=new THREE.Mesh(rbox(0.52,0.36,0.08,0.12),gm);l.position.x=s*0.36;glasses.add(l);}
+ const br=new THREE.Mesh(rbox(0.3,0.06,0.05,0.02),gm);br.position.y=0.08;glasses.add(br);
+ for(const s of [-1,1]){const arm=new THREE.Mesh(rbox(0.05,0.05,0.7,0.02),gm);arm.position.set(s*0.62,0.08,-0.33);glasses.add(arm);}
+ shadowed(glasses,true,false);}
+// Earth's winter gear (final scene)
+const winter=new THREE.Group(); earthFace.f.add(winter);
+{const R=GR;
+ const beanie=new THREE.Group();
+ const cap=new THREE.Mesh(new THREE.SphereGeometry(R*0.66,40,20,0,Math.PI*2,0,Math.PI/2),mat('#ff6b5a',{roughness:0.95}));cap.scale.set(1,0.8,1);beanie.add(cap);
+ const band=new THREE.Mesh(new THREE.TorusGeometry(R*0.66,R*0.09,14,48).rotateX(Math.PI/2),mat('#fff3e0',{roughness:0.95}));beanie.add(band);
+ const pom=new THREE.Mesh(new THREE.IcosahedronGeometry(R*0.17,2),mat('#fff3e0',{roughness:1}));pom.position.y=R*0.58;beanie.add(pom);
+ beanie.position.y=R*0.72; winter.add(beanie); winter.userData.beanie=beanie;
+ const scarf=new THREE.Group();
+ const wrap=new THREE.Mesh(new THREE.TorusGeometry(R*0.9,R*0.12,16,60).rotateX(Math.PI/2),mat('#4ecdc4',{roughness:0.95}));scarf.add(wrap);
+ const tail=new THREE.Mesh(rbox(R*0.22,R*0.6,R*0.08,R*0.04),wrap.material);tail.position.set(R*0.35,-R*0.32,R*0.88);tail.rotation.z=0.25;scarf.add(tail);
+ scarf.position.y=-R*0.52; winter.add(scarf); winter.userData.scarf=scarf;
+ shadowed(winter,true,true);}
+// whistled music notes
+function makeNote(col){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d');g.fillStyle=col;g.strokeStyle=col;
+  g.beginPath();g.ellipse(46,96,22,15,-0.45,0,Math.PI*2);g.fill();g.fillRect(63,18,9,80);g.beginPath();g.moveTo(72,18);g.quadraticCurveTo(108,34,96,66);g.quadraticCurveTo(98,44,72,40);g.fill();
+  const tx=new THREE.CanvasTexture(c);tx.encoding=THREE.sRGBEncoding;return new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,depthWrite:false,toneMapped:false}));}
+const notes=[]; for(let i=0;i<6;i++){const n=makeNote(['#FFD43B','#ffffff','#ff9fd1'][i%3]);sScene.add(n);notes.push(n);}
+// speed trail behind Earth (straight-line flight)
+const trail=[]; for(let i=0;i<26;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.09,10,8),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.6,toneMapped:false,depthWrite:false}));sScene.add(m);trail.push(m);}
+const blinkAt=(t,times)=>{for(const b of times){const d=Math.abs(t-b);if(d<0.09)return d/0.09;}return 1;};
+const gv=new THREE.Vector3();
+function updateFun(t,sc,E){
+  // Earth shivers in the cold at the end
+  if(sc===8) globe.position.x+=0.03*Math.sin(t*71)+0.02*Math.sin(t*43);
+  earthFace.f.position.copy(globe.position); earthFace.f.scale.copy(globe.scale); earthFace.f.lookAt(sCam.position);
+  const ex={open:blinkAt(t,[1.7,4.2,6.3,10.2,12.6,24.6,27.4,40.6,46.8]),look:[-0.06,0.04],brow:0,mouth:'smile',ms:1};
+  if(sc===4){ex.mouth='o';ex.ms=0.5;ex.open*=0.5;ex.brow=0.4;ex.look=[0.05,0.07];}
+  if(sc===6){ex.mouth='o';ex.ms=1.55+0.1*Math.sin(t*9);ex.open=1.25;ex.brow=1.2;ex.look=[0,0];}
+  if(sc===8){ex.mouth='smile';ex.frown=true;ex.ms=0.75;ex.open=0.5*blinkAt(t,[55.6,58.6]);ex.brow=-0.7;ex.look=[0,-0.03];}
+  setFace(earthFace,ex);
+  winter.visible=sc===8;
+  if(winter.visible){const a=t-52;winter.userData.beanie.scale.setScalar(Math.max(0.001,easeOut((a-0.5)/0.35)*(1+0.15*Math.sin(clamp((a-0.5)/0.6)*Math.PI))));
+    winter.userData.scarf.scale.setScalar(Math.max(0.001,easeOut((a-0.95)/0.35)));}
+  // the Sun
+  const sv=sunBall.visible; sunFace.f.visible=sv;
+  const shock=clamp((t-7.2)/0.12);
+  if(sv){const k=sunBall.scale.x;sunFace.f.scale.setScalar(k);sunFace.f.lookAt(sCam.position);sunFace.f.updateMatrixWorld(true);corona.rotation.z=t*0.5;
+    corona.scale.setScalar(1+0.06*Math.sin(t*5));
+    setFace(sunFace,{open:shock>0?1.4:blinkAt(t,[3.1,5.6]),brow:shock*1.3,mouth:shock>0?'o':'smile',ms:shock>0?1.25:1});}
+  glasses.visible = sc===1||sc===2||sc===4;
+  if(t<T_V){const lift=easeOut((t-7.25)/0.25)*0.55;sunFace.f.localToWorld(gv.set(0,(0.2+lift)*1.2,1.32*1.2));glasses.position.copy(gv);glasses.quaternion.copy(sunFace.f.quaternion);glasses.rotation.x-=lift*0.8;glasses.scale.setScalar(sunBall.scale.x);}
+  else{const u=t-T_V;glasses.position.set(0.25+0.22*u,1.0+0.05*u+0.15*Math.sin(u*1.3),1.0+0.18*u);glasses.rotation.set(0.5+0.35*u,0.6*u,0.25*Math.sin(u*0.9)+0.3*u);glasses.scale.setScalar(1);}
+  // oblivious whistling (it can't know yet)
+  const whistling = sc===4 || (sc===2 && t>10.5);
+  notes.forEach((n,i)=>{n.visible=whistling;if(!whistling)return;
+    const ph=((t*0.55+i/notes.length)%1);
+    earthFace.f.localToWorld(gv.set(0.15*GR,-0.25*GR,1.15*GR));
+    n.position.copy(gv).add(new THREE.Vector3(Math.sin(i*2.1+ph*4)*0.35*globe.scale.x/0.3,ph*1.6,0));
+    const s=0.38*easeOut(ph/0.15); n.scale.set(s,s,1); n.material.opacity=1-ph;});
+  // flight trail
+  const s6=sc===6; trail.forEach((m,i)=>{m.visible=s6&&t>36.6;if(!m.visible)return;
+    const phiOut=earthPhi(T_OUT),U=new THREE.Vector3(Math.cos(phiOut),0,-Math.sin(phiOut));
+    m.position.copy(E).addScaledVector(U,-(0.95+i*0.28)).add(new THREE.Vector3(0,0.12*Math.sin(t*6+i*0.7),0.12*Math.cos(t*5+i)));
+    m.scale.setScalar(1-i/trail.length); m.material.opacity=0.65*(1-i/trail.length);});
+  // comedic camera punch-ins
+  if(sc===2) sCam.fov=45-9*Math.sin(Math.PI*clamp((t-7.15)/1.3));
+  if(sc===6) sCam.fov=45-4*Math.sin(Math.PI*clamp((t-36.3)/1.0));
+}
+
+/* ============================================================
    CAPTIONS + HUD
    ============================================================ */
 const SCENES=[
@@ -396,9 +539,9 @@ function drawTimeline(o,alpha){
   for(const tk of o.ticks){const px=tx+tw*tk.p;ctx.fillStyle='rgba(255,255,255,0.6)';ctx.fillRect(px-2,ty-8,4,34);ctx.fillStyle='#c9d0f2';ctx.textAlign=tk.p<0.05?'left':tk.p>0.95?'right':'center';ctx.fillText(tk.label,px,ty+58);}
   ctx.restore();
 }
-function drawCard(title,accent,items,shown,alpha){
+function drawCard(title,accent,items,shown,alpha,yTop){
   if(alpha<=0)return;
-  const x=70,w=W-140,y=H-120-270-30-(70+items.length*58),h=70+items.length*58;
+  const x=70,w=W-140,h=70+items.length*58,y=yTop??(H-120-270-30-h);
   ctx.save();ctx.globalAlpha=alpha;panel(x,y,w,h,28);
   ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.font=`900 36px ${FONT}`;ctx.fillStyle=accent;ctx.fillText(title,x+34,y+54);
   items.forEach((it,i)=>{const a=clamp(shown[i]);if(a<=0)return;ctx.globalAlpha=alpha*a;const yy=y+108+i*58;
@@ -430,13 +573,14 @@ function updateGround(t){
   dark = t>=T_OUT;
   setGroundDark(dark,t);
   if(sc===3){ camP.set(-4+0.08*(t-14),1.6,12.5-0.1*(t-14)); look.set(4,4.0,-6); }
-  else if(sc===5){ const a=t-29.6; camP.set(-1.2+0.05*a,1.25,11.5-0.12*a); look.set(2.5,lerp(4.4,6.2,ease((t-T_OUT)/2.5)),-8); }
+  else if(sc===5){ const a=t-29.6; camP.set(-1.2+0.05*a,1.25,11.5-0.12*a); look.set(2.5,lerp(4.4,3.5,ease((t-T_OUT)/1.5)),-8); }
   else { const a=t-44; camP.set(-1.6+0.05*a,1.5,13.4-0.1*a); look.set(0.6,1.7,3); }
   gCam.position.copy(camP); gCam.lookAt(look);
   const focus=look.clone(); focus.y=0; gSun.target.position.copy(focus); gSun.position.copy(focus).add(new THREE.Vector3(-30,24,16));
   const moving = sc!==7;
   for(const c of cars){const x=moving?wrapS(c.x0+c.dir*4.5*t,100):c.x0;c.c.position.set(camP.x+wrapS(x-camP.x,100),0,c.z);}
-  for(const p of people){p.p.visible=sc!==7;p.p.position.y=0.05*Math.abs(Math.sin(t*4+p.ph));}
+  for(const p of people){p.p.visible=true;}
+  updateGroundFun(t,sc);
   for(const c of clouds) c.c.position.x=camP.x+wrapS(c.x0+0.7*t-camP.x,160);
   // cooling (scene 7)
   const s7=sc===7; thermo.visible=lblT15.visible=lblT18.visible=lblT73.visible=s7;
@@ -516,9 +660,10 @@ function updateSpace(t){
   else if(sc===6){ const gph=phiOut+days*2*Math.PI/365.25; const M=new THREE.Vector3((E.x+RO*Math.sin(gph))/2,0,(E.z+RO*Math.cos(gph))/2); sCam.fov=45; sCam.position.set(M.x+10.5,2.6,M.z-0.2); sCam.lookAt(M.x,0.35,M.z); }
   else { const a=t-52; globe.scale.setScalar(1); globe.position.set(lerp(-1.6,1.4,a/9),0,0); globe.rotation.set(0.35,0.35*t,0.1);
     sLight.position.copy(globe.position).add(new THREE.Vector3(7,3,-9)); sLight.target.position.copy(globe.position); sLight.intensity=1.3; sHemi.intensity=0.3;
-    sCam.fov=45; sCam.position.set(0.8-0.1*a,-0.9+0.05*a,14.5-0.25*a); sCam.lookAt(0.2,0.7,0);
+    sCam.fov=45; sCam.position.set(0.8-0.1*a,-0.6+0.05*a,18.0-0.22*a); sCam.lookAt(0.2,0.9,0);
     path.visible=true; path.position.set(-40,0,-0.0); path.scale.set(80,1,1); path.rotation.set(0,0,0); pathMat.opacity=0.55; }
   if(sc!==8) pathMat.opacity=0.9;
+  updateFun(t,sc,E);
   sCam.updateProjectionMatrix();
 }
 
@@ -550,7 +695,7 @@ function renderAt(t){
   // instant vs slow
   if(t>=T_OUT&&t<36){
     const a=t-T_OUT;
-    drawCard('INSTANT (at 8:20)','#FFD43B',[{text:'Sunlight gone'},{text:'Sky turns black'},{text:'Earth stops curving around the Sun'}],[a/0.25-1.2,a/0.25-2.6,a/0.25-4.0],clamp((a-0.2)/0.3)*clamp((36-t)/0.25));
+    drawCard('INSTANT (at 8:20)','#FFD43B',[{text:'Sunlight gone'},{text:'Sky turns black'},{text:'Earth stops curving around the Sun'}],[a/0.25-1.2,a/0.25-2.6,a/0.25-4.0],clamp((a-0.2)/0.3)*clamp((36-t)/0.25),560);
   }
   if(t>=44.4&&t<52){
     const a=t-44;

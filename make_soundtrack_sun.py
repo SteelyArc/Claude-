@@ -252,6 +252,36 @@ S(whoosh(3.5, 100, 900), 53.5, 0.12, 0.0)
 S(brass_hit([60, 64, 67, 72], 0.18), 59.9, 0.26)
 S(brass_hit([60, 64, 67, 72, 76], 1.0), 60.12, 0.30)
 S(bell(mtof(96), 1.0), 60.12, 0.12)
+
+# ---------------- extra cartoon gags ----------------
+def whistle(m, d):
+    t = tt(d); fr = mtof(m) * (1 + 0.012 * np.sin(2 * np.pi * 6 * t)) * (1 + 0.03 * np.exp(-t * 30))
+    return (np.sin(2 * np.pi * phase(fr)) + 0.02 * rng.standard_normal(len(t))) * env(len(t), 0.03, 0.05)
+def kazoo_brr(d=0.9):
+    t = tt(d); fr = 140 * (1 + 0.08 * np.sign(np.sin(2 * np.pi * 18 * t)))
+    return np.tanh(bp(saw(phase(fr)), 300, 2500) * 2) * env(len(t), 0.02, 0.15)
+for b in [1.7, 4.2, 6.3, 10.2, 12.6, 24.6, 27.4, 40.6]:
+    S(pop(1700, 0.05), b, 0.07, 0.3)                                   # blinks
+S(slide_whistle(500, 1700, 0.45), 7.2, 0.2, -0.3)                       # the Sun gasps
+S(boing(420, 0.5), 7.27, 0.2, -0.3)                                     # sunglasses flip up
+S(bell(mtof(100), 1.2), 8.1, 0.12, 0.3); S(boing(130, 1.0), 8.4, 0.12, 0.4)   # glasses tumble away
+tune = [79, 81, 79, 76, 72, 74, 76, None, 77, 76, 74, 72, 74, 76, 72, None]
+for start, end in [(10.6, 14.0), (22.4, 29.4)]:
+    i = 0; t0 = start
+    while t0 < end - 0.3:
+        n = tune[i % len(tune)]
+        if n is not None: S(whistle(n + 12, 0.24), t0, 0.07, 0.35)
+        t0 += 0.25; i += 1
+for i in range(6): S(boing(rng.uniform(260, 380), 0.35), 14.8 + i * 1.1 + rng.uniform(0, 0.3), 0.05, rng.uniform(-0.5, 0.5))  # hopping people
+for i in range(4): S(boing(rng.uniform(180, 320), 0.55), 31.05 + i * 0.09, 0.16, -0.4 + 0.27 * i)  # everyone jumps
+for i in range(4): S(pop(1000 + 150 * i, 0.1), 31.2 + i * 0.12, 0.18, -0.3 + 0.2 * i)            # ?! bubbles
+S(slide_whistle(300, 900, 0.35), 31.25, 0.14, -0.6)                     # sunbather sits up
+for i in range(4): S(click(), 32.4 + i * 0.25, 0.18, -0.4 + 0.25 * i)  # phone flashlights
+S(slide_whistle(1500, 600, 0.6), 38.6, 0.12, 0.3); S(slide_whistle(600, 1700, 0.6), 39.2, 0.12, 0.3)  # wheee
+S(kazoo_brr(0.9), 45.4, 0.16, 0.2); S(kazoo_brr(1.1), 49.4, 0.18, -0.2)
+S(boing(300, 0.7), 52.5, 0.2, 0.0)                                      # beanie pops on
+S(whoosh(0.6, 400, 3000), 52.95, 0.2, 0.3)                              # scarf wraps
+for t0 in [54.0, 56.6, 58.6]: S(chatter(0.9), t0, 0.2, rng.uniform(-0.3, 0.3))
 # caption pops
 for t0 in [0.35, 7.35, 14.35, 22.35, 29.95, 36.35, 44.35, 52.35]:
     S(pop(800, 0.08), t0 + 0.05, 0.16, 0.0)
