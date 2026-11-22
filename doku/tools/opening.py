@@ -202,7 +202,8 @@ class Title:
         k = ease((t - 0.15) / 0.25)
         f = comp(f, self.l_t2, k, dy=24 * (1 - k))
         f = comp(f, self.l_d, ease((t - 0.35) / 0.25))
-        f *= 1 - ease((t - 0.85) / 0.15)
+        if os.environ.get("OPENING_STANDALONE", "1") == "1":
+            f *= 1 - ease((t - 0.85) / 0.15)
         return f
 
 
@@ -291,7 +292,8 @@ def main():
     subs = sub_layers()
     caps = [caption_layer(s[4], s[5]) for s in shots]
     title = Title()
-    TITLE_START, TOTAL = 28.0, 33.5
+    TITLE_START = float(os.environ.get("TITLE_START", "28.0"))
+    TOTAL = float(os.environ.get("OPENING_TOTAL", "33.5"))
     l_tag = layer(lambda d: (d.rounded_rectangle([SAFE_X0, 200, SAFE_X0 + 560, 246], 6, fill=RED),
                              d.text((SAFE_X0 + 16, 208), "● HISTORICAL AUDIO · ORIGINAL GERMAN", font=font(MONO, 24), fill=PAPER)))
     l_src = layer(lambda d: d.text((SAFE_X0, 258), "Hitler to Krupp workers, Essen, c. 1935/36 · British Pathé, film ID 604.06",
@@ -301,7 +303,7 @@ def main():
                              text_c(d, 956, "shown for education and context.", font(SERIF_I, 36), PAPER, w=1000)))
     cuts = [s[0] for s in shots] + [27.6, TITLE_START]
     tmp = tempfile.mkdtemp()
-    wav = os.path.join(tmp, "a.wav")
+    wav = os.environ.get("OPENING_WAV") or os.path.join(tmp, "a.wav")
     build_audio(TOTAL, cuts, wav)
     if preview:
         frames_to = [int(x * FPS) for x in (0.5, 3.5, 7.0, 11.5, 14.5, 17.0, 19.5, 21.5, 24.0, 26.5, 30.5)]
