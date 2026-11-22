@@ -141,7 +141,7 @@ def d11_tilted_map(geo, mod):
         pts = [proj(*p) for p in r]
         d.polygon(pts, fill=(92, 84, 70, 255))
         d.line(pts + [pts[0]], fill=GOLD + (255,), width=3)
-    for c in ("Hamburg", "München", "Nürnberg", "Köln", "Königsberg"):
+    for c in ("Hamburg", "Munich", "Nuremberg", "Cologne", "Königsberg"):
         x, y = proj(*CITIES[c])
         d.ellipse([x - 7, y - 7, x + 7, y + 7], fill=PAPER + (255,))
         d.text((x + 14, y - 16), c, font=font(SANS, 26), fill=PAPER + (230,))
@@ -168,12 +168,12 @@ def d11_tilted_map(geo, mod):
     glow_text(img, (px + 30, py - 70), "Berlin", font(SANS_B, 40), PAPER, radius=10, strength=1)
     letterbox(img, 0)
     d2 = ImageDraw.Draw(img)
-    d2.text((60, 150), "30. JANUAR 1933", font=font(MONO, 34), fill=GOLD)
-    glow_text(img, (60, 200), "Machtübertragung", font(SERIF_B, 84), PAPER, radius=14, strength=1)
-    d2.text((60, 310), "Hindenburg ernennt Hitler zum Reichskanzler.", font=font(SERIF_I, 38), fill=DIM)
+    d2.text((60, 150), "30 JANUARY 1933", font=font(MONO, 34), fill=GOLD)
+    glow_text(img, (60, 200), "Power Handed Over", font(SERIF_B, 84), PAPER, radius=14, strength=1)
+    d2.text((60, 310), "Hindenburg appoints Hitler Reich Chancellor.", font=font(SERIF_I, 38), fill=DIM)
     img = dust(img, 180, seed=11)
     img = grain(img, 10, 0.5)
-    footer(img, 11, "3D-KARTE · GEKIPPT · LICHTSÄULE")
+    footer(img, 11, "3D MAP · TILTED · LIGHT BEAM")
     return img
 
 
@@ -202,7 +202,7 @@ def d12_iso_bars():
     # Mehrheitsebene als halbtransparente Glasplatte
     my = base - 50 * scale
     d.polygon([(60, my), (1000, my), (1040, my - 24), (100, my - 24)], fill=(163, 39, 31, 60), outline=(200, 60, 50, 200))
-    d.text((70, my - 70), "50 % · absolute Mehrheit", font=font(MONO, 26), fill=(230, 110, 95))
+    d.text((70, my - 70), "50 % · absolute majority", font=font(MONO, 26), fill=(230, 110, 95))
     for i, (lab, v) in enumerate(data):
         x = x0 + i * (bw + gap)
         h = v * scale
@@ -210,16 +210,16 @@ def d12_iso_bars():
         top = tuple(int(c * hi * 1.5) for c in PARTY["NSDAP"])
         iso_prism(d, x, base, bw, h, top, tuple(int(c * hi) for c in PARTY["NSDAP"]),
                   tuple(int(c * hi * 0.6) for c in PARTY["NSDAP"]))
-        s = f"{v:.1f}".replace(".", ",") + " %"
+        s = f"{v:.1f} %"
         f = font(SERIF_B, 50 if i == 2 else 40)
         d.text((x + bw / 2 - d.textlength(s, font=f) / 2 + 20, base - h - 100), s, font=f, fill=PAPER)
         d.text((x + bw / 2 - d.textlength(lab, font=font(MONO, 26)) / 2, base + 30), lab, font=font(MONO, 26), fill=DIM)
-    d.text((60, 150), "NSDAP · REICHSTAGSWAHLEN", font=font(MONO, 30), fill=GOLD)
-    glow_text(img, (60, 195), "Stärkste Partei.", font(SERIF_B, 80), PAPER, radius=12, strength=1)
-    glow_text(img, (60, 290), "Nie die Mehrheit.", font(SERIF_B, 80), (230, 110, 95), radius=12, strength=1)
+    d.text((60, 150), "NSDAP · REICHSTAG ELECTIONS", font=font(MONO, 30), fill=GOLD)
+    glow_text(img, (60, 195), "Largest party.", font(SERIF_B, 80), PAPER, radius=12, strength=1)
+    glow_text(img, (60, 290), "Never a majority.", font(SERIF_B, 80), (230, 110, 95), radius=12, strength=1)
     img = dust(img, 120, seed=4)
     img = grain(img, 9, 0.5)
-    footer(img, 12, "3D-SÄULEN · GLASEBENE 50 %")
+    footer(img, 12, "3D COLUMNS · 50 % GLASS PLANE")
     return img
 
 
@@ -254,12 +254,12 @@ def crack_paths(origin, seed=7, n=9):
 def d13_crack():
     img = Image.new("RGB", (W, H), (226, 218, 198))
     d = ImageDraw.Draw(img, "RGBA")
-    text_c(d, 360, "DIE VERFASSUNG DES DEUTSCHEN REICHS", font(MONO, 30), (90, 84, 76))
-    text_c(d, 410, "11. August 1919", font(SERIF_I, 40), (90, 84, 76))
-    text_c(d, 560, "Artikel 1", font(SERIF_B, 66), INK)
+    text_c(d, 360, "THE CONSTITUTION OF THE GERMAN REICH", font(MONO, 30), (90, 84, 76))
+    text_c(d, 410, "11 August 1919", font(SERIF_I, 40), (90, 84, 76))
+    text_c(d, 560, "Article 1", font(SERIF_B, 66), INK)
     f = font(SERIF, 54)
     y = 680
-    for ln in ["Das Deutsche Reich", "ist eine Republik.", "Die Staatsgewalt", "geht vom Volke aus."]:
+    for ln in ["The German Reich", "is a republic.", "State authority", "derives from the people."]:
         text_c(d, y, ln, f, INK)
         y += 74
     # Riss: Bild verschieben entlang einer Bruchlinie
@@ -280,14 +280,14 @@ def d13_crack():
         s = rng.uniform(4, 14)
         d.polygon([(x, y), (x + s, y + s * 0.3), (x + s * 0.4, y + s)], fill=(30, 26, 20, 200))
     d.rectangle([0, 1180, W, H], fill=(14, 13, 12, 240))
-    d.text((60, 1240), "28. FEBRUAR – 23. MÄRZ 1933", font=font(MONO, 30), fill=GOLD)
+    d.text((60, 1240), "28 FEBRUARY – 23 MARCH 1933", font=font(MONO, 30), fill=GOLD)
     f = font(SERIF_B, 58)
     yy = 1290
-    for ln in ["In 23 Tagen wird", "die Verfassung", "ausgehöhlt."]:
+    for ln in ["In 23 days,", "the constitution", "is hollowed out."]:
         d.text((60, yy), ln, font=f, fill=PAPER)
         yy += 70
     img = grain(img, 12, 0.5)
-    footer(img, 13, "TYPO + RISS-EFFEKT")
+    footer(img, 13, "TYPE + CRACK EFFECT")
     return img
 
 
@@ -295,18 +295,18 @@ def d13_crack():
 def d14_gleichschaltung():
     img = Image.new("RGB", (W, H), (16, 16, 17))
     d = ImageDraw.Draw(img, "RGBA")
-    d.text((60, 150), "SOMMER 1933", font=font(MONO, 30), fill=GOLD)
-    glow_text(img, (60, 195), "Gleichschaltung", font(SERIF_B, 84), PAPER, radius=12, strength=1)
+    d.text((60, 150), "SUMMER 1933 · GLEICHSCHALTUNG", font=font(MONO, 30), fill=GOLD)
+    glow_text(img, (60, 195), "Forced into Line", font(SERIF_B, 84), PAPER, radius=12, strength=1)
     d = ImageDraw.Draw(img, "RGBA")
     rows = [
-        ("Gewerkschaften", "2. Mai", "zerschlagen"),
-        ("SPD", "22. Juni", "verboten"),
-        ("DNVP", "27. Juni", "aufgelöst"),
-        ("DStP", "28. Juni", "aufgelöst"),
-        ("BVP", "4. Juli", "aufgelöst"),
-        ("DVP", "4. Juli", "aufgelöst"),
-        ("Zentrum", "5. Juli", "aufgelöst"),
-        ("Neue Parteien", "14. Juli", "per Gesetz verboten"),
+        ("Trade unions", "2 May", "smashed"),
+        ("SPD", "22 June", "banned"),
+        ("DNVP", "27 June", "dissolved"),
+        ("DStP", "28 June", "dissolved"),
+        ("BVP", "4 July", "dissolved"),
+        ("DVP", "4 July", "dissolved"),
+        ("Centre Party", "5 July", "dissolved"),
+        ("New parties", "14 July", "banned by law"),
     ]
     y = 380
     for i, (name, date, what) in enumerate(rows):
@@ -319,10 +319,10 @@ def d14_gleichschaltung():
             d.line([(80, y + 46), (80 + d.textlength(name, font=font(SERIF_B, 46)) + 24, y + 46)], fill=RED, width=6)
         y += 126
     d.rectangle([60, y + 10, 1020, y + 130], fill=(163, 39, 31))
-    text_c(d, y + 36, "NSDAP · einzige zugelassene Partei", font(SANS_B, 42), PAPER)
-    d.text((60, y + 150), "KPD: seit März 1933 verfolgt, Mandate annulliert", font=font(MONO_L, 22), fill=DIM)
+    text_c(d, y + 36, "NSDAP · the only permitted party", font(SANS_B, 42), PAPER)
+    d.text((60, y + 150), "KPD: persecuted from March 1933, seats annulled", font=font(MONO_L, 22), fill=DIM)
     img = grain(img, 10, 0.45)
-    footer(img, 14, "LISTE · STREICH-ANIMATION")
+    footer(img, 14, "LIST · STRIKE-THROUGH ANIMATION")
     return img
 
 
@@ -384,14 +384,14 @@ def d15_fire():
     letterbox(img, 120)
     d = ImageDraw.Draw(img, "RGBA")
     d.rectangle([0, 1180, W, H - 120], fill=(6, 5, 6, 235))
-    d.text((60, 1240), "27. FEBRUAR 1933 · 21:14 UHR", font=font(MONO, 30), fill=EMBER)
-    glow_text(img, (60, 1290), "Feuer im", font(SERIF_B, 92), PAPER, radius=16, strength=1)
-    glow_text(img, (60, 1395), "Reichstag", font(SERIF_B, 92), (255, 200, 150), radius=16, strength=2)
+    d.text((60, 1240), "27 FEBRUARY 1933 · 9:14 PM", font=font(MONO, 30), fill=EMBER)
+    glow_text(img, (60, 1290), "The Reichstag", font(SERIF_B, 92), PAPER, radius=16, strength=1)
+    glow_text(img, (60, 1395), "is on fire", font(SERIF_B, 92), (255, 200, 150), radius=16, strength=2)
     d = ImageDraw.Draw(img)
-    d.text((60, 1520), "ILLUSTRATION · kein Archivbild", font=font(MONO_L, 22), fill=(170, 150, 130))
+    d.text((60, 1520), "ILLUSTRATION · not archive footage", font=font(MONO_L, 22), fill=(170, 150, 130))
     img = chroma(img, 2)
     img = grain(img, 12, 0.45)
-    footer(img, 15, "ILLUSTRIERTE SZENE · FEUER")
+    footer(img, 15, "ILLUSTRATED SCENE · FIRE")
     return img
 
 
@@ -403,17 +403,17 @@ def d16_board():
     img = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1))
     img = add_light(img, light_rays((W, H), (W / 2, -200), (140, 120, 90), 0.5, seed=16))
     people = {
-        "Hindenburg": ((540, 520), "Reichspräsident"),
-        "von Papen": ((250, 900), "Ex-Kanzler"),
-        "Hitler": ((830, 900), "NSDAP-Vorsitzender"),
+        "Hindenburg": ((540, 520), "Reich President"),
+        "von Papen": ((250, 900), "Former chancellor"),
+        "Hitler": ((830, 900), "NSDAP leader"),
         "Hugenberg": ((250, 1300), "DNVP"),
-        "von Schleicher": ((830, 1300), "Kanzler seit Dez. 1932"),
+        "von Schleicher": ((830, 1300), "Chancellor since Dec 1932"),
     }
-    links = [("von Papen", "Hitler", "4. Jan. 1933 · Treffen in Köln"),
-             ("von Papen", "Hindenburg", "Vertrauter"),
-             ("Hindenburg", "von Schleicher", "28. Jan. Rücktritt"),
-             ("Hitler", "Hugenberg", "Koalition"),
-             ("Hindenburg", "Hitler", "30. Jan. Ernennung")]
+    links = [("von Papen", "Hitler", "4 Jan 1933 · meeting in Cologne"),
+             ("von Papen", "Hindenburg", "Confidant"),
+             ("Hindenburg", "von Schleicher", "28 Jan · resigns"),
+             ("Hitler", "Hugenberg", "Coalition"),
+             ("Hindenburg", "Hitler", "30 Jan · appointment")]
     d = ImageDraw.Draw(img, "RGBA")
     for a_, b_, lab in links:
         (x0, y0), (x1, y1) = people[a_][0], people[b_][0]
@@ -422,7 +422,7 @@ def d16_board():
         d.line([(x0, y0), (x1, y1)], fill=col, width=4)
     for i, (name, ((x, y), role)) in enumerate(people.items()):
         card = Image.new("RGBA", (260, 330), (236, 230, 214, 255))
-        ph = placeholder_photo((228, 230), seed=40 + i, label="FOTO").convert("RGBA")
+        ph = placeholder_photo((228, 230), seed=40 + i, label="PHOTO").convert("RGBA")
         card.paste(ph, (16, 16))
         cd = ImageDraw.Draw(card)
         cd.text((16, 256), name, font=font(SERIF_B, 28), fill=INK)
@@ -437,10 +437,10 @@ def d16_board():
         d.ellipse([x - 12, y - card.height / 2 + 4, x + 12, y - card.height / 2 + 28], fill=(190, 30, 30))
     for a_, b_, lab in links:
         (x0, y0), (x1, y1) = people[a_][0], people[b_][0]
-        t = {"Treffen": 0.5, "Vertrauter": 0.62, "Rücktritt": 0.62, "Koalition": 0.5, "Ernennung": 0.62}
+        t = {"meeting": 0.5, "Confidant": 0.62, "resigns": 0.62, "Coalition": 0.5, "appointment": 0.62}
         k = next(v for kk, v in t.items() if kk in lab)
         mx, my = x0 + (x1 - x0) * k, y0 + (y1 - y0) * k
-        if "Treffen" in lab:
+        if "meeting" in lab:
             my += 60
         f = font(MONO, 20)
         tw = d.textlength(lab, font=f)
@@ -448,17 +448,17 @@ def d16_board():
         d.rectangle([mx - tw / 2 - 10, my - 18, mx + tw / 2 + 10, my + 16], fill=(235, 228, 200), outline=(200, 40, 35))
         d.text((mx - tw / 2, my - 13), lab, font=f, fill=INK)
     d.rectangle([0, 0, W, 330], fill=(14, 13, 12, 220))
-    d.text((60, 150), "JANUAR 1933", font=font(MONO, 30), fill=GOLD)
-    glow_text(img, (60, 195), "Die Hinterzimmer", font(SERIF_B, 76), PAPER, radius=12, strength=1)
+    d.text((60, 150), "JANUARY 1933", font=font(MONO, 30), fill=GOLD)
+    glow_text(img, (60, 195), "Backroom Deals", font(SERIF_B, 76), PAPER, radius=12, strength=1)
     d = ImageDraw.Draw(img, "RGBA")
     d.rectangle([0, 1500, W, H], fill=(14, 13, 12, 230))
     f = font(SERIF_I, 34)
     y = 1530
-    for ln in wrap(d, "Kein Wahlsieg: Konservative Eliten glaubten, Hitler „einrahmen“ zu können.", f, 960):
+    for ln in wrap(d, "Not an election victory: conservative elites believed they could “box Hitler in”.", f, 960):
         d.text((60, y), ln, font=f, fill=PAPER)
         y += 44
     img = grain(img, 10, 0.55)
-    footer(img, 16, "ERMITTLUNGSWAND · AKTEURE")
+    footer(img, 16, "INVESTIGATION BOARD · KEY PLAYERS")
     return img
 
 
@@ -476,22 +476,22 @@ def d17_inflation():
             d.text((x, y), str(rng.integers(0, 10)), font=f_small, fill=(60, 55, 45, int(rng.uniform(30, 110))))
             y += 38
     d.rectangle([0, 520, W, 1260], fill=(12, 12, 12, 225))
-    text_c(d, 150, "20. NOVEMBER 1923", font(MONO, 32), GOLD)
+    text_c(d, 150, "20 NOVEMBER 1923", font(MONO, 32), GOLD)
     glow_text_c(img, 200, "Hyperinflation", font(SERIF_B, 86), PAPER, radius=12, strength=1)
     d = ImageDraw.Draw(img, "RGBA")
-    text_c(d, 580, "1 US-Dollar =", font(SERIF_I, 52), DIM)
-    glow_text_c(img, 680, "4.200.000.000.000", font(SERIF_B, 98), (240, 200, 120), radius=18, strength=2)
+    text_c(d, 580, "1 US dollar =", font(SERIF_I, 52), DIM)
+    glow_text_c(img, 680, "4,200,000,000,000", font(SERIF_B, 98), (240, 200, 120), radius=18, strength=2)
     d = ImageDraw.Draw(img, "RGBA")
-    text_c(d, 830, "Mark", font(SERIF_B, 70), PAPER)
-    text_c(d, 960, "Zum Vergleich, Juli 1914: 1 Dollar = 4,20 Mark", font(MONO, 28), DIM)
+    text_c(d, 830, "marks", font(SERIF_B, 70), PAPER)
+    text_c(d, 960, "For comparison, July 1914: 1 dollar = 4.20 marks", font(MONO, 28), DIM)
     d.line([(160, 1050), (920, 1050)], fill=(90, 86, 80), width=2)
     f = font(SERIF_I, 36)
     y = 1100
-    for ln in wrap(d, "Ersparnisse werden wertlos. Im selben Monat versucht Hitler in München den Putsch.", f, 900):
+    for ln in wrap(d, "Savings become worthless. That same month, Hitler attempts his putsch in Munich.", f, 900):
         text_c(d, y, ln, f, PAPER)
         y += 48
     img = grain(img, 12, 0.5)
-    footer(img, 17, "ZAHLEN-KASKADE · GLOW")
+    footer(img, 17, "NUMBER CASCADE · GLOW")
     return img
 
 
@@ -499,19 +499,19 @@ def d17_inflation():
 def d18_52days():
     img = Image.new("RGB", (W, H), (10, 11, 13))
     d = ImageDraw.Draw(img, "RGBA")
-    d.text((60, 140), "30. JANUAR – 23. MÄRZ 1933", font=font(MONO, 30), fill=GOLD)
-    glow_text(img, (60, 180), "52 Tage", font(SERIF_B, 120), PAPER, radius=16, strength=1)
+    d.text((60, 140), "30 JANUARY – 23 MARCH 1933", font=font(MONO, 30), fill=GOLD)
+    glow_text(img, (60, 180), "52 Days", font(SERIF_B, 120), PAPER, radius=16, strength=1)
     d = ImageDraw.Draw(img, "RGBA")
     events = [
-        ("30.1.", "Hitler wird Reichskanzler", False),
-        ("1.2.", "Reichstag aufgelöst – Neuwahl angesetzt", False),
-        ("4.2.", "Notverordnung schränkt Presse & Versammlungen ein", False),
-        ("22.2.", "SA & SS werden Hilfspolizei in Preußen", True),
-        ("27.2.", "Reichstagsbrand", True),
-        ("28.2.", "Reichstagsbrandverordnung", True),
-        ("5.3.", "Reichstagswahl – NSDAP 43,9 %", False),
-        ("22.3.", "KZ Dachau eröffnet", True),
-        ("23.3.", "Ermächtigungsgesetz", True),
+        ("30 Jan", "Hitler becomes Chancellor", False),
+        ("1 Feb", "Reichstag dissolved – new election called", False),
+        ("4 Feb", "Emergency decree restricts press & assembly", False),
+        ("22 Feb", "SA & SS become auxiliary police in Prussia", True),
+        ("27 Feb", "Reichstag fire", True),
+        ("28 Feb", "Reichstag Fire Decree", True),
+        ("5 Mar", "Reichstag election – NSDAP 43.9 %", False),
+        ("22 Mar", "Dachau concentration camp opens", True),
+        ("23 Mar", "Enabling Act", True),
     ]
     x = 250
     y0, y1 = 420, 1560
@@ -533,7 +533,7 @@ def d18_52days():
         for k, ln in enumerate(lines):
             d.text((x + 40, y - 20 + k * 38), ln, font=f, fill=PAPER)
     img = grain(img, 9, 0.45)
-    footer(img, 18, "VERTIKALE CHRONIK · SCROLL")
+    footer(img, 18, "VERTICAL CHRONICLE · SCROLL")
     return img
 
 
@@ -546,8 +546,8 @@ def d19_filmstrip():
     for y in range(20, 2300, 56):
         sd.rounded_rectangle([20, y, 58, y + 30], 6, fill=(200, 195, 185, 255))
         sd.rounded_rectangle([702, y, 740, y + 30], 6, fill=(200, 195, 185, 255))
-    labels = ["PLATZHALTER · FACKELZUG 30.1.1933", "PLATZHALTER · SPORTPALAST 10.2.1933",
-              "PLATZHALTER · KROLLOPER 23.3.1933"]
+    labels = ["PLACEHOLDER · TORCHLIGHT PARADE 30 JAN 1933", "PLACEHOLDER · SPORTPALAST 10 FEB 1933",
+              "PLACEHOLDER · KROLL OPERA 23 MAR 1933"]
     for i, lab in enumerate(labels):
         ph = placeholder_photo((620, 560), seed=60 + i, label=lab.split(" · ")[1]).convert("RGBA")
         strip.paste(ph, (70, 120 + i * 720))
@@ -562,17 +562,17 @@ def d19_filmstrip():
     img.paste(strip, (ox, oy), strip)
     d = ImageDraw.Draw(img, "RGBA")
     d.rectangle([0, 0, W, 330], fill=(8, 8, 8, 225))
-    d.text((60, 150), "ARCHIVFILM", font=font(MONO, 30), fill=GOLD)
-    glow_text(img, (60, 195), "Bilder der Macht", font(SERIF_B, 80), PAPER, radius=12, strength=1)
+    d.text((60, 150), "ARCHIVE FILM", font=font(MONO, 30), fill=GOLD)
+    glow_text(img, (60, 195), "Images of Power", font(SERIF_B, 80), PAPER, radius=12, strength=1)
     d = ImageDraw.Draw(img, "RGBA")
     d.rectangle([0, 1460, W, H], fill=(8, 8, 8, 230))
     f = font(SERIF_I, 34)
     y = 1490
-    for ln in wrap(d, "Viele dieser Aufnahmen sind NS-Propaganda. Wir zeigen sie – und ordnen sie ein.", f, 960):
+    for ln in wrap(d, "Much of this footage is Nazi propaganda. We show it – and put it in context.", f, 960):
         d.text((60, y), ln, font=f, fill=PAPER)
         y += 44
     img = grain(img, 14, 0.55)
-    footer(img, 19, "FILMSTREIFEN · ÜBERGANG")
+    footer(img, 19, "FILM STRIP · TRANSITION")
     return img
 
 
@@ -581,27 +581,27 @@ def d20_finale():
     img = Image.new("RGB", (W, H), (4, 4, 5))
     img = add_light(img, light_rays((W, H), (W / 2, -80), (200, 190, 170), 0.9, seed=20))
     d = ImageDraw.Draw(img, "RGBA")
-    text_c(d, 420, "2. AUGUST 1934", font(MONO, 34), GOLD)
-    glow_text_c(img, 480, "Hindenburg stirbt.", font(SERIF_B, 82), PAPER, radius=14, strength=1)
+    text_c(d, 420, "2 AUGUST 1934", font(MONO, 34), GOLD)
+    glow_text_c(img, 480, "Hindenburg dies.", font(SERIF_B, 82), PAPER, radius=14, strength=1)
     d = ImageDraw.Draw(img, "RGBA")
     f = font(SERIF_I, 40)
     y = 620
-    for ln in ["Hitler vereint die Ämter von", "Reichspräsident und Reichskanzler."]:
+    for ln in ["Hitler merges the offices of", "President and Chancellor."]:
         text_c(d, y, ln, f, DIM)
         y += 52
     glow_text_c(img, 860, "549", font(SERIF_B, 300), (240, 225, 200), radius=24, strength=2)
     d = ImageDraw.Draw(img, "RGBA")
-    text_c(d, 1190, "TAGE VOM KANZLER ZUM DIKTATOR", font(MONO, 32), PAPER)
+    text_c(d, 1190, "DAYS FROM CHANCELLOR TO DICTATOR", font(MONO, 32), PAPER)
     d.line([(340, 1290), (740, 1290)], fill=RED, width=4)
     f = font(SERIF_I, 34)
     y = 1330
-    for ln in wrap(d, "Die Demokratie wurde nicht an einem Tag abgeschafft – sondern Schritt für Schritt, "
-                      "mit Gesetzen, Gewalt und der Hilfe derer, die glaubten, ihn kontrollieren zu können.", f, 900):
+    for ln in wrap(d, "Democracy was not abolished in a single day – but step by step, "
+                      "through laws, violence and the help of those who thought they could control him.", f, 900):
         text_c(d, y, ln, f, PAPER)
         y += 46
     img = dust(img, 300, seed=21, region=(200, 0, 880, 900))
     img = grain(img, 12, 0.6)
-    footer(img, 20, "FINALE · LICHT VON OBEN")
+    footer(img, 20, "FINALE · LIGHT FROM ABOVE")
     return img
 
 

@@ -30,17 +30,18 @@ INK = (14, 13, 12)
 PAPER = (232, 225, 211)
 DIM = (150, 144, 132)
 RED = (163, 39, 31)
+GOLD_ = (226, 190, 120)
 STEEL = (120, 146, 168)
 
 PARTY = {
     "NSDAP": (122, 74, 42),
     "SPD": (196, 34, 46),
     "KPD": (110, 16, 20),
-    "Zentrum": (40, 40, 40),
+    "Centre": (40, 40, 40),
     "DNVP": (52, 82, 130),
     "BVP": (90, 130, 170),
     "DVP": (200, 160, 60),
-    "Sonstige": (120, 120, 120),
+    "Others": (120, 120, 120),
 }
 
 
@@ -100,7 +101,7 @@ def label_footer(d, n, title):
     d.text((60, 1830), f"DESIGN {n:02d}/10 · {title}", font=f, fill=(110, 105, 98))
 
 
-def placeholder_photo(size, seed=3, label="PLATZHALTER · ARCHIVFOTO"):
+def placeholder_photo(size, seed=3, label="PLACEHOLDER · ARCHIVE PHOTO"):
     """Graue Flaeche mit Struktur; ausdruecklich KEIN historisches Bild."""
     w, h = size
     rng = np.random.default_rng(seed)
@@ -175,16 +176,16 @@ def dashed(d, pts, fill, width=3, dash=14, gap=10):
 
 CITIES = {
     "Berlin": (13.40, 52.52),
-    "München": (11.58, 48.14),
-    "Nürnberg": (11.08, 49.45),
+    "Munich": (11.58, 48.14),
+    "Nuremberg": (11.08, 49.45),
     "Hamburg": (9.99, 53.55),
     "Weimar": (11.33, 50.98),
-    "Köln": (6.96, 50.94),
+    "Cologne": (6.96, 50.94),
     "Königsberg": (20.51, 54.71),
     "Essen": (7.01, 51.46),
     "Breslau": (17.04, 51.11),
     "Dresden": (13.74, 51.05),
-    "Frankfurt a.M.": (8.68, 50.11),
+    "Frankfurt": (8.68, 50.11),
 }
 
 
@@ -219,7 +220,7 @@ def draw_map(img, geo, mod, proj, show_modern=True, glow=True, land=(38, 40, 44)
 # ---------------------------------------------------------------- Designs
 def d01_opening():
     img = Image.new("RGB", (W, H), INK)
-    ph = placeholder_photo((1080, 1100), seed=11, label="PLATZHALTER · REDNERPULT, 1936")
+    ph = placeholder_photo((1080, 1100), seed=11, label="PLACEHOLDER · SPEAKER'S PODIUM, 1936")
     img.paste(ph, (0, 260))
     d = ImageDraw.Draw(img, "RGBA")
     # Letterbox-Verlauf
@@ -227,7 +228,7 @@ def d01_opening():
         a = int(255 * (1 - i / 300))
         d.line([(0, 260 + i), (W, 260 + i)], fill=(14, 13, 12, a))
         d.line([(0, 1360 - i), (W, 1360 - i)], fill=(14, 13, 12, a))
-    tag(d, 60, 150, "● HISTORISCHE TONAUFNAHME", fg=PAPER, bg=RED)
+    tag(d, 60, 150, "● HISTORICAL AUDIO · ORIGINAL GERMAN", fg=PAPER, bg=RED)
     # Wellenform
     rng = np.random.default_rng(4)
     for i in range(96):
@@ -236,25 +237,25 @@ def d01_opening():
         d.line([(x, 1420 - h), (x, 1420 + h)], fill=(232, 225, 211, 200), width=5)
     f = font(SERIF_I, 52)
     y = 1495
-    for ln in wrap(d, "„… ob du glaubst, dass ich fleißig gewesen bin, dass ich gearbeitet habe …“", f, 940):
+    for ln in wrap(d, "“… whether you believe that I have been diligent, that I have worked …”", f, 940):
         text_c(d, y, ln, f, PAPER)
         y += 64
-    text_c(d, y + 20, "Adolf Hitler · Rede vor Krupp-Arbeitern, Essen · März 1936", font(MONO, 26), DIM)
-    text_c(d, y + 60, "Wortlaut & Datum: Prüfung gegen Archivkopie ausstehend", font(MONO_L, 22), (200, 150, 90))
+    text_c(d, y + 20, "Adolf Hitler · Speech to Krupp workers, Essen · March 1936", font(MONO, 26), DIM)
+    text_c(d, y + 60, "Wording & date: pending check against archive copy", font(MONO_L, 22), (200, 150, 90))
     img = grain(scratches(img), 20)
     d = ImageDraw.Draw(img)
-    label_footer(d, 1, "COLD OPEN · ARCHIV-TON")
+    label_footer(d, 1, "COLD OPEN · ARCHIVE AUDIO")
     return img
 
 
 def d02_chapter():
     img = Image.new("RGB", (W, H), (22, 21, 19))
     d = ImageDraw.Draw(img, "RGBA")
-    text_c(d, 560, "KAPITEL IV", font(MONO, 34), DIM)
+    text_c(d, 560, "CHAPTER IV", font(MONO, 34), DIM)
     text_c(d, 640, "1929", font(SERIF_B, 250), PAPER)
     d.line([(440, 930), (640, 930)], fill=RED, width=6)
     text_c(d, 960, "1932", font(SERIF_B, 250), PAPER)
-    text_c(d, 1270, "Die Krise", font(SERIF_I, 76), PAPER)
+    text_c(d, 1270, "The Crisis", font(SERIF_I, 76), PAPER)
     # Zeitstrahl
     years = [1918, 1923, 1929, 1933, 1934]
     x0, x1, y = 120, 960, 1460
@@ -267,7 +268,7 @@ def d02_chapter():
         d.ellipse([x - 9, y - 9, x + 9, y + 9], fill=PAPER if yr != 1929 else RED)
         d.text((x - 36, y + (26 if yr != 1933 else -64)), str(yr), font=font(MONO, 26), fill=DIM)
     img = grain(img, 14)
-    label_footer(ImageDraw.Draw(img), 2, "KAPITELKARTE + ZEITSTRAHL")
+    label_footer(ImageDraw.Draw(img), 2, "CHAPTER CARD + TIMELINE")
     return img
 
 
@@ -275,25 +276,25 @@ def d03_map(geo, mod):
     img = Image.new("RGB", (W, H), (16, 20, 26))
     proj = MapProj(5.2, 23.2, 46.6, 56.2, (40, 380, 1040, 1300))
     d = draw_map(img, geo, mod, proj)
-    for c in ("Berlin", "München", "Nürnberg", "Hamburg", "Weimar", "Königsberg"):
+    for c in ("Berlin", "Munich", "Nuremberg", "Hamburg", "Weimar", "Königsberg"):
         x, y = proj(*CITIES[c])
-        big = c in ("Berlin", "München")
+        big = c in ("Berlin", "Munich")
         r = 11 if big else 7
-        d.ellipse([x - r, y - r, x + r, y + r], fill=RED if c == "München" else PAPER)
+        d.ellipse([x - r, y - r, x + r, y + r], fill=RED if c == "Munich" else PAPER)
         d.text((x + 16, y - 18), c, font=font(SANS_B if big else SANS, 32 if big else 26), fill=PAPER)
-    x, y = proj(*CITIES["München"])
+    x, y = proj(*CITIES["Munich"])
     d.ellipse([x - 40, y - 40, x + 40, y + 40], outline=(163, 39, 31, 200), width=3)
-    d.text((60, 140), "DEUTSCHES REICH", font=font(MONO, 30), fill=DIM)
-    d.text((60, 185), "Grenzen von 1930", font=font(SERIF_B, 66), fill=PAPER)
+    d.text((60, 140), "GERMAN REICH", font=font(MONO, 30), fill=DIM)
+    d.text((60, 185), "Borders of 1930", font=font(SERIF_B, 66), fill=PAPER)
     # Legende
     y = 1360
     d.rectangle([60, y, 110, y + 30], fill=(70, 66, 58), outline=PAPER, width=3)
-    d.text((130, y - 2), "Weimarer Republik (1920–1935)", font=font(SANS, 30), fill=PAPER)
+    d.text((130, y - 2), "Weimar Republic (1920–1935)", font=font(SANS, 30), fill=PAPER)
     dashed(d, [(60, y + 75), (110, y + 75)], (120, 170, 210), width=3)
-    d.text((130, y + 57), "Heutige Grenze (zum Vergleich)", font=font(SANS, 30), fill=(150, 190, 220))
-    d.text((60, y + 120), "Saargebiet 1920–1935 unter Völkerbundsverwaltung", font=font(MONO_L, 22), fill=DIM)
+    d.text((130, y + 57), "Today's border (for comparison)", font=font(SANS, 30), fill=(150, 190, 220))
+    d.text((60, y + 120), "Saar territory 1920–1935 under League of Nations rule", font=font(MONO_L, 22), fill=DIM)
     img = grain(img, 8, 0.4)
-    label_footer(ImageDraw.Draw(img), 3, "KARTE · HISTORISCH vs. HEUTE")
+    label_footer(ImageDraw.Draw(img), 3, "MAP · HISTORICAL vs. TODAY")
     return img
 
 
@@ -302,8 +303,8 @@ def d04_campaign(geo, mod):
     proj = MapProj(5.2, 23.2, 46.6, 56.2, (40, 360, 1040, 1280))
     d = draw_map(img, geo, mod, proj, show_modern=False, glow=False, land=(44, 41, 36), de_fill=(62, 57, 50),
                  de_line=(180, 170, 150))
-    route = ["München", "Dresden", "Breslau", "Königsberg", "Berlin", "Hamburg", "Essen", "Köln", "Frankfurt a.M.",
-             "Nürnberg"]
+    route = ["Munich", "Dresden", "Breslau", "Königsberg", "Berlin", "Hamburg", "Essen", "Cologne", "Frankfurt",
+             "Nuremberg"]
     pts = [proj(*CITIES[c]) for c in route]
     for i in range(len(pts) - 1):
         (x0, y0), (x1, y1) = pts[i], pts[i + 1]
@@ -314,30 +315,30 @@ def d04_campaign(geo, mod):
     for c, (x, y) in zip(route, pts):
         d.ellipse([x - 8, y - 8, x + 8, y + 8], fill=(220, 180, 120))
         d.text((x + 14, y - 16), c, font=font(SANS, 24), fill=PAPER)
-    d.text((60, 140), "WAHLKAMPF 1932", font=font(MONO, 30), fill=DIM)
-    for i, ln in enumerate(["Mit dem Flugzeug", "durch Deutschland"]):
+    d.text((60, 140), "CAMPAIGN 1932", font=font(MONO, 30), fill=DIM)
+    for i, ln in enumerate(["By aeroplane", "across Germany"]):
         d.text((60, 185 + i * 74), ln, font=font(SERIF_B, 62), fill=PAPER)
-    d.text((60, 1330), "Route schematisch · Stationen werden für die", font=font(MONO_L, 22), fill=DIM)
-    d.text((60, 1362), "finale Fassung gegen Quellen abgeglichen", font=font(MONO_L, 22), fill=DIM)
+    d.text((60, 1330), "Route schematic · stops will be checked", font=font(MONO_L, 22), fill=DIM)
+    d.text((60, 1362), "against sources for the final cut", font=font(MONO_L, 22), fill=DIM)
     img = grain(img, 12)
-    label_footer(ImageDraw.Draw(img), 4, "KARTE · KAMPAGNENROUTE")
+    label_footer(ImageDraw.Draw(img), 4, "MAP · CAMPAIGN ROUTE")
     return img
 
 
 def d05_elections():
     img = Image.new("RGB", (W, H), PAPER)
     d = ImageDraw.Draw(img, "RGBA")
-    d.text((70, 150), "REICHSTAGSWAHLEN", font=font(MONO, 30), fill=(90, 84, 76))
-    d.text((70, 195), "Stimmenanteil NSDAP", font=font(SERIF_B, 64), fill=INK)
-    data = [("Mai 1928", 2.6), ("Sep 1930", 18.3), ("Jul 1932", 37.3), ("Nov 1932", 33.1), ("Mär 1933*", 43.9)]
+    d.text((70, 150), "REICHSTAG ELECTIONS", font=font(MONO, 30), fill=(90, 84, 76))
+    d.text((70, 195), "NSDAP share of the vote", font=font(SERIF_B, 64), fill=INK)
+    data = [("May 1928", 2.6), ("Sep 1930", 18.3), ("Jul 1932", 37.3), ("Nov 1932", 33.1), ("Mar 1933*", 43.9)]
     x0, base, bw, gap, scale = 90, 1300, 150, 30, 18
     d.line([(70, base - 50 * scale), (1010, base - 50 * scale)], fill=RED, width=3)
-    d.text((760, base - 50 * scale - 44), "50 % = Mehrheit", font=font(MONO, 24), fill=RED)
+    d.text((760, base - 50 * scale - 44), "50 % = majority", font=font(MONO, 24), fill=RED)
     for i, (lab, v) in enumerate(data):
         x = x0 + i * (bw + gap)
         col = (122, 74, 42) if i < 4 else (122, 74, 42, 120)
         d.rectangle([x, base - v * scale, x + bw, base], fill=col)
-        s = f"{v:.1f} %".replace(".", ",")
+        s = f"{v:.1f} %"
         d.text((x + bw / 2 - d.textlength(s, font=font(SANS_B, 34)) / 2, base - v * scale - 50), s,
                font=font(SANS_B, 34), fill=INK)
         d.text((x + bw / 2 - d.textlength(lab, font=font(MONO, 22)) / 2, base + 16), lab, font=font(MONO, 22),
@@ -345,21 +346,21 @@ def d05_elections():
     d.line([(70, base), (1010, base)], fill=INK, width=3)
     f = font(SERIF_I, 32)
     y = 1380
-    for ln in wrap(d, "Die NSDAP wurde stärkste Partei – eine absolute Mehrheit erreichte sie in keiner freien Reichstagswahl.", f, 930):
+    for ln in wrap(d, "The NSDAP became the largest party – but it never won an absolute majority in a free Reichstag election.", f, 930):
         d.text((70, y), ln, font=f, fill=INK)
         y += 42
-    d.text((70, y + 10), "* März 1933: keine freie Wahl mehr (Terror, KPD verfolgt)", font=font(MONO_L, 22), fill=(90, 84, 76))
+    d.text((70, y + 10), "* March 1933: no longer a free election (terror, KPD persecuted)", font=font(MONO_L, 22), fill=(90, 84, 76))
     img = grain(img, 10, 0.35)
-    label_footer(ImageDraw.Draw(img), 5, "WAHLGRAFIK · PAPIER-STIL")
+    label_footer(ImageDraw.Draw(img), 5, "ELECTION CHART · PAPER STYLE")
     return img
 
 
 def d06_hemicycle():
     img = Image.new("RGB", (W, H), (18, 18, 20))
     d = ImageDraw.Draw(img, "RGBA")
-    d.text((60, 140), "REICHSTAG · 6. NOVEMBER 1932", font=font(MONO, 30), fill=DIM)
-    d.text((60, 185), "584 Sitze", font=font(SERIF_B, 70), fill=PAPER)
-    seats = [("KPD", 100), ("SPD", 121), ("Zentrum", 70), ("BVP", 20), ("DVP", 11), ("Sonstige", 15),
+    d.text((60, 140), "REICHSTAG · 6 NOVEMBER 1932", font=font(MONO, 30), fill=DIM)
+    d.text((60, 185), "584 seats", font=font(SERIF_B, 70), fill=PAPER)
+    seats = [("KPD", 100), ("SPD", 121), ("Centre", 70), ("BVP", 20), ("DVP", 11), ("Others", 15),
              ("DNVP", 51), ("NSDAP", 196)]
     total = sum(s for _, s in seats)
     cx, cy = W / 2, 1020
@@ -380,11 +381,11 @@ def d06_hemicycle():
             x, y = cx + rad * math.cos(a), cy - rad * math.sin(a)
             col = PARTY[name]
             d.ellipse([x - 10, y - 10, x + 10, y + 10], fill=col,
-                      outline=(200, 200, 200, 90) if name == "Zentrum" else None)
+                      outline=(200, 200, 200, 90) if name == "Centre" else None)
             i += 1
     big = font(SERIF_B, 110)
     text_c(d, cy - 140, "196", big, PAPER)
-    text_c(d, cy - 10, "NSDAP · 33,1 %", font(MONO, 28), DIM)
+    text_c(d, cy - 10, "NSDAP · 33.1 %", font(MONO, 28), DIM)
     y = 1120
     col_x = [70, 560]
     for j, (name, s) in enumerate(sorted(seats, key=lambda t: -t[1])):
@@ -392,22 +393,22 @@ def d06_hemicycle():
         yy = y + (j // 2) * 56
         d.rectangle([x, yy + 6, x + 30, yy + 36], fill=PARTY[name], outline=(120, 120, 120))
         d.text((x + 46, yy), f"{name}  {s}", font=font(SANS, 32), fill=PAPER)
-    d.text((70, 1370), "Mehrheit: 293 Sitze – NSDAP + DNVP = 247", font=font(MONO, 26), fill=(220, 180, 120))
+    d.text((70, 1370), "Majority: 293 seats – NSDAP + DNVP = 247", font=font(MONO, 26), fill=(220, 180, 120))
     img = grain(img, 10)
-    label_footer(ImageDraw.Draw(img), 6, "SITZVERTEILUNG · HALBRUND")
+    label_footer(ImageDraw.Draw(img), 6, "SEAT DISTRIBUTION · HEMICYCLE")
     return img
 
 
 def d07_unemployment():
     img = Image.new("RGB", (W, H), (20, 19, 18))
-    ph = placeholder_photo((1080, 760), seed=21, label="PLATZHALTER · ARBEITSAMT, 1932")
+    ph = placeholder_photo((1080, 760), seed=21, label="PLACEHOLDER · LABOUR EXCHANGE, 1932")
     img.paste(ph, (0, 0))
     d = ImageDraw.Draw(img, "RGBA")
     for i in range(260):
         d.line([(0, 760 - i), (W, 760 - i)], fill=(20, 19, 18, int(255 * (1 - i / 260) ** 1.4)))
-    d.text((60, 640), "ARBEITSLOSE IM DEUTSCHEN REICH", font=font(MONO, 28), fill=DIM)
-    d.text((60, 690), "≈ 6 Millionen", font=font(SERIF_B, 110), fill=PAPER)
-    d.text((60, 830), "im Winter 1932 (registriert, Jahreshöchststand)", font=font(SERIF_I, 34), fill=DIM)
+    d.text((60, 640), "UNEMPLOYED IN GERMANY", font=font(MONO, 28), fill=DIM)
+    d.text((60, 690), "≈ 6 million", font=font(SERIF_B, 110), fill=PAPER)
+    d.text((60, 830), "in winter 1932 (registered, peak of the year)", font=font(SERIF_I, 34), fill=DIM)
     data = [(1928, 1.4), (1929, 1.9), (1930, 3.1), (1931, 4.5), (1932, 5.6)]
     x0, x1, y0, y1 = 110, 980, 1380, 960
     for v in (2, 4, 6):
@@ -420,12 +421,12 @@ def d07_unemployment():
     for (yr, v), (x, y) in zip(data, pts):
         d.ellipse([x - 9, y - 9, x + 9, y + 9], fill=PAPER)
         d.text((x - 32, y0 + 14), str(yr), font=font(MONO, 24), fill=DIM)
-        s = f"{v:.1f}".replace(".", ",")
+        s = f"{v:.1f}"
         d.text((x - 24, y - 52), s, font=font(SANS_B, 28), fill=PAPER)
-    d.text((60, 1450), "Jahresdurchschnitt in Mio. · Werte vor Final-Render gegen Statistik prüfen", font=font(MONO_L, 20),
+    d.text((60, 1450), "Annual average, millions · verify against statistics before final render", font=font(MONO_L, 20),
            fill=DIM)
     img = grain(img, 16)
-    label_footer(ImageDraw.Draw(img), 7, "FOTO + DATENLINIE")
+    label_footer(ImageDraw.Draw(img), 7, "PHOTO + DATA LINE")
     return img
 
 
@@ -462,19 +463,21 @@ def d08_document():
     img.paste(shadow, (110, 300), shadow)
     img.paste(sheet, (80, 270), sheet)
     d = ImageDraw.Draw(img, "RGBA")
-    tag(d, 60, 150, "DOKUMENT · REICHSTAGSBRANDVERORDNUNG")
-    f = font(SERIF_I, 36)
-    y = 1440
-    for ln in wrap(d, "Grundrechte wie Meinungs-, Presse- und Versammlungsfreiheit – mit einem Satz ausgesetzt.", f, 960):
+    tag(d, 60, 150, "DOCUMENT · REICHSTAG FIRE DECREE")
+    d.text((60, 1400), "ORIGINAL GERMAN · TRANSLATION:", font=font(MONO, 22), fill=GOLD_)
+    f = font(SERIF_I, 32)
+    y = 1436
+    for ln in wrap(d, "“Articles 114, 115, 117, 118, 123, 124 and 153 of the Constitution of the German Reich "
+                      "are suspended until further notice.”", f, 960):
         d.text((60, y), ln, font=f, fill=PAPER)
-        y += 46
+        y += 40
     img = grain(img, 12)
-    label_footer(ImageDraw.Draw(img), 8, "DOKUMENT · ZITAT MIT QUELLE")
+    label_footer(ImageDraw.Draw(img), 8, "DOCUMENT · ORIGINAL + TRANSLATION")
     return img
 
 
 def d09_lowerthird():
-    ph = placeholder_photo((1300, 1920), seed=31, label="PLATZHALTER · REICHSTAG, 28.2.1933")
+    ph = placeholder_photo((1300, 1920), seed=31, label="PLACEHOLDER · REICHSTAG, 28 FEB 1933")
     img = ph.crop((110, 0, 1190, 1920)).convert("RGB")
     # Parallax-Andeutung: Vordergrund-Ebene dunkler/geblurrt
     fg = img.crop((0, 1100, W, 1920)).filter(ImageFilter.GaussianBlur(6))
@@ -484,35 +487,35 @@ def d09_lowerthird():
     for i in range(500):
         d.line([(0, H - 400 - i), (W, H - 400 - i)], fill=(8, 8, 8, int(230 * (1 - i / 500))))
     d.rectangle([0, H - 400, W, H], fill=(8, 8, 8, 230))
-    d.text((60, 120), "27. FEBRUAR 1933 · BERLIN", font=font(MONO, 32), fill=PAPER)
+    d.text((60, 120), "27 FEBRUARY 1933 · BERLIN", font=font(MONO, 32), fill=PAPER)
     d.line([(60, 1180), (60, 1440)], fill=RED, width=8)
-    d.text((95, 1180), "Der Reichstag", font=font(SERIF_B, 80), fill=PAPER)
-    d.text((95, 1280), "brennt", font=font(SERIF_B, 80), fill=PAPER)
-    d.text((95, 1390), "Die NS-Führung nutzt den Brand sofort zur Verfolgung", font=font(SANS, 28), fill=DIM)
-    d.text((95, 1426), "politischer Gegner.", font=font(SANS, 28), fill=DIM)
-    d.text((60, 1490), "Foto: [Archiv, Signatur] · Lizenz", font=font(MONO_L, 22), fill=(170, 160, 140))
+    d.text((95, 1180), "The Reichstag", font=font(SERIF_B, 80), fill=PAPER)
+    d.text((95, 1280), "is burning", font=font(SERIF_B, 80), fill=PAPER)
+    d.text((95, 1390), "The Nazi leadership immediately uses the fire", font=font(SANS, 28), fill=DIM)
+    d.text((95, 1426), "to persecute political opponents.", font=font(SANS, 28), fill=DIM)
+    d.text((60, 1490), "Photo: [archive, reference no.] · licence", font=font(MONO_L, 22), fill=(170, 160, 140))
     img = grain(img, 18, 0.5)
-    label_footer(ImageDraw.Draw(img), 9, "VOLLBILD-FOTO · BAUCHBINDE")
+    label_footer(ImageDraw.Draw(img), 9, "FULL-FRAME PHOTO · LOWER THIRD")
     return img
 
 
 def d10_vote():
     img = Image.new("RGB", (W, H), INK)
     d = ImageDraw.Draw(img, "RGBA")
-    text_c(d, 300, "23. MÄRZ 1933 · KROLLOPER", font(MONO, 30), DIM)
-    text_c(d, 360, "Ermächtigungsgesetz", font(SERIF_B, 76), PAPER)
+    text_c(d, 300, "23 MARCH 1933 · KROLL OPERA HOUSE", font(MONO, 30), DIM)
+    text_c(d, 360, "Enabling Act", font(SERIF_B, 76), PAPER)
     text_c(d, 560, "444", font(SERIF_B, 260), PAPER)
-    text_c(d, 840, "JA", font(MONO, 34), DIM)
+    text_c(d, 840, "YES", font(MONO, 34), DIM)
     text_c(d, 920, "94", font(SERIF_B, 150), (196, 34, 46))
-    text_c(d, 1090, "NEIN – alle Stimmen der SPD", font(MONO, 30), (196, 34, 46))
+    text_c(d, 1090, "NO – every vote from the SPD", font(MONO, 30), (196, 34, 46))
     f = font(SERIF_I, 34)
     y = 1200
-    for ln in wrap(d, "Die 81 Abgeordneten der KPD waren verhaftet, geflohen oder untergetaucht. "
-                      "SA und SS standen im Saal.", f, 900):
+    for ln in wrap(d, "The 81 KPD deputies had been arrested, had fled or gone into hiding. "
+                      "SA and SS men lined the hall.", f, 900):
         text_c(d, y, ln, f, PAPER)
         y += 46
     img = grain(img, 16)
-    label_footer(ImageDraw.Draw(img), 10, "SCHLÜSSELZAHL · TYPOGRAFIE")
+    label_footer(ImageDraw.Draw(img), 10, "KEY NUMBER · TYPOGRAPHY")
     return img
 
 
