@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>If Earth Stopped Spinning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0b0e16; --btn:#1d2233; --btnText:#e8ecff; }
+  html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
+  #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  #out{display:block;height:100vh;width:calc(100vh * 9 / 16);max-width:100vw;max-height:calc(100vw * 16 / 9);background:#000}
+  #ui{position:fixed;right:12px;bottom:12px;display:flex;gap:8px;font:600 13px/1 system-ui,sans-serif}
+  #ui button{background:var(--btn);color:var(--btnText);border:1px solid #39405a;border-radius:8px;padding:9px 12px;cursor:pointer}
+  #ui button:hover{background:#2a3150}
+  #ui.hidden{display:none}
+</style>
+</head>
+<body>
+<div id="stage"><canvas id="out" width="1080" height="1920"></canvas></div>
+<div id="ui">
+  <button id="bPlay">Pause</button>
+  <button id="bRestart">Restart</button>
+  <button id="bRec">Record 60s WebM</button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(async function(){
+"use strict";
+/* ============================================================
+   IF EARTH STOPPED SPINNING — 60 s vertical (1080x1920) three.js
+   Facts used (all real):
+   - Equator surface speed: 2π·6378 km / 23.93 h ≈ 1,670 km/h ≈ 465 m/s
+   - Speed of sound (20 °C, sea level) ≈ 343 m/s
+   - Strongest tornado wind measured: ≈ 484 km/h (301 mph, Bridge Creek–Moore, 1999)
+   - Speed ∝ cos(latitude): ≈ 1,180 km/h at 45°, ≈ 0 at the poles
+   - No rotation → one solar day = one year (≈6 months light, 6 months dark)
+   - Equatorial bulge ≈ 21 km; without spin the oceans migrate to the poles,
+     leaving one equatorial super-continent (ESRI model, W. Fraczek)
+   ============================================================ */
+
+const W = 1080, H = 1920, DUR = 60;
+const params = new URLSearchParams(location.search);
+const fixedT = params.has('t') ? parseFloat(params.get('t')) : null;
+if (params.has('clean') || fixedT !== null) document.getElementById('ui').classList.add('hidden');
+
+// ---------- utils ----------
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rnd = mulberry32(20261122);
+const R = (a,b)=>a+(b-a)*rnd();
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>{x=clamp(x);return x*x*(3-2*x);};
+const easeOut=x=>1-Math.pow(1-clamp(x),3);
+const lerp=(a,b,t)=>a+(b-a)*t;
+const pick=a=>a[Math.floor(rnd()*a.length)];
+const lin=h=>new THREE.Color(h).convertSRGBToLinear();
+const mat=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:lin(c),roughness:0.82,metalness:0},o));
+const wrapS=(x,s)=>((x+s/2)%s+s)%s-s/2;
+
+// wait for fonts (canvas text) but never hang
+try{ await Promise.race([Promise.all([document.fonts.load('900 100px Archivo'),document.fonts.load('800 60px Archivo'),document.fonts.load('700 40px Archivo')]),new Promise(r=>setTimeout(r,2500))]); }catch(e){}
+const FONT='Archivo, "Helvetica Neue", Arial, sans-serif';
+
+// ---------- renderer & output ----------
+const renderer = new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(1);
+renderer.setSize(W,H,false);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+const glCanvas = renderer.domElement;
+const out = document.getElementById('out');
+const ctx = out.getContext('2d');
+
+// ---------- geometry helpers ----------
+function rrShape(w,h,r){
+  const s=new THREE.Shape(), x=-w/2, y=-h/2; r=Math.max(0.001,Math.min(r,w/2-0.001,h/2-0.001));
+  s.moveTo(x+r,y); s.lineTo(x+w-r,y); s.quadraticCurveTo(x+w,y,x+w,y+r);
+  s.lineTo(x+w,y+h-r); s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  s.lineTo(x+r,y+h); s.quadraticCurveTo(x,y+h,x,y+h-r);
+  s.lineTo(x,y+r); s.quadraticCurveTo(x,y,x+r,y); return s;
+}
+function rbox(w,h,d,r=0.1){
+  const b=Math.min(r,w/2.2,h/2.2,d/2.2);
+  const g=new THREE.ExtrudeGeometry(rrShape(w-2*b,h-2*b,b*0.8),{depth:Math.max(0.002,d-2*b),bevelEnabled:true,bevelThickness:b,bevelSize:b,bevelSegments:3,curveSegments:4});
+  g.translate(0,0,-Math.max(0.002,d-2*b)/2);
+  return g;
+}
+function shadowed(o,cast=true,recv=true){o.traverse(m=>{if(m.isMesh){m.castShadow=cast;m.receiveShadow=recv;}});return o;}
+
+function canvasTex(w,h,draw,repeat){
+  const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);
+  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;
+  if(repeat){t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(repeat[0],repeat[1]);}
+  return t;
+}
+function roundRectPath(g,x,y,w,h,r){r=Math.min(r,w/2,h/2);g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
+
+// In-world label (sprite). lines: [small, big]
+function makeLabel(small,big,{accent='#FFD43B',worldH=1.0}={}){
+  const c=document.createElement('canvas'), g=c.getContext('2d');
+  const s1=44,s2=74,pad=30;
+  g.font=`700 ${s1}px ${FONT}`; const w1=small?g.measureText(small).width:0;
+  g.font=`900 ${s2}px ${FONT}`; const w2=g.measureText(big).width;
+  c.width=Math.ceil(Math.max(w1,w2)+pad*2); c.height=Math.ceil((small?s1*1.25:0)+s2*1.2+pad*1.6);
+  function draw(sm,bg){
+    g.clearRect(0,0,c.width,c.height);
+    roundRectPath(g,4,4,c.width-8,c.height-8,26); g.fillStyle='rgba(18,20,34,0.86)'; g.fill();
+    g.textAlign='center'; g.textBaseline='top';
+    let y=pad*0.8;
+    if(sm){g.font=`700 ${s1}px ${FONT}`;g.fillStyle='#c9d0f2';g.fillText(sm,c.width/2,y);y+=s1*1.25;}
+    g.font=`900 ${s2}px ${FONT}`;g.fillStyle=accent;g.fillText(bg,c.width/2,y);
+  }
+  draw(small,big);
+  const tex=new THREE.CanvasTexture(c);tex.encoding=THREE.sRGBEncoding;tex.anisotropy=8;
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false,depthWrite:false,fog:false,toneMapped:false}));
+  sp.renderOrder=20; sp.scale.set(worldH*c.width/c.height,worldH,1);
+  sp.userData.redraw=(a,b)=>{draw(a,b);tex.needsUpdate=true;};
+  return sp;
+}
+
+/* ============================================================
+   GROUND WORLD (scenes 1–5)
+   ============================================================ */
+const gScene=new THREE.Scene();
+gScene.background=canvasTex(4,512,(g,w,h)=>{const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#5d9ee0');gr.addColorStop(0.55,'#a9cdee');gr.addColorStop(0.82,'#f3dcc0');gr.addColorStop(1,'#f6e6d2');g.fillStyle=gr;g.fillRect(0,0,w,h);});
+gScene.fog=new THREE.Fog(lin('#eedfcd'),35,120);
+const gCam=new THREE.PerspectiveCamera(55,W/H,0.1,500);
+const gHemi=new THREE.HemisphereLight(lin('#d6e8ff'),lin('#8d9a6c'),0.55); gScene.add(gHemi);
+const gSun=new THREE.DirectionalLight(lin('#fff0d8'),2.7);
+gSun.castShadow=true; gSun.shadow.mapSize.set(2048,2048);
+Object.assign(gSun.shadow.camera,{left:-34,right:34,top:34,bottom:-34,near:1,far:140});
+gSun.shadow.bias=-0.0004; gSun.shadow.normalBias=0.03; gSun.shadow.radius=4;
+gScene.add(gSun,gSun.target);
+
+// ground + road with scrolling textures
+const TILE=16, ROADTILE=8;
+const groundTex=canvasTex(512,512,(g,w,h)=>{
+  g.fillStyle='#a6d18a';g.fillRect(0,0,w,h);
+  const cols=['#9ccb80','#b2d892','#a0cf86','#bcdc98','#96c57c'];
+  const r2=mulberry32(5);
+  for(let i=0;i<4;i++)for(let j=0;j<4;j++){g.fillStyle=cols[Math.floor(r2()*cols.length)];g.fillRect(i*128+3,j*128+3,122,122);}
+  g.strokeStyle='rgba(255,255,255,0.10)';g.lineWidth=2;
+  for(let i=0;i<4;i++)for(let k=0;k<6;k++){g.beginPath();g.moveTo(i*128+10,k*21+r2()*4+i%2*256);g.lineTo(i*128+118,k*21+i%2*256);g.stroke();}
+},[600/TILE,600/TILE]);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(600,600),new THREE.MeshStandardMaterial({map:groundTex,roughness:0.95}));
+ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; gScene.add(ground);
+const roadTex=canvasTex(256,128,(g,w,h)=>{
+  g.fillStyle='#e6ddd0';g.fillRect(0,0,w,h);           // sidewalks
+  g.fillStyle='#8a8d9c';g.fillRect(0,18,w,92);          // asphalt
+  g.fillStyle='#ffe08a';g.fillRect(20,61,96,6);         // dash
+},[600/ROADTILE,1]);
+const road=new THREE.Mesh(new THREE.PlaneGeometry(600,5.4),new THREE.MeshStandardMaterial({map:roadTex,roughness:0.9}));
+road.rotation.x=-Math.PI/2; road.position.set(0,0.012,1); road.receiveShadow=true; gScene.add(road);
+
+// palettes
+const WALLS=['#f6e5cb','#f7cdb9','#d3e3f6','#ead9f3','#fff1d6','#cfeedd'];
+const ROOFS=['#e0736a','#6d8fd8','#8a6aa6','#e7965c','#4fb3a2'];
+const CARS=['#ff6b6b','#4ecdc4','#ffd166','#5e7ce2','#f78fb3','#ffffff'];
+const SHIRTS=['#ff7f6e','#5fa8ff','#ffd166','#8bd17c','#c38bff','#ff9fd1'];
+const LEAVES=['#6cbf72','#86cc69','#5aae6a','#9fd46e'];
+const M={wall:WALLS.map(c=>mat(c)),roof:ROOFS.map(c=>mat(c,{roughness:0.7})),car:CARS.map(c=>mat(c,{roughness:0.45})),
+  shirt:SHIRTS.map(c=>mat(c)),leaf:LEAVES.map(c=>mat(c,{roughness:0.9})),trunk:mat('#9a6a48'),dark:mat('#33364a',{roughness:0.6}),
+  glass:mat('#bfe3ff',{roughness:0.25}),found:mat('#cbbfae'),skin:mat('#f2c4a2'),stump:mat('#7e5636'),white:mat('#ffffff'),cloud:mat('#ffffff',{roughness:1})};
+const GEO={
+  houseBody:rbox(2.4,1.9,2.4,0.14),
+  roof:(()=>{const g=new THREE.CylinderGeometry(1.7,1.7,2.8,3,1);g.rotateX(-Math.PI/2);g.scale(1,0.55,1);return g;})(),
+  door:new THREE.BoxGeometry(0.5,0.85,0.06), win:new THREE.BoxGeometry(0.5,0.45,0.06),
+  chimney:rbox(0.34,0.8,0.34,0.05), found:rbox(2.9,0.18,2.9,0.06),
+  trunk:new THREE.CylinderGeometry(0.13,0.18,1.3,10), canopy:new THREE.IcosahedronGeometry(0.95,2), stump:new THREE.CylinderGeometry(0.19,0.22,0.22,10),
+  carBody:rbox(1.9,0.55,0.95,0.16), carCab:rbox(1.0,0.5,0.85,0.16), wheel:new THREE.CylinderGeometry(0.2,0.2,0.16,16).rotateX(Math.PI/2),
+  body:new THREE.CylinderGeometry(0.15,0.19,0.55,12), head:new THREE.SphereGeometry(0.15,16,12),
+  puff:new THREE.SphereGeometry(1,16,12), cloud:new THREE.SphereGeometry(1,18,12)
+};
+
+function makeHouse(){
+  const g=new THREE.Group();
+  const body=new THREE.Mesh(GEO.houseBody,pick(M.wall)); body.position.y=0.95; g.add(body);
+  const roof=new THREE.Mesh(GEO.roof,pick(M.roof)); roof.position.y=1.9+0.46; g.add(roof);
+  const door=new THREE.Mesh(GEO.door,M.dark); door.position.set(-0.45,0.43,1.2); g.add(door);
+  const w1=new THREE.Mesh(GEO.win,M.glass); w1.position.set(0.5,1.05,1.2); g.add(w1);
+  const ch=new THREE.Mesh(GEO.chimney,M.wall[0]); ch.position.set(0.7,2.5,-0.4); g.add(ch);
+  return shadowed(g);
+}
+function makeTree(s){
+  const g=new THREE.Group();
+  const tr=new THREE.Mesh(GEO.trunk,M.trunk); tr.position.y=0.65+0.2; g.add(tr);
+  const c=new THREE.Mesh(GEO.canopy,pick(M.leaf)); c.position.y=1.85; c.scale.set(1,1.15,1); g.add(c);
+  g.scale.setScalar(s); return shadowed(g);
+}
+function makeCar(m){
+  const g=new THREE.Group();
+  const b=new THREE.Mesh(GEO.carBody,m||pick(M.car)); b.position.y=0.48; g.add(b);
+  const c=new THREE.Mesh(GEO.carCab,M.glass); c.position.set(-0.1,0.9,0); g.add(c);
+  for(const [x,z] of [[-0.6,0.45],[0.6,0.45],[-0.6,-0.45],[0.6,-0.45]]){const w=new THREE.Mesh(GEO.wheel,M.dark);w.position.set(x,0.2,z);g.add(w);}
+  return shadowed(g);
+}
+function makePerson(){
+  const g=new THREE.Group();
+  const b=new THREE.Mesh(GEO.body,pick(M.shirt)); b.position.y=0.28; g.add(b);
+  const h=new THREE.Mesh(GEO.head,M.skin); h.position.y=0.7; g.add(h);
+  return shadowed(g);
+}
+function makeCloud(){
+  const g=new THREE.Group();
+  for(let i=0;i<5;i++){const s=new THREE.Mesh(GEO.cloud,M.cloud);s.position.set(R(-2.2,2.2),R(-0.3,0.5),R(-0.8,0.8));s.scale.setScalar(R(1.0,1.8));g.add(s);}
+  g.scale.set(1.3,0.8,1); return g;
+}
+
+// carousel: everything rides the ground until it stops
+const SPAN=120, V=16, T_STOP=9.2;
+const items=[], puffs=[];
+function addItem(loose,anchor,x0,z,kind,o={}){
+  loose.position.set(x0,o.baseY||0,z); loose.rotation.y=o.ry||0; gScene.add(loose);
+  if(anchor){anchor.position.set(x0,0,z);gScene.add(anchor);}
+  const lift={house:R(0.6,2.0),tree:R(1.0,3.2),car:R(1.5,4.5),person:R(2.5,6.5)}[kind];
+  const sp={house:[R(-.25,.25),R(-.3,.3),R(-.7,-.25)],tree:[R(-.4,.4),R(-.3,.3),R(-1.6,-.6)],car:[R(-2,2),R(-1.5,1.5),R(-2.5,-.5)],person:[R(-3,3),R(-2,2),R(-4,-1)]}[kind];
+  items.push({loose,anchor,x0,z,kind,baseY:o.baseY||0,ry:o.ry||0,lift,spin:new THREE.Vector3(...sp),delay:R(0,0.15),ph:R(0,6.28)});
+}
+// houses (two rows)
+for(let i=0;i<16;i++){const x=-60+i*7.5+R(-1,1),z=R(-7.5,-5.5);const f=shadowed(new THREE.Mesh(GEO.found,M.found),false,true);f.position.y=0.09;const a=new THREE.Group();a.add(f);addItem(makeHouse(),a,x,z,'house',{baseY:0.18,ry:R(-0.15,0.15)});}
+for(let i=0;i<12;i++){const x=-60+i*10+R(-1.5,1.5),z=R(-18,-15);const f=shadowed(new THREE.Mesh(GEO.found,M.found),false,true);f.position.y=0.09;const a=new THREE.Group();a.add(f);addItem(makeHouse(),a,x,z,'house',{baseY:0.18,ry:R(-0.4,0.4)});}
+// trees (rows + foreground)
+function treeAt(x,z,s){const st=shadowed(new THREE.Mesh(GEO.stump,M.stump));st.position.y=0.11;st.scale.setScalar(s);const a=new THREE.Group();a.add(st);addItem(makeTree(s),a,x,z,'tree');}
+for(let i=0;i<16;i++) treeAt(-60+i*7.5+3.7+R(-0.6,0.6),R(-9.5,-3.5),R(0.8,1.15));
+for(let i=0;i<14;i++) treeAt(-60+i*8.6+R(-1,1),R(-24,-20),R(1.0,1.4));
+for(let i=0;i<7;i++)  treeAt(-60+i*17+R(-2,2),R(5.5,7.5),R(0.9,1.2));
+// cars on the road, people on the sidewalk
+for(let i=0;i<10;i++) addItem(makeCar(),null,-60+i*12+R(-2,2),i%2?0.1:1.9,'car',{ry:i%2?Math.PI:0});
+for(let i=0;i<16;i++) addItem(makePerson(),null,-60+i*7.5+R(-2,2),R(3.6,4.1),'person');
+// a dust puff at every house foundation
+for(const it of items) if(it.kind==='house'){const m=new THREE.Mesh(GEO.puff,new THREE.MeshStandardMaterial({color:lin('#e9dccb'),roughness:1,transparent:true,opacity:0,depthWrite:false}));gScene.add(m);puffs.push({m,it});}
+// clouds ride with the atmosphere
+const clouds=[];
+for(let i=0;i<12;i++){const c=makeCloud();c.position.set(0,R(11,19),R(-45,-15));gScene.add(c);clouds.push({c,x0:R(-70,70)});}
+
+// ---- scene 3: hero car + sound wavefronts ----
+const heroCar=makeCar(M.car[0]); heroCar.scale.setScalar(1.25); gScene.add(heroCar);
+const VC=6, CS=VC*343/465;   // debris speed vs sound speed, true ratio (Mach 1.36)
+const ringMat=()=>new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{uR:{value:1},uS:{value:3},uO:{value:1},uC:{value:new THREE.Color('#eaf4ff')}},
+  vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+  fragmentShader:'uniform float uR,uS,uO;uniform vec3 uC;varying vec2 vUv;void main(){vec2 p=(vUv-0.5)*uS;float d=abs(length(p)-uR);float a=1.0-smoothstep(0.025,0.07,d);gl_FragColor=vec4(uC,a*uO);}'});
+const rings=[]; const RING_DT=0.12, RING_LIFE=1.9;
+for(let k=0;k<70;k++){const m=new THREE.Mesh(new THREE.PlaneGeometry(1,1),ringMat());m.renderOrder=5;gScene.add(m);rings.push(m);}
+const shockMat=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.8,depthWrite:false,toneMapped:false});
+const shockLines=[0,1].map(()=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(1,0.07).translate(-0.5,0,0),shockMat);gScene.add(m);return m;});
+const soundDot=new THREE.Mesh(new THREE.SphereGeometry(0.16,16,12),new THREE.MeshBasicMaterial({color:lin('#8fd0ff'),toneMapped:false}));gScene.add(soundDot);
+const lblCar=makeLabel('DEBRIS','465 m/s',{accent:'#FFD43B',worldH:1.15}); gScene.add(lblCar);
+const lblSound=makeLabel('SOUND','343 m/s',{accent:'#8fd0ff',worldH:1.0}); gScene.add(lblSound);
+const lblBoom=makeLabel(null,'SONIC BOOM',{accent:'#ffffff',worldH:0.6}); gScene.add(lblBoom);
+
+// ---- scene 4: wind ----
+const streakGeo=new THREE.BoxGeometry(1,0.035,0.035);
+const streaks=new THREE.InstancedMesh(streakGeo,new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.55,depthWrite:false}),420);
+const streakData=[];for(let i=0;i<420;i++)streakData.push({x0:R(-40,40),y:R(0.15,10),z:R(-28,8),l:R(1.2,4.2),s:R(0.8,1.25)});
+gScene.add(streaks);
+const tufts=[];const tuftGeo=new THREE.ConeGeometry(0.07,0.7,6).translate(0,0.35,0);
+for(let i=0;i<170;i++){const m=new THREE.Mesh(tuftGeo,pick(M.leaf));m.position.set(R(-5,5),0,R(-1.5,6));m.scale.setScalar(R(0.45,0.9));m.castShadow=true;gScene.add(m);tufts.push({m,ph:R(0,6.28)});}
+const debris=[];
+for(let i=0;i<46;i++){const g=pick([rbox(0.5,0.08,0.3,0.03),rbox(0.25,0.25,0.25,0.05),rbox(0.9,0.06,0.18,0.02)]);const m=new THREE.Mesh(g,pick([...M.roof,...M.wall,M.trunk]));m.castShadow=true;gScene.add(m);debris.push({m,x0:R(-30,30),y:R(0.6,7),z:R(-14,5),sp:R(0.8,1.3),r:new THREE.Vector3(R(-6,6),R(-6,6),R(-6,6))});}
+const BAR_MAX=4.1;
+const barT=shadowed(new THREE.Mesh(rbox(1.35,1,1.35,0.12),mat('#9aa7c4'))); barT.position.set(-1.35,0,-2.5); gScene.add(barT);
+const barE=shadowed(new THREE.Mesh(rbox(1.35,1,1.35,0.12),mat('#ff6b5a'))); barE.position.set(1.35,0,-2.5); gScene.add(barE);
+const lblBarT=makeLabel('STRONGEST TORNADO','484 km/h',{accent:'#d5defa',worldH:0.85}); gScene.add(lblBarT);
+const lblBarE=makeLabel('STOPPED EARTH','1,670 km/h',{accent:'#FFD43B',worldH:0.95}); gScene.add(lblBarE);
+
+// ---- scene 5: ocean surge ----
+const WNU=100,WNZ=90,WZ0=-90,WZ1=40;
+const waveGeo=new THREE.PlaneGeometry(1,1,WNU-1,WNZ-1);
+const wPos=waveGeo.attributes.position; const wCol=new Float32Array(wPos.count*3); waveGeo.setAttribute('color',new THREE.BufferAttribute(wCol,3));
+const wave=new THREE.Mesh(waveGeo,new THREE.MeshStandardMaterial({vertexColors:true,roughness:0.55,metalness:0.0,side:THREE.DoubleSide,fog:false}));
+wave.castShadow=true; wave.receiveShadow=true; wave.frustumCulled=false; gScene.add(wave);
+const cDeep=lin('#16608d'),cMid=lin('#3aa6cf'),cFoam=lin('#f4fbff'),tmpC=new THREE.Color();
+function updateWave(xf,t){
+  const HW=7.5;
+  for(let j=0;j<WNZ;j++){
+    const z=lerp(WZ0,WZ1,j/(WNZ-1));
+    const xfl=xf+1.8*Math.sin(z*0.13+t*0.9)+0.8*Math.sin(z*0.37-t*1.3);
+    for(let i=0;i<WNU;i++){
+      const u=i/(WNU-1), d=170*Math.pow(u,1.9);
+      const k=j*WNU+i;
+      const body=HW*(1-Math.exp(-d/2.6)), crest=2.6*Math.exp(-Math.pow(d-3.0,2)/3.2);
+      const rip=(0.35*Math.sin(d*0.55+z*0.31-t*3)+0.2*Math.sin(z*0.9+d*0.2+t*2))*(1-Math.exp(-d/2));
+      const y=Math.max(-0.05,body+crest+rip-0.08);
+      const curl=2.0*Math.exp(-Math.pow(d-2.6,2)/1.6)*clamp(y/HW);
+      wPos.setXYZ(k,xfl-d+curl,y,z);
+      const f=Math.exp(-Math.pow(d-3.2,2)/2.2)*clamp((y-5.5)/2.5)+0.5*clamp(1-d/0.8); const hh=clamp(y/(HW+2.6));
+      tmpC.copy(cDeep).lerp(cMid,hh).lerp(cFoam,clamp(f*1.3));
+      wCol[k*3]=tmpC.r;wCol[k*3+1]=tmpC.g;wCol[k*3+2]=tmpC.b;
+    }
+  }
+  wPos.needsUpdate=true; waveGeo.attributes.color.needsUpdate=true; waveGeo.computeVertexNormals();
+}
+const spray=[];
+for(let i=0;i<80;i++){const m=new THREE.Mesh(GEO.puff,new THREE.MeshStandardMaterial({color:lin('#f4fbff'),roughness:1,transparent:true,opacity:0.8,depthWrite:false,fog:false}));gScene.add(m);spray.push({m,z:R(-30,12),ph:R(0,1),s:R(0.25,0.6)});}
+
+/* ============================================================
+   SPACE WORLD (scenes 6–8)
+   ============================================================ */
+const sScene=new THREE.Scene();
+sScene.background=canvasTex(4,512,(g,w,h)=>{const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#070a1c');gr.addColorStop(0.6,'#141a3d');gr.addColorStop(1,'#2a2152');g.fillStyle=gr;g.fillRect(0,0,w,h);});
+const sCam=new THREE.PerspectiveCamera(45,W/H,0.1,1000);
+const sHemi=new THREE.HemisphereLight(lin('#8ea2ff'),lin('#2a1f3d'),0.32); sScene.add(sHemi);
+const sLight=new THREE.DirectionalLight(lin('#fff0dc'),3.0);
+sLight.castShadow=true; sLight.shadow.mapSize.set(2048,2048);
+Object.assign(sLight.shadow.camera,{left:-6,right:6,top:6,bottom:-6,near:0.1,far:60});
+sLight.shadow.bias=-0.0006; sLight.shadow.normalBias=0.02; sLight.shadow.radius=3;
+sScene.add(sLight,sLight.target);
+{ // stars
+  const n=1600,p=new Float32Array(n*3);
+  for(let i=0;i<n;i++){const v=new THREE.Vector3(R(-1,1),R(-1,1),R(-1,1)).normalize().multiplyScalar(R(150,260));p.set([v.x,v.y,v.z],i*3);}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));
+  sScene.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xffffff,size:2.2,sizeAttenuation:false,transparent:true,opacity:0.75})));
+}
+// noise for continents
+function h3(x,y,z){let h=(Math.imul(x,374761393)+Math.imul(y,668265263)+Math.imul(z,1274126177))|0;h=Math.imul(h^(h>>>13),1274126177);h^=h>>>16;return (h>>>0)/4294967295;}
+function vnoise(x,y,z){const xi=Math.floor(x),yi=Math.floor(y),zi=Math.floor(z);let xf=x-xi,yf=y-yi,zf=z-zi;xf=xf*xf*(3-2*xf);yf=yf*yf*(3-2*yf);zf=zf*zf*(3-2*zf);
+  const L=(a,b,t)=>a+(b-a)*t;
+  return L(L(L(h3(xi,yi,zi),h3(xi+1,yi,zi),xf),L(h3(xi,yi+1,zi),h3(xi+1,yi+1,zi),xf),yf),L(L(h3(xi,yi,zi+1),h3(xi+1,yi,zi+1),xf),L(h3(xi,yi+1,zi+1),h3(xi+1,yi+1,zi+1),xf),yf),zf);}
+function fbm(x,y,z){let s=0,a=0.5,f=1;for(let o=0;o<5;o++){s+=a*vnoise(x*f,y*f,z*f);f*=2.03;a*=0.5;}return s/0.97;}
+
+const GR=3, BULGE=0.45;   // bulge exaggerated for visibility (real: 21 km on a 6,371 km radius)
+const globe=new THREE.Group(); sScene.add(globe);
+{
+  const geo=new THREE.SphereGeometry(1,220,150); const p=geo.attributes.position; const col=new Float32Array(p.count*3); const v=new THREE.Vector3(),c=new THREE.Color();
+  const sandL=lin('#f0d9a4'),sandD=lin('#c99f66'),grL=lin('#93d27b'),grD=lin('#4f9d5d'),rock=lin('#c4ae86'),snow=lin('#f4f2ec');
+  for(let i=0;i<p.count;i++){
+    v.fromBufferAttribute(p,i).normalize(); const c2=1-v.y*v.y;
+    const h=(fbm(v.x*1.6+11.3,v.y*1.6+3.1,v.z*1.6+7.7)-0.55)*0.75;
+    const r=GR+BULGE*c2+h; p.setXYZ(i,v.x*r,v.y*r,v.z*r);
+    if(h<0) c.copy(sandL).lerp(sandD,clamp(-h/0.2)); else if(h<0.1) c.copy(grL).lerp(grD,h/0.1); else if(h<0.15) c.copy(rock); else c.copy(snow);
+    col.set([c.r,c.g,c.b],i*3);
+  }
+  geo.setAttribute('color',new THREE.BufferAttribute(col,3)); geo.computeVertexNormals();
+  const land=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({vertexColors:true,roughness:0.9}));land.castShadow=true;land.receiveShadow=true;globe.add(land);
+}
+const oceanGeo=new THREE.SphereGeometry(1,180,120); const oBase=oceanGeo.attributes.position.array.slice();
+const ocean=new THREE.Mesh(oceanGeo,new THREE.MeshStandardMaterial({color:lin('#3b9be0'),roughness:0.3}));ocean.receiveShadow=true;globe.add(ocean);
+let oceanS=-1;
+function setOcean(s){ if(Math.abs(s-oceanS)<1e-4)return; oceanS=s; const p=oceanGeo.attributes.position;
+  for(let i=0;i<p.count;i++){const x=oBase[i*3],y=oBase[i*3+1],z=oBase[i*3+2];const c2=1-y*y;const r=GR+BULGE*(c2*(1-s)+s*2/3)+0.004;p.setXYZ(i,x*r,y*r,z*r);}
+  p.needsUpdate=true; oceanGeo.computeVertexNormals(); }
+setOcean(0);
+// latitude speed arrows (fixed in view, globe turns beneath)
+const arrowMat=mat('#ff6b5a',{roughness:0.55});
+const arrows=new THREE.Group(); sScene.add(arrows);
+const LATS=[0,25,45,65,82];
+const arrowObjs=LATS.map(lat=>{
+  const phi=lat*Math.PI/180, rs=GR+BULGE*Math.cos(phi)**2+0.32;
+  const g=new THREE.Group(); g.position.set(0,rs*Math.sin(phi),rs*Math.cos(phi));
+  const shaft=new THREE.Mesh(new THREE.CylinderGeometry(0.075,0.075,1,16).rotateZ(-Math.PI/2).translate(0.5,0,0),arrowMat);
+  const head=new THREE.Mesh(new THREE.ConeGeometry(0.21,0.44,20).rotateZ(-Math.PI/2),arrowMat);
+  g.add(shaft,head); shadowed(g,true,false); arrows.add(g);
+  return {g,shaft,head,L:2.3*Math.cos(phi),lat};
+});
+const poleMark=shadowed(new THREE.Mesh(new THREE.SphereGeometry(0.17,20,14),mat('#FFD43B',{roughness:0.4})),true,false); poleMark.position.set(0,GR+0.17,0); arrows.add(poleMark);
+const lblEq=makeLabel('EQUATOR','1,670 km/h',{worldH:1.1}); sScene.add(lblEq);
+const lbl45=makeLabel('45° N','1,180 km/h',{worldH:0.95,accent:'#ffb3a8'}); sScene.add(lbl45);
+const lblPole=makeLabel('NORTH POLE','≈ 0 km/h',{worldH:0.95,accent:'#ffffff'}); sScene.add(lblPole);
+// sun + orbit (scene 7)
+const sunGroup=new THREE.Group(); sScene.add(sunGroup);
+const sunBall=new THREE.Mesh(new THREE.SphereGeometry(0.95,40,28),new THREE.MeshBasicMaterial({color:lin('#ffd76a'),toneMapped:false})); sunGroup.add(sunBall);
+const glowTex=canvasTex(256,256,(g,w,h)=>{const gr=g.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2);gr.addColorStop(0,'rgba(255,220,120,0.95)');gr.addColorStop(0.35,'rgba(255,180,80,0.35)');gr.addColorStop(1,'rgba(255,150,60,0)');g.fillStyle=gr;g.fillRect(0,0,w,h);});
+const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false,toneMapped:false})); glow.scale.set(5.2,5.2,1); sunGroup.add(glow);
+const RO=3.3;
+const orbit=new THREE.Mesh(new THREE.TorusGeometry(RO,0.018,8,200).rotateX(Math.PI/2),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.35,toneMapped:false})); sunGroup.add(orbit);
+const pin=new THREE.Group();
+{const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,1.6,10),M.white);pole.position.y=0.8;const flag=new THREE.Mesh(rbox(0.9,0.55,0.08,0.04),mat('#ff6b5a'));flag.position.set(0.45,1.3,0);pin.add(pole,flag);}
+pin.rotation.x=Math.PI/2; pin.position.set(0,0,GR+BULGE-0.02); shadowed(pin); globe.add(pin);
+const lblDay=makeLabel('MONTH 1','DAYLIGHT',{worldH:0.9}); sScene.add(lblDay);
+let dayKey='';
+
+/* ============================================================
+   CAPTIONS
+   ============================================================ */
+const SCENES=[
+  {t0:0, t1:8, pre:'At the equator, the ground is spinning east at', key:'1,670 km/h'},
+  {t0:8, t1:16,pre:'Now the ground stops. Everything on it keeps flying east at', key:'465 m/s'},
+  {t0:16,t1:24,pre:"That's faster than sound, so debris outruns its own noise:", key:'465 vs 343 m/s'},
+  {t0:24,t1:32,pre:'The air keeps going too: winds over 3× the strongest tornado ever measured', key:'1,670 km/h'},
+  {t0:32,t1:40,pre:'The oceans keep moving east too, crashing over the land as', key:'mega-tsunamis'},
+  {t0:40,t1:47,pre:'The speed shrinks toward the poles: ~1,180 km/h at 45°, and at the poles', key:'≈ 0 km/h'},
+  {t0:47,t1:54,pre:'With no spin, the Sun would rise and set only once a year:', key:'1 day = 1 year'},
+  {t0:54,t1:60,pre:'Oceans slide off the 21 km equatorial bulge to the poles, leaving', key:'one equatorial supercontinent'},
+];
+function wrapText(text,maxW){const words=text.split(' ');const lines=[];let cur='';for(const w of words){const t=cur?cur+' '+w:w;if(ctx.measureText(t).width>maxW&&cur){lines.push(cur);cur=w;}else cur=t;}if(cur)lines.push(cur);return lines;}
+function drawCaption(t){
+  const sc=SCENES.find(s=>t>=s.t0&&t<s.t1); if(!sc)return;
+  const a=t-sc.t0,d=sc.t1-sc.t0;
+  const ain=easeOut(a/0.55), aout=clamp((d-a)/0.22), alpha=Math.min(ain,aout);
+  const grd=ctx.createLinearGradient(0,0,0,700);grd.addColorStop(0,'rgba(6,8,18,0.62)');grd.addColorStop(0.6,'rgba(6,8,18,0.22)');grd.addColorStop(1,'rgba(6,8,18,0)');
+  ctx.fillStyle=grd;ctx.fillRect(0,0,W,700);
+  ctx.save(); ctx.globalAlpha=alpha; ctx.translate(0,(1-ain)*-28);
+  ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+  ctx.font=`800 62px ${FONT}`;
+  const lines=wrapText(sc.pre,940); let y=190;
+  ctx.shadowColor='rgba(0,0,0,0.55)'; ctx.shadowBlur=22; ctx.shadowOffsetY=4; ctx.fillStyle='#ffffff';
+  for(const l of lines){ctx.fillText(l,W/2,y);y+=76;}
+  let fs=112; ctx.font=`900 ${fs}px ${FONT}`; let kw=ctx.measureText(sc.key).width;
+  if(kw>900){fs=fs*900/kw;ctx.font=`900 ${fs}px ${FONT}`;kw=ctx.measureText(sc.key).width;}
+  const bw=kw+76,bh=fs*1.3,bx=W/2-bw/2,by=y-34;
+  const wipe=easeOut((a-0.3)/0.45), pop=1+0.08*Math.sin(clamp((a-0.3)/0.6)*Math.PI);
+  ctx.translate(W/2,by+bh/2); ctx.rotate(-0.022); ctx.scale(pop,pop); ctx.translate(-W/2,-(by+bh/2));
+  ctx.shadowColor='rgba(0,0,0,0.35)'; ctx.shadowBlur=30; ctx.shadowOffsetY=8;
+  roundRectPath(ctx,bx,by,Math.max(1,bw*wipe),bh,24); ctx.fillStyle='#FFD43B'; ctx.fill();
+  ctx.shadowColor='transparent'; ctx.clip();
+  ctx.fillStyle='#16141f'; ctx.textBaseline='middle'; ctx.fillText(sc.key,W/2,by+bh/2+fs*0.05);
+  ctx.restore();
+}
+function drawFootnote(text,alpha){
+  ctx.save();ctx.globalAlpha=alpha;ctx.font=`700 30px ${FONT}`;ctx.textAlign='center';ctx.fillStyle='rgba(235,240,255,0.75)';ctx.fillText(text,W/2,H-90);ctx.restore();
+}
+
+/* ============================================================
+   UPDATE
+   ============================================================ */
+const look=new THREE.Vector3(), camP=new THREE.Vector3();
+function groundX(t){ if(t<T_STOP) return V*t; const d=0.3,u=Math.min(t-T_STOP,d); return V*T_STOP+V*(u-u*u/(2*d)); }
+
+function updateGround(t){
+  const sc = t<16?12 : t<24?3 : t<32?4 : 5;
+  const gX=groundX(t);
+  groundTex.offset.x=-gX/TILE; roadTex.offset.x=-gX/ROADTILE;
+  let shake=0;
+  // ----- camera -----
+  if(sc===12){
+    shake = t>T_STOP ? 0.22*Math.exp(-(t-T_STOP)*1.6) : 0;
+    camP.set(-3.5+0.12*t, 1.7+0.03*t, 13.5-0.08*t);
+    look.set(5.5, lerp(4.0,5.6,ease((t-9.8)/4)), -6);
+  } else if(sc===3){
+    const xc=-8+VC*(t-16);
+    camP.set(xc-3.2, 1.6, 15.5); look.set(xc-2.1, 2.9, 0);
+  } else if(sc===4){
+    camP.set(-0.5+0.05*(t-24), 0.85, 9.6-0.12*(t-24)); look.set(0.3, 3.1, -3);
+    shake=0.03;
+  } else {
+    const xf=-75+11.5*(t-32);
+    camP.set(12.5, 1.5, 8.2-0.1*(t-32)); look.set(0, lerp(3.3,4.8,ease((t-36)/3.5)), -1.5);
+    shake=0.25*clamp((xf+10)/20)**2;
+  }
+  gCam.position.copy(camP);
+  if(shake){gCam.position.x+=shake*Math.sin(t*53.1);gCam.position.y+=shake*Math.sin(t*61.7+1);}
+  gCam.lookAt(look);
+  // light follows focus (one key light)
+  const focus=look.clone(); focus.y=0;
+  const lo = sc===5 ? new THREE.Vector3(22,26,22) : new THREE.Vector3(-30,24,16);
+  gSun.target.position.copy(focus); gSun.position.copy(focus).add(lo);
+  // ----- carousel -----
+  for(const it of items){
+    if(it.anchor) it.anchor.position.x=wrapS(it.x0+gX,SPAN);
+    const L=it.loose; L.visible = sc===12;
+    if(!L.visible) continue;
+    const u=Math.max(0,t-T_STOP-it.delay), k=1-Math.exp(-2.2*u), su=u-(1-Math.exp(-3*u))/3;
+    L.position.set(wrapS(it.x0+V*t,SPAN), it.baseY+it.lift*k+0.18*Math.sin(3*u+it.ph)*k, it.z);
+    L.rotation.set(it.spin.x*su, it.ry+it.spin.y*su, it.spin.z*su);
+  }
+  for(const p of puffs){
+    const u=t-T_STOP, on = sc===12 && u>0 && u<2.2;
+    p.m.visible=on; if(!on) continue;
+    p.m.position.set(p.it.anchor.position.x+0.55*V*u*0.5, 0.6+0.6*u, p.it.z);
+    p.m.scale.setScalar(0.5+1.5*easeOut(u/1.5)); p.m.material.opacity=0.45*(1-u/2.2);
+  }
+  for(const c of clouds) c.c.position.x=camP.x+wrapS(c.x0+V*t-camP.x,160);
+  // ----- scene 3 -----
+  const s3 = sc===3;
+  heroCar.visible=s3; soundDot.visible=s3; lblCar.visible=s3; lblSound.visible=s3;
+  shockLines.forEach(m=>m.visible=s3); lblBoom.visible=s3;
+  rings.forEach(r=>r.visible=false);
+  if(s3){
+    const a=t-16, cy=t=>1.25+0.25*Math.sin((t-16)*2.2), xcF=t=>-8+VC*(t-16);
+    const xc=xcF(t);
+    heroCar.position.set(xc,cy(t)-0.3,0); heroCar.rotation.set(0.12*Math.sin(a*1.7),0,-0.08+0.06*Math.sin(a*2.3));
+    let k=0;
+    for(let te=16; te<=t && k<rings.length; te+=RING_DT){
+      const age=t-te; if(age>RING_LIFE) continue;
+      const m=rings[k++]; const r=CS*age;
+      m.visible=true; m.position.set(xcF(te)+0.0,cy(te)+0.15,0);
+      const S=2*r+0.6; m.scale.set(S,S,1); m.material.uniforms.uS.value=S; m.material.uniforms.uR.value=r;
+      m.material.uniforms.uO.value=0.85*(1-age/RING_LIFE)*clamp(age/0.08);
+    }
+    // the very first sound wave, racing the debris
+    const xs=-8+CS*a; soundDot.position.set(xs,cy(16)+0.15,0.2);
+    lblSound.position.set(xs,cy(16)+1.35,0.3);
+    lblCar.position.set(xc+0.2,cy(t)+1.7,0.3);
+    // Mach cone: half-angle = asin(343/465) ≈ 47.5°
+    const mu=Math.asin(343/465), cone=clamp((a-1.0)/0.8);
+    shockMat.opacity=0.75*cone;
+    shockLines.forEach((m,i)=>{m.position.set(xc+1.1,cy(t)+0.15,0.05);m.rotation.z=(i?1:-1)*mu;m.scale.x=8.5*cone;});
+    lblBoom.position.set(xc+1.1-4.2*Math.cos(mu)-0.9,cy(t)+0.15+4.2*Math.sin(mu),0.3); lblBoom.material.opacity=cone;
+  }
+  // ----- scene 4 -----
+  const s4 = sc===4;
+  streaks.visible = t>T_STOP && sc!==3 && sc!==5;
+  if(streaks.visible){
+    const o=new THREE.Object3D(), spd = 46;
+    for(let i=0;i<streakData.length;i++){const s=streakData[i];o.position.set(camP.x+wrapS(s.x0+spd*s.s*t-camP.x,80),s.y,s.z);o.scale.set(s.l,1,1);o.updateMatrix();streaks.setMatrixAt(i,o.matrix);}
+    streaks.instanceMatrix.needsUpdate=true; streaks.material.opacity = s4?0.6:0.35*clamp((t-T_STOP)/1.0);
+  }
+  tufts.forEach(f=>{f.m.visible=s4; if(s4) f.m.rotation.set(0.1*Math.sin(t*9+f.ph),0,-(1.0+0.28*Math.sin(t*17+f.ph*3)));});
+  debris.forEach(d=>{d.m.visible=s4; if(s4){const a=t-24;d.m.position.set(camP.x+wrapS(d.x0+34*d.sp*a,60),d.y+0.4*Math.sin(a*3+d.x0),d.z);d.m.rotation.set(d.r.x*a,d.r.y*a,d.r.z*a);}});
+  barT.visible=barE.visible=lblBarT.visible=lblBarE.visible=s4;
+  if(s4){
+    const a=t-24;
+    const hT=BAR_MAX*484/1670*easeOut((a-0.6)/1.0), hE=BAR_MAX*easeOut((a-1.8)/1.6);
+    barT.scale.y=Math.max(0.01,hT); barT.position.y=barT.scale.y/2; barE.scale.y=Math.max(0.01,hE); barE.position.y=barE.scale.y/2;
+    lblBarT.position.set(barT.position.x,hT+0.75,-2.5); lblBarE.position.set(barE.position.x,hE+0.8,-2.5);
+    lblBarT.material.opacity=clamp((a-0.8)/0.4); lblBarE.material.opacity=clamp((a-2.4)/0.4);
+  }
+  // ----- scene 5 -----
+  const s5 = sc===5;
+  wave.visible=s5; spray.forEach(s=>s.m.visible=s5);
+  if(s5){
+    const xf=-75+11.5*(t-32); updateWave(xf,t);
+    spray.forEach((s,i)=>{const ph=((t*0.9+s.ph)%1);s.m.position.set(xf+0.3+ph*1.8,7.4+ph*1.6*s.s,s.z+Math.sin(t+i)*0.4);s.m.scale.setScalar(s.s*(0.6+ph*1.4));s.m.material.opacity=0.6*(1-ph)*(1-ph);});
+  }
+}
+
+const tmpV=new THREE.Vector3();
+function updateSpace(t){
+  const sc = t<47?6 : t<54?7 : 8;
+  const SPIN_END=0.55*7;
+  arrows.visible = sc===6; lblEq.visible=lbl45.visible=lblPole.visible = sc===6;
+  sunGroup.visible = sc===7; pin.visible = sc===7; lblDay.visible = sc===7;
+  if(sc===6){
+    const a=t-40;
+    globe.scale.setScalar(1); globe.position.set(0,0,0); globe.rotation.set(0,0.55*a,0); setOcean(0);
+    arrowObjs.forEach((o,i)=>{const g=easeOut((a-0.4-i*0.25)/0.8)*o.L;o.g.visible=g>0.02;o.shaft.scale.x=Math.max(0.01,g-0.38);o.head.position.x=Math.max(0.2,g-0.22);});
+    lblEq.position.set(1.45,-0.95,GR+BULGE+0.4); lblEq.material.opacity=clamp((a-1.0)/0.4);
+    const p45=Math.PI/4, r45=GR+BULGE*0.5+0.32;
+    lbl45.position.set(1.75,r45*Math.sin(p45)+0.75,r45*Math.cos(p45)+0.3); lbl45.material.opacity=clamp((a-1.7)/0.4);
+    lblPole.position.set(-1.6,GR+1.05,0.2); lblPole.material.opacity=clamp((a-2.6)/0.4);
+    sCam.position.set(-0.6+0.12*a,-1.2+0.12*a,23.5-0.3*a); sCam.lookAt(0.35,0.9,0);
+    sLight.position.set(-12,9,12); sLight.target.position.set(0,0,0); sLight.intensity=3.0; sHemi.intensity=0.32;
+  } else if(sc===7){
+    const a=t-47, f=clamp((a-0.35)/6.3), ang=-Math.PI/2+f*Math.PI*2;
+    const E=tmpV.set(-RO*Math.sin(ang), 0, -RO*Math.cos(ang));  // counter-clockwise seen from north
+    globe.scale.setScalar(0.24); globe.position.copy(E); globe.rotation.set(0,0,0); setOcean(0);
+    // is the pin (fixed +z) facing the sun?
+    const lit = (-E.z/RO) > 0.0;
+    const month=Math.min(12,Math.floor(f*12)+1);
+    const key=month+(lit?'d':'n');
+    if(key!==dayKey){dayKey=key;lblDay.userData.redraw(`MONTH ${month}`,lit?'DAYLIGHT':'NIGHT');}
+    lblDay.position.set(E.x*0.82,E.y+1.55,E.z);
+    sunBall.scale.setScalar(1+0.02*Math.sin(t*4));
+    sCam.position.set(0,7.5,17.5); sCam.lookAt(0,-0.6,0);
+    sLight.position.set(0,0,0); sLight.target.position.copy(E); sLight.intensity=3.4; sHemi.intensity=0.07;
+  } else {
+    const a=t-54;
+    globe.scale.setScalar(1); globe.position.set(0,0,0); globe.rotation.set(0,0.55*7,0);
+    setOcean(ease((a-0.6)/3.6));
+    const ca=lerp(-0.55,0.35,a/6);
+    sCam.position.set(19*Math.sin(ca),1.6,19*Math.cos(ca)); sCam.lookAt(0,0.7,0);
+    sLight.position.set(-11,7,11); sLight.target.position.set(0,0,0); sLight.intensity=3.0; sHemi.intensity=0.32;
+  }
+}
+
+function renderAt(t){
+  t=((t%DUR)+DUR)%DUR;
+  const ground = t<40;
+  if(ground){updateGround(t);renderer.render(gScene,gCam);} else {updateSpace(t);renderer.render(sScene,sCam);}
+  ctx.globalAlpha=1; ctx.drawImage(glCanvas,0,0,W,H);
+  // ocean covering the lens just before the cut
+  if(t>39.2&&t<40){ctx.fillStyle=`rgba(40,130,175,${clamp((t-39.2)/0.6)})`;ctx.fillRect(0,0,W,H);}
+  drawCaption(t);
+  if(t>=54) drawFootnote('Bulge height exaggerated for visibility',clamp((t-55)/0.5)*clamp((59.6-t)/0.3));
+  // cuts
+  let fade=0;
+  for(const c of [16,24,32,47,54]) fade=Math.max(fade,1-Math.abs(t-c)/0.22);
+  fade=Math.max(fade,1-t/0.45, 1-(DUR-t)/0.45);
+  if(t>=40&&t<40.4) fade=Math.max(fade,1-(t-40)/0.4);
+  if(fade>0){ctx.fillStyle=`rgba(4,5,10,${clamp(fade)})`;ctx.fillRect(0,0,W,H);}
+}
+window.renderAt=renderAt;
+
+/* ============================================================
+   PLAYBACK / RECORDING
+   ============================================================ */
+let playing=true, t0=performance.now(), pausedAt=0;
+const bPlay=document.getElementById('bPlay'), bRec=document.getElementById('bRec');
+function now(){return playing?(performance.now()-t0)/1000:pausedAt;}
+function togglePlay(){if(playing){pausedAt=now();playing=false;bPlay.textContent='Play';}else{t0=performance.now()-pausedAt*1000;playing=true;bPlay.textContent='Pause';}}
+bPlay.onclick=togglePlay;
+document.getElementById('bRestart').onclick=()=>{t0=performance.now();pausedAt=0;if(!playing)togglePlay();};
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();togglePlay();}});
+bRec.onclick=()=>{
+  if(!window.MediaRecorder){alert('MediaRecorder not supported in this browser.');return;}
+  const types=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];
+  const mime=types.find(m=>MediaRecorder.isTypeSupported(m))||'';
+  const rec=new MediaRecorder(out.captureStream(30),{mimeType:mime,videoBitsPerSecond:16e6});
+  const chunks=[]; rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+  rec.onstop=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(chunks,{type:'video/webm'}));a.download='earth-stops-spinning.webm';a.click();bRec.disabled=false;bRec.textContent='Record 60s WebM';};
+  t0=performance.now(); if(!playing) togglePlay();
+  rec.start(); bRec.disabled=true; bRec.textContent='Recording…';
+  setTimeout(()=>rec.stop(),DUR*1000+150);
+};
+
+if(fixedT!==null){ renderAt(fixedT); window.__ready=true; }
+else { (function loop(){renderAt(now()%DUR);requestAnimationFrame(loop);})(); window.__ready=true; }
+})();
+</script>
+</body>
+</html>
