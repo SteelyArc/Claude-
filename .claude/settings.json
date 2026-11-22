@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "bang-motion": {
+      "source": {
+        "source": "github",
+        "repo": "bangtutorial/bang-motion"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "bang-motion@bang-motion": true
+  }
+}
