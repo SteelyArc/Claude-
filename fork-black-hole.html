@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fork Meets Black Hole</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0b0e16; --btn:#1d2233; --btnText:#e8ecff; }
+  html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
+  #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  #out{display:block;height:100vh;width:calc(100vh * 9 / 16);max-width:100vw;max-height:calc(100vw * 16 / 9);background:#000}
+  #ui{position:fixed;right:12px;bottom:12px;display:flex;gap:8px;font:600 13px/1 system-ui,sans-serif}
+  #ui button{background:var(--btn);color:var(--btnText);border:1px solid #39405a;border-radius:8px;padding:9px 12px;cursor:pointer}
+  #ui button:hover{background:#2a3150}
+  #ui.hidden{display:none}
+</style>
+</head>
+<body>
+<div id="stage"><canvas id="out" width="1080" height="1920"></canvas></div>
+<div id="ui">
+  <button id="bPlay">Pause</button>
+  <button id="bRestart">Restart</button>
+  <button id="bRec">Record 61s WebM</button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(async function(){
+"use strict";
+/* ============================================================
+   WHAT IF A FORK FELL INTO A BLACK HOLE? — 61 s vertical (1080x1920) three.js
+   Facts used (all real):
+   - A typical stainless-steel fork has a mass of about 50 g.
+   - Schwarzschild radius ≈ 2.95 km per solar mass → ≈ 29.5 km for 10 Suns.
+   - Tidal acceleration across a body of length L ≈ 2GML/r³: the near end is
+     pulled harder. For 10 Suns a steel fork is torn apart roughly 100 km out
+     (order-of-magnitude estimate) — "spaghettification".
+   - Radial fall from rest at 1,000 km takes ≈ 30 ms (Newtonian estimate),
+     so the HUD shows the slow-motion factor live.
+   - A distant observer sees infalling matter slow down, redden and fade at
+     the horizon; the falling object itself crosses without noticing.
+   - Proper time from horizon to centre for a fall from far away ≈ (2/3)·Rs/c
+     ≈ 0.07 ms for 10 Suns (general relativity; the centre is not understood).
+   - Sagittarius A* ≈ 4.3 million Suns, horizon radius ≈ 13 million km; tidal
+     forces at its horizon are tiny, so a fork would cross intact.
+   - A black hole keeps only mass, spin and charge: it gets ≈ 50 g heavier.
+   ============================================================ */
+
+const W = 1080, H = 1920, DUR = 61;
+const params = new URLSearchParams(location.search);
+const fixedT = params.has('t') ? parseFloat(params.get('t')) : null;
+if (params.has('clean') || fixedT !== null) document.getElementById('ui').classList.add('hidden');
+
+// ---------- utils ----------
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rnd = mulberry32(20261122);
+const R = (a,b)=>a+(b-a)*rnd();
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>{x=clamp(x);return x*x*(3-2*x);};
+const easeOut=x=>1-Math.pow(1-clamp(x),3);
+const lerp=(a,b,t)=>a+(b-a)*t;
+const pick=a=>a[Math.floor(rnd()*a.length)];
+const lin=h=>new THREE.Color(h).convertSRGBToLinear();
+const mat=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:lin(c),roughness:0.82,metalness:0},o));
+const wrapS=(x,s)=>((x+s/2)%s+s)%s-s/2;
+
+try{ await Promise.race([Promise.all([document.fonts.load('900 100px Archivo'),document.fonts.load('800 60px Archivo'),document.fonts.load('700 40px Archivo')]),new Promise(r=>setTimeout(r,2500))]); }catch(e){}
+const FONT='Archivo, "Helvetica Neue", Arial, sans-serif';
+
+// ---------- renderer & output ----------
+const renderer = new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(1);
+renderer.setSize(W,H,false);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+const glCanvas = renderer.domElement;
+const out = document.getElementById('out');
+const ctx = out.getContext('2d');
+
+// ---------- geometry helpers (same as the original) ----------
+function rrShape(w,h,r){
+  const s=new THREE.Shape(), x=-w/2, y=-h/2; r=Math.max(0.001,Math.min(r,w/2-0.001,h/2-0.001));
+  s.moveTo(x+r,y); s.lineTo(x+w-r,y); s.quadraticCurveTo(x+w,y,x+w,y+r);
+  s.lineTo(x+w,y+h-r); s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  s.lineTo(x+r,y+h); s.quadraticCurveTo(x,y+h,x,y+h-r);
+  s.lineTo(x,y+r); s.quadraticCurveTo(x,y,x+r,y); return s;
+}
+function rbox(w,h,d,r=0.1){
+  const b=Math.min(r,w/2.2,h/2.2,d/2.2);
+  const g=new THREE.ExtrudeGeometry(rrShape(w-2*b,h-2*b,b*0.8),{depth:Math.max(0.002,d-2*b),bevelEnabled:true,bevelThickness:b,bevelSize:b,bevelSegments:3,curveSegments:4});
+  g.translate(0,0,-Math.max(0.002,d-2*b)/2);
+  return g;
+}
+function shadowed(o,cast=true,recv=true){o.traverse(m=>{if(m.isMesh){m.castShadow=cast;m.receiveShadow=recv;}});return o;}
+function canvasTex(w,h,draw,repeat){
+  const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);
+  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;
+  if(repeat){t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(repeat[0],repeat[1]);}
+  return t;
+}
+function roundRectPath(g,x,y,w,h,r){r=Math.min(r,w/2,h/2);g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
+function makeLabel(small,big,{accent='#FFD43B',worldH=1.0}={}){
+  const c=document.createElement('canvas'), g=c.getContext('2d');
+  const s1=44,s2=74,pad=30;
+  function measure(sm,bg){g.font=`700 ${s1}px ${FONT}`;const w1=sm?g.measureText(sm).width:0;g.font=`900 ${s2}px ${FONT}`;return Math.max(w1,g.measureText(bg).width);}
+  c.width=Math.ceil(measure(small,big)+pad*2+60); c.height=Math.ceil((small?s1*1.25:0)+s2*1.2+pad*1.6);
+  function draw(sm,bg){
+    g.clearRect(0,0,c.width,c.height);
+    const w=Math.min(c.width-8,measure(sm,bg)+pad*2), x=(c.width-w)/2;
+    roundRectPath(g,x,4,w,c.height-8,26); g.fillStyle='rgba(18,20,34,0.86)'; g.fill();
+    g.textAlign='center'; g.textBaseline='top';
+    let y=pad*0.8;
+    if(sm){g.font=`700 ${s1}px ${FONT}`;g.fillStyle='#c9d0f2';g.fillText(sm,c.width/2,y);y+=s1*1.25;}
+    g.font=`900 ${s2}px ${FONT}`;g.fillStyle=accent;g.fillText(bg,c.width/2,y);
+  }
+  draw(small,big);
+  const tex=new THREE.CanvasTexture(c);tex.encoding=THREE.sRGBEncoding;tex.anisotropy=8;
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false,depthWrite:false,fog:false,toneMapped:false}));
+  sp.renderOrder=20; sp.scale.set(worldH*c.width/c.height,worldH,1);
+  sp.userData.redraw=(a,b)=>{draw(a,b);tex.needsUpdate=true;};
+  return sp;
+}
+const ringMat=(col)=>new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{uR:{value:1},uS:{value:3},uO:{value:1},uW:{value:0.07},uC:{value:new THREE.Color(col)}},
+  vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+  fragmentShader:'uniform float uR,uS,uO,uW;uniform vec3 uC;varying vec2 vUv;void main(){vec2 p=(vUv-0.5)*uS;float d=length(p)-uR;float a=1.0-smoothstep(uW*0.35,uW,abs(d));a+=0.4*exp(-abs(d)/(uW*3.0));gl_FragColor=vec4(uC,min(a,1.0)*uO);}'});
+
+
+/* ============================================================
+   FACES (same cartoon faces as the other videos)
+   ============================================================ */
+const faceW=mat('#ffffff',{roughness:0.35}), faceK=mat('#1b1a2b',{roughness:0.4});
+const cheekM=new THREE.MeshStandardMaterial({color:lin('#ff8fa3'),roughness:0.8,transparent:true,opacity:0.75});
+function makeFace(R,parent){
+  const f=new THREE.Group(); const F={f,R,eyes:[],pupils:[],brows:[]};
+  for(const s of [-1,1]){
+    const e=new THREE.Mesh(new THREE.SphereGeometry(0.2*R,24,16),faceW); e.position.set(s*0.3*R,0.22*R,1.0*R); f.add(e); F.eyes.push(e);
+    const p=new THREE.Mesh(new THREE.SphereGeometry(0.095*R,16,12),faceK); f.add(p); F.pupils.push(p);
+    const b=new THREE.Mesh(rbox(0.28*R,0.06*R,0.06*R,0.025*R),faceK); b.position.set(s*0.3*R,0.52*R,1.0*R); f.add(b); F.brows.push(b);
+    const c=new THREE.Mesh(new THREE.SphereGeometry(0.09*R,16,10),cheekM); c.scale.set(1.4,0.8,0.4); c.position.set(s*0.52*R,-0.04*R,1.0*R); f.add(c);
+  }
+  F.smile=new THREE.Mesh(new THREE.TorusGeometry(0.22*R,0.04*R,10,36,Math.PI),faceK); f.add(F.smile);
+  F.o=new THREE.Mesh(new THREE.SphereGeometry(0.12*R,20,14),faceK); F.o.position.set(0,-0.22*R,1.05*R); f.add(F.o);
+  parent.add(f); return F;
+}
+function setFace(F,{open=1,look=[0,0],brow=0,mouth='smile',ms=1,frown=false}){
+  const R=F.R;
+  F.eyes.forEach(e=>e.scale.set(1,1.15*Math.max(0.06,open),0.55));
+  F.pupils.forEach((p,i)=>{const s=i?1:-1;p.position.set(s*0.3*R+look[0]*R,0.2*R+look[1]*R,1.12*R);p.scale.set(1,Math.max(0.05,Math.min(1,open*1.4)),0.5);p.visible=open>0.2;});
+  F.brows.forEach((b,i)=>{const s=i?1:-1;b.position.y=(0.52+0.1*brow)*R;b.rotation.z=s*(-0.28*brow);});
+  F.smile.visible=mouth==='smile'; F.smile.rotation.z=frown?0:Math.PI; F.smile.position.set(0,(frown?-0.34:-0.1)*R,1.06*R); F.smile.scale.setScalar(ms);
+  F.o.visible=mouth==='o'; F.o.scale.set(ms,1.3*ms,0.35);
+}
+const blinkAt=(t,times)=>{for(const b of times){const d=Math.abs(t-b);if(d<0.09)return d/0.09;}return 1;};
+// flat version of a face for the fork (features sit on a flat surface)
+function flatFace(R,parent,zOff){const F=makeFace(R,parent);F.f.position.z=zOff-R;return F;}
+
+/* ============================================================
+   THE FORK (stainless steel, with a face)
+   ============================================================ */
+const steel=new THREE.MeshStandardMaterial({color:lin('#d9dee8'),roughness:0.28,metalness:0.45});
+function rrS(w,h,r){return rrShape(w,h,r);}
+function buildFork(){
+  const g=new THREE.Group(); const D=0.07;
+  const ex=(shape)=>new THREE.ExtrudeGeometry(shape,{depth:D,bevelEnabled:true,bevelThickness:0.025,bevelSize:0.025,bevelSegments:3,curveSegments:10});
+  const handle=new THREE.Mesh(ex(rrS(0.26,1.25,0.12)),steel); handle.position.set(0,0.62,-D/2); g.add(handle);
+  const neckS=new THREE.Shape(); neckS.moveTo(-0.11,0); neckS.lineTo(0.11,0); neckS.lineTo(0.07,0.3); neckS.lineTo(-0.07,0.3); neckS.closePath();
+  const neck=new THREE.Mesh(ex(neckS),steel); neck.position.set(0,1.22,-D/2); g.add(neck);
+  const headS=new THREE.Shape(); headS.moveTo(-0.08,0); headS.lineTo(0.08,0); headS.quadraticCurveTo(0.26,0.06,0.25,0.3); headS.lineTo(-0.25,0.3); headS.quadraticCurveTo(-0.26,0.06,-0.08,0);
+  const head=new THREE.Mesh(ex(headS),steel); head.position.set(0,1.5,-D/2); g.add(head);
+  const tines=[];
+  for(let i=0;i<4;i++){const tn=new THREE.Mesh(rbox(0.075,0.62,D+0.04,0.035),steel);tn.position.set(-0.19+i*0.127,2.1,0);g.add(tn);tines.push(tn);}
+  shadowed(g);
+  const face=flatFace(0.13,g,0.075); face.f.position.y=0.95; face.f.scale.setScalar(1.0);
+  g.userData={handle,neck,head,tines,face};
+  return g;
+}
+
+/* ============================================================
+   KITCHEN (scene 1)
+   ============================================================ */
+const kScene=new THREE.Scene();
+kScene.background=canvasTex(4,512,(g,w,h)=>{const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#ffe9c9');gr.addColorStop(1,'#f4c995');g.fillStyle=gr;g.fillRect(0,0,w,h);});
+const kCam=new THREE.PerspectiveCamera(40,W/H,0.05,100);
+kScene.add(new THREE.HemisphereLight(lin('#fff3e0'),lin('#c79a6b'),0.6));
+const kSun=new THREE.DirectionalLight(lin('#fff0d8'),2.6); kSun.position.set(-5,7,4); kSun.castShadow=true; kSun.shadow.mapSize.set(2048,2048);
+Object.assign(kSun.shadow.camera,{left:-5,right:5,top:5,bottom:-5,near:0.5,far:30}); kSun.shadow.bias=-0.0004; kSun.shadow.normalBias=0.02; kSun.shadow.radius=4;
+kScene.add(kSun,kSun.target);
+{ // wall with tiles + a window
+  const wt=canvasTex(256,256,(g,w,h)=>{g.fillStyle='#fff4e2';g.fillRect(0,0,w,h);g.strokeStyle='rgba(200,170,130,0.35)';g.lineWidth=4;for(let i=0;i<=4;i++){g.beginPath();g.moveTo(i*64,0);g.lineTo(i*64,h);g.stroke();g.beginPath();g.moveTo(0,i*64);g.lineTo(w,i*64);g.stroke();}},[8,8]);
+  const wall=new THREE.Mesh(new THREE.PlaneGeometry(16,16),new THREE.MeshStandardMaterial({map:wt,roughness:0.9}));wall.position.set(0,4,-3.2);wall.receiveShadow=true;kScene.add(wall);
+  const frame=shadowed(new THREE.Mesh(rbox(2.6,2.2,0.2,0.08),mat('#ffffff')));frame.position.set(-1.9,3.4,-3.1);kScene.add(frame);
+  const glassW=new THREE.Mesh(new THREE.PlaneGeometry(2.2,1.8),new THREE.MeshBasicMaterial({color:lin('#9fd3ff'),toneMapped:false}));glassW.position.set(-1.9,3.4,-2.99);kScene.add(glassW);
+  const bar1=new THREE.Mesh(rbox(0.08,1.8,0.06,0.02),mat('#ffffff'));bar1.position.set(-1.9,3.4,-2.96);kScene.add(bar1);
+  const bar2=new THREE.Mesh(rbox(2.2,0.08,0.06,0.02),mat('#ffffff'));bar2.position.set(-1.9,3.4,-2.96);kScene.add(bar2);
+  // a little plant on the sill
+  const pot=shadowed(new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.17,0.35,20),mat('#e0736a')));pot.position.set(-1.0,2.45,-2.85);kScene.add(pot);
+  for(let i=0;i<5;i++){const l=shadowed(new THREE.Mesh(new THREE.SphereGeometry(0.16,12,8),mat('#6cbf72')));l.scale.set(0.6,1.4,0.6);l.position.set(-1.0+Math.cos(i*1.3)*0.12,2.85,-2.85+Math.sin(i*1.3)*0.12);l.rotation.z=Math.cos(i*1.3)*0.5;kScene.add(l);}
+}
+// table + checkered cloth
+const tableTop=shadowed(new THREE.Mesh(rbox(9,0.3,6,0.1),mat('#c98f5a',{roughness:0.7})));tableTop.position.set(0,-0.15,0);kScene.add(tableTop);
+const clothTex=canvasTex(256,256,(g,w,h)=>{g.fillStyle='#ffffff';g.fillRect(0,0,w,h);g.fillStyle='rgba(230,80,80,0.55)';for(let i=0;i<8;i++){g.fillRect(i*32,0,16,h);g.fillRect(0,i*32,w,16);}},[3,2]);
+const cloth=new THREE.Mesh(new THREE.PlaneGeometry(6,4),new THREE.MeshStandardMaterial({map:clothTex,roughness:0.95}));cloth.rotation.x=-Math.PI/2;cloth.position.y=0.005;cloth.receiveShadow=true;kScene.add(cloth);
+// plate of spaghetti (with meatballs)
+const plate=new THREE.Group(); plate.position.set(-1.35,0,-0.4); kScene.add(plate);
+{plate.add(new THREE.Mesh(new THREE.CylinderGeometry(1.0,0.8,0.08,48),mat('#ffffff',{roughness:0.35})));
+ const rim=new THREE.Mesh(new THREE.TorusGeometry(0.95,0.05,10,48).rotateX(Math.PI/2),mat('#ffffff',{roughness:0.35}));rim.position.y=0.05;plate.add(rim);
+ const pasta=mat('#f3d27a',{roughness:0.6}); const r2=mulberry32(4);
+ for(let i=0;i<38;i++){const pts=[];const a0=r2()*6.28,rr=0.15+r2()*0.5;for(let k=0;k<7;k++){const a=a0+k*0.9;pts.push(new THREE.Vector3(Math.cos(a)*rr*(0.6+0.4*r2()),0.08+0.05*k*0.3+r2()*0.12,Math.sin(a)*rr*(0.6+0.4*r2())));}
+   const tb=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),40,0.022,6,false),pasta);plate.add(tb);}
+ const sauce=new THREE.Mesh(new THREE.SphereGeometry(0.42,24,14),mat('#d6452f',{roughness:0.5}));sauce.scale.set(1,0.25,1);sauce.position.y=0.3;plate.add(sauce);
+ for(const [x,z] of [[0.15,0.1],[-0.18,0.05],[0.02,-0.2]]){const mb=new THREE.Mesh(new THREE.IcosahedronGeometry(0.15,2),mat('#8a4b2f',{roughness:0.9}));mb.position.set(x,0.38,z);plate.add(mb);}
+ for(let i=0;i<3;i++){const b=new THREE.Mesh(new THREE.SphereGeometry(0.06,10,8),mat('#4f9d5d'));b.scale.set(1.4,0.3,0.8);b.position.set(-0.1+i*0.12,0.45,0.05*i);plate.add(b);}
+ shadowed(plate);}
+// glass of water + napkin for detail
+{const gl=new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.24,0.8,32,1,true),new THREE.MeshStandardMaterial({color:lin('#dff3ff'),roughness:0.1,transparent:true,opacity:0.35,side:THREE.DoubleSide}));gl.position.set(1.9,0.4,-1.2);kScene.add(gl);
+ const wat=new THREE.Mesh(new THREE.CylinderGeometry(0.26,0.23,0.5,32),new THREE.MeshStandardMaterial({color:lin('#9fd3ff'),roughness:0.1,transparent:true,opacity:0.45}));wat.position.set(1.9,0.26,-1.2);kScene.add(wat);
+ const nap=shadowed(new THREE.Mesh(rbox(0.9,0.04,0.9,0.02),mat('#ffd166')));nap.position.set(1.5,0.03,0.9);nap.rotation.y=0.4;kScene.add(nap);}
+// kitchen scale with a digital display
+const scaleG=new THREE.Group(); scaleG.position.set(0.55,0,0.35); kScene.add(scaleG);
+const scaleDisp={};
+{const base=new THREE.Mesh(rbox(1.9,0.34,1.5,0.14),mat('#9fe0d0',{roughness:0.5}));base.position.y=0.17;scaleG.add(base);
+ const plat=new THREE.Mesh(rbox(1.75,0.07,1.25,0.05),mat('#eef2f7',{roughness:0.25,metalness:0.3}));plat.position.set(0,0.38,-0.05);scaleG.add(plat);
+ const c=document.createElement('canvas');c.width=256;c.height=96;const tx=new THREE.CanvasTexture(c);tx.encoding=THREE.sRGBEncoding;
+ const disp=new THREE.Mesh(new THREE.PlaneGeometry(0.62,0.2),new THREE.MeshBasicMaterial({map:tx,toneMapped:false}));disp.position.set(0,0.2,0.755);scaleG.add(disp);
+ scaleDisp.draw=(txt)=>{const g=c.getContext('2d');g.fillStyle='#16222a';g.fillRect(0,0,256,96);g.fillStyle='#7dffb2';g.font=`900 62px ${FONT}`;g.textAlign='center';g.textBaseline='middle';g.fillText(txt,128,52);tx.needsUpdate=true;};
+ scaleDisp.draw('50 g'); scaleDisp.cur='50 g';
+ shadowed(scaleG);}
+const kFork=buildFork(); const kForkPivot=new THREE.Group(); kForkPivot.add(kFork); kScene.add(kForkPivot);
+kFork.rotation.set(-Math.PI/2,0,0); kFork.position.set(0,0,1.1);   // lying flat, face up
+kForkPivot.rotation.y=Math.PI/2+0.15; kForkPivot.position.set(0.55,0.45,0.3);
+const kTrail=[]; for(let i=0;i<18;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.06,8,6),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.7}));kScene.add(m);kTrail.push(m);}
+
+/* ============================================================
+   SPACE (black holes)
+   ============================================================ */
+const sScene=new THREE.Scene();
+sScene.background=canvasTex(4,512,(g,w,h)=>{const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#05061a');gr.addColorStop(0.6,'#120f33');gr.addColorStop(1,'#26163f');g.fillStyle=gr;g.fillRect(0,0,w,h);});
+const spaceBg=sScene.background;
+const insideBg=canvasTex(4,512,(g,w,h)=>{const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#1a0610');gr.addColorStop(0.5,'#0b0208');gr.addColorStop(1,'#020003');g.fillStyle=gr;g.fillRect(0,0,w,h);});
+const sCam=new THREE.PerspectiveCamera(45,W/H,0.05,2000);
+const sHemi=new THREE.HemisphereLight(lin('#9fb0ff'),lin('#2a1f3d'),0.45); sScene.add(sHemi);
+const sKey=new THREE.DirectionalLight(lin('#ffd9a8'),2.8); sKey.castShadow=true; sKey.shadow.mapSize.set(2048,2048);
+Object.assign(sKey.shadow.camera,{left:-4,right:4,top:4,bottom:-4,near:0.1,far:60}); sKey.shadow.bias=-0.0005; sKey.shadow.normalBias=0.02; sKey.shadow.radius=3;
+sScene.add(sKey,sKey.target);
+function starLayer(n,size,op){const p=new Float32Array(n*3);for(let i=0;i<n;i++){const v=new THREE.Vector3(R(-1,1),R(-1,1),R(-1,1)).normalize().multiplyScalar(R(500,900));p.set([v.x,v.y,v.z],i*3);}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));const s=new THREE.Points(g,new THREE.PointsMaterial({color:0xffffff,size,sizeAttenuation:false,transparent:true,opacity:op,depthWrite:false}));sScene.add(s);return s;}
+starLayer(1800,2.2,0.8); const twinkle=[0,1,2].map(()=>starLayer(170,3.6,0.8));
+// a distant spiral galaxy for detail
+{const gt=canvasTex(256,256,(g,w,h)=>{g.translate(128,128);for(let i=0;i<900;i++){const a=i*0.06,r=4+i*0.12;const x=Math.cos(a)*r,y=Math.sin(a)*r*0.45;g.fillStyle=`rgba(${200+((i*7)%55)},${170+((i*3)%60)},255,${0.5-i/2200})`;g.beginPath();g.arc(x,y,1.8,0,Math.PI*2);g.fill();g.beginPath();g.arc(-x,-y,1.8,0,Math.PI*2);g.fill();}
+  const c=g.createRadialGradient(0,0,0,0,0,26);c.addColorStop(0,'rgba(255,240,210,0.95)');c.addColorStop(1,'rgba(255,240,210,0)');g.fillStyle=c;g.beginPath();g.arc(0,0,26,0,Math.PI*2);g.fill();});
+ const gal=new THREE.Sprite(new THREE.SpriteMaterial({map:gt,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false}));gal.position.set(-260,160,-520);gal.scale.set(120,120,1);sScene.add(gal);}
+const shoot=new THREE.Mesh(new THREE.BoxGeometry(14,0.12,0.12),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.9,blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false})); sScene.add(shoot);
+
+// ---- black hole builder: horizon, photon ring, glow, swirling accretion disk ----
+const diskMat=(bright)=>new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,
+  uniforms:{uT:{value:0},uB:{value:bright},uIn:{value:1.35},uOut:{value:4.2}},
+  vertexShader:'varying vec2 vP;void main(){vP=position.xy;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+  fragmentShader:`uniform float uT,uB,uIn,uOut;varying vec2 vP;
+    void main(){float r=length(vP);float a=atan(vP.y,vP.x);float x=(r-uIn)/(uOut-uIn);
+      float sw=0.5+0.5*sin(a*4.0-r*5.0+uT*2.2)+0.25*sin(a*11.0+r*9.0-uT*3.1);
+      vec3 hot=vec3(1.0,0.97,0.86),mid=vec3(1.0,0.62,0.2),cool=vec3(0.85,0.22,0.12);
+      vec3 col=mix(hot,mid,smoothstep(0.0,0.4,x));col=mix(col,cool,smoothstep(0.4,1.0,x));
+      float beam=1.0+0.55*sin(a);   // relativistic beaming: one side brighter
+      float al=smoothstep(0.0,0.05,x)*(1.0-smoothstep(0.65,1.0,x))*(0.55+0.45*sw)*beam*uB;
+      gl_FragColor=vec4(col*al,al);}`});
+const glowTex=canvasTex(256,256,(g,w,h)=>{const gr=g.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2);gr.addColorStop(0,'rgba(255,200,120,0.9)');gr.addColorStop(0.3,'rgba(255,150,70,0.35)');gr.addColorStop(1,'rgba(255,120,60,0)');g.fillStyle=gr;g.fillRect(0,0,w,h);});
+function makeBH(RH,bright){
+  const g=new THREE.Group();
+  const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false,opacity:0.85}));glow.scale.set(RH*7,RH*7,1);g.add(glow);
+  const disk=new THREE.Mesh(new THREE.RingGeometry(RH*1.35,RH*4.2,180,8),diskMat(bright));disk.material.uniforms.uIn.value=RH*1.35;disk.material.uniforms.uOut.value=RH*4.2;disk.rotation.x=-Math.PI/2;disk.renderOrder=3;g.add(disk);
+  const horizon=new THREE.Mesh(new THREE.SphereGeometry(RH,64,40),new THREE.MeshBasicMaterial({color:0x000000}));horizon.renderOrder=4;g.add(horizon);
+  const ring=new THREE.Mesh(new THREE.PlaneGeometry(1,1),ringMat('#ffe3b0'));ring.renderOrder=5;const S=RH*2*1.25+1;ring.scale.set(S,S,1);ring.material.uniforms.uS.value=S;ring.material.uniforms.uR.value=RH*1.12;ring.material.uniforms.uW.value=RH*0.05;g.add(ring);
+  // lensed image of the far side of the disk, arching over the top (stylised)
+  const arc=new THREE.Mesh(new THREE.TorusGeometry(RH*1.5,RH*0.1,10,64,Math.PI),new THREE.MeshBasicMaterial({color:lin('#ffb15a'),transparent:true,opacity:0.65,blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false}));arc.renderOrder=2;g.add(arc);
+  sScene.add(g); return {g,disk,horizon,ring,arc,glow,RH};
+}
+const RV=2.0, KM_PER_U=29.5/RV;            // 10-Sun black hole: horizon radius ≈ 29.5 km
+const BH=makeBH(RV,1.0);
+const BIG=makeBH(25,0.5); BIG.g.position.set(0,0,-120);  // Sagittarius A* stand-in (scene 7)
+const bhFace=makeFace(RV,BH.g);   // only shown in the last scene
+{const wm=new THREE.MeshStandardMaterial({color:lin('#ffffff'),emissive:lin('#ffffff'),emissiveIntensity:0.6,roughness:0.4});bhFace.eyes.forEach(e=>e.material=wm);
+ const mm=new THREE.MeshBasicMaterial({color:lin('#ffe3b0'),toneMapped:false});bhFace.smile.material=mm;bhFace.o.material=mm;bhFace.brows.forEach(b=>b.material=mm);}
+// matter spiralling in the disk
+const diskDust=(()=>{const n=900,p=new Float32Array(n*3),d=[];for(let i=0;i<n;i++){d.push({r:R(RV*1.4,RV*4.3),a:R(0,6.28),y:R(-0.06,0.06)});}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));const s=new THREE.Points(g,new THREE.PointsMaterial({color:lin('#ffd59a'),size:0.05,transparent:true,opacity:0.9,blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false}));BH.g.add(s);return {s,d};})();
+// the falling fork (space)
+const sFork=buildFork(); sScene.add(sFork);
+// spaghetti stream (after it is torn apart): wavy steel strands + the face at the front
+const stream=new THREE.Group(); sScene.add(stream);
+const strandMat=new THREE.MeshStandardMaterial({color:lin('#d9dee8'),roughness:0.3,metalness:0.45,transparent:true,opacity:1});
+for(let i=0;i<9;i++){const pts=[];const ph=R(0,6),amp=R(0.03,0.08),off=new THREE.Vector2(R(-0.12,0.12),R(-0.12,0.12));
+  for(let k=0;k<=24;k++){const y=k/24;pts.push(new THREE.Vector3(off.x+amp*Math.sin(y*14+ph),y,off.y+amp*Math.cos(y*11+ph)));}
+  const m=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),80,0.018,6,false),strandMat);m.castShadow=true;stream.add(m);}
+const streamFace=makeFace(0.13,stream); streamFace.f.position.y=-0.05;
+// tidal force arrows (coral, same arrow style as before)
+const arrowMat=mat('#ff6b5a',{roughness:0.55});
+function makeArrow(){const g=new THREE.Group();const sh=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.045,1,12).translate(0,0.5,0),arrowMat);const hd=new THREE.Mesh(new THREE.ConeGeometry(0.12,0.26,16),arrowMat);g.add(sh,hd);g.userData={sh,hd};shadowed(g,true,false);sScene.add(g);return g;}
+function setArrow(a,from,dir,len){a.position.copy(from);a.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.clone().normalize());a.userData.sh.scale.y=Math.max(0.01,len-0.2);a.userData.hd.position.y=Math.max(0.1,len-0.1);}
+const arTip=makeArrow(), arHandle=makeArrow(), arSide1=makeArrow(), arSide2=makeArrow();
+const lblTip=makeLabel(null,'STRONGER PULL',{worldH:0.17,accent:'#ffb3a8'}); sScene.add(lblTip);
+const lblHandle=makeLabel(null,'WEAKER PULL',{worldH:0.15,accent:'#ffffff'}); sScene.add(lblHandle);
+const lblHorizon=makeLabel('EVENT HORIZON','r ≈ 30 km',{worldH:2.2}); sScene.add(lblHorizon);
+const lblDisk=makeLabel(null,'HOT GLOWING GAS',{worldH:1.4,accent:'#ffb15a'}); sScene.add(lblDisk);
+const lblYou=makeLabel(null,'YOU (far away)',{worldH:0.36,accent:'#ffffff'}); sScene.add(lblYou);
+const lblCross=makeLabel('EVENT HORIZON','CROSSED… NO BUMP',{worldH:0.2}); sScene.add(lblCross);
+const lblCentre=makeLabel('THE CENTRE','PHYSICS UNKNOWN ?',{worldH:0.3,accent:'#ffb3a8'}); sScene.add(lblCentre);
+const lblSgr=makeLabel('SAGITTARIUS A* · ≈4 MILLION SUNS','horizon r ≈ 13 million km',{worldH:5.5,accent:'#FFD43B'}); sScene.add(lblSgr);
+const lblIntact=makeLabel('TIDES AT THE HORIZON','TINY → STILL A FORK',{worldH:2.0,accent:'#8fd0ff'}); sScene.add(lblIntact);
+const lblDots=makeLabel(null,'. . .',{worldH:0.7,accent:'#ffffff'}); sScene.add(lblDots);
+const lblPlus=makeLabel('BLACK HOLE MASS','+ ≈50 g',{worldH:0.9}); sScene.add(lblPlus);
+// astronaut observer (scene 5)
+const astro=new THREE.Group(); sScene.add(astro);
+{const suit=mat('#f4f6fb',{roughness:0.6});const body=new THREE.Mesh(rbox(0.7,0.85,0.5,0.22),suit);astro.add(body);
+ const helm=new THREE.Mesh(new THREE.SphereGeometry(0.42,32,20),suit);helm.position.y=0.72;astro.add(helm);
+ const visor=new THREE.Mesh(new THREE.SphereGeometry(0.33,32,20,0,Math.PI*2,0,Math.PI*0.6),mat('#2b3f7a',{roughness:0.15,metalness:0.4}));visor.rotation.x=Math.PI/2;visor.position.set(0,0.74,0.14);astro.add(visor);
+ const pack=new THREE.Mesh(rbox(0.6,0.7,0.25,0.1),mat('#ff6b5a'));pack.position.set(0,0.05,-0.36);astro.add(pack);
+ for(const s of [-1,1]){const arm=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.55,12),suit);arm.position.set(s*0.48,0.05,0);arm.rotation.z=s*0.5;astro.add(arm);
+   const leg=new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.13,0.5,12),suit);leg.position.set(s*0.17,-0.62,0);astro.add(leg);}
+ shadowed(astro);}
+const astroFace=makeFace(0.2,astro); astroFace.f.position.set(0,0.72,0.07);
+
+// ---------- radial infall maths (Newtonian, from rest at 1,000 km) ----------
+const R0_KM=1000, T0_MS=19.4;            // sqrt(R0³/2GM) for 10 solar masses ≈ 19.4 ms
+const tPhys=r=>{const x=clamp(r/R0_KM,1e-6,1);return T0_MS*(Math.sqrt(x*(1-x))+Math.acos(Math.sqrt(x)));};
+const KEYS=[[7,1000],[14.5,420],[22,140],[24,100],[29.6,40]];
+function rKm(t){ if(t<=KEYS[0][0])return KEYS[0][1];
+  for(let i=1;i<KEYS.length;i++){const [ta,ra]=KEYS[i-1],[tb,rb]=KEYS[i];if(t<=tb){const u=(t-ta)/(tb-ta);return Math.exp(lerp(Math.log(ra),Math.log(rb),u));}}
+  return KEYS[KEYS.length-1][1];}
+const sigfig=n=>{if(n<=0)return '0';const p=Math.pow(10,Math.floor(Math.log10(n))-1);return Math.round(Math.round(n/p)*p).toLocaleString('en-US');};
+
+/* ============================================================
+   UPDATE
+   ============================================================ */
+const v3=new THREE.Vector3(), Z=new THREE.Vector3(0,0,1);
+function updateKitchen(t){
+  // camera: low at table height, slow push-in
+  kCam.position.set(1.3-0.06*t,2.8-0.05*t,4.4-0.1*t); kCam.lookAt(0.0,0.3,0.0); kCam.fov=40; kCam.updateProjectionMatrix();
+  const lift=clamp((t-5.9)/1.1), jitter=t>5.2&&t<5.95?0.03*Math.sin(t*90):0;
+  kForkPivot.position.set(0.55+jitter+lift*lift*1.5,0.45+easeOut(lift)*0.2+lift*lift*9,0.3-lift*2);
+  kForkPivot.rotation.set(-lift*1.2,Math.PI/2+0.15,lift*0.6);
+  const F=kFork.userData.face; F.f.visible=true;
+  const open=t<0.9?0.08:blinkAt(t,[2.2,3.8]);
+  setFace(F,{open:t>5.2?1.35:open,look:t>4.3?[0,0.07]:[0.05,-0.02],brow:t>4.3?1.1:0,mouth:t>5.2?'o':'smile',ms:t>5.2?1.2:1});
+  const txt = lift>0.05 ? '0 g' : '50 g'; if(txt!==scaleDisp.cur){scaleDisp.cur=txt;scaleDisp.draw(txt);}
+  kTrail.forEach((m,i)=>{m.visible=lift>0.05;if(!m.visible)return;const p=kForkPivot.position;m.position.set(p.x-0.1*i*lift,p.y-0.45*i*lift,p.z+0.15*i*lift);m.material.opacity=0.7*(1-i/kTrail.length);m.scale.setScalar(1-i/kTrail.length);});
+  kSun.target.position.set(0,0,0);
+}
+function forkPose(t){ // position of the fork tip (on +z axis, pointing at the hole)
+  const r=rKm(t)/KM_PER_U; return r;
+}
+function updateSpace(t){
+  const sc = t<14.5?2 : t<22?3 : t<29.6?4 : t<36?5 : t<44?6 : t<52?7 : 8;
+  const T=t;
+  BH.disk.material.uniforms.uT.value=T; BIG.disk.material.uniforms.uT.value=T*0.4;
+  BH.g.visible = sc!==7; BIG.g.visible = sc===7;
+  // disk dust orbits faster further in (Kepler)
+  {const pa=diskDust.s.geometry.attributes.position;diskDust.d.forEach((d,i)=>{const a=d.a+T*3.2/Math.pow(d.r/RV,1.5);pa.setXYZ(i,d.r*Math.cos(a),d.y,d.r*Math.sin(a));});pa.needsUpdate=true;}
+  twinkle.forEach((s,k)=>s.material.opacity=0.45+0.45*Math.sin(t*(2.5+k)+k*2.1));
+  // reset visibility
+  [sFork,stream,arTip,arHandle,arSide1,arSide2,lblTip,lblHandle,lblHorizon,lblDisk,lblYou,lblCross,lblCentre,lblSgr,lblIntact,lblDots,lblPlus,astro].forEach(o=>o.visible=false);
+  bhFace.f.visible=false; sScene.background=spaceBg; BH.g.visible = sc!==7;
+  const sF=sFork.userData;
+  sF.tines.forEach(tn=>tn.visible=true); sF.face.f.visible=true;
+  let camTarget=new THREE.Vector3();
+  if(sc<=4){
+    const r=forkPose(t); const km=rKm(t);
+    // tidal stretch grows ∝ 1/r³; the fork snaps at ≈100 km
+    const k = km>260?1:1+0.55*Math.pow(clamp((260-km)/160),2);
+    const torn = t>=24.0;
+    if(!torn){
+      sFork.visible=true; sFork.position.set(0,0.35,r+2.35*k); sFork.rotation.set(-Math.PI/2,0,0);
+      sFork.scale.set(1/Math.sqrt(k),k,1/Math.sqrt(k));
+      const wob=0.04*Math.sin(t*3); sFork.rotation.z=wob;
+      if(sc===3){const m4=new THREE.Matrix4().makeBasis(new THREE.Vector3(0,-1,0),new THREE.Vector3(0,0,-1),new THREE.Vector3(1,0,0));sFork.setRotationFromMatrix(m4);}
+      const scared=sc===3?1:0;
+      setFace(sF.face,{open:sc===2?blinkAt(t,[8.6,11.2,13.4]):1.25,look:sc===2?[0,-0.05]:[0,-0.08],brow:scared*1.1+(sc===4?1.3:0),mouth:sc===2?'smile':'o',ms:sc===2?1:0.8+0.5*(k-1)});
+      // pieces start separating just before the snap
+      const sep=clamp((t-23.2)/0.8);
+      sF.tines.forEach((tn,i)=>{tn.position.y=2.1+sep*0.25;tn.rotation.z=(i-1.5)*0.06*sep;});
+      sF.head.position.y=1.5+sep*0.12;
+    } else {
+      // spaghetti stream: long and thin, face at the front
+      const u=t-24.0, len=2.6+u*1.6+u*u*0.25, front=Math.max(RV+0.15,r);
+      stream.visible=true; stream.position.set(0,0.35,front); stream.rotation.set(-Math.PI/2,0,0);
+      stream.scale.set(1/Math.sqrt(1+u*0.6),len,1/Math.sqrt(1+u*0.6));
+      streamFace.f.scale.set(Math.sqrt(1+u*0.6),1/len*(1+0.25*u),1);
+      setFace(streamFace,{open:1.3,brow:1.3,mouth:'o',ms:1.3+0.2*Math.sin(t*8)});
+      strandMat.color.copy(lin('#d9dee8'));strandMat.opacity=1;
+    }
+    // camera rides behind the fork, low near the disk plane
+    const near = sc===2? lerp(4.2,3.4,(t-7)/7.5) : sc===3? 3.0 : 3.4;
+    const fz = torn? stream.position.z : sFork.position.z;
+    if(sc===3){sCam.position.set(6.6,1.4,fz-1.3);camTarget.set(0,0.35,fz-1.25);sCam.fov=50;}
+    else{sCam.position.set(-1.0,1.05,fz+near*1.25);camTarget.set(0.3,0.5,fz*0.25);sCam.fov=45;}
+    // tidal arrows
+    if(sc===3 && !torn){
+      const tipZ=sFork.position.z-2.35*k, handZ=sFork.position.z+0.05;
+      const a=clamp((t-15.0)/0.5); const grow=1+1.4*Math.pow(clamp((t-15)/6.5),1.3);
+      [arTip,arHandle,arSide1,arSide2,lblTip,lblHandle].forEach(o=>o.visible=a>0);
+      setArrow(arTip,v3.set(0,0.35,tipZ-0.05),new THREE.Vector3(0,0,-1),0.55*grow*a);
+      setArrow(arHandle,v3.set(0,0.35,handZ+0.25),new THREE.Vector3(0,0,-1),0.42*a);
+      setArrow(arSide1,v3.set(0,1.15,sFork.position.z-1.2),new THREE.Vector3(0,-1,0),0.45*a);
+      setArrow(arSide2,v3.set(0,-0.45,sFork.position.z-1.2),new THREE.Vector3(0,1,0),0.45*a);
+      lblTip.position.set(0,0.95,tipZ+0.75); lblHandle.position.set(0,0.95,handZ-0.75);
+    }
+    if(sc===2){lblHorizon.visible=t>9;lblHorizon.position.set(-RV*1.2,RV*2.6,0);lblHorizon.material.opacity=clamp((t-9)/0.4);
+      lblDisk.visible=t>10.2;lblDisk.position.set(RV*3.2,-0.9,RV*1.2);lblDisk.material.opacity=clamp((t-10.2)/0.4);}
+  } else if(sc===5){
+    // seen from far away: slows, reddens, dims at the horizon
+    const u=t-29.6, front=RV+0.05+1.6*Math.exp(-u*0.85);
+    stream.visible=true; stream.position.set(0,0.35,front); stream.rotation.set(-Math.PI/2,0,0); stream.scale.set(0.9,3.4+1.4*Math.exp(-u*0.85),0.9);
+    const red=clamp(u/3.2); strandMat.color.copy(lin('#d9dee8')).lerp(lin('#ff3a2a'),red); strandMat.opacity=1-clamp((u-2.4)/3.2);
+    streamFace.f.scale.set(2.2,0.38,1); setFace(streamFace,{open:Math.max(0.1,1-red),mouth:'o',ms:1,brow:1});
+    streamFace.f.visible=strandMat.opacity>0.25;
+    astro.visible=false; astro.position.set(-0.6,-1.2,12.0); astro.rotation.set(0.1,-0.35+0.05*Math.sin(t),0.08*Math.sin(t*0.7));
+    astroFace.f.lookAt(BH.g.position); setFace(astroFace,{open:blinkAt(t,[31.5,34.2]),look:[-0.08,-0.04],brow:0.5,mouth:'o',ms:0.7});
+    lblYou.visible=false; lblYou.position.set(-0.6,0.05,12.0);
+    sCam.position.set(4.6+0.05*u,1.6,19.5-0.15*u); camTarget.set(0.4,0.6,0); sCam.fov=40;
+  } else if(sc===6){
+    // the fork's own view: falls straight through
+    const u=t-36, cross=37.6;
+    const front = u<1.6 ? lerp(RV+1.6,RV,ease(u/1.6)) : RV-(u-1.6)*0.32;
+    stream.visible=true; stream.position.set(0,0.35,front); stream.rotation.set(-Math.PI/2,0,0); stream.scale.set(0.6,2.6,0.6);
+    strandMat.color.copy(lin('#d9dee8')); strandMat.opacity=1; streamFace.f.scale.set(1.6,0.38,1);
+    setFace(streamFace,{open:t>cross+0.3?blinkAt(t,[40.4]):1.3,brow:t>cross+0.3?-0.2:1.2,mouth:t>cross+0.3?'smile':'o',ms:t>cross+0.3?0.6:1.1,look:[0,0]});
+    sCam.position.set(0.55,0.95,front+2.6); camTarget.set(0,0.2,front-3); sCam.fov=50;
+    lblCross.visible=t>cross+0.2&&t<41.5; lblCross.position.set(0.35,0.95,front-0.6); lblCross.material.opacity=clamp((t-cross-0.2)/0.3);
+    if(t>cross){BH.g.visible=false;sScene.background=insideBg;}
+    lblCentre.visible=t>40.5; lblCentre.position.set(0,0.2,front-2.2); lblCentre.material.opacity=clamp((t-40.5)/0.4);
+  } else if(sc===7){
+    // supermassive: a fork crosses in one piece (wearing sunglasses)
+    const u=t-44; const big=BIG.RH, bz=BIG.g.position.z;
+    sFork.visible=true; const d=lerp(big+20,big-3,ease(u/7.5));
+    sFork.position.set(0,2.0,bz+d+7); sFork.rotation.set(-Math.PI/2+0.25,0.0,0.3*Math.sin(t*1.5)); sFork.scale.set(5,5,5);
+    sF.tines.forEach(tn=>{tn.position.y=2.1;tn.rotation.z=0;}); sF.head.position.y=1.5;
+    setFace(sF.face,{open:blinkAt(t,[46.3,49.2]),mouth:'smile',ms:1.1,brow:0.2});
+    lblSgr.visible=true; lblSgr.position.set(3,big*0.55,bz+big+2); lblSgr.material.opacity=clamp((u-0.4)/0.4);
+    lblIntact.visible=u>1.6&&u<7.3; lblIntact.position.copy(sFork.position).add(new THREE.Vector3(2.5,5.5,0)); lblIntact.material.opacity=clamp((u-1.6)/0.3);
+    sCam.position.set(16,6,bz+big+62-0.8*u); camTarget.set(0,2,bz); sCam.fov=50;
+  } else {
+    // the black hole tries to burp… nothing comes out
+    const u=t-52; bhFace.f.visible=true;
+    bhFace.f.lookAt(sCam.position);
+    const puff=clamp((u-2.0)/0.6)*(1-clamp((u-3.6)/0.3));
+    setFace(bhFace,{open:u>3.4&&u<4.6?0.45:blinkAt(t,[53.2,57.5,59.4]),brow:puff>0?0.8:(u>4.2?-0.5:0),mouth:puff>0||(u>3.6&&u<4.6)?'o':'smile',ms:puff>0?0.45+0.1*puff:0.9,look:[0,0]});
+    bhFace.f.children.forEach(m=>{if(m.material===cheekM)m.scale.set(1.4+puff*0.9,0.8+puff*0.7,0.4+puff*0.6);});
+    lblDots.visible=u>3.8&&u<5.6; lblDots.position.set(RV*1.1,RV*1.35,RV*0.8);
+    lblPlus.visible=u>5.2; lblPlus.position.set(0,-RV*1.9,RV*0.8); const kk=easeOut((u-5.2)/0.35)*(1+0.15*Math.sin(clamp((u-5.2)/0.5)*Math.PI)); lblPlus.material.opacity=clamp((u-5.2)/0.2);
+    sCam.position.set(1.2*Math.sin(u*0.12),1.1+0.05*u,11.5-0.25*u); camTarget.set(0,0.3,0); sCam.fov=45;
+  }
+  // light: hot inner disk as the key light
+  sKey.position.copy(camTarget).add(sc===3?new THREE.Vector3(5,6,1.5):new THREE.Vector3(-4,6,-2)); sKey.target.position.copy(camTarget);
+  if(sc===7){sKey.position.copy(sFork.position).add(new THREE.Vector3(-5,7,-3));sKey.target.position.copy(sFork.position);}
+  // shooting star
+  const sp=(t%4.7)/0.9; shoot.visible=sp<1;
+  if(shoot.visible){const r2=mulberry32(Math.floor(t/4.7)+5);const dir=new THREE.Vector3();sCam.getWorldDirection(dir);const right=new THREE.Vector3().crossVectors(dir,sCam.up).normalize();
+    const start=sCam.position.clone().addScaledVector(dir,120).addScaledVector(right,-40+r2()*20).add(new THREE.Vector3(0,30+r2()*20,0));
+    shoot.position.copy(start).addScaledVector(right,sp*70).add(new THREE.Vector3(0,-sp*20,0));shoot.lookAt(shoot.position.clone().addScaledVector(right,-1).add(new THREE.Vector3(0,0.3,0)));shoot.rotateY(Math.PI/2);shoot.material.opacity=0.9*Math.sin(Math.PI*sp);}
+  sCam.lookAt(camTarget); sCam.updateProjectionMatrix();
+  // labels/rings that face the camera
+  [BH,BIG].forEach(b=>{b.ring.lookAt(sCam.position);b.arc.position.set(0,0,-b.RH*0.2);b.arc.lookAt(sCam.position);});
+  return sc;
+}
+// inside the horizon (after crossing): outside light shrinks to a bright circle
+function drawInside(t){
+  const u=t-37.6; if(u<0||t>=44) return;
+  const k=clamp(u/0.25);
+  ctx.save();
+  const rr=lerp(300,70,clamp(u/5)); ctx.globalAlpha=k*0.9; const c=ctx.createRadialGradient(W/2,600,0,W/2,600,rr);c.addColorStop(0,'rgba(255,240,220,0.95)');c.addColorStop(0.7,'rgba(255,190,140,0.5)');c.addColorStop(1,'rgba(255,170,120,0)');
+  ctx.fillStyle=c;ctx.beginPath();ctx.arc(W/2,600,rr,0,Math.PI*2);ctx.fill(); ctx.restore();
+}
+
+/* ============================================================
+   CAPTIONS + HUD
+   ============================================================ */
+const SCENES=[
+  {t0:0,   t1:7,   pre:"Let's send one ordinary fork toward a black hole. The fork's mass:", key:'≈ 50 g', foot:''},
+  {t0:7,   t1:14.5,pre:"This black hole has 10× the Sun's mass, packed inside an event horizon with a radius of", key:'≈ 30 km', foot:'Fork hugely enlarged · slow motion'},
+  {t0:14.5,t1:22,  pre:'Gravity pulls the tip harder than the handle, and the difference grows fast:', key:'tidal force', foot:'Fork hugely enlarged · slow motion'},
+  {t0:22,  t1:29.6,pre:'About 100 km out, the fork is ripped apart and stretched long and thin:', key:'spaghettification', foot:'≈100 km is a rough estimate for a steel fork'},
+  {t0:29.6,t1:36,  pre:'Watched from far away, it seems to slow down, turn red and fade at the edge:', key:'time dilation', foot:'Its light gets stretched (redshifted) and dimmer'},
+  {t0:36,  t1:44,  pre:'The fork itself just falls through. Its trip to the centre takes about', key:'0.07 ms', foot:'General relativity · nobody knows what happens at the centre'},
+  {t0:44,  t1:52,  pre:'At a giant like Sagittarius A*, tides at the horizon are gentle. A fork crosses', key:'in one piece', foot:'It would be stretched only much deeper inside'},
+  {t0:52,  t1:61,  pre:'Nothing comes back out. The black hole just gets heavier by', key:'≈ 50 g', foot:''},
+];
+function wrapText(text,maxW){const words=text.split(' ');const lines=[];let cur='';for(const w of words){const t=cur?cur+' '+w:w;if(ctx.measureText(t).width>maxW&&cur){lines.push(cur);cur=w;}else cur=t;}if(cur)lines.push(cur);return lines;}
+function drawCaption(t){
+  const sc=SCENES.find(s=>t>=s.t0&&t<s.t1); if(!sc)return;
+  const a=t-sc.t0,d=sc.t1-sc.t0;
+  const ain=easeOut(a/0.55), aout=clamp((d-a)/0.22), alpha=Math.min(ain,aout);
+  const grd=ctx.createLinearGradient(0,0,0,700);grd.addColorStop(0,'rgba(6,8,18,0.62)');grd.addColorStop(0.6,'rgba(6,8,18,0.22)');grd.addColorStop(1,'rgba(6,8,18,0)');
+  ctx.fillStyle=grd;ctx.fillRect(0,0,W,700);
+  ctx.save(); ctx.globalAlpha=alpha; ctx.translate(0,(1-ain)*-28);
+  ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+  ctx.font=`800 62px ${FONT}`;
+  const lines=wrapText(sc.pre,940); let y=190;
+  ctx.shadowColor='rgba(0,0,0,0.55)'; ctx.shadowBlur=22; ctx.shadowOffsetY=4; ctx.fillStyle='#ffffff';
+  for(const l of lines){ctx.fillText(l,W/2,y);y+=76;}
+  let fs=112; ctx.font=`900 ${fs}px ${FONT}`; let kw=ctx.measureText(sc.key).width;
+  if(kw>900){fs=fs*900/kw;ctx.font=`900 ${fs}px ${FONT}`;kw=ctx.measureText(sc.key).width;}
+  const bw=kw+76,bh=fs*1.3,bx=W/2-bw/2,by=y-34;
+  const wipe=easeOut((a-0.3)/0.45), pop=1+0.08*Math.sin(clamp((a-0.3)/0.6)*Math.PI);
+  ctx.translate(W/2,by+bh/2); ctx.rotate(-0.022); ctx.scale(pop,pop); ctx.translate(-W/2,-(by+bh/2));
+  ctx.shadowColor='rgba(0,0,0,0.35)'; ctx.shadowBlur=30; ctx.shadowOffsetY=8;
+  roundRectPath(ctx,bx,by,Math.max(1,bw*wipe),bh,24); ctx.fillStyle='#FFD43B'; ctx.fill();
+  ctx.shadowColor='transparent'; ctx.clip();
+  ctx.fillStyle='#16141f'; ctx.textBaseline='middle'; ctx.fillText(sc.key,W/2,by+bh/2+fs*0.05);
+  ctx.restore();
+  if(sc.foot){ctx.save();ctx.globalAlpha=alpha;ctx.font=`700 30px ${FONT}`;ctx.textAlign='center';ctx.fillStyle='rgba(235,240,255,0.75)';ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=10;ctx.fillText(sc.foot,W/2,H-64);ctx.restore();}
+}
+function panel(x,y,w,h,r=30){ctx.save();ctx.shadowColor='rgba(0,0,0,0.35)';ctx.shadowBlur=30;ctx.shadowOffsetY=8;roundRectPath(ctx,x,y,w,h,r);ctx.fillStyle='rgba(18,20,34,0.86)';ctx.fill();ctx.restore();}
+function badge(text,xr,y,bg='#FFD43B',fg='#16141f'){ctx.font=`900 30px ${FONT}`;const w=ctx.measureText(text).width+34;roundRectPath(ctx,xr-w,y,w,48,16);ctx.fillStyle=bg;ctx.fill();ctx.fillStyle=fg;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,xr-w/2,y+25);}
+const fmtMS=s=>{s=Math.max(0,Math.floor(s));return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;};
+const fmtInt=n=>Math.round(n).toLocaleString('en-US');
+// timeline: title, speed badge, big value, progress 0..1, ticks [{p,label}], highlight when done
+function drawTimeline(o,alpha){
+  if(alpha<=0)return;
+  const x=70,w=W-140,h=270,y=H-120-h;
+  ctx.save();ctx.globalAlpha=alpha;
+  panel(x,y,w,h);
+  ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.font=`700 34px ${FONT}`;ctx.fillStyle='#c9d0f2';ctx.fillText(o.title,x+36,y+58);
+  badge(o.speed,x+w-30,y+24);
+  ctx.textAlign='left';ctx.font=`900 96px ${FONT}`;ctx.fillStyle=o.done?'#FFD43B':'#ffffff';ctx.fillText(o.value,x+34,y+158);
+  if(o.sub){ctx.font=`800 36px ${FONT}`;ctx.fillStyle=o.subColor||'#ffb3a8';ctx.textAlign='right';ctx.fillText(o.sub,x+w-36,y+150);}
+  const tx=x+36,tw=w-72,ty=y+196;
+  roundRectPath(ctx,tx,ty,tw,18,9);ctx.fillStyle='rgba(255,255,255,0.16)';ctx.fill();
+  roundRectPath(ctx,tx,ty,Math.max(18,tw*clamp(o.p)),18,9);ctx.fillStyle='#FFD43B';ctx.fill();
+  ctx.beginPath();ctx.arc(tx+tw*clamp(o.p),ty+9,17,0,Math.PI*2);ctx.fillStyle='#ffffff';ctx.fill();
+  ctx.font=`700 26px ${FONT}`;ctx.fillStyle='#c9d0f2';ctx.textBaseline='alphabetic';
+  for(const tk of o.ticks){const px=tx+tw*tk.p;ctx.fillStyle='rgba(255,255,255,0.6)';ctx.fillRect(px-2,ty-8,4,34);ctx.fillStyle='#c9d0f2';ctx.textAlign=tk.p<0.05?'left':tk.p>0.95?'right':'center';ctx.fillText(tk.label,px,ty+58);}
+  ctx.restore();
+}
+function drawCard(title,accent,items,shown,alpha,yTop){
+  if(alpha<=0)return;
+  const x=70,w=W-140,h=70+items.length*58,y=yTop??(H-120-270-30-h);
+  ctx.save();ctx.globalAlpha=alpha;panel(x,y,w,h,28);
+  ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.font=`900 36px ${FONT}`;ctx.fillStyle=accent;ctx.fillText(title,x+34,y+54);
+  items.forEach((it,i)=>{const a=clamp(shown[i]);if(a<=0)return;ctx.globalAlpha=alpha*a;const yy=y+108+i*58;
+    roundRectPath(ctx,x+34,yy-32,38,38,10);ctx.fillStyle=accent;ctx.fill();ctx.fillStyle='#16141f';ctx.font=`900 30px ${FONT}`;ctx.textAlign='center';ctx.fillText(it.icon||'✓',x+53,yy-2);
+    ctx.textAlign='left';ctx.font=`800 38px ${FONT}`;ctx.fillStyle='#ffffff';ctx.fillText(it.text,x+92,yy);});
+  ctx.restore();
+}
+const NOHUD = params.has('nohud') || params.has('cover');
+function drawCover(){
+  const g=ctx.createLinearGradient(0,980,0,1920);g.addColorStop(0,'rgba(6,8,18,0)');g.addColorStop(0.45,'rgba(6,8,18,0.55)');g.addColorStop(1,'rgba(6,8,18,0.8)');
+  ctx.fillStyle=g;ctx.fillRect(0,980,W,940);
+  ctx.save();ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=26;ctx.shadowOffsetY=6;ctx.fillStyle='#ffffff';
+  ctx.font=`900 96px ${FONT}`;ctx.fillText('WHAT IF A FORK FELL',W/2,1220);
+  let fs=124;ctx.font=`900 ${fs}px ${FONT}`;let kw=ctx.measureText('INTO A BLACK HOLE?').width;if(kw>960){fs*=960/kw;ctx.font=`900 ${fs}px ${FONT}`;kw=960;}
+  const bw=kw+70,bh=fs*1.3,by=1265;
+  ctx.translate(W/2,by+bh/2);ctx.rotate(-0.03);ctx.translate(-W/2,-(by+bh/2));
+  ctx.shadowColor='rgba(0,0,0,0.4)';ctx.shadowBlur=34;ctx.shadowOffsetY=10;
+  roundRectPath(ctx,W/2-bw/2,by,bw,bh,28);ctx.fillStyle='#FFD43B';ctx.fill();
+  ctx.shadowColor='transparent';ctx.fillStyle='#16141f';ctx.textBaseline='middle';ctx.fillText('INTO A BLACK HOLE?',W/2,by+bh/2+fs*0.05);
+  ctx.restore();
+  ctx.save();ctx.textAlign='center';ctx.font=`800 52px ${FONT}`;ctx.fillStyle='#ffffff';ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=18;
+  ctx.fillText('Spoiler: it becomes spaghetti',W/2,1545);ctx.restore();
+}
+function dial(cx,cy,r,ang,label,col){
+  ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fillStyle='#fff8ea';ctx.fill();ctx.lineWidth=8;ctx.strokeStyle=col;ctx.stroke();
+  for(let i=0;i<12;i++){const a=i/12*Math.PI*2;ctx.beginPath();ctx.moveTo(cx+Math.sin(a)*r*0.78,cy-Math.cos(a)*r*0.78);ctx.lineTo(cx+Math.sin(a)*r*0.9,cy-Math.cos(a)*r*0.9);ctx.lineWidth=5;ctx.strokeStyle='#16141f';ctx.stroke();}
+  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.sin(ang)*r*0.72,cy-Math.cos(ang)*r*0.72);ctx.lineWidth=9;ctx.lineCap='round';ctx.strokeStyle=col;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,9,0,Math.PI*2);ctx.fillStyle='#16141f';ctx.fill();
+  ctx.font=`800 30px ${FONT}`;ctx.textAlign='center';ctx.fillStyle='#ffffff';ctx.fillText(label[0],cx,cy+r+46);ctx.font=`700 24px ${FONT}`;ctx.fillStyle='#c9d0f2';ctx.fillText(label[1],cx,cy+r+78);ctx.restore();
+}
+function drawClocks(t,alpha){
+  if(alpha<=0)return; const u=t-29.6; const x=70,w=W-140,h=360,y=H-110-h;
+  ctx.save();ctx.globalAlpha=alpha;panel(x,y,w,h);
+  ctx.textAlign='left';ctx.font=`700 32px ${FONT}`;ctx.fillStyle='#c9d0f2';ctx.fillText('WHAT YOU SEE FROM FAR AWAY',x+36,y+54);
+  dial(x+w*0.27,y+175,92,u*Math.PI,['YOUR CLOCK','ticks normally'],'#8fd0ff');
+  const fa=Math.PI*(1-Math.exp(-0.85*u))/0.85;
+  dial(x+w*0.73,y+175,92,fa,["THE FORK'S CLOCK",'seems to freeze'],u>2?'#ff5a4a':'#FFD43B');
+  ctx.restore();
+}
+
+function renderAt(t){
+  t=((t%DUR)+DUR)%DUR;
+  if(t<7){updateKitchen(t);renderer.render(kScene,kCam);} else {updateSpace(t);renderer.render(sScene,sCam);}
+  ctx.globalAlpha=1; ctx.drawImage(glCanvas,0,0,W,H);
+  drawInside(t);
+  if(NOHUD){ if(params.has('cover')) drawCover(); return; }
+  drawCaption(t);
+  if(t>=7.3&&t<29.6){
+    const km=rKm(t), tp=tPhys(km), dt=0.05, d1=tPhys(rKm(t))-tPhys(rKm(Math.max(7,t-dt)));
+    const slow=d1>1e-6?(1000*dt)/d1:0;
+    const pr=x=>(Math.log(1000)-Math.log(x))/(Math.log(1000)-Math.log(29.5));
+    drawTimeline({title:'DISTANCE TO THE CENTRE',speed:slow>0?`SLOW-MO ≈${sigfig(slow)}×`:'SLOW-MO',value:`${sigfig(km)} km`,p:pr(km),done:km<=100,
+      sub:`t = ${tp.toFixed(1)} ms`,subColor:'#ffb3a8',ticks:[{p:0,label:'1,000 km'},{p:pr(100),label:'≈100 km: torn'},{p:1,label:'30 km horizon'}]},clamp((t-7.3)/0.4)*clamp((29.6-t)/0.25));
+  }
+  if(t>=29.8&&t<36) drawClocks(t,clamp((t-29.8)/0.4)*clamp((36-t)/0.25));
+  if(t>=37.7&&t<44){const p=clamp((t-37.7)/5.6);
+    drawTimeline({title:"FORK'S OWN CLOCK, INSIDE",speed:'SLOW-MO ≈85,000×',value:`${(0.066*p).toFixed(3)} ms`,p,done:p>=1,sub:p>=1?'CENTRE':'',subColor:'#FFD43B',ticks:[{p:0,label:'horizon'},{p:1,label:'centre ≈0.07 ms'}]},clamp((t-37.7)/0.3)*clamp((44-t)/0.25));}
+  let fade=0;
+  for(const c of [7,29.6,36,44,52]) fade=Math.max(fade,1-Math.abs(t-c)/0.22);
+  fade=Math.max(fade,1-t/0.45, 1-(DUR-t)/0.6);
+  if(fade>0){ctx.fillStyle=`rgba(4,5,10,${clamp(fade)})`;ctx.fillRect(0,0,W,H);}
+}
+window.renderAt=renderAt;
+
+/* ============================================================
+   PLAYBACK / RECORDING
+   ============================================================ */
+let playing=true, t0=performance.now(), pausedAt=0;
+const bPlay=document.getElementById('bPlay'), bRec=document.getElementById('bRec');
+function now(){return playing?(performance.now()-t0)/1000:pausedAt;}
+function togglePlay(){if(playing){pausedAt=now();playing=false;bPlay.textContent='Play';}else{t0=performance.now()-pausedAt*1000;playing=true;bPlay.textContent='Pause';}}
+bPlay.onclick=togglePlay;
+document.getElementById('bRestart').onclick=()=>{t0=performance.now();pausedAt=0;if(!playing)togglePlay();};
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();togglePlay();}});
+bRec.onclick=()=>{
+  if(!window.MediaRecorder){alert('MediaRecorder not supported in this browser.');return;}
+  const types=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];
+  const mime=types.find(m=>MediaRecorder.isTypeSupported(m))||'';
+  const rec=new MediaRecorder(out.captureStream(30),{mimeType:mime,videoBitsPerSecond:16e6});
+  const chunks=[]; rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+  rec.onstop=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(chunks,{type:'video/webm'}));a.download='fork-black-hole.webm';a.click();bRec.disabled=false;bRec.textContent='Record 61s WebM';};
+  t0=performance.now(); if(!playing) togglePlay();
+  rec.start(); bRec.disabled=true; bRec.textContent='Recording…';
+  setTimeout(()=>rec.stop(),DUR*1000+150);
+};
+
+if(fixedT!==null){ renderAt(fixedT); window.__ready=true; }
+else { (function loop(){renderAt(now()%DUR);requestAnimationFrame(loop);})(); window.__ready=true; }
+})();
+</script>
+</body>
+</html>
