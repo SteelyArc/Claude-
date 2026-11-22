@@ -494,6 +494,7 @@ const earthFace=makeFace(GR,sScene);
 // Sun: face, rotating corona, cool sunglasses
 const sunFace=makeFace(1.2,sunGroup);
 const corona=new THREE.Group(); sunFace.f.add(corona);
+{const sw=new THREE.MeshStandardMaterial({color:lin('#ffffff'),emissive:lin('#ffffff'),emissiveIntensity:0.75,roughness:0.35});sunFace.eyes.forEach(e=>e.material=sw);}
 {const cm=new THREE.MeshBasicMaterial({color:lin('#ffc84a'),toneMapped:false});
  for(let i=0;i<14;i++){const a=i/14*Math.PI*2;const c=new THREE.Mesh(new THREE.ConeGeometry(0.17,0.5,12),cm);c.position.set(1.52*Math.cos(a),1.52*Math.sin(a),-0.2);c.rotation.z=a-Math.PI/2;corona.add(c);}}
 const glasses=new THREE.Group(); sScene.add(glasses);
@@ -693,6 +694,24 @@ function drawCard(title,accent,items,shown,alpha,yTop){
     ctx.textAlign='left';ctx.font=`800 38px ${FONT}`;ctx.fillStyle='#ffffff';ctx.fillText(it.text,x+92,yy);});
   ctx.restore();
 }
+const NOHUD = params.has('nohud') || params.has('cover');
+// TikTok cover: bold title in the same caption style, kept inside the centre safe area
+function drawCover(){
+  const g=ctx.createLinearGradient(0,980,0,1920);g.addColorStop(0,'rgba(6,8,18,0)');g.addColorStop(0.45,'rgba(6,8,18,0.55)');g.addColorStop(1,'rgba(6,8,18,0.8)');
+  ctx.fillStyle=g;ctx.fillRect(0,980,W,940);
+  ctx.save();ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=26;ctx.shadowOffsetY=6;ctx.fillStyle='#ffffff';
+  ctx.font=`900 104px ${FONT}`;ctx.fillText('WHAT IF THE SUN',W/2,1230);
+  let fs=132;ctx.font=`900 ${fs}px ${FONT}`;let kw=ctx.measureText('DISAPPEARED?').width;if(kw>940){fs*=940/kw;ctx.font=`900 ${fs}px ${FONT}`;kw=940;}
+  const bw=kw+80,bh=fs*1.28,by=1275;
+  ctx.translate(W/2,by+bh/2);ctx.rotate(-0.03);ctx.translate(-W/2,-(by+bh/2));
+  ctx.shadowColor='rgba(0,0,0,0.4)';ctx.shadowBlur=34;ctx.shadowOffsetY=10;
+  roundRectPath(ctx,W/2-bw/2,by,bw,bh,28);ctx.fillStyle='#FFD43B';ctx.fill();
+  ctx.shadowColor='transparent';ctx.fillStyle='#16141f';ctx.textBaseline='middle';ctx.fillText('DISAPPEARED?',W/2,by+bh/2+fs*0.05);
+  ctx.restore();
+  ctx.save();ctx.textAlign='center';ctx.font=`800 52px ${FONT}`;ctx.fillStyle='#ffffff';ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=18;
+  ctx.fillText('You would have 8 min 20 s…',W/2,1560);ctx.restore();
+}
 function storySeconds(t){return clamp((t-T_V)*SPEEDUP,0,LIGHT_S);}
 
 /* ============================================================
@@ -817,6 +836,7 @@ function renderAt(t){
   const isGround = (t>=14&&t<22)||(t>=29.6&&t<36)||(t>=44&&t<52);
   if(isGround){updateGround(t);renderer.render(gScene,gCam);} else {updateSpace(t);renderer.render(sScene,sCam);}
   ctx.globalAlpha=1; ctx.drawImage(glCanvas,0,0,W,H);
+  if(NOHUD){ if(params.has('cover')) drawCover(); return; }
   drawCaption(t);
   // HUD timelines
   if(t>=T_V && t<36){
