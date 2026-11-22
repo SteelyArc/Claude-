@@ -257,7 +257,10 @@ class Card(Shot):
             self._lines.append(bbox_layer(lambda d, ln=ln, yy=yy, c=c: text_c(d, yy, ln, fo, c, w=1000), glow=10 if self.bgk != "paper" else 0))
         self._kick = bbox_layer(lambda d: text_c(d, y - 70, self.kicker, font(MONO, 30), GOLD, w=1000)) if self.kicker else None
         endy = y + len(self.lines) * self.size * 1.15 + 30
-        self._sub = bbox_layer(lambda d: [text_c(d, endy + j * 46, s, font(SERIF_I, 38), DIM if self.bgk != "paper" else (80, 74, 66), w=1000)
+        ssize = 38
+        while self.sub and ssize > 18 and max(probe.textlength(x, font=font(SERIF_I, ssize)) for x in self.sub) > 900:
+            ssize -= 2
+        self._sub = bbox_layer(lambda d: [text_c(d, endy + j * (ssize + 8), s, font(SERIF_I, ssize), DIM if self.bgk != "paper" else (80, 74, 66), w=1000)
                                           for j, s in enumerate(self.sub)]) if self.sub else None
 
     def frame(self, t, dur, idx):
