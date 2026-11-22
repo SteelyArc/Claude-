@@ -54,51 +54,97 @@ def hat(d=0.05):
 def woodblock(f=1200, d=0.08):
     t = tt(d); return np.sin(2 * np.pi * f * t) * np.exp(-t * 60)
 
-# ------------------------------------------------------------------ music (120 bpm polka)
-BEAT = 0.5; E8 = BEAT / 2
-_ = None
-MEL = [
-    [72,_,76,_,79,76,72,_], [74,72,71,72,_,67,_,_],
-    [77,_,81,_,84,81,77,_], [79,77,76,74,_,71,_,67],
-    [72,_,76,_,79,_,84,_], [83,_,84,_,79,_,76,_],
-    [77,76,77,81,79,77,76,74], [79,_,74,_,71,_,67,_],
-]
-CH = [('C',48,[60,64,67]),('C',48,[60,64,67]),('F',53,[60,65,69]),('G',43,[59,62,67])] * 2
+# ------------------------------------------------------------------ music: 120 bpm funk groove
+BEAT = 0.5; STEP = BEAT / 4; BAR = 4 * BEAT
+def kick():
+    t = tt(0.34); f = 46 + 120 * np.exp(-t * 30)
+    return np.sin(2 * np.pi * phase(f)) * np.exp(-t * 8.5) + 0.25 * hp(rng.standard_normal(len(t)), 3000) * np.exp(-t * 250)
+def snare():
+    t = tt(0.24); n = bp(rng.standard_normal(len(t)), 1200, 8000) * np.exp(-t * 17)
+    return n * 0.8 + 0.45 * np.sin(2 * np.pi * phase(np.full(len(t), 185.0))) * np.exp(-t * 28)
+def clap():
+    t = tt(0.26); n = bp(rng.standard_normal(len(t)), 900, 4500); e = np.zeros_like(t)
+    for d in (0.0, 0.011, 0.023):
+        i = int(d * SR); e[i:] += np.exp(-t[:len(t) - i] * 70)
+    e += 0.6 * np.exp(-t * 13); return n * e * 0.55
+def chh(): t = tt(0.05); return hp(rng.standard_normal(len(t)), 8000) * np.exp(-t * 90)
+def ohh(): t = tt(0.3); return hp(rng.standard_normal(len(t)), 7000) * np.exp(-t * 9)
+def cowbell():
+    t = tt(0.15); return bp(sq(540 * t) + sq(800 * t), 500, 3000) * np.exp(-t * 22)
+def sbass(f, d):
+    t = tt(d); s = saw(phase(np.full(len(t), f))) + 0.5 * sq(phase(np.full(len(t), f / 2)))
+    return lp(s, 700 + 900 * 0.5, 2) * env(len(t), 0.004, 0.03) * (0.55 + 0.45 * np.exp(-t * 9))
+
+# sections (bar = 2 s): A = bright funk, B = dark minor funk, None = silence
+def section(t):
+    if t >= 60.0: return None
+    if 7.75 <= t < 8.0: return None              # the Sun goes "poof"
+    if 31.0 <= t < 34.0: return None             # lights out: dead air + crickets
+    if 34.0 <= t < 36.0: return 'B0'             # heartbeat: kick + bass only
+    if 36.0 <= t < 52.0: return 'B'
+    if 28.0 <= t < 31.0: return 'BUILD'
+    return 'A'
+CH_A = [(48, [60, 64, 67]), (48, [60, 64, 67]), (53, [60, 65, 69]), (55, [59, 62, 67])]
+CH_B = [(45, [57, 60, 64]), (45, [57, 60, 64]), (41, [57, 60, 65]), (40, [56, 59, 64])]
+KICK_A = [0, 6, 8, 10]; SNARE_A = [4, 12]; BASS_A = [(0, 0), (3, 0), (6, 12), (8, 0), (10, 7), (11, 12), (14, 0)]
+KICK_B = [0, 3, 10]; SNARE_B = [8]; BASS_B = [(0, 0), (3, 0), (8, 0), (11, 3), (14, 7)]
+MEL_A = [[72,None,76,None,79,76,72,None,74,72,71,72,None,67,None,None],
+         [77,None,81,None,84,81,77,None,79,77,76,74,None,71,None,67]]
+MEL_B = [[69,None,None,72,None,76,None,None,74,None,72,None,71,None,None,None],
+         [69,None,None,72,None,77,None,76,None,74,None,72,None,71,None,68]]
 kaz = np.zeros(N)
-
-def music_on(t):
-    return not (31.0 <= t < 36.0) and t < 60.15
-
-bars = int(DUR / (4 * BEAT))
-for b in range(bars):
-    tb = b * 4 * BEAT
-    name, root, triad = CH[b % 8]
-    space = tb >= 36
-    for beat in range(4):
-        t = tb + beat * BEAT
-        if not music_on(t): continue
-        if beat in (0, 2):
-            bn = root if beat == 0 else root + 7 - (12 if root + 7 > 55 else 0)
-            place(musL, musR, tuba(mtof(bn), 0.42), t, 0.35 if space else 0.55)
-        else:
-            for k, n in enumerate(triad):
-                place(musL, musR, pluck(mtof(n), 0.25), t, 0.16, pan=-0.3 + 0.3 * k)
-        place(musL, musR, woodblock(1500 if beat % 2 else 1100), t + E8, 0.03 if space else 0.06, 0.5)
-        place(musL, musR, hat(), t, 0.05, -0.4)
-    for i, n in enumerate(MEL[b % 8]):
-        t = tb + i * E8
-        if n is None or not music_on(t): continue
-        if space:
-            place(musL, musR, bell(mtof(n + 12), 0.6), t, 0.22, 0.15)
-        elif 14 <= tb < 30 and b % 2:
-            place(musL, musR, pluck(mtof(n), 0.3), t, 0.3, 0.2)
-        else:
-            s = kazoo(mtof(n), E8 * 0.85)
-            i0 = int(t * SR); kaz[i0:i0 + len(s)] += s[:N - i0]
-# kazoo formant / nasal buzz
+nbars = int(DUR / BAR) + 1
+for b in range(nbars):
+    tb = b * BAR
+    for st in range(16):
+        t = tb + st * STEP
+        sec = section(t)
+        if sec is None or t >= DUR: continue
+        if sec == 'A':
+            root, triad = CH_A[b % 4]
+            if st in KICK_A: place(musL, musR, kick(), t, 0.85)
+            if st in SNARE_A: place(musL, musR, snare(), t, 0.5); place(musL, musR, clap(), t, 0.35, 0.2)
+            place(musL, musR, chh(), t, 0.10 if st % 2 else 0.16, -0.35)
+            if st == 14: place(musL, musR, ohh(), t, 0.10, 0.35)
+            if st in (2, 9) and b % 2: place(musL, musR, cowbell(), t, 0.07, 0.5)
+            for s2, iv in BASS_A:
+                if s2 == st: place(musL, musR, sbass(mtof(root - 12 + iv), STEP * 1.6), t, 0.5)
+            if st in (4, 12):
+                for k, n in enumerate(triad): place(musL, musR, pluck(mtof(n), 0.22), t + STEP, 0.10, -0.3 + 0.3 * k)
+            # kazoo lead only where Earth is not whistling
+            if (t < 7.75 or 14.0 <= t < 22.0 or t >= 52.0):
+                n = MEL_A[b % 2][st]
+                if n is not None:
+                    s = kazoo(mtof(n), STEP * 1.7); i0 = int(t * SR); kaz[i0:i0 + len(s)] += s[:N - i0]
+        elif sec == 'BUILD':
+            root, triad = CH_A[b % 4]
+            prog = (t - 28.0) / 3.0
+            if st % 4 == 0: place(musL, musR, kick(), t, 0.85)
+            rate = 4 if prog < 0.5 else (2 if prog < 0.85 else 1)
+            if st % rate == 0: place(musL, musR, snare(), t, 0.4 + 0.5 * prog)
+            place(musL, musR, chh(), t, 0.12, -0.35)
+            if st % 2 == 0:
+                for s2, iv in BASS_A:
+                    if s2 == st: place(musL, musR, sbass(mtof(root - 12 + iv), STEP * 1.6), t, 0.5)
+        else:  # B0 / B
+            root, triad = CH_B[b % 4]
+            if st in KICK_B: place(musL, musR, kick(), t, 0.9)
+            for s2, iv in BASS_B:
+                if s2 == st: place(musL, musR, sbass(mtof(root - 12 + iv), STEP * 2.2), t, 0.55)
+            if sec == 'B':
+                if st in SNARE_B: place(musL, musR, snare(), t, 0.5); place(musL, musR, clap(), t, 0.3, -0.2)
+                if st % 2 == 0: place(musL, musR, chh(), t, 0.12, -0.35)
+                if st == 6: place(musL, musR, ohh(), t, 0.08, 0.35)
+                n = MEL_B[b % 2][st]
+                if n is not None: place(musL, musR, bell(mtof(n + 12), 0.7), t, 0.2, 0.2)
+                if st == 0:
+                    for k, n2 in enumerate(triad): place(musL, musR, pluck(mtof(n2), 0.6), t, 0.08, -0.3 + 0.3 * k)
 kaz = bp(kaz, 350, 2600) + 0.6 * bp(kaz, 900, 1300, 2)
-kaz = np.tanh(kaz * 1.6) * 0.18
+kaz = np.tanh(kaz * 1.6) * 0.16
 musL += kaz * 0.95; musR += kaz * 1.05
+# riser into the lights-out moment
+_t = tt(3.0); _r = bp(rng.standard_normal(len(_t)), 800, 6000) * (_t / 3.0) ** 2 * 0.6
+place(musL, musR, _r, 28.0, 1.0)
 
 # ------------------------------------------------------------------ SFX
 def boing(f0=180, d=0.7):
@@ -214,7 +260,7 @@ S(slide_whistle(1800, 500, 0.7), 7.95, 0.16, 0.2)
 # the 8 min 20 s clock (sped up): soft ticking
 k = 0
 for i in range(int((31.0 - 8.3) / 0.5)):
-    S(tick(2400 if k % 2 == 0 else 1900), 8.3 + i * 0.5, 0.10, 0.6 if k % 2 else -0.6); k += 1
+    S(tick(2400 if k % 2 == 0 else 1900), 8.5 + i * 0.5, 0.08, 0.6 if k % 2 else -0.6); k += 1
 # scene 3: normal day on Earth
 for i in range(10):
     tb = 14.6 + rng.uniform(0, 6.5)
@@ -223,8 +269,6 @@ S(horn(), 17.2, 0.16, 0.3); S(horn(), 17.45, 0.16, 0.3)
 S(boing(220, 0.6), 20.4, 0.12, -0.2)
 # scene 4: the front approaches (shimmer) + suspense drumroll
 S(whoosh(1.6, 800, 7000), 22.4, 0.10, -0.5)
-S(drumroll(1.9), 29.1, 0.22, 0.0)
-S(drumroll(1.4), 29.6, 0.18, 0.0)
 # 31.0: lights out
 S(click(), 31.0, 0.7, 0.0)
 S(scratch(musL + musR, 31.0), 31.0, 0.3)
@@ -249,9 +293,9 @@ S(crackle(6.5), 44.8, 0.10, 0.0)
 # scene 8: drifting into the dark
 S(whoosh(0.7), 51.75, 0.3, -0.6)
 S(whoosh(3.5, 100, 900), 53.5, 0.12, 0.0)
-S(brass_hit([60, 64, 67, 72], 0.18), 59.9, 0.26)
-S(brass_hit([60, 64, 67, 72, 76], 1.0), 60.12, 0.30)
-S(bell(mtof(96), 1.0), 60.12, 0.12)
+S(brass_hit([60, 64, 67, 72], 0.18), 59.75, 0.26)
+S(brass_hit([60, 64, 67, 72, 76], 1.0), 60.0, 0.30)
+S(bell(mtof(96), 1.0), 60.0, 0.12); S(kick(), 60.0, 0.6); S(snare(), 59.75, 0.3)
 
 # ---------------- extra cartoon gags ----------------
 def whistle(m, d):
@@ -266,7 +310,7 @@ S(slide_whistle(500, 1700, 0.45), 7.2, 0.2, -0.3)                       # the Su
 S(boing(420, 0.5), 7.27, 0.2, -0.3)                                     # sunglasses flip up
 S(bell(mtof(100), 1.2), 8.1, 0.12, 0.3); S(boing(130, 1.0), 8.4, 0.12, 0.4)   # glasses tumble away
 tune = [79, 81, 79, 76, 72, 74, 76, None, 77, 76, 74, 72, 74, 76, 72, None]
-for start, end in [(10.6, 14.0), (22.4, 29.4)]:
+for start, end in [(10.5, 14.0), (22.5, 28.0)]:
     i = 0; t0 = start
     while t0 < end - 0.3:
         n = tune[i % len(tune)]
@@ -288,14 +332,14 @@ for t0 in [0.35, 7.35, 14.35, 22.35, 29.95, 36.35, 44.35, 52.35]:
 
 # ------------------------------------------------------------------ mix
 duck = np.ones(N)
-for t0, d in [(7.7, 0.9), (29.2, 1.8)]:
+for t0, d in [(7.7, 0.9)]:
     i0 = int(t0 * SR); n = int(d * SR); duck[i0:i0 + n] = np.minimum(duck[i0:i0 + n], 0.6)
 duck = lp(duck, 6, 1)
 L = musL * duck * 0.9 + sfxL; Rr = musR * duck * 0.9 + sfxR
 fi = int(0.4 * SR); fo = int(0.6 * SR)
 for ch in (L, Rr):
     ch[:fi] *= np.linspace(0, 1, fi); ch[-fo:] *= np.linspace(1, 0, fo)
-peak = max(np.abs(L).max(), np.abs(Rr).max())
+peak = max(np.percentile(np.abs(L), 99.97), np.percentile(np.abs(Rr), 99.97))
 L = np.tanh(L / peak * 1.25) * 0.9; Rr = np.tanh(Rr / peak * 1.25) * 0.9
 wavfile.write(OUT_WAV, SR, (np.stack([L, Rr], 1) * 32767).astype(np.int16))
 print('ok', peak)
