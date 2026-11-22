@@ -5,7 +5,7 @@ from scipy.signal import butter, lfilter, sosfilt
 from scipy.io import wavfile
 
 SR = 44100
-DUR = 60.0
+DUR = 61.0
 N = int(SR * DUR)
 rng = np.random.default_rng(7)
 musL = np.zeros(N); musR = np.zeros(N)
@@ -67,7 +67,7 @@ CH = [('C',48,[60,64,67]),('C',48,[60,64,67]),('F',53,[60,65,69]),('G',43,[59,62
 kaz = np.zeros(N)
 
 def music_on(t):
-    return not (31.0 <= t < 36.0) and t < 59.15
+    return not (31.0 <= t < 36.0) and t < 60.15
 
 bars = int(DUR / (4 * BEAT))
 for b in range(bars):
@@ -249,9 +249,9 @@ S(crackle(6.5), 44.8, 0.10, 0.0)
 # scene 8: drifting into the dark
 S(whoosh(0.7), 51.75, 0.3, -0.6)
 S(whoosh(3.5, 100, 900), 53.5, 0.12, 0.0)
-S(brass_hit([60, 64, 67, 72], 0.18), 58.9, 0.26)
-S(brass_hit([60, 64, 67, 72, 76], 1.0), 59.12, 0.30)
-S(bell(mtof(96), 1.0), 59.12, 0.12)
+S(brass_hit([60, 64, 67, 72], 0.18), 59.9, 0.26)
+S(brass_hit([60, 64, 67, 72, 76], 1.0), 60.12, 0.30)
+S(bell(mtof(96), 1.0), 60.12, 0.12)
 # caption pops
 for t0 in [0.35, 7.35, 14.35, 22.35, 29.95, 36.35, 44.35, 52.35]:
     S(pop(800, 0.08), t0 + 0.05, 0.16, 0.0)

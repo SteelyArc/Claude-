@@ -23,14 +23,14 @@
 <div id="ui">
   <button id="bPlay">Pause</button>
   <button id="bRestart">Restart</button>
-  <button id="bRec">Record 60s WebM</button>
+  <button id="bRec">Record 61s WebM</button>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (async function(){
 "use strict";
 /* ============================================================
-   IF THE SUN DISAPPEARED — 60 s vertical (1080x1920) three.js
+   IF THE SUN DISAPPEARED — 61 s vertical (1080x1920) three.js
    Facts used (all real):
    - Sunlight needs ≈ 8 min 20 s (≈ 499 s) to cross 1 AU.
    - Changes in gravity also travel at the speed of light (≈ 300,000 km/s),
@@ -42,7 +42,7 @@
      global average ≈ −18 °C after about a week, ≈ −73 °C after about a year.
    ============================================================ */
 
-const W = 1080, H = 1920, DUR = 60;
+const W = 1080, H = 1920, DUR = 61;
 const T_V = 7.8;            // Sun vanishes
 const T_OUT = 31.0;         // last sunlight (8 min 20 s later in story time)
 const LIGHT_S = 500;        // 8 min 20 s
@@ -347,7 +347,7 @@ const SCENES=[
   {t0:29.6,t1:36,  pre:'At 8 min 20 s the last sunlight passes. Instantly, the sky turns black:', key:'stars at midday', foot:''},
   {t0:36,  t1:44,  pre:'No more pull: Earth leaves its curved orbit and flies straight ahead at', key:'29.8 km/s', foot:'Not to scale · time sped up'},
   {t0:44,  t1:52,  pre:'No instant freeze: oceans and air hold heat, so Earth cools slowly. After about a week:', key:'≈ −18 °C', foot:'Global-average temperatures are scientific estimates'},
-  {t0:52,  t1:60,  pre:'Dark and slowly cooling, but not stopped:', key:'EARTH WOULD KEEP MOVING', foot:''},
+  {t0:52,  t1:61,  pre:'Dark and slowly cooling, but not stopped:', key:'EARTH WOULD KEEP MOVING', foot:''},
 ];
 function wrapText(text,maxW){const words=text.split(' ');const lines=[];let cur='';for(const w of words){const t=cur?cur+' '+w:w;if(ctx.measureText(t).width>maxW&&cur){lines.push(cur);cur=w;}else cur=t;}if(cur)lines.push(cur);return lines;}
 function drawCaption(t){
@@ -514,7 +514,7 @@ function updateSpace(t){
   else if(sc===2){ const a=t-7; sCam.fov=45; sCam.position.copy(E).addScaledVector(Eh,3.8+0.08*a).addScaledVector(Th,-1.7+0.05*a).setY(4.0); sCam.lookAt(E.x*0.55,0.5,E.z*0.55); }
   else if(sc===4){ const a=t-22; sCam.fov=45; sCam.position.copy(E).addScaledVector(Eh,3.4-0.1*a).addScaledVector(Th,-2.0).setY(2.6); sCam.lookAt(E.x*0.62,-0.1,E.z*0.62); }
   else if(sc===6){ const gph=phiOut+days*2*Math.PI/365.25; const M=new THREE.Vector3((E.x+RO*Math.sin(gph))/2,0,(E.z+RO*Math.cos(gph))/2); sCam.fov=45; sCam.position.set(M.x+10.5,2.6,M.z-0.2); sCam.lookAt(M.x,0.35,M.z); }
-  else { const a=t-52; globe.scale.setScalar(1); globe.position.set(lerp(-1.6,1.4,a/8),0,0); globe.rotation.set(0.35,0.35*t,0.1);
+  else { const a=t-52; globe.scale.setScalar(1); globe.position.set(lerp(-1.6,1.4,a/9),0,0); globe.rotation.set(0.35,0.35*t,0.1);
     sLight.position.copy(globe.position).add(new THREE.Vector3(7,3,-9)); sLight.target.position.copy(globe.position); sLight.intensity=1.3; sHemi.intensity=0.3;
     sCam.fov=45; sCam.position.set(0.8-0.1*a,-0.9+0.05*a,14.5-0.25*a); sCam.lookAt(0.2,0.7,0);
     path.visible=true; path.position.set(-40,0,-0.0); path.scale.set(80,1,1); path.rotation.set(0,0,0); pathMat.opacity=0.55; }
@@ -580,7 +580,7 @@ bRec.onclick=()=>{
   const mime=types.find(m=>MediaRecorder.isTypeSupported(m))||'';
   const rec=new MediaRecorder(out.captureStream(30),{mimeType:mime,videoBitsPerSecond:16e6});
   const chunks=[]; rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
-  rec.onstop=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(chunks,{type:'video/webm'}));a.download='sun-disappears.webm';a.click();bRec.disabled=false;bRec.textContent='Record 60s WebM';};
+  rec.onstop=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(chunks,{type:'video/webm'}));a.download='sun-disappears.webm';a.click();bRec.disabled=false;bRec.textContent='Record 61s WebM';};
   t0=performance.now(); if(!playing) togglePlay();
   rec.start(); bRec.disabled=true; bRec.textContent='Recording…';
   setTimeout(()=>rec.stop(),DUR*1000+150);
