@@ -1,0 +1,506 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/@fontsource/anton/index.css">
+<link rel="stylesheet" href="node_modules/@fontsource/oswald/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/oswald/700.css">
+<link rel="stylesheet" href="node_modules/@fontsource/playfair-display/700.css">
+<link rel="stylesheet" href="node_modules/@fontsource/playfair-display/900.css">
+<link rel="stylesheet" href="node_modules/@fontsource/old-standard-tt/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/old-standard-tt/700.css">
+<link rel="stylesheet" href="node_modules/@fontsource/old-standard-tt/400-italic.css">
+<link rel="stylesheet" href="node_modules/@fontsource/unifrakturmaguntia/index.css">
+<link rel="stylesheet" href="node_modules/@fontsource/inter/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/special-elite/index.css">
+<script src="mapdata.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#05030a}
+/* ---------- ROOM / CAMERA ---------- */
+#cam{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:540px 900px}
+#wall{position:absolute;inset:-200px;background:
+  radial-gradient(900px 520px at 260px 120px,rgba(122,52,210,.55),transparent 70%),
+  radial-gradient(700px 500px at 980px 60px,rgba(150,70,255,.35),transparent 70%),
+  radial-gradient(1200px 900px at 540px 900px,#17121f,#0a0710 70%)}
+#shelf{position:absolute;left:-60px;top:330px;width:1260px;height:120px;background:linear-gradient(#0b0911,#141019 60%,#08060c);box-shadow:0 30px 60px rgba(0,0,0,.6)}
+#pc{position:absolute;left:820px;top:-40px;width:300px;height:380px;border-radius:10px;background:linear-gradient(135deg,#15121c,#07060a);box-shadow:inset 0 0 0 3px #1d1a24}
+.fan{position:absolute;width:120px;height:120px;border-radius:50%;border:7px solid rgba(190,120,255,.9);box-shadow:0 0 30px rgba(170,90,255,.9),inset 0 0 20px rgba(170,90,255,.6)}
+#badge{position:absolute;left:600px;top:180px;width:100px;height:120px;border:2px solid #2a2836;border-radius:6px;background:#0d0c14;color:#cfd3ff;font:700 44px Oswald;text-align:center;padding-top:44px;box-shadow:0 0 18px rgba(80,90,255,.25)}
+#badge small{position:absolute;top:10px;left:0;right:0;font:500 13px Inter;color:#8d91c8;letter-spacing:1px}
+#monitor{position:absolute;left:84px;top:470px;width:912px;height:534px;background:#0b0b0e;border-radius:10px;
+  box-shadow:0 0 0 2px #1b1b20,0 25px 60px rgba(0,0,0,.8)}
+#screen{position:absolute;left:12px;top:12px;width:888px;height:499.5px;overflow:hidden;background:#000}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#000}
+#glass{position:absolute;inset:0;pointer-events:none;background:
+  linear-gradient(115deg,rgba(255,255,255,.05) 0%,rgba(255,255,255,0) 38%,rgba(255,255,255,.035) 60%,rgba(255,255,255,0) 75%),
+  radial-gradient(130% 120% at 50% 50%,transparent 60%,rgba(0,0,0,.35));mix-blend-mode:screen}
+#scan{position:absolute;inset:0;pointer-events:none;opacity:.07;background:repeating-linear-gradient(0deg,#000 0 1px,transparent 1px 3px)}
+#neck{position:absolute;left:510px;top:1000px;width:60px;height:110px;background:linear-gradient(90deg,#0b0b0f,#1a1a20,#0b0b0f)}
+#desk{position:absolute;left:-200px;top:1085px;width:1480px;height:1100px;background:linear-gradient(#141218,#0a090d 40%,#060508)}
+#led{position:absolute;left:-200px;top:1078px;width:1480px;height:10px;background:#3b55ff;box-shadow:0 0 22px 8px rgba(60,85,255,.85),0 0 80px 30px rgba(60,85,255,.35)}
+#spill{position:absolute;left:-100px;top:1060px;width:1280px;height:700px;background:radial-gradient(60% 55% at 50% 0%,rgba(var(--g),.42),transparent 75%);mix-blend-mode:screen}
+#kb{position:absolute;left:220px;top:1250px;width:760px;height:220px;border-radius:12px;background:linear-gradient(#1a1a20,#0d0d11);transform:perspective(900px) rotateX(48deg);transform-origin:50% 0;
+  box-shadow:0 30px 40px rgba(0,0,0,.7)}
+#keys{position:absolute;inset:16px 18px;display:grid;grid-template-columns:repeat(18,1fr);gap:6px}
+#keys i{display:block;border-radius:4px;background:#0a0a0d;box-shadow:inset 0 -3px 0 #050507,0 0 6px rgba(70,110,255,.35),inset 0 0 0 1px rgba(90,130,255,.25)}
+#rest{position:absolute;left:236px;top:1440px;width:740px;height:56px;border-radius:12px;background:linear-gradient(#cfd0d6,#8e9099);opacity:.42;transform:perspective(900px) rotateX(55deg)}
+#caption{position:absolute;left:0;right:0;top:330px;text-align:center;color:#fff;font:500 48px Inter;letter-spacing:.2px;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+#vign{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 80% at 50% 45%,transparent 55%,rgba(0,0,0,.55))}
+
+/* ---------- SLIDE ELEMENTS ---------- */
+.el{position:absolute;left:0;top:0;transform-origin:50% 50%;display:none;will-change:transform,opacity}
+.img{overflow:hidden}
+.img img{width:100%;height:100%;object-fit:cover;display:block;transform-origin:50% 50%}
+.bw img{filter:grayscale(1) contrast(1.08) sepia(.12)}
+.full{background-size:cover;background-position:center}
+/* newspaper */
+.paper{background:url(assets/paper.jpg) center/100% 100%;color:#1d1b18;font-family:'Old Standard TT',serif;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.paper>*{position:absolute;left:60px;right:60px}
+.p-top{top:34px;display:flex;justify-content:space-between;font:700 22px 'Old Standard TT';letter-spacing:2px;border-bottom:2px solid #1d1b18;padding-bottom:8px}
+.p-mast{top:66px;height:180px;text-align:center;font:150px/180px 'UnifrakturMaguntia';letter-spacing:1px}
+.p-date{top:252px;display:flex;justify-content:space-between;font:700 22px 'Old Standard TT';letter-spacing:1.5px;border-top:5px double #1d1b18;border-bottom:5px double #1d1b18;padding:10px 4px}
+.p-head{top:318px;height:470px;display:flex;align-items:center;justify-content:center;white-space:nowrap;text-align:center;font:205px/0.95 Anton;letter-spacing:2px;text-transform:uppercase;color:#141210}
+.p-bar{top:806px;height:66px;background:#c81d25;color:#fff;font:500 38px/66px Oswald;letter-spacing:3px;text-align:center;text-transform:uppercase}
+.p-sub{top:892px;height:350px;text-align:center}
+.p-sub b{display:block;font:166px/1 Anton;letter-spacing:2px;color:#151311;white-space:nowrap}
+.p-sub em{display:block;font:148px/1.08 Anton;font-style:normal;color:#c81d25;letter-spacing:2px;white-space:nowrap}
+.p-rule{top:1250px;height:8px;border-top:3px solid #1d1b18;border-bottom:1px solid #1d1b18}
+.p-cols{top:1280px;bottom:50px;display:grid;grid-template-columns:1fr 1.15fr 1fr 1.15fr;gap:30px}
+.p-cols>div{overflow:hidden;position:relative}
+.col-t{font:19px/1.32 'Old Standard TT';text-align:justify;hyphens:auto}
+.col-t p{margin-bottom:10px;text-indent:18px}
+.col-h{font:700 30px/1.05 'Old Standard TT';text-transform:uppercase;border-bottom:2px solid #1d1b18;padding-bottom:8px;margin-bottom:10px;text-align:center}
+.col-img{width:100%;height:330px;object-fit:cover;filter:grayscale(1) contrast(1.15) sepia(.18);display:block;border:1px solid #222}
+.col-cap{font:italic 18px/1.25 'Old Standard TT';margin:8px 0 12px;text-align:center}
+/* text styles */
+.t-red{font:120px/1 Anton;color:#d8141c;text-transform:uppercase;letter-spacing:3px;text-shadow:0 0 2px #fff,0 0 10px rgba(255,255,255,.9),0 0 26px rgba(255,255,255,.7)}
+.t-dark{font:700 92px/1 Oswald;color:#2a2622;text-transform:uppercase;letter-spacing:2px}
+.t-white{font:110px/1 Anton;color:#fff;text-transform:uppercase;letter-spacing:3px;text-shadow:0 6px 30px rgba(0,0,0,.6)}
+.body{font:700 40px/1.3 'Old Standard TT';color:#1f1c19}
+.body-w{font:500 40px/1.32 Oswald;color:#f2efe9;text-shadow:0 2px 12px rgba(0,0,0,.8);letter-spacing:.5px}
+.kicker{font:500 46px/1 Oswald;letter-spacing:10px;color:#c81d25;text-transform:uppercase}
+.kicker-w{font:500 46px/1 Oswald;letter-spacing:10px;color:#f1c74b;text-transform:uppercase}
+.big-num{font:250px/1 Anton;color:#e01b24;letter-spacing:4px;text-shadow:0 10px 40px rgba(0,0,0,.6)}
+/* cards */
+.flagcard{background:#f4f1ea;padding:16px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.flagcard>div{width:100%;height:100%}
+.polaroid{background:#f6f3ec;padding:22px 22px 92px;box-shadow:0 25px 60px rgba(0,0,0,.45)}
+.polaroid .ph{width:100%;height:100%;overflow:hidden}
+.polaroid .ph img{width:100%;height:100%;object-fit:cover}
+.polaroid .cap{position:absolute;left:22px;right:22px;bottom:18px;height:60px;font:30px/1 'Special Elite';color:#2b2722;text-align:center;display:flex;align-items:center;justify-content:center}
+.tape{position:absolute;top:-26px;left:50%;width:180px;height:56px;margin-left:-90px;background:rgba(238,226,190,.75);transform:rotate(-4deg);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.gold{padding:34px;background:linear-gradient(135deg,#8a6a22,#f3d98b 18%,#a07a2b 35%,#f7e3a0 52%,#8c6a20 70%,#e9c977 86%,#7d5c1a);box-shadow:0 30px 60px rgba(0,0,0,.55),inset 0 0 0 4px rgba(60,40,5,.6)}
+.gold .in{width:100%;height:100%;overflow:hidden;box-shadow:inset 0 0 0 6px #5b4313,inset 0 0 30px rgba(0,0,0,.6);position:relative}
+.gold .in img{width:100%;height:100%;object-fit:cover}
+.clip{background:url(assets/paper.jpg) center/cover;padding:28px 34px;box-shadow:0 20px 50px rgba(0,0,0,.4);font:24px/1.3 'Old Standard TT';color:#1d1b18;clip-path:polygon(0 2%,6% 0,15% 1.5%,30% 0,45% 2%,60% 0,75% 1.8%,90% 0,100% 1.5%,99% 30%,100% 60%,98.5% 100%,85% 98.5%,70% 100%,55% 98%,40% 100%,25% 98.5%,10% 100%,0 98%,1.5% 60%)}
+.clip h4{font:700 40px/1.05 'Old Standard TT';text-transform:uppercase;margin-bottom:12px;border-bottom:2px solid #222;padding-bottom:8px}
+</style></head><body>
+<div id="cam">
+  <div id="wall"></div>
+  <div id="pc"><div class="fan" style="left:40px;top:40px"></div><div class="fan" style="left:40px;top:190px"></div></div>
+  <div id="shelf"></div>
+  <div id="badge"><small>PORTAL</small>15</div>
+  <div id="led"></div>
+  <div id="desk"></div>
+  <div id="spill"></div>
+  <div id="neck"></div>
+  <div id="monitor"><div id="screen"><div id="stage"></div><div id="scan"></div><div id="glass"></div></div></div>
+  <div id="kb"><div id="keys"></div></div>
+  <div id="rest"></div>
+</div>
+<div id="vign"></div>
+<div id="caption">Vietnam Presentation</div>
+<script>
+// ---------------- content helpers ----------------
+const filler = [
+ "Columns of troops crossed the frontier at dawn while officials in Hanoi met through the night. Residents of the capital lined the boulevards to watch the lorries pass, uncertain of what the arrival would mean for the colony and its people.",
+ "Merchants along the river reported that rice prices had risen sharply during the week. Shipping agents said that several vessels bound for Haiphong had been held at anchor pending new instructions from the authorities.",
+ "In the countryside, villagers spoke of heavy taxes and forced labour. Many younger men had already left for the cities or the plantations of the south, and few families expected any relief from the new arrangements.",
+ "Diplomats in Washington followed events closely. One official remarked that the situation in the Far East had changed more in a single summer than in the previous decade, and that further moves could not be ruled out.",
+ "Students in Saigon gathered in cafés to read the latest bulletins aloud. Newspapers sold out within hours, and crowds formed outside the offices of the telegraph company awaiting word from the north."
+];
+function cols(n,seed=0){let s='';for(let i=0;i<n;i++)s+='<p>'+filler[(i+seed)%filler.length]+'</p>';return s}
+function paperHTML(o){return `
+ <div class="p-top"><span>${o.vol||'VOL. LXXIX . . . No. 27,412'}</span><span>"ALL THE NEWS OF THE EAST"</span><span>LATE CITY EDITION</span></div>
+ <div class="p-mast">${o.mast||'The Indochina Herald'}</div>
+ <div class="p-date"><span>${o.left||'Copyright, The Herald'}</span><span>${o.date}</span><span>FIVE CENTS</span></div>
+ <div class="p-head">${o.head}</div>
+ <div class="p-bar">${o.bar}</div>
+ <div class="p-sub"><b>${o.sub1}</b><em>${o.sub2}</em></div>
+ <div class="p-rule"></div>
+ <div class="p-cols">
+  <div class="col-t"><div class="col-h">${o.h1}</div>${cols(5,o.seed||0)}</div>
+  <div><img class="col-img" src="assets/${o.img1}"><div class="col-cap">${o.cap1}</div><div class="col-t">${cols(3,(o.seed||0)+2)}</div></div>
+  <div class="col-t"><div class="col-h">${o.h2}</div>${cols(5,(o.seed||0)+3)}</div>
+  <div><img class="col-img" src="assets/${o.img2}"><div class="col-cap">${o.cap2}</div><div class="col-t">${cols(3,(o.seed||0)+1)}</div></div>
+ </div>`}
+const M=window.MAP;
+function mapSVG(){
+ const N=M.p17, T=372; // 17th parallel, ~20°N (Tonkin)
+ const pin=(k,lab,dx,dy,anchor)=>{const [x,y]=M.pts[k];return `<g style="opacity:var(--${k},0)"><circle cx="${x}" cy="${y}" r="20" fill="#fff" stroke="#111" stroke-width="7"/><circle cx="${x}" cy="${y}" r="44" fill="none" stroke="#fff" stroke-width="4" opacity=".7"/><text x="${x+dx}" y="${y+dy}" text-anchor="${anchor||'start'}" font-family="Oswald" font-weight="700" font-size="58" fill="#111" stroke="#fff" stroke-width="12" paint-order="stroke">${lab}</text></g>`};
+ return `<svg viewBox="0 0 ${M.W} ${M.H}" width="100%" height="100%" style="overflow:visible">
+ <defs>
+  <clipPath id="cN"><rect x="-500" y="-500" width="2000" height="${N+500}"/></clipPath>
+  <clipPath id="cS"><rect x="-500" y="${N}" width="2000" height="2000"/></clipPath>
+  <clipPath id="cT"><rect x="-500" y="-500" width="2000" height="${T+500}"/></clipPath>
+  <clipPath id="cB"><rect x="-500" y="${T}" width="2000" height="2000"/></clipPath>
+  <pattern id="hatch" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><rect width="26" height="26" fill="rgba(255,255,255,.0)"/><rect width="11" height="26" fill="#16120f"/></pattern>
+  <filter id="ds"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-opacity=".45"/></filter>
+ </defs>
+ <g filter="url(#ds)"><path d="${M.vn}" fill="var(--mc,#d41920)" stroke="var(--ms,#7c0c10)" stroke-width="4"/></g>
+ <path d="${M.vn}" fill="#f2c230" clip-path="url(#cS)" style="opacity:var(--sy,0)"/>
+ <path d="${M.vn}" fill="url(#hatch)" clip-path="url(#cT)" style="opacity:var(--jn,0)"/>
+ <path d="${M.vn}" fill="url(#hatch)" clip-path="url(#cB)" style="opacity:var(--js,0)"/>
+ <polygon style="opacity:var(--star,1)" fill="#ffde00" transform="translate(330 330) scale(115)" points="0,-1 0.2245,-0.309 0.951,-0.309 0.363,0.118 0.588,0.809 0,0.382 -0.588,0.809 -0.363,0.118 -0.951,-0.309 -0.2245,-0.309"/>
+ <g style="opacity:var(--l17,0)"><line x1="120" x2="1080" y1="${N}" y2="${N}" stroke="#111" stroke-width="9" stroke-dasharray="34 20"/><text x="1080" y="${N-24}" text-anchor="end" font-family="Oswald" font-weight="700" font-size="54" fill="#111" stroke="#fff" stroke-width="10" paint-order="stroke">17TH PARALLEL</text></g>
+ ${pin('pacbo','PÁC BÓ',60,20)}${pin('hanoi','HANOI',60,20)}${pin('dbp','ĐIỆN BIÊN PHỦ',-60,-50,'start')}${pin('hue','HUẾ',60,20)}${pin('saigon','SAIGON',60,20)}${pin('danang','ĐÀ NẴNG',60,30)}
+ </svg>`}
+function planesSVG(){const p=(x,y,s,o)=>`<g transform="translate(${x} ${y}) scale(${s})" opacity="${o}"><path fill="#3a3330" d="M0 0 L60 -6 L70 -40 L84 -40 L82 -6 L120 -4 L126 4 L82 6 L84 40 L70 40 L60 6 L0 2 L-30 14 L-36 14 L-26 1 L-40 -1 L-40 -5 L-26 -3 L-36 -14 L-30 -14Z"/></g>`;
+ return `<svg viewBox="0 0 900 400" width="100%" height="100%">${p(120,250,1.5,.9)}${p(380,140,2.2,.95)}${p(640,230,1.4,.85)}${p(560,60,1.0,.7)}${p(250,90,.9,.65)}</svg>`}
+function polaroid(img,cap,bw){return `<div class="tape"></div><div class="ph ${bw?'bw':''}" style="${bw?'':''}"><img src="assets/${img}" style="${bw?'filter:grayscale(1) contrast(1.1) sepia(.15)':''}"></div><div class="cap">${cap}</div>`}
+function gold(img,extra){return `<div class="in"><img src="assets/${img}" style="${extra||''}"></div>`}
+
+// ---------------- element definitions ----------------
+const E={
+ black:{html:'',style:'background:#000'},
+ paperbg:{html:'',style:'background:url(assets/paper.jpg) center/cover'},
+ clouds:{html:'<img src="assets/clouds.jpg" style="width:100%;height:100%">',cls:'img'},
+ dark:{html:'',style:'background:url(assets/dark.jpg) center/cover'},
+ room:{html:`<div style="position:absolute;inset:0;background:
+   radial-gradient(circle at 20px 20px,rgba(160,120,60,.18) 6px,transparent 7px) 0 0/80px 80px,
+   radial-gradient(circle at 60px 60px,rgba(160,120,60,.14) 10px,transparent 11px) 0 0/80px 80px,
+   linear-gradient(#e9dcc0,#dccba6)"></div>
+   <div style="position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(#6b4423,#4a2c14);box-shadow:inset 0 10px 0 #7e5530,inset 0 14px 20px rgba(0,0,0,.4)"></div>
+   <div style="position:absolute;left:0;right:0;bottom:0;height:300px;background:repeating-linear-gradient(90deg,transparent 0 238px,rgba(0,0,0,.25) 238px 242px)"></div>
+   <div style="position:absolute;inset:0;background:radial-gradient(70% 70% at 60% 40%,transparent 50%,rgba(40,25,10,.45))"></div>`},
+ mist:{html:'<img src="assets/mist.png" style="width:100%;height:100%">',cls:'img'},
+ redsmoke:{html:'<img src="assets/redsmoke.png" style="width:100%;height:100%">',cls:'img'},
+ doumer:{html:'<img src="assets/doumer.jpg" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05) brightness(1.08);-webkit-mask-image:radial-gradient(60% 55% at 50% 42%,#000 45%,transparent 100%)">',cls:'img'},
+ map:{html:mapSVG(),style:'overflow:visible'},
+ flagFR:{html:'<div style="background:linear-gradient(90deg,#0b3b9c 33.3%,#fff 33.3% 66.6%,#d8141c 66.6%)"></div>',cls:'flagcard'},
+ flagJP:{html:'<div style="background:radial-gradient(circle at 50% 50%,#c8102e 28%,#fff 28.5%)"></div>',cls:'flagcard'},
+ flagUS:{html:'<div style="background:linear-gradient(#0a3161 0 0) 0 0/42% 54% no-repeat,repeating-linear-gradient(#b31942 0 7.69%,#fff 7.69% 15.38%)"></div>',cls:'flagcard'},
+ tBackground:{html:'BACKGROUND',cls:'t-red',style:'text-align:center'},
+ pBg1:{html:'In 1887 France joined Vietnam and Cambodia into <b>French Indochina</b> (Laos followed in 1893). For more than fifty years, Vietnam was ruled from Paris.',cls:'body',style:'text-align:center'},
+ arrow:{html:'<svg viewBox="0 0 600 260" width="100%" height="100%"><path d="M10 230 Q 250 210 470 70" fill="none" stroke="#d8141c" stroke-width="44" stroke-linecap="round"/><polygon points="430,10 590,30 500,170" fill="#d8141c"/></svg>'},
+ pBg2:{html:'Saigon became the “Paris of the Orient” — boulevards, railways and an opera house, paid for with heavy taxes and state monopolies on salt, alcohol and opium.',cls:'body'},
+ strip:{html:`<div style="position:absolute;inset:0;background:url(assets/paper.jpg) center/cover;box-shadow:0 -10px 30px rgba(0,0,0,.25)"></div>
+   <div style="position:absolute;left:50px;top:40px;width:520px;font:24px/1.35 'Old Standard TT';text-align:justify;color:#222">${cols(2,1)}</div>
+   <img src="assets/saigon_stereo_3.jpg" style="position:absolute;left:620px;top:40px;width:400px;height:300px;object-fit:cover;filter:sepia(.4)">
+   <img src="assets/saigon_stereo_0.jpg" style="position:absolute;left:1050px;top:40px;width:400px;height:300px;object-fit:cover;filter:sepia(.4)">
+   <img src="assets/saigon1890_workers.jpg" style="position:absolute;left:1480px;top:40px;width:400px;height:300px;object-fit:cover;filter:grayscale(1)">`},
+ comp1940:{html:`<div style="position:absolute;inset:0;padding:46px;background:linear-gradient(135deg,#8a6a22,#f3d98b 18%,#a07a2b 35%,#f7e3a0 52%,#8c6a20 70%,#e9c977 86%,#7d5c1a)">
+   <div style="position:relative;width:100%;height:100%;overflow:hidden;background:#fff">
+    <div style="position:absolute;left:-1050px;top:-1260px;width:3600px;height:3600px;transform:rotate(calc(var(--rot,0)*1deg));background:repeating-conic-gradient(#d8232a 0 7.5deg,#f6efe6 7.5deg 15deg)"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(60% 60% at 40% 50%,transparent 40%,rgba(255,255,255,.35))"></div>
+    <div style="position:absolute;left:930px;top:80px;width:900px;height:400px;transform:translateX(calc(var(--px,0)*1px))">${planesSVG()}</div>
+    <div style="position:absolute;left:300px;top:200px;width:660px;height:660px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#e8323a,#c0141b);box-shadow:0 20px 60px rgba(120,0,0,.45);color:#fff;text-align:center;padding:120px 90px 0">
+      <div style="font:900 170px/1 'Playfair Display'">1940</div>
+      <div style="font:700 33px/1.3 'Old Standard TT';margin-top:18px">France has fallen to Germany. Japan forces the colonial government to give way — and on <b>22 September</b> its troops march into northern Vietnam.</div></div>
+    <div class="clip" style="position:absolute;left:1180px;top:560px;width:600px;height:400px;transform:rotate(3deg)"><h4>Japanese Troops Cross Into Tonkin</h4>HANOI, Sept. 22 — Japanese forces crossed the frontier from China today and fighting broke out at Lang Son. The French, cut off from Paris, have agreed to Japanese bases in the north.</div>
+   </div></div>`},
+ wf1:{html:gold('saigon_stereo_3.jpg','filter:sepia(.5)'),cls:'gold'},
+ wf2:{html:gold('saigon1890_kids.jpg','filter:grayscale(1)'),cls:'gold'},
+ wf3:{html:gold('flag1945_hanoi.jpg'),cls:'gold'},
+ hoFrame:{html:gold('Ho_Chi_Minh_1946.jpg','filter:grayscale(1) contrast(1.05)'),cls:'gold'},
+ tHo:{html:'HO CHI MINH’s RETURN',cls:'t-dark',style:'text-align:center;font-size:84px'},
+ pHo:{html:'After 30 years abroad searching for a path to national liberation, Ho Chi Minh returned to Vietnam on <b>28 January 1941</b>, setting up a secret revolutionary base in the caves of Pác Bó.',cls:'body',style:'text-align:center;font-size:38px'},
+ kVM:{html:'MAY 1941',cls:'kicker'},
+ tVM:{html:'THE VIET MINH',cls:'t-red',style:'font-size:100px;white-space:nowrap'},
+ pVM:{html:'At Pác Bó, Ho Chi Minh founded the <b>Viet Minh</b> — the League for the Independence of Vietnam — to fight both the French and the Japanese.',cls:'body'},
+ kJul:{html:'JULY 1941',cls:'kicker'},
+ tJul:{html:'JAPAN TAKES THE SOUTH',cls:'t-dark',style:'font-size:96px;line-height:1.02'},
+ pJul:{html:'Japanese troops occupy all of Indochina. The French officials stay — but now take orders from Tokyo. The U.S. answers with an <b>oil embargo</b>, a step on the road to Pearl Harbor.',cls:'body'},
+ kFam:{html:'1945',cls:'kicker-w'},
+ tFam:{html:'COUP & FAMINE',cls:'t-white'},
+ nFam:{html:'2,000,000',cls:'big-num'},
+ pFam:{html:'On 9 March 1945 Japan seized full control from the French. That same year a catastrophic famine killed up to two million people in northern Vietnam.',cls:'body-w'},
+ phFlag:{html:polaroid('flag1945_hanoi.jpg','Hanoi, 1945'),cls:'polaroid'},
+ phCrowd:{html:polaroid('parade1945_south.jpg','Crowds in Hanoi, 1945'),cls:'polaroid'},
+ phWomen:{html:polaroid('parade1945_women.jpg','Celebrations, 1945'),cls:'polaroid'},
+ phHo45:{html:polaroid('ho1945_children.jpg','President Ho Chi Minh'),cls:'polaroid'},
+ kAug:{html:'AUGUST 1945',cls:'kicker'},
+ tAug:{html:'THE AUGUST REVOLUTION',cls:'t-red',style:'font-size:104px;line-height:1.02'},
+ pAug:{html:'Japan surrendered on 15 August 1945. Within days the Viet Minh took power in Hanoi, and the red flag with the gold star rose over the city.',cls:'body'},
+ kSep:{html:'2 SEPTEMBER 1945',cls:'kicker'},
+ qSep:{html:'“All men are created equal…”',style:"font:900 italic 76px/1.1 'Playfair Display';color:#1f1c19"},
+ pSep:{html:'In Ba Đình Square, Ho Chi Minh declared the independence of the <b>Democratic Republic of Vietnam</b> — opening with words borrowed from the American Declaration of Independence.',cls:'body',style:'font-size:37px'},
+ paper1:{html:paperHTML({date:'SAIGON, SUNDAY, SEPTEMBER 22, 1940',head:'JAPAN INVADES<br>VIETNAM !!',bar:'September 22 · French Indochina — A History Presentation',sub1:'HISTORY PRESENTATION',sub2:'BY SirHistora',h1:'Troops Cross Border at Lang Son',img1:'doumer.jpg',cap1:'Paul Doumer, the Governor-General who built French Indochina.',h2:'Vichy Officials Yield in Hanoi',img2:'saigon_stereo_1.jpg',cap2:'A street in Saigon, capital of the French colony.'}),cls:'paper'},
+ paperWar:{html:paperHTML({vol:'VOL. LXXXV . . . No. 29,601',date:'HANOI, FRIDAY, DECEMBER 20, 1946',head:'WAR IN<br>INDOCHINA !!',bar:'December 19 · Fighting erupts in Hanoi',sub1:'FRANCE STRIKES BACK',sub2:'1946 — 1954',h1:'French Return to Reclaim Colony',img1:'govgen1915.jpg',cap1:'Colonial officials in full dress — France wants its empire back.',h2:'Viet Minh Retreat to the Hills',img2:'saigon_stereo_4.jpg',cap2:'Life along the river, Cochin China.',seed:2}),cls:'paper'},
+ paperPeace:{html:paperHTML({vol:'VOL. CXXII . . . No. 42,118',date:'PARIS, SATURDAY, JANUARY 27, 1973',head:'PEACE SIGNED<br>IN PARIS !!',bar:'January 27 · Last U.S. combat troops to leave by March 29',sub1:'AMERICA’S WAR IS OVER',sub2:'THE FIGHTING IS NOT',h1:'Cease-Fire Takes Effect Tonight',img1:'wounded1970.jpg',cap1:'Wounded soldiers watch the news from their hospital beds.',h2:'Prisoners of War to Come Home',img2:'look1969_a.jpg',cap2:'An American officer in Saigon, 1969.',seed:4}),cls:'paper'},
+ paperSaigon:{html:paperHTML({vol:'VOL. CXXIV . . . No. 42,941',date:'SAIGON, WEDNESDAY, APRIL 30, 1975',head:'SAIGON<br>FALLS !!',bar:'April 30 · Tanks enter the Presidential Palace',sub1:'THE WAR IS OVER',sub2:'VIETNAM REUNITED',h1:'Last Helicopters Leave Embassy',img1:'refugees1975.jpg',cap1:'Refugee children in a U.S. camp, summer 1975.',h2:'Thousands Flee by Sea and Air',img2:'saigon_stereo_2.jpg',cap2:'The Saigon River — once the heart of the colony.',seed:1}),cls:'paper'},
+ paperEnd:{html:paperHTML({vol:'FINAL EDITION',date:'THANK YOU FOR WATCHING',head:'THE<br>END !!',bar:'Follow for more history',sub1:'HISTORY PRESENTATION',sub2:'BY SirHistora',h1:'Sources & Photos',img1:'Ho_Chi_Minh_1946.jpg',cap1:'Photos: Library of Congress; Wikimedia Commons (public domain).',h2:'Next Time',img2:'UH-1D_helicopters_in_Vietnam_1966.jpg',cap2:'Which war should we cover next? Tell us in the comments.',seed:3}),cls:'paper'},
+ dbp:{html:'<img src="assets/Victory_in_Battle_of_Dien_Bien_Phu.jpg">',cls:'img bw'},
+ shadeL:{html:'',style:'background:linear-gradient(90deg,rgba(0,0,0,.85),rgba(0,0,0,.55) 45%,transparent 75%)'},
+ n56:{html:'56 DAYS',cls:'big-num',style:'color:#fff;font-size:230px'},
+ tDbp:{html:'ĐIỆN BIÊN PHỦ',cls:'t-red',style:'text-shadow:none;color:#e8262e;font-size:110px'},
+ pDbp:{html:'13 March – 7 May 1954. General Võ Nguyên Giáp’s forces surrounded the French fortress in the northern hills. Its fall broke France’s will to fight.',cls:'body-w'},
+ phDbp:{html:polaroid('Victory_in_Battle_of_Dien_Bien_Phu.jpg','Điện Biên Phủ, May 1954',true),cls:'polaroid'},
+ kGen:{html:'GENEVA · JULY 1954',cls:'kicker'},
+ tGen:{html:'A NATION DIVIDED',cls:'t-dark',style:'font-size:100px'},
+ pGen:{html:'The Geneva Accords split Vietnam at the 17th parallel: a communist North ruled from Hanoi and a South based in Saigon. Elections promised for 1956 never took place.',cls:'body'},
+ lblN:{html:'NORTH',style:"font:110px/1 Anton;color:#d41920;letter-spacing:6px;text-shadow:0 0 12px #fff"},
+ lblS:{html:'SOUTH',style:"font:110px/1 Anton;color:#c99a00;letter-spacing:6px;text-shadow:0 0 12px #fff"},
+ phLbj:{html:polaroid('lbj_diem1961.jpg','LBJ & President Diệm, 1961'),cls:'polaroid'},
+ phHeli61:{html:polaroid('heli1961.jpg','Helicopters, 1961'),cls:'polaroid'},
+ phTroops:{html:polaroid('troops1961.jpg','Saigon, 1961'),cls:'polaroid'},
+ kUS:{html:'1955 – 1963',cls:'kicker'},
+ tUS:{html:'AMERICA STEPS IN',cls:'t-red',style:'font-size:116px'},
+ pUS:{html:'Washington backed South Vietnam’s President Ngô Đình Diệm with money, weapons and advisers. By 1963 about <b>16,000</b> U.S. military advisers were in the country.',cls:'body'},
+ huey:{html:'<img src="assets/UH-1D_helicopters_in_Vietnam_1966.jpg">',cls:'img'},
+ shadeB:{html:'',style:'background:linear-gradient(0deg,rgba(0,0,0,.88),rgba(0,0,0,.5) 45%,transparent 80%)'},
+ kEsc:{html:'1964 – 1965',cls:'kicker-w'},
+ tEsc:{html:'ESCALATION',cls:'t-white',style:'font-size:150px'},
+ pEsc:{html:'After clashes in the Gulf of Tonkin in August 1964, Congress gave President Johnson broad war powers. In March 1965 U.S. Marines landed at Đà Nẵng.',cls:'body-w'},
+ look:{html:'<img src="assets/look1969_b.jpg">',cls:'img'},
+ n536:{html:'536,000',cls:'big-num',style:'color:#fff'},
+ p536:{html:'American troops were in Vietnam by the end of 1968 — fighting jungle patrols, helicopter assaults and a bombing campaign without clear front lines.',cls:'body-w'},
+ sky:{html:'<img src="assets/skyraider1967.jpg">',cls:'img bw'},
+ redwash:{html:'',style:'background:linear-gradient(90deg,rgba(120,0,0,.0),rgba(150,8,12,.55) 45%,rgba(90,0,0,.92) 70%);mix-blend-mode:multiply'},
+ redwash2:{html:'',style:'background:linear-gradient(90deg,transparent 30%,rgba(20,0,0,.6) 60%)'},
+ kTet:{html:'30 JANUARY 1968',cls:'kicker-w'},
+ tTet:{html:'THE TET OFFENSIVE',cls:'t-white',style:'font-size:120px'},
+ pTet:{html:'During the Lunar New Year truce, North Vietnamese and Viet Cong forces struck more than 100 cities and towns — even the U.S. Embassy in Saigon. The battle for Huế lasted almost a month.',cls:'body-w',style:'font-size:37px'},
+ phAnti:{html:polaroid('antiwar1968.jpg','New York, 1968'),cls:'polaroid'},
+ phDraft:{html:polaroid('draftee1967.jpg','Drafted, 1967',true),cls:'polaroid'},
+ phWound:{html:polaroid('wounded1970.jpg','Walter Reed Hospital, 1970',true),cls:'polaroid'},
+ tLR:{html:'THE LIVING-ROOM WAR',cls:'t-red',style:'font-size:100px'},
+ pLR:{html:'Vietnam was the first war on the evening news every night. As casualties rose, protests spread across America and support for the war collapsed.',cls:'body'},
+ phRef:{html:polaroid('refugees1975.jpg','Refugee children, July 1975',true),cls:'polaroid'},
+ kAft:{html:'1975 – 1976',cls:'kicker'},
+ tAft:{html:'ONE VIETNAM',cls:'t-red',style:'font-size:130px'},
+ pAft:{html:'The country was officially reunified on <b>2 July 1976</b> as the Socialist Republic of Vietnam. Hundreds of thousands fled abroad as refugees in the years that followed.',cls:'body'},
+ tCost:{html:'THE COST',cls:'t-white',style:'color:#e8262e;font-size:140px'},
+ nUS:{html:'58,220',cls:'big-num',style:'color:#fff;font-size:200px'},
+ lUS:{html:'AMERICAN SERVICE MEMBERS KILLED',cls:'body-w',style:'font-size:40px;letter-spacing:4px'},
+ nVN:{html:'1 – 3 MILLION',cls:'big-num',style:'font-size:200px'},
+ lVN:{html:'ESTIMATED VIETNAMESE DEATHS — SOLDIERS AND CIVILIANS',cls:'body-w',style:'font-size:40px;letter-spacing:4px'},
+};
+
+// ---------------- slides ----------------
+// state: x,y (center), w,h, s, rx,ry,rz, o, b(blur), iz, ix, iy, z, v{}, in{}, out{}, to{}, dl (enter delay 0..1)
+const PAPER_IN={x:2900,y:760,s:.32,ry:-72,rz:14,rx:12,o:1};
+const PAPER_OUT={x:-1500,y:500,s:.9,rz:-12,ry:30,o:1};
+const pw={w:1500,h:2000};
+const FULL={x:960,y:540,w:1920,h:1080};
+const S=[];
+const add=(hold,els,o={})=>S.push({hold,els,m:o.m??1.4,glow:o.glow||[200,190,170]});
+// 0 dark
+add(0.9,{black:{...FULL,z:0}},{m:1.9,glow:[20,20,30]});
+// 1 newspaper swings in, tilted
+add(2.2,{black:{...FULL,z:0},paper1:{...pw,x:1130,y:640,s:.52,rx:10,ry:-30,rz:6,z:5,in:PAPER_IN,to:{x:1110,rz:5}}},{m:1.5,glow:[230,220,200]});
+// 2 pushing in on the headline
+add(1.8,{black:{...FULL,z:0},paper1:{...pw,x:1330,y:1010,s:1.0,rx:4,ry:-16,rz:1.5,z:5,to:{x:1290}}},{m:1.4,glow:[240,230,210]});
+// 3 flat: HISTORY PRESENTATION BY SirHistora
+add(3.6,{black:{...FULL,z:0},paper1:{...pw,x:960,y:470,s:1.3,z:5,to:{y:330,s:1.27}}},{m:1.6,glow:[240,230,210]});
+// 4 BACKGROUND 1
+const bgBase={clouds:{x:960,y:540,w:2400,h:1350,z:1,in:{x:2900},to:{s:1.04}},mist:{x:960,y:900,w:2400,h:1350,z:9,o:.75,in:{o:0,y:1300}}};
+add(5.6,{...bgBase,
+ doumer:{x:1010,y:560,w:760,h:980,z:3,in:{x:1500,o:0,s:1.15},to:{s:1.03}},
+ redsmoke:{x:470,y:520,w:1150,h:1150,z:4,o:.95,in:{s:.3,o:0}},
+ map:{x:450,y:560,w:540,h:900,z:5,in:{s:.4,o:0,rz:-20},v:{star:1}},
+ flagFR:{x:1650,y:190,w:330,h:230,rz:-11,z:6,in:{x:2200,y:-100,rz:-40}},
+ tBackground:{x:1440,y:700,w:820,h:130,z:10,in:{x:1700,o:0},dl:.4},
+ pBg1:{x:1440,y:860,w:760,h:220,z:10,in:{y:960,o:0},dl:.5},
+ paper1:{...pw,x:960,y:330,s:1.27,z:12,out:PAPER_OUT}},{glow:[225,215,215]});
+// 5 BACKGROUND 2 (morph: things move, arrow appears, paper strip slides up)
+add(6.2,{...bgBase,
+ doumer:{x:560,y:420,w:640,h:820,z:3},
+ redsmoke:{x:250,y:330,w:760,h:760,z:4,o:.95},
+ map:{x:230,y:330,w:330,h:550,z:5,rz:-6,v:{star:1}},
+ arrow:{x:820,y:300,w:520,h:225,z:6,in:{s:.2,x:520,y:420,o:0},dl:.3},
+ flagFR:{x:1720,y:150,w:260,h:180,rz:8,z:6},
+ tBackground:{x:1360,y:270,w:820,h:130,z:10},
+ pBg2:{x:1380,y:500,w:840,h:220,z:10,in:{o:0,y:560},dl:.4},
+ strip:{x:960,y:900,w:1920,h:380,z:11,in:{y:1400}}},{glow:[230,225,220]});
+// 6 1940
+add(6.4,{comp1940:{x:960,y:540,w:2012,h:1172,z:5,v:{rot:0,px:0},to:{v:{rot:7,px:-160}},in:{s:1.6,rz:-10,o:0}},
+ strip:{x:960,y:900,w:1920,h:380,z:11,out:{y:1500,o:1}},
+ doumer:{x:560,y:420,w:640,h:820,z:3,out:{x:-600,o:1}},
+ clouds:{x:960,y:540,w:2400,h:1350,z:1,out:{o:1,x:-1500}}},{glow:[235,120,110]});
+// 7 Ho Chi Minh's return (1940 picture shrinks into a gilded frame on the wall)
+const roomEls={room:{...FULL,z:1,in:{o:0}}};
+add(7.0,{...roomEls,
+ comp1940:{x:330,y:230,w:2012,h:1172,s:.2,z:5,v:{rot:7,px:-160}},
+ wf1:{x:760,y:215,w:300,h:240,z:4,in:{o:0,y:150}},
+ wf2:{x:1110,y:200,w:280,h:220,z:4,in:{o:0,y:150}},
+ hoFrame:{x:1500,y:520,w:560,h:720,z:6,in:{x:2300,o:1,rz:8},to:{s:1.03}},
+ tHo:{x:640,y:520,w:1100,h:100,z:7,in:{o:0,y:580},dl:.35},
+ pHo:{x:640,y:720,w:980,h:260,z:7,in:{o:0,y:780},dl:.45}},{glow:[230,210,170]});
+// 8 Viet Minh
+add(6.6,{paperbg:{...FULL,z:0,in:{o:0}},
+ hoFrame:{x:400,y:540,w:560,h:720,z:6,rz:-3},
+ map:{x:1650,y:560,w:500,h:833,z:5,in:{o:0,s:.5,x:1900},v:{star:0,pacbo:1}},
+ kVM:{x:1030,y:290,w:640,h:60,z:7,in:{o:0}},
+ tVM:{x:1030,y:400,w:660,h:120,z:7,in:{o:0,x:900}},
+ pVM:{x:1030,y:660,w:640,h:330,z:7,in:{o:0,y:720},dl:.3},
+ room:{...FULL,z:1,out:{o:0}}},{glow:[230,220,195]});
+// 9 July 1941 – map grows, hatching spreads south
+add(6.8,{paperbg:{...FULL,z:0},
+ map:{x:600,y:560,w:600,h:1000,z:5,v:{star:0,jn:1,js:0,hanoi:1,saigon:1},to:{v:{star:0,jn:1,js:1,hanoi:1,saigon:1}}},
+ hoFrame:{x:400,y:540,w:560,h:720,z:6,rz:-3,out:{x:-500,o:1,rz:-20}},
+ flagJP:{x:1650,y:180,w:300,h:210,rz:7,z:6,in:{x:2200,y:-120,rz:40}},
+ kJul:{x:1300,y:300,w:800,h:60,z:7,in:{o:0}},
+ tJul:{x:1300,y:450,w:880,h:220,z:7,in:{o:0,x:1400}},
+ pJul:{x:1300,y:760,w:860,h:330,z:7,in:{o:0,y:820},dl:.3}},{glow:[235,225,200]});
+// 10 coup & famine (dark)
+add(6.6,{dark:{...FULL,z:0,in:{o:0}},
+ map:{x:1580,y:560,w:500,h:833,z:3,o:.55,v:{star:0,jn:1,js:1}},
+ kFam:{x:620,y:180,w:900,h:60,z:7,in:{o:0}},
+ tFam:{x:620,y:290,w:1000,h:120,z:7,in:{o:0,y:250}},
+ nFam:{x:640,y:520,w:1100,h:260,z:7,in:{o:0,s:.6},dl:.3},
+ pFam:{x:620,y:820,w:980,h:240,z:7,in:{o:0,y:880},dl:.45}},{glow:[90,70,60],m:1.5});
+// 11 August revolution
+add(6.6,{paperbg:{...FULL,z:0,in:{o:0}},
+ phFlag:{x:430,y:560,w:480,h:720,rz:-4,z:5,in:{y:1500,rz:-20}},
+ phCrowd:{x:1430,y:330,w:700,h:520,rz:3,z:5,in:{x:2400,rz:20}},
+ kAug:{x:1360,y:690,w:900,h:60,z:7,in:{o:0}},
+ tAug:{x:1360,y:790,w:1000,h:120,z:7,in:{o:0}},
+ pAug:{x:1360,y:960,w:960,h:170,z:7,style:1,in:{o:0,y:1000},dl:.3}},{glow:[230,215,190]});
+// 12 Sept 2 1945
+add(7.0,{paperbg:{...FULL,z:0},
+ phFlag:{x:250,y:250,w:300,h:450,rz:-8,z:4},
+ phCrowd:{x:300,y:780,w:460,h:360,rz:5,z:5},
+ phHo45:{x:1460,y:520,w:640,h:840,rz:2,z:6,in:{y:1600,rz:12}},
+ kSep:{x:760,y:220,w:760,h:60,z:7,in:{o:0}},
+ qSep:{x:770,y:400,w:760,h:200,z:7,in:{o:0,x:700}},
+ pSep:{x:770,y:700,w:740,h:380,z:7,in:{o:0,y:760},dl:.3}},{glow:[230,215,190]});
+// 13 paper: War in Indochina (swings in)
+add(2.6,{black:{...FULL,z:0,in:{o:0}},paperWar:{...pw,x:1100,y:650,s:.52,rx:10,ry:-28,rz:-5,z:8,in:PAPER_IN,to:{x:1080}}},{m:1.5,glow:[230,220,200]});
+add(3.4,{black:{...FULL,z:0},paperWar:{...pw,x:960,y:470,s:1.3,z:8,to:{y:330}}},{m:1.5,glow:[230,220,200]});
+// 15 Dien Bien Phu
+add(6.8,{dbp:{...FULL,w:2100,h:1181,z:2,in:{x:2900},to:{s:1.06}},shadeL:{...FULL,z:3,in:{o:0}},
+ kDbp:null,
+ n56:{x:560,y:300,w:900,h:240,z:7,in:{o:0,s:.6},dl:.35},
+ tDbp:{x:560,y:520,w:900,h:120,z:7,in:{o:0,x:400},dl:.4},
+ pDbp:{x:560,y:770,w:860,h:300,z:7,in:{o:0,y:830},dl:.5},
+ paperWar:{...pw,x:960,y:330,s:1.3,z:8,out:PAPER_OUT}},{glow:[180,180,180]});
+// 16 Geneva – the photo shrinks into a polaroid, map returns split
+add(7.2,{clouds:{x:960,y:540,w:2400,h:1350,z:0,in:{o:0}},
+ phDbp:{x:1690,y:230,w:380,h:360,rz:6,z:6,in:{x:960,y:540,w:2200,h:1500,rz:0,o:1}},
+ dbp:{...FULL,w:2100,h:1181,s:1.06,z:2,out:{o:0,s:.3,x:1690,y:230}},
+ shadeL:{...FULL,z:3,out:{o:0}},
+ map:{x:500,y:560,w:600,h:1000,z:5,in:{o:0,s:.6},v:{star:0,sy:1,l17:1,hanoi:1,saigon:1}},
+ lblN:{x:330,y:120,w:500,h:120,z:7,in:{o:0}},
+ lblS:{x:960,y:960,w:500,h:120,z:7,in:{o:0}},
+ kGen:{x:1300,y:400,w:860,h:60,z:7,in:{o:0}},
+ tGen:{x:1300,y:510,w:900,h:120,z:7,in:{o:0,x:1400}},
+ pGen:{x:1300,y:770,w:860,h:340,z:7,in:{o:0,y:830},dl:.3}},{glow:[230,225,215]});
+// 17 America steps in
+add(7.0,{paperbg:{...FULL,z:0,in:{o:0}},
+ map:{x:150,y:870,w:260,h:433,z:4,rz:-8,v:{star:0,sy:1,l17:1}},
+ phDbp:{x:-300,y:230,w:380,h:360,rz:6,z:6},
+ flagUS:{x:1700,y:170,w:330,h:210,rz:9,z:6,in:{x:2200,y:-100,rz:40}},
+ phLbj:{x:1330,y:560,w:760,h:600,rz:3,z:6,in:{y:1700,rz:15}},
+ phTroops:{x:1700,y:900,w:420,h:330,rz:-6,z:7,in:{x:2400,rz:-20}},
+ kUS:{x:560,y:220,w:800,h:60,z:7,in:{o:0}},
+ tUS:{x:560,y:340,w:900,h:130,z:7,in:{o:0,x:450}},
+ pUS:{x:560,y:640,w:820,h:380,z:7,in:{o:0,y:700},dl:.3}},{glow:[230,220,200]});
+// 18 escalation – Huey photo
+add(6.6,{huey:{...FULL,w:2050,h:1153,z:2,in:{x:1330,y:560,w:760,h:600,o:0,s:.8},to:{s:1.07,x:930}},shadeB:{...FULL,z:3,in:{o:0}},
+ kEsc:{x:960,y:640,w:1200,h:60,z:7,in:{o:0}},
+ tEsc:{x:960,y:760,w:1400,h:160,z:7,in:{o:0,s:1.4}},
+ pEsc:{x:960,y:940,w:1500,h:150,z:7,in:{o:0,y:990},dl:.3}},{glow:[160,170,150]});
+// 19 536,000
+add(6.4,{look:{...FULL,w:2050,h:1153,z:2,in:{o:0,s:1.2},to:{s:1.06}},shadeL:{...FULL,z:3,in:{o:0}},
+ n536:{x:620,y:380,w:1100,h:260,z:7,in:{o:0,s:.6}},
+ p536:{x:620,y:700,w:960,h:300,z:7,in:{o:0,y:760},dl:.3},
+ huey:{...FULL,w:2050,h:1153,s:1.07,x:930,z:2,out:{o:0}},shadeB:{...FULL,z:3,out:{o:0}}},{glow:[150,150,110]});
+// 20 Tet
+add(7.2,{sky:{...FULL,w:2050,h:1153,z:2,in:{o:0,s:1.2},to:{s:1.06,y:520}},redwash:{...FULL,z:3,in:{o:0}},redwash2:{...FULL,z:3,in:{o:0}},
+ map:{x:330,y:560,w:420,h:700,z:5,o:.95,in:{o:0,x:100},v:{star:0,hue:1,saigon:1,mc:0}},
+ kTet:{x:1290,y:240,w:1000,h:60,z:7,in:{o:0}},
+ tTet:{x:1290,y:370,w:1100,h:130,z:7,in:{o:0,s:1.3}},
+ pTet:{x:1290,y:680,w:960,h:380,z:7,in:{o:0,y:740},dl:.3}},{glow:[200,60,50]});
+// 21 living-room war
+add(7.0,{paperbg:{...FULL,z:0,in:{o:0}},
+ phAnti:{x:470,y:330,w:640,h:500,rz:-5,z:5,in:{x:-700,rz:-30}},
+ phDraft:{x:330,y:800,w:380,h:420,rz:6,z:6,in:{y:1700,rz:20}},
+ phWound:{x:760,y:820,w:520,h:400,rz:-3,z:7,in:{y:1700,rz:-20}},
+ tLR:{x:1440,y:330,w:860,h:240,z:7,in:{o:0,x:1600}},
+ pLR:{x:1440,y:690,w:820,h:380,z:7,in:{o:0,y:750},dl:.3}},{glow:[230,220,200]});
+// 22 peace paper
+add(2.8,{black:{...FULL,z:0,in:{o:0}},paperPeace:{...pw,x:1100,y:640,s:.52,rx:8,ry:-26,rz:5,z:8,in:PAPER_IN,to:{x:1080}}},{m:1.5,glow:[230,220,200]});
+add(3.0,{black:{...FULL,z:0},paperPeace:{...pw,x:1300,y:1010,s:1.0,rx:4,ry:-14,rz:1,z:8,to:{x:1240}}},{m:1.5,glow:[230,220,200]});
+// 24 Saigon falls paper (old paper flies out, new one in)
+add(2.8,{black:{...FULL,z:0},paperPeace:{...pw,x:1240,y:1010,s:1.0,z:8,out:PAPER_OUT},paperSaigon:{...pw,x:1100,y:640,s:.52,rx:10,ry:-30,rz:-5,z:9,in:PAPER_IN,to:{x:1080}}},{m:1.5,glow:[230,220,200]});
+add(3.4,{black:{...FULL,z:0},paperSaigon:{...pw,x:960,y:470,s:1.3,z:9,to:{y:330}}},{m:1.5,glow:[230,220,200]});
+// 26 aftermath
+add(6.8,{paperbg:{...FULL,z:0,in:{o:0}},
+ paperSaigon:{...pw,x:960,y:330,s:1.3,z:9,out:PAPER_OUT},
+ phRef:{x:560,y:540,w:820,h:640,rz:-3,z:6,in:{x:-800,rz:-25}},
+ map:{x:1720,y:620,w:300,h:500,z:5,rz:6,in:{o:0,s:.5},v:{star:1}},
+ kAft:{x:1280,y:240,w:700,h:60,z:7,in:{o:0}},
+ tAft:{x:1280,y:350,w:800,h:140,z:7,in:{o:0,x:1400}},
+ pAft:{x:1230,y:690,w:720,h:420,z:7,in:{o:0,y:750},dl:.3}},{glow:[230,220,200]});
+// 27 the cost
+add(6.6,{dark:{...FULL,z:0,in:{o:0}},
+ tCost:{x:960,y:150,w:1200,h:150,z:7,in:{o:0,y:100}},
+ nUS:{x:960,y:380,w:1400,h:210,z:7,in:{o:0,s:.7},dl:.2},
+ lUS:{x:960,y:520,w:1500,h:60,z:7,in:{o:0},dl:.3},
+ nVN:{x:960,y:760,w:1600,h:210,z:7,in:{o:0,s:.7},dl:.4},
+ lVN:{x:960,y:900,w:1600,h:60,z:7,in:{o:0},dl:.5}},{glow:[80,60,60],m:1.6});
+// 28 the end paper
+add(2.6,{black:{...FULL,z:0,in:{o:0}},paperEnd:{...pw,x:1110,y:640,s:.52,rx:10,ry:-28,rz:5,z:8,in:PAPER_IN,to:{x:1090}}},{m:1.5,glow:[230,220,200]});
+add(4.6,{black:{...FULL,z:0},paperEnd:{...pw,x:960,y:470,s:1.3,z:8,to:{y:400,s:1.25}}},{m:1.4,glow:[230,220,200]});
+add(1.8,{black:{...FULL,z:0},paperEnd:{...pw,x:960,y:540,s:.5,z:8,o:0}},{m:0,glow:[10,10,15]});
+
+// ---------------- engine ----------------
+const D={x:960,y:540,w:400,h:300,s:1,rx:0,ry:0,rz:0,o:1,b:0,iz:1,ix:0,iy:0};
+const NUM=Object.keys(D);
+const VARS=['star','mc','sy','jn','js','l17','pacbo','hanoi','dbp','hue','saigon','danang','rot','px'];
+const stage=document.getElementById('stage');
+const nodes={};
+for(const [id,d] of Object.entries(E)){const n=document.createElement('div');n.className='el '+(d.cls||'');if(d.style)n.style.cssText=d.style;n.innerHTML=d.html;stage.appendChild(n);nodes[id]=n}
+let t0=0;S.forEach(s=>{s.start=t0;t0+=s.hold+s.m});
+const TOTAL=t0;
+const easeIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const easeQ=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+function full(st){const r={};for(const k of NUM)r[k]=st[k]??D[k];r.v={...(st.v||{})};r.z=st.z||0;return r}
+function mix(a,b,t){const r={};for(const k of NUM)r[k]=a[k]+(b[k]-a[k])*t;r.v={};for(const k of new Set([...Object.keys(a.v),...Object.keys(b.v)])){const av=a.v[k]??(k==='star'||k==='mc'?1:0),bv=b.v[k]??(k==='star'||k==='mc'?1:0);r.v[k]=av+(bv-av)*t}r.z=Math.max(a.z,b.z);return r}
+function over(raw,patch){const r={...raw,...patch};if(patch.v)r.v={...(raw.v||{}),...patch.v};return r}
+function stateAt(i,id,q){const raw=S[i].els[id];if(!raw)return null;const base=full(raw);if(!raw.to)return base;return mix(base,full(over(raw,raw.to)),easeQ(q))}
+function render(t){
+ t=Math.max(0,Math.min(TOTAL-1e-4,t));
+ let i=S.findIndex(s=>t>=s.start&&t<s.start+s.hold+s.m);if(i<0)i=S.length-1;
+ const s=S[i],lt=t-s.start,inHold=lt<s.hold||!S[i+1];
+ const p=inHold?0:easeIO((lt-s.hold)/s.m);
+ const states={};
+ if(inHold){for(const id in s.els){if(s.els[id]&&!s.els[id].out)states[id]=stateAt(i,id,Math.min(1,lt/s.hold))}}
+ else{const n=S[i+1];
+  const ids=new Set([...Object.keys(s.els),...Object.keys(n.els)]);
+  for(const id of ids){let ra=s.els[id],rb=n.els[id];
+   if(ra&&ra.out)ra=null;
+   if(ra&&rb&&rb.out){const a=stateAt(i,id,1);const end=over(ra,rb.out);if(ra.to)Object.assign(end,ra.to,rb.out);states[id]=mix(a,full(end),p);continue}
+   if(!ra&&rb&&rb.out)continue;
+   if(ra&&rb)states[id]=mix(stateAt(i,id,1),stateAt(i+1,id,0),p);
+   else if(ra){const a=stateAt(i,id,1);const end=over(ra,ra.out||{o:0});if(ra.to)Object.assign(end,{...ra.to,...(ra.out||{o:0})});states[id]=mix(a,full(end),p)}
+   else if(rb){const b=stateAt(i+1,id,0);let pp=p;if(rb.dl)pp=Math.max(0,Math.min(1,(p-rb.dl)/(1-rb.dl)));states[id]=mix(full(over(rb,rb.in||{o:0})),b,easeIO(pp))}}}
+ for(const id in nodes){const n=nodes[id],st=states[id];
+  if(!st||st.o<0.004){n.style.display='none';continue}
+  n.style.display='block';n.style.width=st.w+'px';n.style.height=st.h+'px';n.style.zIndex=st.z;
+  n.style.transform=`translate(${st.x-st.w/2}px,${st.y-st.h/2}px) perspective(1800px) rotateX(${st.rx}deg) rotateY(${st.ry}deg) rotateZ(${st.rz}deg) scale(${st.s})`;
+  n.style.opacity=Math.min(1,st.o);n.style.filter=st.b>0.05?`blur(${st.b}px)`:'';
+  for(const k of VARS){if(!(k in st.v))st.v[k]=(k==='star'||k==='mc')?1:0}
+  for(const k in st.v){if(k==='mc'){n.style.setProperty('--mc',st.v.mc<.5?'#f4efe6':'#d41920');n.style.setProperty('--ms',st.v.mc<.5?'#333':'#7c0c10')}else n.style.setProperty('--'+k,st.v[k])}
+ }
+ // screen glow color
+ const ga=s.glow,gb=(S[i+1]||s).glow;const g=ga.map((c,k)=>Math.round(c+(gb[k]-c)*p));
+ document.getElementById('spill').style.setProperty('--g',g.join(','));
+ // handheld camera
+ const zin=1+0.15*easeQ(Math.min(1,t/16));
+ const sx=Math.sin(t*0.71)*5+Math.sin(t*1.73+1)*2.4+Math.sin(t*3.1+2)*0.8;
+ const sy=Math.sin(t*0.53+.5)*6+Math.sin(t*1.37+3)*2.2+Math.sin(t*2.9)*0.7;
+ const rr=Math.sin(t*0.41+1.2)*0.45+Math.sin(t*1.9)*0.12;
+ const breathe=1+0.012*Math.sin(t*0.23);
+ const endZoom=t>TOTAL-2.2?1+0.06*easeQ((t-(TOTAL-2.2))/2.2):1;
+ document.getElementById('cam').style.transform=`translate(${sx}px,${sy+25*(zin-1)/0.15}px) rotate(${rr}deg) scale(${zin*breathe*endZoom})`;
+}
+// scale stage into screen
+document.getElementById('stage').style.transform=`scale(${888/1920})`;
+// keyboard keys
+const kb=document.getElementById('keys');for(let i=0;i<18*6;i++)kb.appendChild(document.createElement('i'));
+window.TOTAL=TOTAL;window.render=render;window.SLIDE_MIDS=S.map(s=>s.start+s.hold*0.85);
+window.ready=Promise.all([document.fonts.ready,...[...document.images].map(im=>im.decode().catch(()=>{}))]);
+render(0);
+</script>
+</body></html>
