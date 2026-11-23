@@ -61,7 +61,21 @@ def get(title, out_dir, width=1600):
     os.makedirs(out_dir, exist_ok=True)
     slug = re.sub(r"[^A-Za-z0-9]+", "_", title.replace("File:", ""))[:80].strip("_")
     path = os.path.join(out_dir, slug + ".jpg")
-    data = fetch(ii.get("thumburl") or ii["url"])
+    data = None
+    base = ii["url"].split("?")[0]
+    name = base.rsplit("/", 1)[1]
+    pre = base.replace("/wikipedia/commons/", "/wikipedia/commons/thumb/")
+    for w in (960, 500, 330):
+        if ii.get("width") and ii["width"] <= w:
+            continue
+        try:
+            data = fetch(f"{pre}/{w}px-{name}", tries=2)
+            meta["fetched_width"] = w
+            break
+        except Exception:  # noqa: BLE001
+            continue
+    if data is None:
+        data = fetch(ii["url"], tries=3)
     with open(path, "wb") as f:
         f.write(data)
     meta["file"] = os.path.basename(path)

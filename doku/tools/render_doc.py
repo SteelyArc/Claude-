@@ -143,6 +143,21 @@ def media_frame(src, t, push=0.08, pan=0.0, film=False, idx=0):
     bg = src.resize((54, 96), Image.BILINEAR).filter(ImageFilter.GaussianBlur(3)).resize((W, H), Image.BICUBIC)
     bg = Image.eval(bg, lambda v: int(v * 0.32))
     sw, sh = src.size
+    if max(sw, sh) < 600 and not film:
+        # small archive thumbnail: present as a bordered photo print instead of stretching it
+        sc = min(820 / sw, 760 / sh) * (1.0 + push * 0.6 * ease(t))
+        pw, ph = int(sw * sc), int(sh * sc)
+        prt = Image.new("RGB", (pw + 28, ph + 28), (236, 230, 216))
+        prt.paste(src.resize((pw, ph), Image.BICUBIC), (14, 14))
+        rot = prt.convert("RGBA").rotate(-1.5 + 3 * (hash((sw, sh)) % 2), resample=Image.BICUBIC, expand=True)
+        shd = Image.new("RGBA", rot.size, (0, 0, 0, 0))
+        shd.paste((0, 0, 0, 170), (0, 0), rot.split()[3])
+        shd = shd.filter(ImageFilter.GaussianBlur(16))
+        ox = (W - rot.width) // 2 + int(pan * ease(t) * 30)
+        oy = BOX_TOP + (BOX_H - rot.height) // 2
+        bg.paste(shd, (ox + 14, oy + 20), shd)
+        bg.paste(rot, (ox, oy), rot)
+        return np.asarray(bg, np.float32).copy()
     scale = (BOX_H / sh) if sh > sw else (W / sw)
     scale *= 1.0 + push * ease(t)
     nw, nh = int(sw * scale), int(sh * scale)
@@ -614,7 +629,7 @@ def render_frame(tl, tags, caps, labels, i):
     f = np.ascontiguousarray(f, dtype=np.float32)
     z0, z1 = shot.zoom
     zoom = z0 + (z1 - z0) * ease(t)
-    if isinstance(shot, (Clip, Photo)) and labels[k] is not None:
+    if labels[k] is not None and not isinstance(shot, (Still, Anim)):
         f = labels[k].comp(f, ease((tsec - s) / 0.3))
     # short flash on hard cuts into media
     if tsec - s < 0.06 and k > 0:
