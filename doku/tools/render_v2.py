@@ -188,7 +188,7 @@ def build_shots():
     at(6, Card(["Not one sudden", "revolution."]))
     at(7, Photo(["Arbeitslose"], "Unemployed dockworkers, Hamburg · 1931", crowd), Clip(P, 759.0, "'Der Angriff', Goebbels' Nazi newspaper"),
        Clip(P, 1814.0, "Rally crowd · 1930s"))
-    at(8, Photo(["Hindenburg"], "President Paul von Hindenburg", Clip(N, 182.0, "Hitler with SA leaders")),
+    at(8, Photo(["Tag von Potsdam"], "Hitler and Hindenburg · 'Day of Potsdam', 21 Mar 1933", Clip(N, 182.0, "Hitler with SA leaders")),
        Photo(["Papen"], "Franz von Papen", Card(["The conservatives"], kicker="1933", size=90)))
     at(9, Card(["They were wrong."], accent=0))
     # ---------------- 1 1918-1919
@@ -199,7 +199,7 @@ def build_shots():
     at(13, Photo(["Nationalversammlung"], "National Assembly, Weimar · 1919", FX(DF2.d13_crack, "dust")),
        Photo(["Erzberger"], "Matthias Erzberger, signed the 1918 armistice", Card(["The Weimar Republic"], kicker="1919", size=80)))
     at(14, Clip(N, 136.5, "First World War graves"), Card(["Defeat.", "Humiliation.", "Weakness."], accent=1))
-    at(15, Photo(["Versailles"], "Treaty of Versailles · 28 June 1919", Card(["Treaty of Versailles"], kicker="28 JUNE 1919", size=84)))
+    at(15, Photo(["R01217"], "Paris Peace Conference · treaty signing, 1919", Card(["Treaty of Versailles"], kicker="28 JUNE 1919", size=84)))
     at(16, Map("Lost territory", "TREATY OF VERSAILLES", mode="loss", cities=("Berlin", "Königsberg"), pulse=(), note="1914 German Empire vs. borders after 1920"),
        Counter("REPARATIONS · LONDON SCHEDULE 1921", 0, 132, lambda v: f"{int(v)} bn", ["gold marks demanded"]))
     at(17, Photo(["Kapp"], "Kapp Putsch, Berlin · March 1920", Clip(P, 815.0, "Paramilitaries marching · newsreel")),
@@ -222,7 +222,7 @@ def build_shots():
     at(31, PhotoText(["Landsberg"], "Landsberg Prison", "Landsberg Prison · 1924", "1924", Card(["Landsberg Prison"], kicker="1924", sub=["Sentenced to 5 years · released after 9 months"], size=90)))
     at(32, Clip(P, 825.0, "Mein Kampf · book covers"))
     at(33, Card(["New strategy:", "power through", "elections."], accent=2, size=88))
-    at(34, Photo(["Wahlplakat"], "NSDAP election poster", Clip(P, 1597.6, "Ballot marked 'Ja'")))
+    at(34, Clip(P, 1597.6, "Ballot marked 'Ja'"))
     at(35, Clip(P, 815.0, "SA stormtroopers · newsreel"))
     at(36, Clip(P, 1200.0, "SA and SS formations · newsreel"), Clip(N, 127.0, "Party band, Nuremberg rally"))
     # ---------------- 4 1924-1932
@@ -237,7 +237,7 @@ def build_shots():
     at(45, Photo(["Hindenburg"], "President Paul von Hindenburg", Card(["Article 48"], kicker="RULE BY EMERGENCY DECREE", size=110)),
        Photo(["Brüning"], "Chancellor Heinrich Brüning", Card(["Article 48"], kicker="RULE BY EMERGENCY DECREE", size=110)))
     at(46, Clip(N, 99.0, "Nazi rally · newsreel"))
-    at(47, Clip(P, 790.0, "Labour service crews · mid-1930s"), Photo(["Wahlplakat"], "NSDAP election poster", Card(["Work. Bread.", "Strong leadership."], kicker="NAZI PROMISES", size=84)))
+    at(47, Clip(P, 790.0, "Labour service crews · mid-1930s"), Card(["Work. Bread.", "Strong leadership."], kicker="NAZI PROMISES", size=84))
     at(48, Photo(["Straßenkampf"], "Street clashes in Berlin", Clip(P, 815.0, "SA stormtroopers · newsreel")), Clip(P, 817.0, "SA stormtroopers · newsreel"))
     at(49, Clip(P, 771.0, "Joseph Goebbels, propaganda chief"), Clip(P, 1036.0, "Goebbels at the microphone"), Clip(P, 759.0, "'Der Angriff', Nazi newspaper"))
     at(50, Clip(P, 864.0, "Mass rally · newsreel"))
@@ -304,7 +304,8 @@ def build_shots():
     at(106, Clip(P, 815.0, "SA stormtroopers"))
     at(107, Card(["Democrats who", "did not defend", "the republic"], size=80))
     at(108, Photo(["Rundfunk"], "Hitler at a radio microphone · 1 Feb 1933", crowd), FX(DF3.d28_double, "dust"))
-    at(110, Photo(["Fackelzug"], "Torchlight parade · 30 Jan 1933", crowd))
+    at(109, Photo(["Tag von Potsdam"], "Hitler and Hindenburg · 21 Mar 1933", crowd))
+    at(110, Photo(["Wahlplakat"], "Nazi poster, Nov 1933: 'The Marshal and the Corporal'", crowd))
     at(111, Card(["Instead…"], size=110))
     at(112, FX(DF3.d30_split, "dust"))
     # ---------------- 12 consequences
