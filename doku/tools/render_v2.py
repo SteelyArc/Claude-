@@ -8,6 +8,7 @@ Reuses render_doc (timing, overlays, Clip/Photo/Card/Map/Bars/Anim/Still) and ad
 
 python3 render_v2.py plan | frames <png> | render <worker> <n> <out_dir>
 """
+import json
 import math
 import os
 import subprocess
@@ -28,6 +29,21 @@ from design_frames_2 import GOLD, light_rays
 import visual_test as VT
 
 X0, X1 = RD.SAFE_X0, RD.SAFE_X1
+
+
+_OLD = json.load(open(os.path.join(RD.ROOT, "audio", "narration_lewis_timing.json")))
+_NEW_IDX = {}
+_j = 0
+for _i, _o in enumerate(_OLD):
+    while TIMING[_j]["text"] != _o["text"]:
+        _j += 1
+    _NEW_IDX[_i] = _j
+    _j += 1
+
+
+def NI(i):
+    """Map a line index of the shortened (Lewis) script onto the full script timing."""
+    return _NEW_IDX[i]
 
 
 def line_end(i):
@@ -54,6 +70,8 @@ class PhotoText(Photo):
             self._txt = bbox_layer(lambda d: (d.rectangle([0, 960, W, 1140], fill=(0, 0, 0, 120)),
                                               d.text((X0, 980), self.kicker or "", font=font(MONO, 26), fill=GOLD),
                                               d.text((X0, 1018), self.big, font=fo, fill=PAPER)), glow=0)
+        if not self.found:
+            return f
         k = ease_out((t * dur - 0.2) / 0.5)
         return self._txt.comp(f, k)
 
@@ -172,6 +190,7 @@ def build_shots():
     S = []
 
     def at(i, *shots):
+        i = NI(i)
         a, b = RD.T(i), line_end(i)
         for j, sh in enumerate(shots):
             S.append((a + (b - a) * j / len(shots), sh))
@@ -196,12 +215,11 @@ def build_shots():
     at(11, Counter("THE FIRST WORLD WAR", 0, 2000000, lambda v: f"{int(v):,}", ["German soldiers killed"]))
     at(12, Photo(["Wilhelm II"], "Kaiser Wilhelm II", Clip(N, 66.5, "Kaiser Wilhelm II · portrait (film graphic)")),
        Photo(["Revolution"], "Revolution in Berlin · November 1918", Card(["9 November 1918"], kicker="REVOLUTION", size=90)))
-    at(13, Photo(["Nationalversammlung"], "National Assembly, Weimar · 1919", FX(DF2.d13_crack, "dust")),
+    at(13, Photo(["Nationalversammlung"], "National Assembly, Weimar · 1919", Card(["Article 1", "The German Reich", "is a republic."], kicker="WEIMAR CONSTITUTION · 11 AUGUST 1919", bg="paper", size=76)),
        Photo(["Erzberger"], "Matthias Erzberger, signed the 1918 armistice", Card(["The Weimar Republic"], kicker="1919", size=80)))
     at(14, Clip(N, 136.5, "First World War graves"), Card(["Defeat.", "Humiliation.", "Weakness."], accent=1))
     at(15, Photo(["R01217"], "Paris Peace Conference · treaty signing, 1919", Card(["Treaty of Versailles"], kicker="28 JUNE 1919", size=84)))
-    at(16, Map("Lost territory", "TREATY OF VERSAILLES", mode="loss", cities=("Berlin", "Königsberg"), pulse=(), note="1914 German Empire vs. borders after 1920"),
-       Counter("REPARATIONS · LONDON SCHEDULE 1921", 0, 132, lambda v: f"{int(v)} bn", ["gold marks demanded"]))
+    at(16, Map("Lost territory", "TREATY OF VERSAILLES", mode="loss", cities=("Berlin", "Königsberg"), pulse=(), note="1914 German Empire vs. borders after 1920"))
     at(17, Photo(["Kapp"], "Kapp Putsch, Berlin · March 1920", Clip(P, 815.0, "Paramilitaries marching · newsreel")),
        Clip(P, 815.0, "Paramilitaries marching · newsreel"))
     at(18, Photo(["Erzberger"], "Matthias Erzberger, signed the armistice — murdered 1921", Card(["Betrayed?"], size=110)), Card(["„Im Felde unbesiegt“"], kicker="NATIONALIST SLOGAN", sub=["'Undefeated in the field'"], size=80))
@@ -243,7 +261,7 @@ def build_shots():
     at(50, Clip(P, 864.0, "Mass rally · newsreel"))
     at(51, Clip(P, 696.2, "Mass rally · newsreel"))
     # ---------------- 5 elections
-    bars = Bars([RD.T(53) + 1.5, RD.T(54) + 2.0, RD.T(56) + 2.0], RD.T(53))
+    bars = Bars([RD.T(NI(53)) + 1.5, RD.T(NI(54)) + 2.0, RD.T(NI(56)) + 2.0], RD.T(NI(53)))
     at(52, Clip(N, 174.0, "Hitler at a rally · 1930s"), Photo(["Lustgarten"], "Election rally, Berlin Lustgarten", Clip(P, 864.0, "Election rally crowd")))
     at(53, bars)
     at(55, Card(["No majority."], accent=0, size=110))
@@ -323,6 +341,36 @@ def build_shots():
     at(124, Card(["How Hitler", "Came to Power"], kicker="1918 – 1934", size=110,
                   sub=["Archive: Bundesarchiv (CC BY-SA 3.0 DE) · US War Dept. films (public domain)",
                        "Speech audio: British Pathé, film ID 604.06"]))
+    # ---- lines restored from the full script (indices in the full ElevenLabs timing)
+    def atn(j, *shots):
+        a, b = RD.T(j), line_end(j)
+        for k, sh in enumerate(shots):
+            S.append((a + (b - a) * k / len(shots), sh))
+
+    atn(10, Clip(P, 745.0, "The Reichstag under Nazi rule"))
+    atn(11, Clip(P, 2262.0, "Wehrmacht parade · late 1930s"))
+    atn(14, Clip(N, 136.5, "First World War graves"), Photo(["Wilhelm II"], "Kaiser Wilhelm II", Clip(N, 66.5, "Kaiser Wilhelm II")))
+    atn(20, Counter("REPARATIONS · LONDON SCHEDULE 1921", 0, 132, lambda v: f"{int(v)} bn", ["gold marks demanded"]))
+    atn(24, Card(["A lie used against", "democracy."], accent=0, size=80))
+    atn(26, Card(["1914 – 1918"], kicker="CORPORAL HITLER", sub=["Bavarian army, Western Front"], size=110))
+    atn(31, Clip(P, 1823.0, "Hitler speaking · newsreel"))
+    atn(41, Card(["Not by force", "alone."], size=96))
+    atn(53, Clip(P, 741.0, "Reichstag deputies · early 1930s"))
+    atn(54, Card(["March 1930"], kicker="THE LAST MAJORITY GOVERNMENT FALLS", size=110))
+    atn(55, Clip(P, 739.0, "The Reichstag chamber"))
+    atn(59, Clip(P, 817.0, "SA stormtroopers · newsreel"))
+    atn(62, Card(["Workers. Farmers.", "Business owners.", "The unemployed."], size=78), Clip(P, 866.0, "Mass rally · newsreel"))
+    atn(77, Card(["Deadlock."], size=120))
+    atn(82, Photo(["Tag von Potsdam"], "Hitler and Hindenburg · 21 Mar 1933", crowd))
+    atn(83, Card(["They badly", "underestimated him."], accent=1, size=84))
+    atn(89, Photo(["Hilfspolizei"], "SA as auxiliary police · 1933", Clip(P, 817.0, "SA men · newsreel")))
+    atn(91, Card(["Newspapers", "banned."], accent=1, size=110))
+    atn(92, Card(["„Schutzhaft“"], kicker="'PROTECTIVE CUSTODY'", sub=["Prison without trial"], size=110))
+    atn(93, Clip(P, 1814.0, "Rally crowd · 1933"))
+    atn(101, Clip(P, 741.0, "Reichstag deputies · 1933"))
+    atn(106, Card(["Not truly", "democratic."], accent=1, size=100))
+    atn(115, Clip(N, 99.0, "Nuremberg rally grounds"))
+    atn(131, Card(["One decision."], accent=0, size=110))
     S.sort(key=lambda x: x[0])
     return S
 

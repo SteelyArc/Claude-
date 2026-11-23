@@ -24,6 +24,8 @@ def norm_words(text):
             continue
         if w in NUM:
             out.extend(NUM[w].replace("-", " ").split())
+        elif w in ("führer", "fuehrer"):
+            out.append("fuhrer")
         else:
             out.extend(w.replace("-", " ").split())
     return out
@@ -50,8 +52,25 @@ def main():
     tw = []
     for s in take:
         for w, a, b, p in s["words"]:
+            ww = w.strip().lower()
+            m = re.match(r"^(\d+)%[.,]?$", ww)
+            pct = {"18": "eighteen", "37": "thirty seven", "33": "thirty three", "43": "forty three"}
+            if m and m.group(1) in pct:
+                for n in (pct[m.group(1)] + " percent").split():
+                    tw.append((n, a, b, p))
+                continue
+            if ww.strip(".,") == "ii":
+                tw.append(("the", a, b, p)); tw.append(("second", a, b, p))
+                continue
             for n in norm_words(w):
                 tw.append((n, a, b, p))
+    merged = []
+    for t in tw:
+        if merged and merged[-1][0] == "anti" and t[0] in ("semitism", "semitic"):
+            merged[-1] = ("anti" + t[0], merged[-1][1], t[2], min(merged[-1][3], t[3]))
+        else:
+            merged.append(t)
+    tw = [(("fuhrer" if n in ("fuehrer", "führer") else n), a, b, p) for n, a, b, p in merged]
     sw, owner = [], []
     for li, (_, l) in enumerate(lines):
         for n in norm_words(l):

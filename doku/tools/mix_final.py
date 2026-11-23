@@ -13,6 +13,8 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(__file__))
 os.environ.setdefault("SCRATCH", "/tmp")
 import render_doc as RD
+if os.environ.get("RENDER_V2"):
+    import render_v2  # noqa: F401  (patches RD.build_shots)
 
 SR = 48000
 
@@ -31,7 +33,7 @@ def main():
     mix = np.zeros(n, np.float32)
     op = read_wav(os.path.join(parts, "opening.wav"))
     mix[:min(len(op), n)] += op[:n]
-    nar = read_wav(os.path.join(RD.ROOT, "audio", "narration_lewis.wav"))
+    nar = read_wav(os.environ.get("NARRATION") or os.path.join(RD.ROOT, "audio", "narration_lewis.wav"))
     nar = nar / (np.abs(nar).max() + 1e-6) * 0.85
     s = int(RD.NAR0 * SR)
     L = min(len(nar), n - s)
