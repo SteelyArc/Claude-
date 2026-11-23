@@ -1,0 +1,670 @@
+{
+"total": 105.0,
+"segs": [
+{
+"i": 0,
+"scene": "surface",
+"text": "",
+"start": 0.3,
+"speechEnd": 1.467,
+"end": 1.758
+},
+{
+"i": 1,
+"scene": "surface",
+"text": "",
+"start": 1.758,
+"speechEnd": 4.323,
+"end": 4.964
+},
+{
+"i": 2,
+"scene": "surface",
+"text": "",
+"start": 4.964,
+"speechEnd": 6.433,
+"end": 6.8
+},
+{
+"i": 3,
+"scene": "ballast",
+"text": "",
+"start": 7.3,
+"speechEnd": 8.961,
+"end": 9.376
+},
+{
+"i": 4,
+"scene": "ballast",
+"text": "",
+"start": 9.376,
+"speechEnd": 10.913,
+"end": 11.297
+},
+{
+"i": 5,
+"scene": "ballast",
+"text": "",
+"start": 11.297,
+"speechEnd": 14.099,
+"end": 14.8
+},
+{
+"i": 6,
+"scene": "dive",
+"text": "",
+"start": 15.3,
+"speechEnd": 18.1,
+"end": 18.8
+},
+{
+"i": 7,
+"scene": "deep",
+"text": "",
+"start": 19.3,
+"speechEnd": 20.63,
+"end": 20.963
+},
+{
+"i": 8,
+"scene": "deep",
+"text": "",
+"start": 20.963,
+"speechEnd": 23.173,
+"end": 23.726
+},
+{
+"i": 9,
+"scene": "deep",
+"text": "",
+"start": 23.726,
+"speechEnd": 25.385,
+"end": 25.8
+},
+{
+"i": 10,
+"scene": "reactor",
+"text": "",
+"start": 26.3,
+"speechEnd": 29.1,
+"end": 29.8
+},
+{
+"i": 11,
+"scene": "fission",
+"text": "",
+"start": 30.3,
+"speechEnd": 32.364,
+"end": 32.88
+},
+{
+"i": 12,
+"scene": "fission",
+"text": "",
+"start": 32.88,
+"speechEnd": 35.216,
+"end": 35.8
+},
+{
+"i": 13,
+"scene": "chain",
+"text": "",
+"start": 36.3,
+"speechEnd": 38.257,
+"end": 38.747
+},
+{
+"i": 14,
+"scene": "chain",
+"text": "",
+"start": 38.747,
+"speechEnd": 40.389,
+"end": 40.8
+},
+{
+"i": 15,
+"scene": "rods",
+"text": "",
+"start": 41.3,
+"speechEnd": 43.013,
+"end": 43.441
+},
+{
+"i": 16,
+"scene": "rods",
+"text": "",
+"start": 43.441,
+"speechEnd": 44.969,
+"end": 45.351
+},
+{
+"i": 17,
+"scene": "rods",
+"text": "",
+"start": 45.351,
+"speechEnd": 47.31,
+"end": 47.8
+},
+{
+"i": 18,
+"scene": "primary",
+"text": "",
+"start": 48.3,
+"speechEnd": 49.238,
+"end": 49.472
+},
+{
+"i": 19,
+"scene": "primary",
+"text": "",
+"start": 49.472,
+"speechEnd": 50.299,
+"end": 50.506
+},
+{
+"i": 20,
+"scene": "primary",
+"text": "",
+"start": 50.506,
+"speechEnd": 51.842,
+"end": 52.176
+},
+{
+"i": 21,
+"scene": "primary",
+"text": "",
+"start": 52.176,
+"speechEnd": 53.475,
+"end": 53.8
+},
+{
+"i": 22,
+"scene": "steamgen",
+"text": "",
+"start": 54.3,
+"speechEnd": 55.432,
+"end": 55.715
+},
+{
+"i": 23,
+"scene": "steamgen",
+"text": "",
+"start": 55.715,
+"speechEnd": 56.882,
+"end": 57.174
+},
+{
+"i": 24,
+"scene": "steamgen",
+"text": "",
+"start": 57.174,
+"speechEnd": 58.034,
+"end": 58.249
+},
+{
+"i": 25,
+"scene": "steamgen",
+"text": "",
+"start": 58.249,
+"speechEnd": 59.49,
+"end": 59.8
+},
+{
+"i": 26,
+"scene": "turbine",
+"text": "",
+"start": 60.3,
+"speechEnd": 61.897,
+"end": 62.296
+},
+{
+"i": 27,
+"scene": "turbine",
+"text": "",
+"start": 62.296,
+"speechEnd": 63.353,
+"end": 63.618
+},
+{
+"i": 28,
+"scene": "turbine",
+"text": "",
+"start": 63.618,
+"speechEnd": 65.364,
+"end": 65.8
+},
+{
+"i": 29,
+"scene": "gears",
+"text": "",
+"start": 66.3,
+"speechEnd": 69.1,
+"end": 69.8
+},
+{
+"i": 30,
+"scene": "prop",
+"text": "",
+"start": 70.3,
+"speechEnd": 71.865,
+"end": 72.256
+},
+{
+"i": 31,
+"scene": "prop",
+"text": "",
+"start": 72.256,
+"speechEnd": 75.091,
+"end": 75.8
+},
+{
+"i": 32,
+"scene": "life",
+"text": "",
+"start": 76.3,
+"speechEnd": 77.288,
+"end": 77.535
+},
+{
+"i": 33,
+"scene": "life",
+"text": "",
+"start": 77.535,
+"speechEnd": 78.545,
+"end": 78.798
+},
+{
+"i": 34,
+"scene": "life",
+"text": "",
+"start": 78.798,
+"speechEnd": 79.933,
+"end": 80.217
+},
+{
+"i": 35,
+"scene": "life",
+"text": "",
+"start": 80.217,
+"speechEnd": 81.483,
+"end": 81.8
+},
+{
+"i": 36,
+"scene": "sonar",
+"text": "",
+"start": 82.3,
+"speechEnd": 83.051,
+"end": 83.239
+},
+{
+"i": 37,
+"scene": "sonar",
+"text": "",
+"start": 83.239,
+"speechEnd": 84.516,
+"end": 84.835
+},
+{
+"i": 38,
+"scene": "sonar",
+"text": "",
+"start": 84.835,
+"speechEnd": 86.407,
+"end": 86.8
+},
+{
+"i": 39,
+"scene": "food",
+"text": "",
+"start": 87.3,
+"speechEnd": 89.101,
+"end": 89.551
+},
+{
+"i": 40,
+"scene": "food",
+"text": "",
+"start": 89.551,
+"speechEnd": 90.919,
+"end": 91.26
+},
+{
+"i": 41,
+"scene": "food",
+"text": "",
+"start": 91.26,
+"speechEnd": 92.492,
+"end": 92.8
+},
+{
+"i": 42,
+"scene": "surfacing",
+"text": "",
+"start": 93.3,
+"speechEnd": 95.442,
+"end": 95.978
+},
+{
+"i": 43,
+"scene": "surfacing",
+"text": "",
+"start": 95.978,
+"speechEnd": 99.036,
+"end": 99.8
+},
+{
+"i": 44,
+"scene": "end",
+"text": "",
+"start": 100.3,
+"speechEnd": 103.9,
+"end": 105.0
+}
+],
+"scenes": [
+{
+"scene": "surface",
+"start": 0.0,
+"end": 7.0,
+"segs": [
+0,
+1,
+2
+]
+},
+{
+"scene": "ballast",
+"start": 7.0,
+"end": 15.0,
+"segs": [
+3,
+4,
+5
+]
+},
+{
+"scene": "dive",
+"start": 15.0,
+"end": 19.0,
+"segs": [
+6
+]
+},
+{
+"scene": "deep",
+"start": 19.0,
+"end": 26.0,
+"segs": [
+7,
+8,
+9
+]
+},
+{
+"scene": "reactor",
+"start": 26.0,
+"end": 30.0,
+"segs": [
+10
+]
+},
+{
+"scene": "fission",
+"start": 30.0,
+"end": 36.0,
+"segs": [
+11,
+12
+]
+},
+{
+"scene": "chain",
+"start": 36.0,
+"end": 41.0,
+"segs": [
+13,
+14
+]
+},
+{
+"scene": "rods",
+"start": 41.0,
+"end": 48.0,
+"segs": [
+15,
+16,
+17
+]
+},
+{
+"scene": "primary",
+"start": 48.0,
+"end": 54.0,
+"segs": [
+18,
+19,
+20,
+21
+]
+},
+{
+"scene": "steamgen",
+"start": 54.0,
+"end": 60.0,
+"segs": [
+22,
+23,
+24,
+25
+]
+},
+{
+"scene": "turbine",
+"start": 60.0,
+"end": 66.0,
+"segs": [
+26,
+27,
+28
+]
+},
+{
+"scene": "gears",
+"start": 66.0,
+"end": 70.0,
+"segs": [
+29
+]
+},
+{
+"scene": "prop",
+"start": 70.0,
+"end": 76.0,
+"segs": [
+30,
+31
+]
+},
+{
+"scene": "life",
+"start": 76.0,
+"end": 82.0,
+"segs": [
+32,
+33,
+34,
+35
+]
+},
+{
+"scene": "sonar",
+"start": 82.0,
+"end": 87.0,
+"segs": [
+36,
+37,
+38
+]
+},
+{
+"scene": "food",
+"start": 87.0,
+"end": 93.0,
+"segs": [
+39,
+40,
+41
+]
+},
+{
+"scene": "surfacing",
+"start": 93.0,
+"end": 100.0,
+"segs": [
+42,
+43
+]
+},
+{
+"scene": "end",
+"start": 100.0,
+"end": 105.0,
+"segs": [
+44
+]
+}
+],
+"caps": [
+{
+"text": "How does a *nuclear submarine* work?",
+"start": 0.2,
+"end": 3.4
+},
+{
+"text": "It can hide underwater for *months*!",
+"start": 3.7,
+"end": 6.9
+},
+{
+"text": "*Ballast tanks* fill up with *seawater*...",
+"start": 7.2,
+"end": 10.9
+},
+{
+"text": "...the sub gets heavy and *sinks*.",
+"start": 11.2,
+"end": 14.9
+},
+{
+"text": "*Diving planes* steer it down.",
+"start": 15.2,
+"end": 18.9
+},
+{
+"text": "Down here there's *no air* to burn fuel...",
+"start": 19.2,
+"end": 22.4
+},
+{
+"text": "...so it runs on a *nuclear reactor*.",
+"start": 22.7,
+"end": 25.9
+},
+{
+"text": "The fuel rods are full of *uranium*.",
+"start": 26.2,
+"end": 29.9
+},
+{
+"text": "A *neutron* smashes a uranium atom...",
+"start": 30.2,
+"end": 32.9
+},
+{
+"text": "...it *splits* and fires out more neutrons!",
+"start": 33.2,
+"end": 35.9
+},
+{
+"text": "A *chain reaction*! It all turns into *heat*.",
+"start": 36.2,
+"end": 40.9
+},
+{
+"text": "*Control rods* soak up neutrons...",
+"start": 41.2,
+"end": 44.4
+},
+{
+"text": "...push them in and the reaction *slows*. Drop them all: *STOP!*",
+"start": 44.7,
+"end": 47.9
+},
+{
+"text": "Super hot water loops through the core. *High pressure* stops it boiling.",
+"start": 48.2,
+"end": 53.9
+},
+{
+"text": "The *steam generator* passes the heat on...",
+"start": 54.2,
+"end": 56.9
+},
+{
+"text": "...and a second loop boils into *steam*.",
+"start": 57.2,
+"end": 59.9
+},
+{
+"text": "Steam spins the *turbines* super fast.",
+"start": 60.2,
+"end": 65.9
+},
+{
+"text": "*Gears* slow that spin down...",
+"start": 66.2,
+"end": 69.9
+},
+{
+"text": "...to turn the *propeller*. Water goes back, sub goes *forward*!",
+"start": 70.2,
+"end": 75.9
+},
+{
+"text": "The power also makes *fresh water* and *oxygen* for the crew.",
+"start": 76.2,
+"end": 81.9
+},
+{
+"text": "It stays *silent*, and listens with *sonar*.",
+"start": 82.2,
+"end": 86.9
+},
+{
+"text": "The fuel lasts *30+ years*...",
+"start": 87.2,
+"end": 89.9
+},
+{
+"text": "...the real limit? The *food*.",
+"start": 90.2,
+"end": 92.9
+},
+{
+"text": "To go up, *air* blasts the water out!",
+"start": 93.2,
+"end": 96.4
+},
+{
+"text": "*Splash!*",
+"start": 96.7,
+"end": 99.9
+},
+{
+"text": "Follow for more *how things work*!",
+"start": 100.2,
+"end": 104.9
+}
+]
+}

@@ -66,7 +66,7 @@ def section(t):
         ('primary','square',0.9,0.9,1,0),('steamgen','xylo',1,0.9,1,0),('turbine','kazoo',0.9,1,1,0),('condenser','square',0.9,0.9,1,0),('gears','xylo',1,1,1,0),
         ('shaft','xylo',1,1,1,0),('prop','square',1,1,1,0),('life','whistle',0.9,0.7,1,0),('sonar',None,0,0,1,1),('food','kazoo',0.9,0.8,1,0),
         ('surfacing','square',1,1,1,0),('recap','square',1,1,1,0),('end','xylo',1,0.6,1,0)]:
-        if sc[name]['start']<=t<sc[name]['end']: return kind,lv,dr,pz,sn
+        if name in sc and sc[name]['start']<=t<sc[name]['end']: return kind,lv,dr,pz,sn
     return 'square',1,1,1,0
 nb=int(T/bar)+1
 for b in range(nb):
@@ -127,4 +127,4 @@ add(kick(),T-2.4,0.6); add(noise(1.5,3000,9000,3),T-2.4,0.12)
 # ---------- master ----------
 tt=np.arange(N)/SR; L_*=np.clip(tt/0.3,0,1)*np.clip((T-tt)/0.6,0,1)
 L_/=np.max(np.abs(L_))*1.05
-w=wave.open(f"{S}/build/mix_fun.wav",'wb'); w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes((L_.T*32767).astype(np.int16).tobytes()); w.close(); print('ok')
+w=wave.open(f"{S}/build/"+(sys.argv[2] if len(sys.argv)>2 else 'mix_fun.wav'),'wb'); w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes((L_.T*32767).astype(np.int16).tobytes()); w.close(); print('ok')
