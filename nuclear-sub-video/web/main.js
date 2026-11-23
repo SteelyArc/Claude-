@@ -1,12 +1,30 @@
 import * as THREE from 'three';
-const W = 540, H = 960, OW = 1080, OH = 1920;
+const W = 720, H = 1280, OW = 1080, OH = 1920, XS = 4 / 3;
 const TL = await (await fetch('timeline.json')).json();
 await Promise.all([document.fonts.load('46px SilkB'), document.fonts.load('30px Silk'), document.fonts.load('40px PS2')]);
 
 const glc = document.createElement('canvas'); glc.width = W; glc.height = H;
 const renderer = new THREE.WebGLRenderer({ canvas: glc, antialias: false, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1); renderer.setSize(W, H, false); renderer.localClippingEnabled = true; renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.BasicShadowMap;
-const out = document.getElementById('out'); const ctx = out.getContext('2d');
+const rt = new THREE.WebGLRenderTarget(W, H, { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, depthBuffer: true });
+const postCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1); const postScene = new THREE.Scene();
+const postMat = new THREE.ShaderMaterial({ uniforms: { tDiffuse: { value: rt.texture }, res: { value: new THREE.Vector2(W, H) }, levels: { value: 9.0 } }, depthTest: false, depthWrite: false,
+  vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
+  fragmentShader: `uniform sampler2D tDiffuse; uniform vec2 res; uniform float levels; varying vec2 vUv;
+  vec3 tos(vec3 c){ return mix(c * 12.92, 1.055 * pow(max(c, vec3(0.0)), vec3(1.0/2.4)) - 0.055, step(0.0031308, c)); }
+  vec3 grade(vec3 c){ c = tos(clamp(c, 0.0, 1.0)); float l = dot(c, vec3(0.299, 0.587, 0.114)); c = mix(vec3(l), c, 1.35); c = (c - 0.5) * 1.12 + 0.52; return clamp(c, 0.0, 1.0); }
+  float bayer(vec2 p){ vec2 q = mod(floor(p), 4.0); float i = q.x + q.y * 4.0;
+    float m[16]; m[0]=0.;m[1]=8.;m[2]=2.;m[3]=10.;m[4]=12.;m[5]=4.;m[6]=14.;m[7]=6.;m[8]=3.;m[9]=11.;m[10]=1.;m[11]=9.;m[12]=15.;m[13]=7.;m[14]=13.;m[15]=5.;
+    for (int k = 0; k < 16; k++) if (float(k) == i) return m[k] / 16.0 - 0.5; return 0.0; }
+  void main(){ vec2 px = 1.0 / res; vec3 c = grade(texture2D(tDiffuse, vUv).rgb);
+    vec3 cr = grade(texture2D(tDiffuse, vUv + vec2(px.x, 0.0)).rgb), cd = grade(texture2D(tDiffuse, vUv - vec2(0.0, px.y)).rgb);
+    float lc = dot(c, vec3(0.299,0.587,0.114)), e = max(abs(lc - dot(cr, vec3(0.299,0.587,0.114))), abs(lc - dot(cd, vec3(0.299,0.587,0.114))));
+    float edge = smoothstep(0.07, 0.2, e);
+    c *= 1.0 - 0.45 * edge;
+    vec3 q = floor(c * levels + 0.5 + bayer(gl_FragCoord.xy) * 0.9) / levels;
+    gl_FragColor = vec4(clamp(q, 0.0, 1.0), 1.0); }` });
+postScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat));
+const out = document.getElementById('out'); const ctx = out.getContext('2d'); ctx.setTransform(XS, 0, 0, XS, 0, 0);
 const gl2 = document.createElement('canvas'); gl2.width = 270; gl2.height = 480; const gctx = gl2.getContext('2d');
 const tmp = document.createElement('canvas'); const tctx = tmp.getContext('2d');
 const camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 2000);
@@ -193,12 +211,12 @@ const SF = (() => {
 // ---------- UNDERWATER scene ----------
 const UW = (() => {
   const s = new THREE.Scene(); const bg = new THREE.Color(0x1d6f80); s.background = bg; s.fog = new THREE.FogExp2(0x1d6f80, 0.02);
-  lights(s, 0xa8e8ff, 0x0a1a22, 1.5, 1.4, 0.45, [10, 80, 30]);
+  const udl = lights(s, 0x9ff0ff, 0x061830, 1.2, 2.4, 0.3, [10, 80, 30]); udl.color.set(0xffd9a0);
   const ctex = canvasTex(32, 32, g => { g.fillStyle = '#8fe0ea'; g.fillRect(0, 0, 32, 32); const r = rng(3); g.fillStyle = '#45b8cc'; for (let i = 0; i < 18; i++) { const x = r() * 32, y = r() * 32, w = 3 + r() * 6; g.fillRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(w * .6)); } g.fillStyle = '#c9f2f2'; for (let i = 0; i < 10; i++) g.fillRect(Math.floor(r() * 32), Math.floor(r() * 32), 2, 1); }, [60, 60]);
   const sg = new THREE.PlaneGeometry(800, 800); sg.rotateX(PI / 2);
   const surf = add(s, sg, new THREE.MeshBasicMaterial({ map: ctex, side: DS }), [0, 0, 0]);
   const rays = new THREE.Group(); s.add(rays); const rr = rng(11);
-  const rayMat = new THREE.MeshBasicMaterial({ color: 0xd6fbff, transparent: true, opacity: 0.11, blending: THREE.AdditiveBlending, depthWrite: false, side: DS });
+  const rayMat = new THREE.MeshBasicMaterial({ color: 0xfff2c8, transparent: true, opacity: 0.11, blending: THREE.AdditiveBlending, depthWrite: false, side: DS });
   for (let i = 0; i < 26; i++) { const m = add(rays, new THREE.PlaneGeometry(2 + rr() * 5, 90), rayMat, [-150 + rr() * 300, -45, -70 + rr() * 80], [0, rr() * PI, 0.25 + rr() * 0.1]); }
   const snow = makePoints(2200, 0xa6dbe2, 1); s.add(snow); const sb = []; const r2 = rng(5); for (let i = 0; i < 2200; i++) sb.push([r2() * 90, r2() * 70, r2() * 90]);
   const subA = makeSub(); s.add(subA);
@@ -795,12 +813,12 @@ window.renderFrame = (t) => {
   const L = { lt: t - sc.start, d: sc.end - sc.start, sg, sp, st0: sc.start, sg0: 0 };
   const scene = SCN[sc.scene](L, t);
   for (const p of pipes) p.userData.tex.offset.x = -t * p.userData.speed / 0.7;
-  renderer.render(scene, camera);
+  renderer.setRenderTarget(rt); renderer.render(scene, camera); renderer.setRenderTarget(null); renderer.render(postScene, postCam);
   ctx.imageSmoothingEnabled = false; ctx.globalAlpha = 1;
   const db = Math.min(t - sc.start + (sc.start === 0 ? 99 : 0), sc.end - t + (sc.end >= TL.total ? 99 : 0));
   const f = 1 - clamp(db / 0.32);
   if (f > 0.02) { const bs = 1 + Math.round(f * 9); tmp.width = Math.ceil(W / bs); tmp.height = Math.ceil(H / bs); tctx.imageSmoothingEnabled = false; tctx.drawImage(glc, 0, 0, tmp.width, tmp.height); ctx.drawImage(tmp, 0, 0, OW, OH); ctx.fillStyle = `rgba(0,0,0,${f * 0.55})`; ctx.fillRect(0, 0, OW, OH); }
-  else { ctx.filter = 'saturate(1.3) contrast(1.08) brightness(1.04)'; ctx.drawImage(glc, 0, 0, OW, OH); ctx.filter = 'none'; gctx.filter = 'blur(4px) brightness(1.1)'; gctx.clearRect(0, 0, 270, 480); gctx.drawImage(glc, 0, 0, 270, 480); gctx.filter = 'none'; ctx.globalCompositeOperation = 'screen'; ctx.globalAlpha = 0.28; ctx.imageSmoothingEnabled = true; ctx.drawImage(gl2, 0, 0, OW, OH); ctx.imageSmoothingEnabled = false; ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; }
+  else { ctx.drawImage(glc, 0, 0, OW, OH); gctx.filter = 'blur(4px) brightness(1.1)'; gctx.clearRect(0, 0, 270, 480); gctx.drawImage(glc, 0, 0, 270, 480); gctx.filter = 'none'; ctx.globalCompositeOperation = 'screen'; ctx.globalAlpha = 0.22; ctx.imageSmoothingEnabled = true; ctx.drawImage(gl2, 0, 0, OW, OH); ctx.imageSmoothingEnabled = false; ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; }
   // vignette
   ctx.fillStyle = vig; ctx.fillRect(0, 0, OW, OH);
   if (f < 0.5) { drawLabels(); HUD.forEach(h => h()); }
@@ -809,7 +827,7 @@ window.renderFrame = (t) => {
   // fade in/out
   if (t < 0.4) { ctx.fillStyle = `rgba(0,0,0,${1 - t / 0.4})`; ctx.fillRect(0, 0, OW, OH); }
   if (t > TL.total - 0.8) { ctx.fillStyle = `rgba(0,0,0,${(t - TL.total + 0.8) / 0.8})`; ctx.fillRect(0, 0, OW, OH); }
-  return out.toDataURL('image/jpeg', 0.93);
+  return out.toDataURL('image/jpeg', 0.96);
 };
 const vig = (() => { const g = ctx.createRadialGradient(OW / 2, OH / 2, OH * 0.35, OW / 2, OH / 2, OH * 0.75); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.35)'); return g; })();
 const topBand = (() => { const g = ctx.createLinearGradient(0, 0, 0, 560); g.addColorStop(0, 'rgba(0,0,0,0.45)'); g.addColorStop(0.6, 'rgba(0,0,0,0.25)'); g.addColorStop(1, 'rgba(0,0,0,0)'); return g; })();
