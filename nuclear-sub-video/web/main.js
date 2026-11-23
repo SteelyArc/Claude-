@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-const W = 720, H = 1280, OW = 1080, OH = 1920, XS = 4 / 3;
+const W = 360, H = 640, OW = 1080, OH = 1920, CAMK = 0.82;
 const TL = await (await fetch('timeline.json')).json();
 await Promise.all([document.fonts.load('46px SilkB'), document.fonts.load('30px Silk'), document.fonts.load('40px PS2')]);
 
@@ -8,7 +8,7 @@ const renderer = new THREE.WebGLRenderer({ canvas: glc, antialias: false, preser
 renderer.setPixelRatio(1); renderer.setSize(W, H, false); renderer.localClippingEnabled = true; renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.BasicShadowMap;
 const rt = new THREE.WebGLRenderTarget(W, H, { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, depthBuffer: true });
 const postCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1); const postScene = new THREE.Scene();
-const postMat = new THREE.ShaderMaterial({ uniforms: { tDiffuse: { value: rt.texture }, res: { value: new THREE.Vector2(W, H) }, levels: { value: 9.0 } }, depthTest: false, depthWrite: false,
+const postMat = new THREE.ShaderMaterial({ uniforms: { tDiffuse: { value: rt.texture }, res: { value: new THREE.Vector2(W, H) }, levels: { value: 10.0 } }, depthTest: false, depthWrite: false,
   vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
   fragmentShader: `uniform sampler2D tDiffuse; uniform vec2 res; uniform float levels; varying vec2 vUv;
   vec3 tos(vec3 c){ return mix(c * 12.92, 1.055 * pow(max(c, vec3(0.0)), vec3(1.0/2.4)) - 0.055, step(0.0031308, c)); }
@@ -19,13 +19,14 @@ const postMat = new THREE.ShaderMaterial({ uniforms: { tDiffuse: { value: rt.tex
   void main(){ vec2 px = 1.0 / res; vec3 c = grade(texture2D(tDiffuse, vUv).rgb);
     vec3 cr = grade(texture2D(tDiffuse, vUv + vec2(px.x, 0.0)).rgb), cd = grade(texture2D(tDiffuse, vUv - vec2(0.0, px.y)).rgb);
     float lc = dot(c, vec3(0.299,0.587,0.114)), e = max(abs(lc - dot(cr, vec3(0.299,0.587,0.114))), abs(lc - dot(cd, vec3(0.299,0.587,0.114))));
-    float edge = smoothstep(0.07, 0.2, e);
+    float edge = smoothstep(0.08, 0.2, e);
     c *= 1.0 - 0.45 * edge;
-    vec3 q = floor(c * levels + 0.5 + bayer(gl_FragCoord.xy) * 0.9) / levels;
+    vec3 q = floor(c * levels + 0.5 + bayer(gl_FragCoord.xy) * 0.55) / levels;
     gl_FragColor = vec4(clamp(q, 0.0, 1.0), 1.0); }` });
 postScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), postMat));
-const out = document.getElementById('out'); const ctx = out.getContext('2d'); ctx.setTransform(XS, 0, 0, XS, 0, 0);
-const gl2 = document.createElement('canvas'); gl2.width = 270; gl2.height = 480; const gctx = gl2.getContext('2d');
+const out = document.getElementById('out'); const octx = out.getContext('2d'); octx.imageSmoothingEnabled = false;
+const lo = document.createElement('canvas'); lo.width = W; lo.height = H; const lctx = lo.getContext('2d'); lctx.imageSmoothingEnabled = false;
+const ov = document.createElement('canvas'); ov.width = W; ov.height = H; const ctx = ov.getContext('2d', { willReadFrequently: true }); ctx.setTransform(1 / 3, 0, 0, 1 / 3, 0, 0);
 const tmp = document.createElement('canvas'); const tctx = tmp.getContext('2d');
 const camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 2000);
 
@@ -49,7 +50,7 @@ const BOX = (w, h, d) => new THREE.BoxGeometry(w, h, d);
 const CYX = (r, l, s = 10, r2) => { const g = new THREE.CylinderGeometry(r2 ?? r, r, l, s); g.rotateZ(-PI / 2); return g; };
 const CYY = (r, h, s = 12, r2) => new THREE.CylinderGeometry(r2 ?? r, r, h, s);
 function canvasTex(w, h, draw, rep = [1, 1]) { const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d'); draw(g, w, h); const t = new THREE.CanvasTexture(c); t.magFilter = t.minFilter = THREE.NearestFilter; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rep[0], rep[1]); t.colorSpace = THREE.SRGBColorSpace; t.generateMipmaps = false; return t; }
-function makePoints(n, color, size = 1, o = {}) { const g = new THREE.BufferGeometry(); const a = new Float32Array(n * 3); g.setAttribute('position', new THREE.BufferAttribute(a, 3)); const m = new THREE.PointsMaterial({ color, size: size * 2, sizeAttenuation: false, ...o }); const p = new THREE.Points(g, m); p.frustumCulled = false; p.userData.a = a; return p; }
+function makePoints(n, color, size = 1, o = {}) { const g = new THREE.BufferGeometry(); const a = new Float32Array(n * 3); g.setAttribute('position', new THREE.BufferAttribute(a, 3)); const m = new THREE.PointsMaterial({ color, size: size, sizeAttenuation: false, ...o }); const p = new THREE.Points(g, m); p.frustumCulled = false; p.userData.a = a; return p; }
 function setPts(p, fn) { const a = p.userData.a, n = a.length / 3; let c = 0; for (let i = 0; i < n; i++) { const v = fn(i); if (v) { a[c * 3] = v[0]; a[c * 3 + 1] = v[1]; a[c * 3 + 2] = v[2]; c++; } } p.geometry.setDrawRange(0, c); p.geometry.attributes.position.needsUpdate = true; }
 function lights(s, sky = 0xffffff, gnd = 0x334455, hi = 1.1, di = 2.2, amb = 0.5, dp = [30, 50, 40]) { s.add(new THREE.HemisphereLight(sky, gnd, hi)); const d = new THREE.DirectionalLight(0xffffff, di); d.position.set(...dp); s.add(d); s.add(new THREE.AmbientLight(0xffffff, amb)); const r = new THREE.DirectionalLight(0x9fc8ff, di * 0.35); r.position.set(-dp[0], dp[1] * 0.5, -dp[2]); s.add(r); return d; }
 
@@ -75,30 +76,37 @@ function pipe(par, pts, r, base, hi, speed = 1.6) {
 // ---------- overlays ----------
 let LBL = [], HUD = [];
 function label(pos, text, o = {}) { LBL.push({ pos, text, ...o }); }
-function shadowText(s, x, y, font, color, align = 'left', sh = 4) { ctx.font = font; ctx.textAlign = align; ctx.textBaseline = 'alphabetic'; ctx.fillStyle = 'rgba(0,0,0,0.85)'; ctx.fillText(s, x + sh, y + sh); ctx.fillStyle = color; ctx.fillText(s, x, y); }
-function pline(x1, y1, x2, y2, col, w) { ctx.strokeStyle = col; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(Math.round(x1), Math.round(y1)); ctx.lineTo(Math.round(x2), Math.round(y2)); ctx.stroke(); }
+const snapF = n => Math.max(8, Math.round(n / 24) * 8) * 3;
+const fixFont = f => f.replace(/(\d+)px/, (m, n) => snapF(+n) + 'px');
+function outlined(s, x, y, color) { x = Math.round(x / 3) * 3; y = Math.round(y / 3) * 3; ctx.fillStyle = '#000'; for (const [a, b] of [[-3, 0], [3, 0], [0, -3], [0, 3], [3, 3], [-3, 3], [3, -3], [-3, -3], [0, 6], [3, 6]]) ctx.fillText(s, x + a, y + b); ctx.fillStyle = color; ctx.fillText(s, x, y); }
+function shadowText(s, x, y, font, color, align = 'left') { ctx.font = fixFont(font); ctx.textAlign = align; ctx.textBaseline = 'alphabetic'; outlined(s, x, y, color); }
+function pline(x1, y1, x2, y2, col, w) { // pixel bresenham in low-res space; w>=6 -> 2px thick
+  let a = Math.round(x1 / 3), b = Math.round(y1 / 3); const c = Math.round(x2 / 3), d = Math.round(y2 / 3); const th = w >= 6 ? 2 : 1;
+  const dx = Math.abs(c - a), dy = -Math.abs(d - b), sx = a < c ? 1 : -1, sy = b < d ? 1 : -1; let err = dx + dy;
+  ctx.fillStyle = col; for (let k = 0; k < 2000; k++) { ctx.fillRect(a * 3, b * 3, 3 * th, 3 * th); if (a === c && b === d) break; const e2 = 2 * err; if (e2 >= dy) { err += dy; a += sx; } if (e2 <= dx) { err += dx; b += sy; } } }
 function proj(p) { const v = p.clone().project(camera); return { x: (v.x + 1) / 2 * OW, y: (1 - v.y) / 2 * OH, ok: v.z < 1 && v.z > -1 }; }
 function drawLabels() {
   for (const l of LBL) {
     const a = l.a ?? 1; if (a <= 0.01) continue; const P = proj(l.pos); if (!P.ok) continue;
-    ctx.globalAlpha = a; const dx = l.dx ?? 80, dy = l.dy ?? -80; const lx = P.x + dx, ly = P.y + dy;
-    const font = `${l.size ?? 30}px Silk`; ctx.font = font; const tw = ctx.measureText(l.text).width;
-    const ex = dx >= 0 ? lx + tw + 16 : lx - tw - 16; const col = l.color ?? '#ffffff';
-    pline(P.x, P.y, lx, ly, 'rgba(0,0,0,0.7)', 7); pline(lx, ly, ex, ly, 'rgba(0,0,0,0.7)', 7);
-    pline(P.x, P.y, lx, ly, col, 3); pline(lx, ly, ex, ly, col, 3);
-    ctx.fillStyle = '#000'; ctx.fillRect(P.x - 7, P.y - 7, 14, 14); ctx.fillStyle = col; ctx.fillRect(P.x - 5, P.y - 5, 10, 10);
-    const n = l.chars ?? l.text.length; shadowText(l.text.slice(0, n), dx >= 0 ? lx + 8 : ex + 8, ly - 10, font, col);
+    if (a < 0.45) continue; const dx = l.dx ?? 80, dy = l.dy ?? -80; let lx = P.x + dx, ly = P.y + dy;
+    const font = fixFont(`${Math.max(48, l.size ?? 48)}px SilkB`); ctx.font = font; const tw = ctx.measureText(l.text).width;
+    let x0 = dx >= 0 ? lx : lx - tw - 18; x0 = clamp(x0, 12, OW - tw - 30); ly = clamp(ly, 620, OH - 90); const ex = x0 + tw + 18;
+    const jx = dx >= 0 ? x0 : ex; const col = l.color ?? '#ffffff';
+    pline(P.x + 3, P.y + 3, jx + 3, ly + 3, '#000', 3); pline(x0 + 3, ly + 3, ex + 3, ly + 3, '#000', 3);
+    pline(P.x, P.y, jx, ly, col, 3); pline(x0, ly, ex, ly, col, 3);
+    ctx.fillStyle = '#000'; ctx.fillRect(Math.round(P.x / 3) * 3 - 6, Math.round(P.y / 3) * 3 - 6, 15, 15); ctx.fillStyle = col; ctx.fillRect(Math.round(P.x / 3) * 3 - 3, Math.round(P.y / 3) * 3 - 3, 9, 9);
+    const n = l.chars ?? l.text.length; ctx.textAlign = 'left'; outlined(l.text.slice(0, n), x0 + 9, ly - 12, col);
   }
   ctx.globalAlpha = 1;
 }
 function L_(pos, text, t0, lt, o = {}) { if (lt < t0) return; const a = sstep(t0, t0 + 0.25, lt) * (o.t1 ? 1 - sstep(o.t1, o.t1 + 0.3, lt) : 1); label(pos, text, { a, chars: Math.floor((lt - t0) * 60), ...o }); }
-function hudDepth(m) { HUD.push(() => { shadowText('DEPTH', 70, 1300, '28px Silk', '#bfe6ee'); shadowText(Math.round(m) + ' M', 70, 1372, '72px SilkB', '#ffffff'); }); }
-function hudCounter(title, val, col = '#ffffff', x = 70, y = 1300) { HUD.push(() => { shadowText(title, x, y, '28px Silk', '#bfe6ee'); shadowText(val, x, y + 72, '72px SilkB', col); }); }
-function hudBig(text, col, y = 960, size = 96, a = 1) { HUD.push(() => { ctx.globalAlpha = a; shadowText(text, OW / 2, y, `${size}px SilkB`, col, 'center', 6); ctx.globalAlpha = 1; }); }
-function hudArrow(x1, y1, x2, y2, col) { HUD.push(() => { const ang = Math.atan2(y2 - y1, x2 - x1); for (const [c, w] of [['rgba(0,0,0,.6)', 14], [col, 8]]) { pline(x1, y1, x2, y2, c, w); ctx.fillStyle = c; ctx.beginPath(); const s = w * 2.6; ctx.moveTo(x2 + Math.cos(ang) * s * .6, y2 + Math.sin(ang) * s * .6); ctx.lineTo(x2 + Math.cos(ang + 2.4) * s, y2 + Math.sin(ang + 2.4) * s); ctx.lineTo(x2 + Math.cos(ang - 2.4) * s, y2 + Math.sin(ang - 2.4) * s); ctx.fill(); } }); }
+function hudDepth(m) { HUD.push(() => { shadowText('DEPTH', 60, 1290, '48px SilkB', '#bfe6ee'); shadowText(Math.round(m) + ' M', 60, 1390, '96px SilkB', '#ffffff'); }); }
+function hudCounter(title, val, col = '#ffffff', x = 70, y = 1300) { HUD.push(() => { shadowText(title, 60, y, '48px SilkB', '#bfe6ee'); shadowText(val, 60, y + 100, '96px SilkB', col); }); }
+function hudBig(text, col, y = 960, size = 96, a = 1) { HUD.push(() => { if (a < 0.45) return; shadowText(text, OW / 2, y, `${Math.max(72, size)}px SilkB`, col, 'center'); }); }
+function hudArrow(x1, y1, x2, y2, col) { HUD.push(() => { const ang = Math.atan2(y2 - y1, x2 - x1); for (const [c, w] of [['#000', 14], [col, 8]]) { pline(x1 + (c === '#000' ? 3 : 0), y1 + (c === '#000' ? 3 : 0), x2, y2, c, 8); ctx.fillStyle = c; ctx.beginPath(); const s = w * 2.6; ctx.moveTo(x2 + Math.cos(ang) * s * .6, y2 + Math.sin(ang) * s * .6); ctx.lineTo(x2 + Math.cos(ang + 2.4) * s, y2 + Math.sin(ang + 2.4) * s); ctx.lineTo(x2 + Math.cos(ang - 2.4) * s, y2 + Math.sin(ang - 2.4) * s); ctx.fill(); } }); }
 
 // captions
-const capFont = '54px SilkB', CAPW = 960, LH = 74;
+const capFont = '72px SilkB', CAPW = 1010, LH = 96;
 ctx.font = capFont; const SPW = ctx.measureText(' ').width;
 for (const s of TL.caps) {
   const toks = []; let hl = false;
@@ -116,16 +124,16 @@ function drawCaption(t) {
   const vis = 1 - clamp((t - (s.end - 0.18)) / 0.18); if (vis <= 0) return;
   let page = s.pages[0]; for (const p of s.pages) if (p[0][0].time <= t) page = p;
   ctx.globalAlpha = vis; ctx.font = capFont; ctx.textAlign = 'left';
-  const y0 = 300 - (page.length - 1) * LH / 2;
+  const y0 = 360 - (page.length - 1) * LH / 2;
   page.forEach((line, li) => {
     const lw = line.reduce((a, t) => a + t.wd, 0) + SPW * (line.length - 1); let x = (OW - lw) / 2; const y = y0 + li * LH;
-    for (const tk of line) { if (tk.time <= t) { ctx.fillStyle = 'rgba(0,0,0,0.9)'; ctx.fillText(tk.w, x + 5, y + 5); ctx.fillStyle = tk.h ? '#ffb43a' : '#ffffff'; ctx.fillText(tk.w, x, y); } x += tk.wd + SPW; }
+    x = Math.round(x / 3) * 3; for (const tk of line) { if (tk.time <= t) outlined(tk.w, x, y, tk.h ? '#ffb43a' : '#ffffff'); x += tk.wd + SPW; }
   });
   ctx.globalAlpha = 1;
 }
 
 // camera helpers
-function cam(p, t, fov = 50) { camera.position.copy(p); camera.lookAt(t); if (camera.fov !== fov) { camera.fov = fov; camera.updateProjectionMatrix(); } }
+function cam(p, t, fov = 50) { p = p.clone().sub(t).multiplyScalar(camK).add(t); camera.position.copy(p); camera.lookAt(t); if (camera.fov !== fov) { camera.fov = fov; camera.updateProjectionMatrix(); } }
 function kf(lt, keys) { // keys: [time, [px,py,pz],[tx,ty,tz], fov]
   if (lt <= keys[0][0]) return keys[0]; for (let i = 0; i < keys.length - 1; i++) { const a = keys[i], b = keys[i + 1]; if (lt <= b[0]) { const e = ease((lt - a[0]) / (b[0] - a[0])); return [lt, a[1].map((v, j) => lerp(v, b[1][j], e)), a[2].map((v, j) => lerp(v, b[2][j], e)), lerp(a[3] ?? 50, b[3] ?? 50, e)]; } }
   return keys[keys.length - 1];
@@ -519,7 +527,7 @@ const FS = (() => {
 for (const sc of [IN.s, SF.s]) sc.traverse(o => { if (!o.isMesh) return; const m = o.material; const tr = m.transparent && m.opacity < 1 || m.isMeshBasicMaterial; const big = o.geometry.parameters && ((o.geometry.parameters.radiusTop ?? 0) >= 7 || (o.geometry.parameters.radius ?? 0) >= 7 || (o.geometry.parameters.width ?? 0) > 100); o.castShadow = !tr && !big; o.receiveShadow = true; });
 SF.sub.traverse(o => { if (o.isMesh) o.castShadow = true; });
 // ---------- scene timeline logic ----------
-const SCN = {};
+const SCN = {}; let camK = CAMK;
 const subOrbit = (c, ang, r, h) => V(c.x + Math.sin(ang) * r, c.y + h, c.z + Math.cos(ang) * r);
 
 SCN.surface = (L, t) => {
@@ -811,24 +819,21 @@ window.renderFrame = (t) => {
   let sc = TL.scenes.find(s => t >= s.start && t < s.end) ?? TL.scenes[TL.scenes.length - 1];
   const sg = sc.segs.map(i => segById[i].start - sc.start), sp = sc.segs.map(i => segById[i].speechEnd - segById[i].start);
   const L = { lt: t - sc.start, d: sc.end - sc.start, sg, sp, st0: sc.start, sg0: 0 };
-  const scene = SCN[sc.scene](L, t);
+  camK = (sc.scene === 'fission' || sc.scene === 'chain') ? 1 : CAMK; const scene = SCN[sc.scene](L, t);
   for (const p of pipes) p.userData.tex.offset.x = -t * p.userData.speed / 0.7;
   renderer.setRenderTarget(rt); renderer.render(scene, camera); renderer.setRenderTarget(null); renderer.render(postScene, postCam);
-  ctx.imageSmoothingEnabled = false; ctx.globalAlpha = 1;
   const db = Math.min(t - sc.start + (sc.start === 0 ? 99 : 0), sc.end - t + (sc.end >= TL.total ? 99 : 0));
   const f = 1 - clamp(db / 0.32);
-  if (f > 0.02) { const bs = 1 + Math.round(f * 9); tmp.width = Math.ceil(W / bs); tmp.height = Math.ceil(H / bs); tctx.imageSmoothingEnabled = false; tctx.drawImage(glc, 0, 0, tmp.width, tmp.height); ctx.drawImage(tmp, 0, 0, OW, OH); ctx.fillStyle = `rgba(0,0,0,${f * 0.55})`; ctx.fillRect(0, 0, OW, OH); }
-  else { ctx.drawImage(glc, 0, 0, OW, OH); gctx.filter = 'blur(4px) brightness(1.1)'; gctx.clearRect(0, 0, 270, 480); gctx.drawImage(glc, 0, 0, 270, 480); gctx.filter = 'none'; ctx.globalCompositeOperation = 'screen'; ctx.globalAlpha = 0.22; ctx.imageSmoothingEnabled = true; ctx.drawImage(gl2, 0, 0, OW, OH); ctx.imageSmoothingEnabled = false; ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; }
-  // vignette
-  ctx.fillStyle = vig; ctx.fillRect(0, 0, OW, OH);
+  if (f > 0.02) { const bs = 1 + Math.round(f * 7); tmp.width = Math.ceil(W / bs); tmp.height = Math.ceil(H / bs); tctx.imageSmoothingEnabled = false; tctx.drawImage(glc, 0, 0, tmp.width, tmp.height); lctx.drawImage(tmp, 0, 0, W, H); lctx.fillStyle = `rgba(0,0,0,${Math.round(f * 4) / 4 * 0.6})`; lctx.fillRect(0, 0, W, H); }
+  else lctx.drawImage(glc, 0, 0);
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); ctx.restore(); ctx.globalAlpha = 1;
   if (f < 0.5) { drawLabels(); HUD.forEach(h => h()); }
-  ctx.fillStyle = topBand; ctx.fillRect(0, 0, OW, 560);
   drawCaption(t);
-  // fade in/out
-  if (t < 0.4) { ctx.fillStyle = `rgba(0,0,0,${1 - t / 0.4})`; ctx.fillRect(0, 0, OW, OH); }
-  if (t > TL.total - 0.8) { ctx.fillStyle = `rgba(0,0,0,${(t - TL.total + 0.8) / 0.8})`; ctx.fillRect(0, 0, OW, OH); }
-  return out.toDataURL('image/jpeg', 0.96);
+  const id = ctx.getImageData(0, 0, W, H), d = id.data; for (let i = 3; i < d.length; i += 4) d[i] = d[i] < 120 ? 0 : 255; ctx.putImageData(id, 0, 0);
+  lctx.drawImage(ov, 0, 0);
+  const fo = t < 0.4 ? 1 - t / 0.4 : t > TL.total - 0.8 ? (t - TL.total + 0.8) / 0.8 : 0;
+  if (fo > 0) { lctx.fillStyle = `rgba(0,0,0,${Math.round(fo * 5) / 5})`; lctx.fillRect(0, 0, W, H); }
+  octx.imageSmoothingEnabled = false; octx.drawImage(lo, 0, 0, out.width, out.height);
+  return out.toDataURL('image/jpeg', 0.95);
 };
-const vig = (() => { const g = ctx.createRadialGradient(OW / 2, OH / 2, OH * 0.35, OW / 2, OH / 2, OH * 0.75); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.35)'); return g; })();
-const topBand = (() => { const g = ctx.createLinearGradient(0, 0, 0, 560); g.addColorStop(0, 'rgba(0,0,0,0.45)'); g.addColorStop(0.6, 'rgba(0,0,0,0.25)'); g.addColorStop(1, 'rgba(0,0,0,0)'); return g; })();
 window.ready = true;
