@@ -107,8 +107,13 @@ def transcribe(path, model_name, lang):
     except ImportError:
         return None, "faster-whisper not installed (pip install faster-whisper)"
     try:
+        import numpy as np
+        # Decode with ffmpeg (16 kHz mono float) - avoids PyAV version mismatches inside faster-whisper.
+        raw = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", path, "-vn", "-ac", "1", "-ar", "16000",
+                              "-f", "f32le", "-"], capture_output=True).stdout
+        audio = np.frombuffer(raw, dtype=np.float32)
         model = WhisperModel(model_name, device="cpu", compute_type="int8")
-        segs, info = model.transcribe(path, language=lang, vad_filter=True, beam_size=5)
+        segs, info = model.transcribe(audio, language=lang, vad_filter=True, beam_size=5)
         lines = [(s.start, s.end, s.text.strip()) for s in segs if s.text.strip()]
         return {"language": info.language, "prob": round(info.language_probability, 2), "lines": lines}, None
     except Exception as e:  # model download blocked, etc.
