@@ -1970,6 +1970,26 @@ const faceMats=[];for(let k=0;k<FACE_N;k++){const c=document.createElement('canv
 function faceLayer(scene,count,variantOf){const groups=[];for(let k=0;k<FACE_N;k++){const idx=[];for(let i=0;i<count;i++)if(variantOf(i)===k)idx.push(i);
   const m=new THREE.InstancedMesh(faceGeo,faceMats[k],idx.length);m.frustumCulled=false;scene.add(m);groups.push({m,idx});}
   return {groups,sync(mats){groups.forEach(gp=>{gp.idx.forEach((i,j)=>gp.m.setMatrixAt(j,mats[i]));gp.m.instanceMatrix.needsUpdate=true;});}};}
+
+// ---------- hairstyles (instanced, varied colours) ----------
+const HAIR_COLS=['#1b1a1f','#3a2618','#5a3a22','#8a5a32','#c9a26a','#e8d08a','#b5482a','#d9d4cc','#ff6b9a','#5fa8ff'].map(c=>lin(c));
+function hairGeos(){const out=[];
+  out.push(new THREE.SphereGeometry(0.162,14,10,0,Math.PI*2,0,Math.PI*0.42).translate(0,0.71,-0.01));                 // short cap
+  {const g=new THREE.SphereGeometry(0.165,14,10,0,Math.PI*2,0,Math.PI*0.5).translate(0,0.705,-0.02);const b=new THREE.SphereGeometry(0.075,12,8).translate(0,0.86,-0.06);out.push(mergeG([g,b]));} // bun
+  {const parts=[new THREE.SphereGeometry(0.158,12,8,0,Math.PI*2,0,Math.PI*0.4).translate(0,0.71,0)];for(let i=0;i<7;i++){const a=i/7*Math.PI*2;const c=new THREE.ConeGeometry(0.04,0.13,6);c.rotateX(-0.6);c.rotateY(a);c.translate(0.07*Math.sin(a),0.85,0.07*Math.cos(a)-0.02);parts.push(c);}out.push(mergeG(parts));} // spiky
+  out.push(new THREE.IcosahedronGeometry(0.215,1).scale(1,0.95,1).translate(0,0.76,-0.06));                       // afro
+  {const g=new THREE.SphereGeometry(0.165,14,10,0,Math.PI*2,0,Math.PI*0.5).translate(0,0.705,-0.02);const t=new THREE.CylinderGeometry(0.04,0.025,0.26,8).rotateX(0.35).translate(0,0.6,-0.17);out.push(mergeG([g,t]));} // ponytail
+  {const g=new THREE.SphereGeometry(0.168,14,10,0,Math.PI*2,0,Math.PI*0.55).translate(0,0.7,-0.02);const l=new THREE.CylinderGeometry(0.15,0.17,0.28,14,1,true,Math.PI*0.32,Math.PI*1.36).translate(0,0.6,-0.01);out.push(mergeG([g,l]));} // long hair
+  {const g=new THREE.CylinderGeometry(0.17,0.17,0.04,16).translate(0,0.79,0);const top=new THREE.CylinderGeometry(0.11,0.12,0.12,16).translate(0,0.86,0);out.push(mergeG([g,top]));}  // hat
+  out.push(new THREE.BufferGeometry());  // bald
+  return out;}
+function mergeG(list){const pos=[],nor=[];list.forEach(g0=>{const g=g0.index?g0.toNonIndexed():g0;g.computeVertexNormals();pos.push(...g.attributes.position.array);nor.push(...g.attributes.normal.array);});
+  const m=new THREE.BufferGeometry();m.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));m.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3));return m;}
+const HG=hairGeos(); const HAIR_N=HG.length;
+function hairLayer(scene,count,styleOf,colOf){const groups=[];for(let k=0;k<HAIR_N-1;k++){const idx=[];for(let i=0;i<count;i++)if(styleOf(i)===k)idx.push(i);
+  const m=new THREE.InstancedMesh(HG[k],new THREE.MeshStandardMaterial({roughness:0.85}),Math.max(1,idx.length));m.count=idx.length;m.castShadow=true;m.frustumCulled=false;
+  idx.forEach((i,j)=>m.setColorAt(j,k===6?lin(['#ff6b5a','#4ecdc4','#FFD43B','#2b2f45'][i%4]):HAIR_COLS[colOf(i)]));scene.add(m);groups.push({m,idx});}
+  return {sync(mats){groups.forEach(gp=>{gp.idx.forEach((i,j)=>gp.m.setMatrixAt(j,mats[i]));gp.m.instanceMatrix.needsUpdate=true;});}};}
 // ---------- crowd field ----------
 const jScene=new THREE.Scene(); jScene.background=daySky; jScene.fog=new THREE.Fog(lin('#eedfcd'),25,120);
 const jCam=new THREE.PerspectiveCamera(52,W/H,0.1,600);
@@ -1985,7 +2005,7 @@ const jPeople=[];{const cols=SHIRTS.concat(['#ffffff','#2b2f45','#e0736a','#4ecd
   jBodies.setColorAt(i,pick(cols));jHeads.setColorAt(i,pick(skins));i++;}}
 const jHero=makeHero('#ff9f1c'); jHero.scale.setScalar(1.6); jScene.add(jHero);
 const jFaceVar=[];for(let i=0;i<JN;i++)jFaceVar.push(Math.floor(hash(i,77)*FACE_N));
-const jFaces=faceLayer(jScene,JN,i=>jFaceVar[i]); const jMats=[];for(let i=0;i<JN;i++)jMats.push(new THREE.Matrix4());
+const jFaces=faceLayer(jScene,JN,i=>jFaceVar[i]); const jHair=hairLayer(jScene,JN,i=>Math.floor(hash(i,81)*HAIR_N),i=>Math.floor(hash(i,82)*HAIR_COLS.length)); const jMats=[];for(let i=0;i<JN;i++)jMats.push(new THREE.Matrix4());
 const jo=new THREE.Object3D();
 function jumpY(t,delay){let y=0;
   const u1=t-J_T0-delay; if(u1>0&&u1<J_AIR){const v=3.13;y=Math.max(y,v*u1-4.905*u1*u1);}           // real time
@@ -1994,7 +2014,7 @@ function jumpY(t,delay){let y=0;
 function updateCrowd(t,mode){
   const a=mode==='aerial'?t-5:t-11;
   for(let i=0;i<JN;i++){const p=jPeople[i];const y=mode==='jump'?jumpY(t,p.d):0;jo.position.set(p.x,y,p.z);jo.rotation.set(0,p.ry,0);jo.scale.setScalar(p.s);jo.updateMatrix();jBodies.setMatrixAt(i,jo.matrix);jHeads.setMatrixAt(i,jo.matrix);jMats[i].copy(jo.matrix);}
-  jBodies.instanceMatrix.needsUpdate=jHeads.instanceMatrix.needsUpdate=true; jFaces.sync(jMats);
+  jBodies.instanceMatrix.needsUpdate=jHeads.instanceMatrix.needsUpdate=true; jFaces.sync(jMats); jHair.sync(jMats);
   if(jBodies.instanceColor) jBodies.instanceColor.needsUpdate=true;
   jHero.visible=mode==='jump'; const hy=mode==='jump'?jumpY(t,0):0; jHero.position.set(0.6,hy,7.2); jHero.rotation.set(0,0.25,0);
   const arms=jHero.userData.arms; const up=hy>0.05||(t>13.6&&t<J_T0); arms[0].rotation.z=up?-2.6:-0.2-0.1*Math.sin(t*6); arms[1].rotation.z=up?2.6:0.2+0.1*Math.sin(t*6);
@@ -2052,12 +2072,12 @@ sBodies.castShadow=true; stScene.add(sBodies,sHeads); const sSeats=[];
 for(let i=0;i<SN;i++){const row=Math.floor(i/300),k=i%300;const ang=k/300*Math.PI*2+row*0.01;const rr=27+row*1.3;sSeats.push({x:rr*Math.cos(ang),z:rr*Math.sin(ang)*0.62,y:0.6+row*0.9,ang,ph:R(0,0.15)});
   sBodies.setColorAt(i,lin(i%5===0?'#ffffff':(row%2?'#4ecdc4':'#2b5aa0')));sHeads.setColorAt(i,lin(pick(['#f2c4a2','#d9a27c','#a86f4a','#7a4a2e'])));}
 const sFaceVar=[];for(let i=0;i<SN;i++)sFaceVar.push(Math.floor(hash(i,78)*FACE_N));
-const sFaces=faceLayer(stScene,SN,i=>sFaceVar[i]); const sMats=[];for(let i=0;i<SN;i++)sMats.push(new THREE.Matrix4());
+const sFaces=faceLayer(stScene,SN,i=>sFaceVar[i]); const sHair=hairLayer(stScene,SN,i=>Math.floor(hash(i,83)*HAIR_N),i=>Math.floor(hash(i,84)*HAIR_COLS.length)); const sMats=[];for(let i=0;i<SN;i++)sMats.push(new THREE.Matrix4());
 const lblBeast=makeLabel('SEATTLE · JAN 8, 2011','"BEAST QUAKE"',{worldH:3.2}); stScene.add(lblBeast);
 function updateStadium(t){
   const a=t-29;
   for(let i=0;i<SN;i++){const s=sSeats[i];const jy=Math.max(0,Math.sin((t*7)+s.ph*10))*0.6*clamp((a-1.0)/0.5);jo.position.set(s.x,s.y+jy,s.z);jo.rotation.set(0,-s.ang-Math.PI/2,0);jo.scale.setScalar(1.6);jo.updateMatrix();sBodies.setMatrixAt(i,jo.matrix);sHeads.setMatrixAt(i,jo.matrix);sMats[i].copy(jo.matrix);}
-  sBodies.instanceMatrix.needsUpdate=sHeads.instanceMatrix.needsUpdate=true; sFaces.sync(sMats);
+  sBodies.instanceMatrix.needsUpdate=sHeads.instanceMatrix.needsUpdate=true; sFaces.sync(sMats); sHair.sync(sMats);
   lblBeast.position.set(-10*Math.sin(0.5+a*0.08),7.5,-20*Math.cos(0.5+a*0.08)); lblBeast.material.opacity=clamp((a-0.5)/0.25);
   stCam.position.set(12*Math.sin(0.5+a*0.08),12+0.12*Math.sin(t*14)*clamp((a-1)/0.5),12*Math.cos(0.5+a*0.08)); stCam.lookAt(-6*Math.sin(0.5+a*0.08),7,-12*Math.cos(0.5+a*0.08)); stCam.updateProjectionMatrix(); stKey.target.position.set(0,0,0);
 }
