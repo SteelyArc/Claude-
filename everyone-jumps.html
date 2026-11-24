@@ -1927,6 +1927,49 @@ function updateEverest(t){
    STORY: WHAT IF EVERYONE ON EARTH JUMPED AT THE SAME TIME?
    ============================================================ */
 const J_T0=14.0, J_AIR=0.64;           // real airtime of a 0.5 m jump
+
+// ---------- 16 different faces for the crowd (instanced face decals) ----------
+const FACE_N=16;
+function drawFace(g,k){const r=mulberry32(900+k*13);g.clearRect(0,0,128,128);g.lineCap='round';g.lineJoin='round';const ink='#1b1a2b';
+  const ey=56, ex=24, style=k%8, mouth=(k*5+3)%8;
+  // cheeks / freckles
+  if(k%3===0){g.fillStyle='rgba(255,120,140,0.55)';g.beginPath();g.ellipse(34,78,11,7,0,0,7);g.ellipse(94,78,11,7,0,0,7);g.fill();}
+  if(k%5===1){g.fillStyle='rgba(140,80,50,0.7)';for(const [x,y] of [[36,72],[42,76],[30,76],[86,72],[92,76],[98,72]]){g.beginPath();g.arc(x,y,2,0,7);g.fill();}}
+  // eyes
+  g.fillStyle=ink;g.strokeStyle=ink;g.lineWidth=6;
+  const eye=(x)=>{switch(style){
+    case 0:g.beginPath();g.arc(x,ey,7,0,7);g.fill();break;
+    case 1:g.fillStyle='#fff';g.beginPath();g.ellipse(x,ey,12,14,0,0,7);g.fill();g.fillStyle=ink;g.beginPath();g.arc(x+2,ey+2,6,0,7);g.fill();break;
+    case 2:g.beginPath();g.arc(x,ey+4,9,Math.PI*1.1,Math.PI*1.9);g.stroke();break;               // happy ^^
+    case 3:g.beginPath();g.moveTo(x-9,ey);g.lineTo(x+9,ey);g.stroke();break;                       // sleepy
+    case 4:g.fillStyle='#fff';g.beginPath();g.arc(x,ey,12,0,7);g.fill();g.lineWidth=5;g.stroke();g.fillStyle=ink;g.beginPath();g.arc(x,ey,4,0,7);g.fill();break; // glasses
+    case 5:g.beginPath();g.ellipse(x,ey,13,9,0,0,7);g.fill();break;                                // sunglasses
+    case 6:g.fillStyle='#fff';g.beginPath();g.arc(x,ey,13,0,7);g.fill();g.fillStyle=ink;g.beginPath();g.arc(x,ey,3,0,7);g.fill();break;  // shocked
+    default:g.beginPath();g.arc(x,ey,6,0,7);g.fill();}};
+  eye(64-ex); if(style===7){g.beginPath();g.arc(64+ex,ey+3,8,Math.PI*1.1,Math.PI*1.9);g.stroke();} else eye(64+ex);   // wink
+  if(style===4||style===5){g.lineWidth=5;g.beginPath();g.moveTo(52,ey);g.lineTo(76,ey);g.stroke();}
+  // eyebrows on some
+  if(k%4===2){g.lineWidth=5;g.beginPath();g.moveTo(28,36);g.lineTo(48,32);g.moveTo(80,32);g.lineTo(100,36);g.stroke();}
+  if(k%4===3){g.lineWidth=5;g.beginPath();g.moveTo(28,32);g.lineTo(48,38);g.moveTo(80,38);g.lineTo(100,32);g.stroke();}
+  // mouth
+  g.lineWidth=6;g.fillStyle=ink;
+  switch(mouth){
+    case 0:g.beginPath();g.arc(64,82,16,0.15*Math.PI,0.85*Math.PI);g.stroke();break;
+    case 1:g.beginPath();g.arc(64,80,18,0,Math.PI);g.closePath();g.fill();g.fillStyle='#ff6b7a';g.beginPath();g.ellipse(64,92,9,5,0,0,7);g.fill();break;  // laughing
+    case 2:g.beginPath();g.ellipse(64,92,8,11,0,0,7);g.fill();break;                              // "o"
+    case 3:g.beginPath();g.moveTo(50,92);g.lineTo(78,92);g.stroke();break;                         // flat
+    case 4:g.beginPath();g.arc(64,80,18,0,Math.PI);g.closePath();g.fill();g.fillStyle='#fff';g.fillRect(50,80,28,6);break; // grin w/ teeth
+    case 5:g.beginPath();g.arc(64,82,14,0.15*Math.PI,0.85*Math.PI);g.stroke();g.fillStyle='#ff6b7a';g.beginPath();g.ellipse(70,98,6,7,0,0,7);g.fill();break; // tongue
+    case 6:g.beginPath();g.arc(64,104,14,1.15*Math.PI,1.85*Math.PI);g.stroke();break;           // frown
+    default:g.beginPath();g.moveTo(48,92);g.quadraticCurveTo(56,84,64,92);g.quadraticCurveTo(72,100,80,90);g.stroke();}  // wobbly
+  if(k===5||k===13){g.fillStyle='#4a3424';g.beginPath();g.ellipse(52,78,12,5,0.2,0,7);g.ellipse(76,78,12,5,-0.2,0,7);g.fill();}   // moustache
+}
+const faceGeo=new THREE.PlaneGeometry(0.27,0.27).translate(0,0.705,0.148);
+const faceMats=[];for(let k=0;k<FACE_N;k++){const c=document.createElement('canvas');c.width=c.height=128;drawFace(c.getContext('2d'),k);
+  const tx=new THREE.CanvasTexture(c);tx.encoding=THREE.sRGBEncoding;tx.anisotropy=4;faceMats.push(new THREE.MeshStandardMaterial({map:tx,transparent:true,alphaTest:0.3,roughness:0.7,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2}));}
+function faceLayer(scene,count,variantOf){const groups=[];for(let k=0;k<FACE_N;k++){const idx=[];for(let i=0;i<count;i++)if(variantOf(i)===k)idx.push(i);
+  const m=new THREE.InstancedMesh(faceGeo,faceMats[k],idx.length);m.frustumCulled=false;scene.add(m);groups.push({m,idx});}
+  return {groups,sync(mats){groups.forEach(gp=>{gp.idx.forEach((i,j)=>gp.m.setMatrixAt(j,mats[i]));gp.m.instanceMatrix.needsUpdate=true;});}};}
 // ---------- crowd field ----------
 const jScene=new THREE.Scene(); jScene.background=daySky; jScene.fog=new THREE.Fog(lin('#eedfcd'),25,120);
 const jCam=new THREE.PerspectiveCamera(52,W/H,0.1,600);
@@ -1941,6 +1984,8 @@ const jPeople=[];{const cols=SHIRTS.concat(['#ffffff','#2b2f45','#e0736a','#4ecd
  let i=0;for(let gz=0;i<JN;gz++)for(let gx=-36;gx<=36&&i<JN;gx++){const x=gx*0.72+R(-0.2,0.2),z=-gz*0.72+R(-0.2,0.2)+4;jPeople.push({x,z,d:R(0,0.07)+Math.hypot(x,z-4)*0.0,ry:R(-0.6,0.6),s:R(0.85,1.15)});
   jBodies.setColorAt(i,pick(cols));jHeads.setColorAt(i,pick(skins));i++;}}
 const jHero=makeHero('#ff9f1c'); jHero.scale.setScalar(1.6); jScene.add(jHero);
+const jFaceVar=[];for(let i=0;i<JN;i++)jFaceVar.push(Math.floor(hash(i,77)*FACE_N));
+const jFaces=faceLayer(jScene,JN,i=>jFaceVar[i]); const jMats=[];for(let i=0;i<JN;i++)jMats.push(new THREE.Matrix4());
 const jo=new THREE.Object3D();
 function jumpY(t,delay){let y=0;
   const u1=t-J_T0-delay; if(u1>0&&u1<J_AIR){const v=3.13;y=Math.max(y,v*u1-4.905*u1*u1);}           // real time
@@ -1948,8 +1993,8 @@ function jumpY(t,delay){let y=0;
   return y*2.2;}  // exaggerated for visibility
 function updateCrowd(t,mode){
   const a=mode==='aerial'?t-5:t-11;
-  for(let i=0;i<JN;i++){const p=jPeople[i];const y=mode==='jump'?jumpY(t,p.d):0;jo.position.set(p.x,y,p.z);jo.rotation.set(0,p.ry,0);jo.scale.setScalar(p.s);jo.updateMatrix();jBodies.setMatrixAt(i,jo.matrix);jHeads.setMatrixAt(i,jo.matrix);}
-  jBodies.instanceMatrix.needsUpdate=jHeads.instanceMatrix.needsUpdate=true;
+  for(let i=0;i<JN;i++){const p=jPeople[i];const y=mode==='jump'?jumpY(t,p.d):0;jo.position.set(p.x,y,p.z);jo.rotation.set(0,p.ry,0);jo.scale.setScalar(p.s);jo.updateMatrix();jBodies.setMatrixAt(i,jo.matrix);jHeads.setMatrixAt(i,jo.matrix);jMats[i].copy(jo.matrix);}
+  jBodies.instanceMatrix.needsUpdate=jHeads.instanceMatrix.needsUpdate=true; jFaces.sync(jMats);
   if(jBodies.instanceColor) jBodies.instanceColor.needsUpdate=true;
   jHero.visible=mode==='jump'; const hy=mode==='jump'?jumpY(t,0):0; jHero.position.set(0.6,hy,7.2); jHero.rotation.set(0,0.25,0);
   const arms=jHero.userData.arms; const up=hy>0.05||(t>13.6&&t<J_T0); arms[0].rotation.z=up?-2.6:-0.2-0.1*Math.sin(t*6); arms[1].rotation.z=up?2.6:0.2+0.1*Math.sin(t*6);
@@ -2006,11 +2051,13 @@ const SN=3600; const sBodies=new THREE.InstancedMesh(jBodyGeo,new THREE.MeshStan
 sBodies.castShadow=true; stScene.add(sBodies,sHeads); const sSeats=[];
 for(let i=0;i<SN;i++){const row=Math.floor(i/300),k=i%300;const ang=k/300*Math.PI*2+row*0.01;const rr=27+row*1.3;sSeats.push({x:rr*Math.cos(ang),z:rr*Math.sin(ang)*0.62,y:0.6+row*0.9,ang,ph:R(0,0.15)});
   sBodies.setColorAt(i,lin(i%5===0?'#ffffff':(row%2?'#4ecdc4':'#2b5aa0')));sHeads.setColorAt(i,lin(pick(['#f2c4a2','#d9a27c','#a86f4a','#7a4a2e'])));}
+const sFaceVar=[];for(let i=0;i<SN;i++)sFaceVar.push(Math.floor(hash(i,78)*FACE_N));
+const sFaces=faceLayer(stScene,SN,i=>sFaceVar[i]); const sMats=[];for(let i=0;i<SN;i++)sMats.push(new THREE.Matrix4());
 const lblBeast=makeLabel('SEATTLE · JAN 8, 2011','"BEAST QUAKE"',{worldH:3.2}); stScene.add(lblBeast);
 function updateStadium(t){
   const a=t-29;
-  for(let i=0;i<SN;i++){const s=sSeats[i];const jy=Math.max(0,Math.sin((t*7)+s.ph*10))*0.6*clamp((a-1.0)/0.5);jo.position.set(s.x,s.y+jy,s.z);jo.rotation.set(0,-s.ang-Math.PI/2,0);jo.scale.setScalar(1.6);jo.updateMatrix();sBodies.setMatrixAt(i,jo.matrix);sHeads.setMatrixAt(i,jo.matrix);}
-  sBodies.instanceMatrix.needsUpdate=sHeads.instanceMatrix.needsUpdate=true;
+  for(let i=0;i<SN;i++){const s=sSeats[i];const jy=Math.max(0,Math.sin((t*7)+s.ph*10))*0.6*clamp((a-1.0)/0.5);jo.position.set(s.x,s.y+jy,s.z);jo.rotation.set(0,-s.ang-Math.PI/2,0);jo.scale.setScalar(1.6);jo.updateMatrix();sBodies.setMatrixAt(i,jo.matrix);sHeads.setMatrixAt(i,jo.matrix);sMats[i].copy(jo.matrix);}
+  sBodies.instanceMatrix.needsUpdate=sHeads.instanceMatrix.needsUpdate=true; sFaces.sync(sMats);
   lblBeast.position.set(-10*Math.sin(0.5+a*0.08),7.5,-20*Math.cos(0.5+a*0.08)); lblBeast.material.opacity=clamp((a-0.5)/0.25);
   stCam.position.set(12*Math.sin(0.5+a*0.08),12+0.12*Math.sin(t*14)*clamp((a-1)/0.5),12*Math.cos(0.5+a*0.08)); stCam.lookAt(-6*Math.sin(0.5+a*0.08),7,-12*Math.cos(0.5+a*0.08)); stCam.updateProjectionMatrix(); stKey.target.position.set(0,0,0);
 }
