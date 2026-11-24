@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How an SSD Stores Data</title>
+<style>
+  :root {
+    --bg: #05070c;
+    --ink: #eef3ff;
+    --muted: #9fb0cf;
+    --accent: #2f7bff;
+    --line: rgba(220, 232, 255, 0.85);
+  }
+  html, body { margin: 0; height: 100%; background: var(--bg); overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  #stage {
+    position: relative; width: 1080px; height: 1920px; flex: none;
+    transform-origin: center center; overflow: hidden; background: var(--bg);
+    font-family: "Inter", "Helvetica Neue", "Segoe UI", "DejaVu Sans", Arial, sans-serif;
+    color: var(--ink);
+  }
+  #gl, #overlay { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+  #overlay { pointer-events: none; }
+  .lbl {
+    position: absolute; font-size: 34px; font-weight: 600; letter-spacing: 0.01em;
+    white-space: nowrap; opacity: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    background: rgba(5,8,14,0.72); padding: 10px 16px 12px; border-radius: 10px; border: 1px solid rgba(111,176,255,0.25);
+  }
+  .lbl small { display: block; font-size: 24px; font-weight: 400; color: var(--muted); margin-top: 4px; }
+  #title {
+    position: absolute; top: 110px; left: 0; right: 0; text-align: center;
+    font-size: 30px; letter-spacing: 0.32em; font-weight: 600; color: var(--muted);
+  }
+  .cap {
+    position: absolute; left: 80px; right: 80px; bottom: 190px; text-align: center;
+    font-size: 54px; line-height: 1.32; font-weight: 600; opacity: 0;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.9);
+  }
+  .cap b {
+    display: inline-block; background: var(--accent); color: #fff; padding: 0 18px 4px;
+    border-radius: 10px; font-weight: 800; line-height: 1.25;
+    box-shadow: 0 6px 30px rgba(47,123,255,0.45);
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="gl" width="1080" height="1920"></canvas>
+  <svg id="overlay" viewBox="0 0 1080 1920"></svg>
+  <div id="title">HOW AN SSD STORES DATA</div>
+  <div class="cap" id="cap0">No moving parts: an SSD stores data on <b>flash</b> memory chips.</div>
+  <div class="cap" id="cap1">The <b>controller</b> decides where every piece of data is written.</div>
+  <div class="cap" id="cap2">Cells trap electric <b>charge</b>, so data stays without power.</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(() => {
+  const W = 1080, H = 1920, DURATION = 6;
+
+  // ---------- helpers ----------
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const ss = (a, b, t) => { const x = clamp((t - a) / (b - a)); return x * x * (3 - 2 * x); };
+  const easeIO = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const v3 = (x, y, z) => new THREE.Vector3(x, y, z);
+
+  // ---------- stage scaling ----------
+  const stage = document.getElementById('stage');
+  function fit() {
+    const s = Math.min(innerWidth / W, innerHeight / H);
+    stage.style.transform = `scale(${s})`;
+  }
+  addEventListener('resize', fit); fit();
+
+  // ---------- renderer / scene ----------
+  const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gl'), antialias: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(1);
+  renderer.setSize(W, H, false);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.9;
+  renderer.localClippingEnabled = true;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x05070c);
+  scene.fog = new THREE.Fog(0x05070c, 26, 60);
+
+  const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 200);
+
+  scene.add(new THREE.HemisphereLight(0xbfd4ff, 0x0a0f1c, 0.3));
+  const key = new THREE.DirectionalLight(0xffffff, 1.0); key.position.set(6, 12, 8); scene.add(key);
+  const rim = new THREE.DirectionalLight(0x5f8dff, 1.1); rim.position.set(-8, 5, -10); scene.add(rim);
+  const fill = new THREE.PointLight(0x2f7bff, 0.0, 14); fill.position.set(0, 3, 0); scene.add(fill);
+
+  // floor glow + grid
+  function radialTex(inner, outer) {
+    const c = document.createElement('canvas'); c.width = c.height = 256;
+    const g = c.getContext('2d');
+    const gr = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+    gr.addColorStop(0, inner); gr.addColorStop(1, outer);
+    g.fillStyle = gr; g.fillRect(0, 0, 256, 256);
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return t;
+  }
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40),
+    new THREE.MeshBasicMaterial({ map: radialTex('rgba(40,70,140,0.55)', 'rgba(5,7,12,0)'), transparent: true, depthWrite: false }));
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -0.62; scene.add(floor);
+  const grid = new THREE.GridHelper(40, 40, 0x1d2a48, 0x121a2e);
+  grid.position.y = -0.6; grid.material.transparent = true; grid.material.opacity = 0.5; scene.add(grid);
+  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(10, 13),
+    new THREE.MeshBasicMaterial({ map: radialTex('rgba(0,0,0,0.85)', 'rgba(0,0,0,0)'), transparent: true, depthWrite: false }));
+  shadow.rotation.x = -Math.PI / 2; shadow.position.y = -0.58; scene.add(shadow);
+
+  // ---------- the drive (2.5-inch SATA SSD, 100 x 69.85 x 7 mm; 1 unit = 10 mm) ----------
+  const drive = new THREE.Group(); scene.add(drive);
+  const DW = 6.985, DL = 10.0;
+
+  const mat = (color, rough = 0.6, metal = 0.1, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: rough, metalness: metal, ...extra });
+  const box = (w, h, d, m, x, y, z, parent = drive) => {
+    const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); b.position.set(x, y, z); parent.add(b); return b;
+  };
+
+  // bottom tray
+  box(DW, 0.26, DL, mat(0x3a404c, 0.45, 0.8), 0, -0.44, 0);
+  // tray walls (low rim)
+  const wallM = mat(0x464d5b, 0.45, 0.8);
+  box(0.12, 0.3, DL, wallM, -DW / 2 + 0.06, -0.2, 0);
+  box(0.12, 0.3, DL, wallM, DW / 2 - 0.06, -0.2, 0);
+  box(DW, 0.3, 0.12, wallM, 0, -0.2, DL / 2 - 0.06);
+
+  // PCB
+  const pcbTop = -0.12;
+  box(DW - 0.4, 0.1, DL - 0.4, mat(0x0a2a1d, 0.6, 0.15), 0, pcbTop - 0.05, -0.1);
+
+  // SATA connector at the far end (z negative): 7-pin data + 15-pin power
+  const connZ = -DL / 2 + 0.05;
+  const connBody = mat(0x15171c, 0.7, 0.1);
+  const gold = mat(0xd9a640, 0.3, 1.0, { emissive: 0x3a2500, emissiveIntensity: 0.3 });
+  box(1.4, 0.32, 0.5, connBody, -1.85, pcbTop + 0.16, connZ);     // data
+  box(2.6, 0.32, 0.5, connBody, 0.45, pcbTop + 0.16, connZ);      // power
+  for (let i = 0; i < 7; i++) box(0.09, 0.03, 0.42, gold, -2.4 + i * 0.18, pcbTop + 0.33, connZ);
+  for (let i = 0; i < 15; i++) box(0.08, 0.03, 0.42, gold, -0.66 + i * 0.158, pcbTop + 0.33, connZ);
+
+  // chips
+  function chip(w, d, h, x, z, color, label) {
+    const g = new THREE.Group(); g.position.set(x, pcbTop, z); drive.add(g);
+    box(w, h, d, mat(color, 0.5, 0.25), 0, h / 2, 0, g);
+    const dot = new THREE.Mesh(new THREE.CircleGeometry(0.06, 16), mat(0x5a606c, 0.6, 0.2));
+    dot.rotation.x = -Math.PI / 2; dot.position.set(-w / 2 + 0.16, h + 0.002, -d / 2 + 0.16); g.add(dot);
+    return g;
+  }
+  const ctrl = chip(1.5, 1.5, 0.16, -0.2, -2.6, 0x1a1d24);
+  // controller heat-spreader lid
+  box(1.0, 0.03, 1.0, mat(0x9aa3b5, 0.25, 1.0), 0, 0.175, 0, ctrl);
+  const dram = chip(1.0, 0.7, 0.12, 1.9, -2.6, 0x14161b);
+  const nandPos = [[-1.55, -0.25], [1.55, -0.25], [-1.55, 2.75], [1.55, 2.75]];
+  const nands = nandPos.map(([x, z]) => chip(1.6, 2.1, 0.14, x, z, 0x17191f));
+
+  // small passives
+  const capM = mat(0xb08a60, 0.5, 0.3);
+  for (let i = 0; i < 10; i++) box(0.14, 0.08, 0.08, capM, -2.9 + (i % 5) * 0.16, pcbTop + 0.04, -1.3 + Math.floor(i / 5) * 0.2);
+  for (let i = 0; i < 6; i++) box(0.08, 0.08, 0.14, capM, 2.95, pcbTop + 0.04, -1.6 + i * 0.25);
+
+  // copper traces + data paths
+  const traceM = mat(0xb07a3a, 0.4, 0.8, { emissive: 0x2a1600, emissiveIntensity: 0.4 });
+  const Y = pcbTop + 0.012;
+  const paths = [];
+  function trace(points) {
+    const pts = points.map(([x, z]) => v3(x, Y, z));
+    for (let i = 0; i < pts.length - 1; i++) {
+      const a = pts[i], b = pts[i + 1], len = a.distanceTo(b);
+      const m = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.02, len), traceM);
+      m.position.copy(a).add(b).multiplyScalar(0.5); m.lookAt(b); drive.add(m);
+    }
+    paths.push(pts);
+  }
+  // host -> controller
+  trace([[-1.85, connZ + 0.3], [-1.85, -3.2], [-0.95, -3.2]]);
+  trace([[-1.5, connZ + 0.3], [-1.5, -3.6], [-0.6, -3.6], [-0.6, -3.35]]);
+  // controller -> NAND channels
+  trace([[-0.75, -1.85], [-1.55, -1.85], [-1.55, -1.3]]);
+  trace([[0.35, -1.85], [1.55, -1.85], [1.55, -1.3]]);
+  trace([[-0.5, -1.85], [-0.5, 1.2], [-1.55, 1.2], [-1.55, 1.7]]);
+  trace([[0.1, -1.85], [0.1, 1.4], [1.55, 1.4], [1.55, 1.7]]);
+  // controller <-> DRAM
+  trace([[0.55, -2.6], [1.4, -2.6]]);
+  const pathLen = paths.map(p => { let L = 0; for (let i = 1; i < p.length; i++) L += p[i].distanceTo(p[i - 1]); return L; });
+  function along(pi, u) {
+    const p = paths[pi]; let d = u * pathLen[pi];
+    for (let i = 1; i < p.length; i++) {
+      const s = p[i].distanceTo(p[i - 1]);
+      if (d <= s) return p[i - 1].clone().lerp(p[i], d / s);
+      d -= s;
+    }
+    return p[p.length - 1].clone();
+  }
+
+  // data pulses
+  const pulseM = new THREE.MeshBasicMaterial({ color: 0x6fb0ff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+  const haloM = new THREE.MeshBasicMaterial({ color: 0x2f7bff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+  const pulses = [];
+  const pulseDefs = [];
+  [0, 1].forEach(p => [0, 0.5].forEach(o => pulseDefs.push({ p, o, sp: 1.1 })));
+  [2, 3, 4, 5].forEach(p => [0, 0.33, 0.66].forEach(o => pulseDefs.push({ p, o: o + p * 0.11, sp: 0.8 })));
+  [6].forEach(p => [0, 0.5].forEach(o => pulseDefs.push({ p, o, sp: 1.6 })));
+  pulseDefs.forEach(d => {
+    const core = new THREE.Mesh(new THREE.SphereGeometry(0.045, 12, 8), pulseM);
+    const halo = new THREE.Mesh(new THREE.SphereGeometry(0.1, 12, 8), haloM);
+    core.add(halo); drive.add(core); pulses.push({ ...d, mesh: core });
+  });
+
+  // ---------- casing top shell (fades into a cutaway) ----------
+  const cutPlane = new THREE.Plane(new THREE.Vector3(0, 0, -1), 20);
+  const shellM = mat(0x5d6676, 0.38, 0.85, { transparent: true, opacity: 1, side: THREE.DoubleSide, clippingPlanes: [cutPlane] });
+  const shellTop = new THREE.Mesh(new THREE.BoxGeometry(DW + 0.04, 0.06, DL + 0.04), shellM);
+  shellTop.position.set(0, 0.3, 0); drive.add(shellTop);
+  const shellSides = [];
+  [[0.06, 0.62, DL + 0.04, -DW / 2, 0], [0.06, 0.62, DL + 0.04, DW / 2, 0], [DW + 0.04, 0.62, 0.06, 0, DL / 2], [DW + 0.04, 0.62, 0.06, 0, -DL / 2]]
+    .forEach(([w, h, d, x, z]) => { const s = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), shellM); s.position.set(x, 0.0, z); drive.add(s); shellSides.push(s); });
+  // generic label sticker
+  const lc = document.createElement('canvas'); lc.width = 512; lc.height = 720;
+  const lg = lc.getContext('2d');
+  lg.fillStyle = '#1b2230'; lg.fillRect(0, 0, 512, 720);
+  lg.fillStyle = '#2f7bff'; lg.fillRect(0, 0, 512, 16);
+  lg.fillStyle = '#e8eefc'; lg.font = 'bold 92px sans-serif'; lg.fillText('SSD', 44, 150);
+  lg.fillStyle = '#8fa2c4'; lg.font = '36px sans-serif';
+  lg.fillText('Solid State Drive', 46, 210); lg.fillText('2.5"  SATA III  1 TB', 46, 262);
+  lg.strokeStyle = '#3a4760'; lg.lineWidth = 3;
+  for (let i = 0; i < 6; i++) { lg.beginPath(); lg.moveTo(46, 560 + i * 22); lg.lineTo(46 + 200 + (i * 53 % 180), 560 + i * 22); lg.stroke(); }
+  const ltex = new THREE.CanvasTexture(lc); ltex.encoding = THREE.sRGBEncoding; ltex.anisotropy = 8;
+  const stickerM = new THREE.MeshStandardMaterial({ map: ltex, roughness: 0.7, metalness: 0.1, transparent: true, clippingPlanes: [cutPlane] });
+  const sticker = new THREE.Mesh(new THREE.PlaneGeometry(5.2, 7.3), stickerM);
+  sticker.rotation.x = -Math.PI / 2; sticker.position.set(0, 0.335, 0.4); drive.add(sticker);
+  // ghost outline that remains after the cutaway
+  const ghostM = new THREE.LineBasicMaterial({ color: 0x8fb4ff, transparent: true, opacity: 0 });
+  const ghost = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(DW + 0.04, 0.66, DL + 0.04)), ghostM);
+  ghost.position.set(0, 0.02, 0); drive.add(ghost);
+  // glowing cut edge
+  const cutEdgeM = new THREE.MeshBasicMaterial({ color: 0x6fb0ff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+  const cutEdge = new THREE.Mesh(new THREE.BoxGeometry(DW + 0.2, 0.7, 0.04), cutEdgeM);
+  cutEdge.position.set(0, 0.02, 6); drive.add(cutEdge);
+
+  // ---------- magnified 3D NAND cell stack rising from a flash chip ----------
+  const stackHost = nands[2];              // front-left package
+  const stack = new THREE.Group(); drive.add(stack);
+  const SX = 6, SZ = 6, SL = 5, PITCH = 0.24;
+  const cells = [];
+  const cellGeo = new THREE.BoxGeometry(0.15, 0.1, 0.15);
+  for (let l = 0; l < SL; l++) for (let r = 0; r < SZ; r++) for (let c = 0; c < SX; c++) {
+    const m = new THREE.MeshStandardMaterial({ color: 0x141a26, roughness: 0.5, metalness: 0.3, emissive: 0x2f7bff, emissiveIntensity: 0, transparent: true, opacity: 0 });
+    const cell = new THREE.Mesh(cellGeo, m);
+    cell.position.set((c - (SX - 1) / 2) * PITCH, l * 0.2, (r - (SZ - 1) / 2) * PITCH);
+    stack.add(cell); cells.push({ m, l, r, c, mesh: cell });
+  }
+  // vertical channel strings through the layers
+  const strM = new THREE.MeshBasicMaterial({ color: 0x4f78c0, transparent: true, opacity: 0 });
+  for (let r = 0; r < SZ; r++) for (let c = 0; c < SX; c++) {
+    const s = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, SL * 0.2 + 0.1, 6), strM);
+    s.position.set((c - (SX - 1) / 2) * PITCH, (SL - 1) * 0.1, (r - (SZ - 1) / 2) * PITCH); stack.add(s);
+  }
+  // projection lines from chip to the magnified stack
+  const projM = new THREE.LineBasicMaterial({ color: 0x6fb0ff, transparent: true, opacity: 0 });
+  const projGeo = new THREE.BufferGeometry();
+  projGeo.setAttribute('position', new THREE.Float32BufferAttribute(new Array(24).fill(0), 3));
+  const proj = new THREE.LineSegments(projGeo, projM); drive.add(proj);
+  // which cells get "written" (a deterministic pattern of 1s/0s, page by page)
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  cells.forEach(c => { c.bit = rnd() > 0.45; });
+
+  // ---------- labels (thin leader lines) ----------
+  const svg = document.getElementById('overlay');
+  const NS = 'http://www.w3.org/2000/svg';
+  const labels = [];
+  function addLabel(text, sub, anchorFn, lx, ly, side, t0) {
+    const line = document.createElementNS(NS, 'polyline');
+    line.setAttribute('fill', 'none'); line.setAttribute('stroke', 'rgba(220,232,255,0.9)'); line.setAttribute('stroke-width', '2');
+    const dot = document.createElementNS(NS, 'circle'); dot.setAttribute('r', '7'); dot.setAttribute('fill', '#6fb0ff');
+    const ring = document.createElementNS(NS, 'circle'); ring.setAttribute('r', '14'); ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', 'rgba(111,176,255,0.7)'); ring.setAttribute('stroke-width', '2');
+    svg.append(line, ring, dot);
+    const div = document.createElement('div'); div.className = 'lbl';
+    div.innerHTML = text + (sub ? `<small>${sub}</small>` : '');
+    stage.appendChild(div);
+    labels.push({ line, dot, ring, div, anchorFn, lx, ly, side, t0 });
+  }
+  const worldOf = (obj, x, y, z) => obj.localToWorld(v3(x, y, z));
+
+  addLabel('SATA connector', 'link to the computer', () => worldOf(drive, -1.0, pcbTop + 0.35, connZ), 80, 330, 'left', 2.45);
+  addLabel('DRAM cache', 'holds the address map', () => worldOf(dram, 0, 0.13, 0), 1000, 460, 'right', 2.7);
+  addLabel('Controller', 'runs wear leveling & error correction', () => worldOf(ctrl, 0, 0.19, 0), 80, 560, 'left', 2.95);
+  addLabel('NAND flash', 'non-volatile memory', () => worldOf(nands[1], 0, 0.15, 0), 1000, 930, 'right', 3.2);
+  addLabel('Memory cells', 'stacked in layers (3D NAND)', () => stack.localToWorld(v3(-(SX - 1) / 2 * PITCH, (SL - 1) * 0.2, 0)), 80, 1250, 'left', 4.1);
+
+  const tmp = new THREE.Vector3();
+  function toScreen(p) { tmp.copy(p).project(camera); return [(tmp.x + 1) / 2 * W, (1 - tmp.y) / 2 * H]; }
+
+  function updateLabels(t) {
+    labels.forEach(L => {
+      const k = ss(L.t0, L.t0 + 0.45, t);
+      const [ax, ay] = toScreen(L.anchorFn());
+      const tw = L.div.offsetWidth || 300;
+      const tx = L.side === 'left' ? L.lx : L.lx - tw;
+      const textY = L.ly;
+      // leader: anchor -> elbow -> under label
+      const ex = L.side === 'left' ? L.lx + tw + 24 : L.lx - tw - 24;
+      const ey = textY + 50;
+      const endX = L.side === 'left' ? L.lx : L.lx;
+      // draw progressively from the anchor
+      const p0 = [ax, ay], p1 = [ex, ey], p2 = [endX, ey];
+      const d1 = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]), d2 = Math.abs(p2[0] - p1[0]);
+      let rem = k * (d1 + d2);
+      const pts = [p0];
+      if (rem <= d1) pts.push([p0[0] + (p1[0] - p0[0]) * rem / d1, p0[1] + (p1[1] - p0[1]) * rem / d1]);
+      else { pts.push(p1); rem -= d1; pts.push([p1[0] + (p2[0] - p1[0]) * rem / d2, p1[1]]); }
+      L.line.setAttribute('points', pts.map(p => p.join(',')).join(' '));
+      L.line.style.opacity = k > 0 ? 1 : 0;
+      L.dot.setAttribute('cx', ax); L.dot.setAttribute('cy', ay); L.dot.style.opacity = ss(L.t0, L.t0 + 0.15, t);
+      L.ring.setAttribute('cx', ax); L.ring.setAttribute('cy', ay); L.ring.style.opacity = ss(L.t0, L.t0 + 0.15, t) * 0.8;
+      const tk = ss(L.t0 + 0.25, L.t0 + 0.6, t);
+      L.div.style.opacity = tk;
+      L.div.style.left = tx + 'px'; L.div.style.top = (textY + (1 - tk) * 14) + 'px';
+    });
+  }
+
+  // ---------- captions ----------
+  const caps = [
+    { el: document.getElementById('cap0'), a: 0.15, b: 1.85 },
+    { el: document.getElementById('cap1'), a: 2.05, b: 3.75 },
+    { el: document.getElementById('cap2'), a: 3.95, b: 6.4 },
+  ];
+  function updateCaptions(t) {
+    caps.forEach(c => {
+      const o = ss(c.a, c.a + 0.3, t) * (1 - ss(c.b - 0.25, c.b, t));
+      c.el.style.opacity = o;
+      c.el.style.transform = `translateY(${(1 - ss(c.a, c.a + 0.35, t)) * 24}px)`;
+    });
+  }
+
+  // ---------- camera path ----------
+  const camWide = { p: v3(3.0, 19, 19), l: v3(0, -0.3, 0.4) };
+  const camMid  = { p: v3(2.2, 10.5, 9.0), l: v3(-0.1, 0.0, 0.2) };
+  const camEnd  = { p: v3(-0.2, 8.8, 8.6), l: v3(-1.0, 0.4, 0.7) };
+  function updateCamera(t) {
+    const drift = t * 0.04;
+    let p, l;
+    if (t < 1.0) {
+      p = camWide.p.clone().add(v3(-drift * 6, 0, -drift * 4)); l = camWide.l.clone();
+    } else if (t < 3.4) {
+      const k = easeIO(clamp((t - 1.0) / 2.4));
+      const from = camWide.p.clone().add(v3(-0.24, 0, -0.16));
+      p = from.lerp(camMid.p, k); l = camWide.l.clone().lerp(camMid.l, k);
+    } else {
+      const k = ss(3.4, 6.0, t);
+      p = camMid.p.clone().lerp(camEnd.p, k); l = camMid.l.clone().lerp(camEnd.l, k);
+    }
+    camera.position.copy(p); camera.lookAt(l);
+  }
+
+  // ---------- frame ----------
+  function renderAt(t) {
+    t = clamp(t, 0, DURATION);
+    updateCamera(t);
+    drive.rotation.y = -0.18 + ss(0, 6, t) * 0.1;
+    drive.updateMatrixWorld(true);
+
+    // casing cutaway: a plane sweeps from front to back, then the shell fades
+    const sweep = easeIO(ss(1.5, 2.9, t));
+    const zc = lerp(DL / 2 + 0.3, -DL / 2 - 0.3, sweep);
+    // plane in world space, following the drive's rotation
+    const n = v3(0, 0, -1).applyQuaternion(drive.quaternion);
+    cutPlane.setFromNormalAndCoplanarPoint(n, drive.localToWorld(v3(0, 0, zc)));
+    const fade = 1 - ss(2.5, 3.1, t);
+    shellM.opacity = fade; stickerM.opacity = fade;
+    shellM.depthWrite = stickerM.depthWrite = fade > 0.99;
+    shellTop.visible = shellSides[0].visible = sticker.visible = fade > 0.001;
+    shellSides.forEach(s => s.visible = fade > 0.001);
+    cutEdge.position.z = zc;
+    cutEdgeM.opacity = ss(1.5, 1.7, t) * (1 - ss(2.7, 2.95, t)) * 0.55;
+    ghostM.opacity = ss(1.8, 3.0, t) * 0.35;
+
+    // data pulses
+    pulses.forEach(P => {
+      const on = ss(2.6, 3.0, t);
+      const u = ((t - 2.6) * P.sp / Math.max(0.5, pathLen[P.p] / 3) + P.o) % 1;
+      P.mesh.position.copy(along(P.p, Math.max(0, u)));
+      P.mesh.position.y += 0.06;
+      P.mesh.visible = on > 0.01;
+    });
+    pulseM.opacity = ss(2.6, 3.0, t); haloM.opacity = ss(2.6, 3.0, t) * 0.25;
+    fill.intensity = ss(2.8, 4.0, t) * 1.2;
+
+    // cell stack rises out of the NAND package
+    const rise = easeIO(ss(3.35, 4.25, t));
+    const hostP = stackHost.position;
+    stack.position.set(hostP.x, pcbTop + 0.25 + rise * 0.95, hostP.z);
+    stack.scale.setScalar(0.4 + rise * 0.6);
+    const cellOn = ss(3.35, 3.8, t);
+    strM.opacity = cellOn * 0.45;
+    // projection lines (chip corners -> stack corners)
+    const hw = 0.8, hd = 1.05, sw = (SX - 1) / 2 * PITCH + 0.1, sd = (SZ - 1) / 2 * PITCH + 0.1;
+    const arr = projGeo.attributes.position.array;
+    const corners = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
+    corners.forEach(([cx, cz], i) => {
+      const a = v3(hostP.x + cx * hw, pcbTop + 0.14, hostP.z + cz * hd);
+      const b = stack.localToWorld(v3(cx * sw, -0.06, cz * sd)); drive.worldToLocal(b);
+      arr.set([a.x, a.y, a.z, b.x, b.y, b.z], i * 6);
+    });
+    projGeo.attributes.position.needsUpdate = true;
+    projM.opacity = cellOn * 0.5 * (rise > 0.02 ? 1 : 0);
+
+    // writes: one page (row of cells on a layer) at a time
+    const writeK = clamp((t - 4.0) / 1.7);
+    const pagesTotal = SL * SZ;
+    const pagesDone = writeK * pagesTotal;
+    cells.forEach(c => {
+      const pageIdx = c.l * SZ + c.r;
+      const local = clamp(pagesDone - pageIdx);
+      c.m.opacity = cellOn;
+      const charged = c.bit ? local : 0;
+      const flash = local > 0 && local < 1 ? 0.6 : 0;
+      c.m.emissiveIntensity = charged * 1.0 + flash * 0.6;
+      c.m.color.setHex(c.bit && local >= 1 ? 0x2f7bff : 0x141a26);
+    });
+
+    renderer.render(scene, camera);
+    updateLabels(t);
+    updateCaptions(t);
+  }
+
+  window.renderAt = renderAt;
+  window.DURATION = DURATION;
+
+  const capture = /[?&]capture/.test(location.search);
+  if (!capture) {
+    const t0 = performance.now();
+    const loop = now => {
+      const t = ((now - t0) / 1000) % (DURATION + 1.0);   // 1 s hold on the final frame
+      renderAt(Math.min(t, DURATION));
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  } else {
+    renderAt(0);
+  }
+})();
+</script>
+</body>
+</html>
