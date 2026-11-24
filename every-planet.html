@@ -1597,6 +1597,7 @@ function updateBath(t){
   foamB.forEach((o,i)=>{o.f.position.set(o.r*Math.cos(o.a+t*0.05),0.65+0.05*Math.sin(t*2+i),o.r*Math.sin(o.a+t*0.05)*0.5);});
   lblDensity.position.set(-1.8,4.4,1); lblDensity.material.opacity=clamp((a-0.8)/0.25); lblWaterD.position.set(2.6,2.2,3); lblWaterD.material.opacity=clamp((a-1.6)/0.25);
   btCam.position.set(3*Math.sin(0.3+a*0.08),8.5-0.1*a,25-0.4*a); btCam.lookAt(0,0.8,0); btCam.updateProjectionMatrix();
+  if(params.has('cover')){btCam.position.set(2.4,9.5,25);btCam.lookAt(0,-2.4,0);btCam.updateProjectionMatrix();}
   satFace.f.lookAt(btCam.position); btKey.target.position.set(0,0,0);
 }
 
