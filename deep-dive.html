@@ -1815,6 +1815,8 @@ function updateOcean(t,mode){
   const camZ = mode==='whale'?15: mode==='titanic'?14: mode==='bottom'?10.5: 11;
   oCam.position.set(3.2+0.6*Math.sin(t*0.25),1.2+0.3*Math.sin(t*0.3)+(mode==='titanic'?1.5:0),camZ-0.1*((t%6)));
   oCam.lookAt(-1.4,mode==='titanic'?0.4:0.0,mode==='whale'?-1:0.5); oCam.fov=52; oCam.updateProjectionMatrix();
+  if(params.has('cover')&&mode==='dark'){lblBio.visible=false;angler.position.set(-2.3,0.1,2.6);angler.rotation.set(0,0.6,0.05);
+    setFace(subFace,{open:1.4,brow:1.3,mouth:'o',ms:1.2,look:[-0.1,0]});oCam.position.set(3.0,1.1,11.5);oCam.lookAt(-1.1,-1.5,0.5);oCam.updateProjectionMatrix();}
   subFace.f.updateMatrixWorld(); oSun.target.position.set(0,0,0);
 }
 // ---------- Everest in the trench (side view) ----------
