@@ -2324,7 +2324,7 @@ function updateRoad(t,mode){
     rdGround.visible=rdTown.visible=false; rdSign.visible=false;
     rdPlanet.g.visible=true; const cp=roadP(s); rdPlanet.g.position.set(cp.x+40,cp.y-760,-160); rdPlanet.ball.rotation.y=0.6+t*0.01;
     karman.visible=true; karman.position.set(roadP(S_KARMAN).x,Y_KARMAN,0); karman.material.uniforms.uO.value=0.9;
-    lblKarman.visible=true; lblKarman.position.copy(frameAt(S_KARMAN,1.5,2.2,2.0)); lblKarman.material.opacity=clamp((a-0.4)/0.3);
+    lblKarman.visible=false; lblKarman.position.copy(frameAt(S_KARMAN,7,0.8,-4)); lblKarman.material.opacity=clamp((a-0.4)/0.3)*clamp((2.7-a)/0.35);
     C.tanks.visible=true; C.hero.userData.helm.visible=true;
     const crossed=s>S_KARMAN;
     carFace(C,{open:crossed?1.25:blinkAt(t,[18.1]),mouth:crossed?'o':'smile',ms:crossed?1.3:1.1,brow:crossed?1.1:0.4,look:[0,0.12]});
