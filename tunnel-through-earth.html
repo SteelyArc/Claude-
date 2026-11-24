@@ -704,7 +704,7 @@ function drawCover(){
   ctx.fillStyle=g;ctx.fillRect(0,980,W,940);
   ctx.save();ctx.textAlign='center';ctx.textBaseline='alphabetic';
   ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=26;ctx.shadowOffsetY=6;ctx.fillStyle='#ffffff';
-  ctx.font=`900 96px ${FONT}`;ctx.fillText('WHAT IF YOU JUMPED',W/2,1230);
+  {let f1=96;ctx.font=`900 ${f1}px ${FONT}`;const w1=ctx.measureText('WHAT IF YOU JUMPED').width;if(w1>940){f1*=940/w1;ctx.font=`900 ${f1}px ${FONT}`;}}ctx.fillText('WHAT IF YOU JUMPED',W/2,1230);
   let fs=132;ctx.font=`900 ${fs}px ${FONT}`;let kw=ctx.measureText('THROUGH THE EARTH?').width;if(kw>940){fs*=940/kw;ctx.font=`900 ${fs}px ${FONT}`;kw=940;}
   const bw=kw+80,bh=fs*1.28,by=1275;
   ctx.translate(W/2,by+bh/2);ctx.rotate(-0.03);ctx.translate(-W/2,-(by+bh/2));
