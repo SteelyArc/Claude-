@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SUN</title>
+<style>
+  @font-face { font-family: 'TitleSerif'; src: url(data:font/woff2;base64,__FONT__) format('woff2'); font-weight: 400; }
+  :root { --bg: #000; }
+  html, body { margin: 0; height: 100%; background: var(--bg); overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  #stage { position: relative; width: 1080px; height: 1920px; flex: none; overflow: hidden; background: #000; transform-origin: center; }
+  #gl { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+  #title {
+    position: absolute; left: 0; right: 0; top: 862px; text-align: center;
+    font-family: 'TitleSerif', 'Cinzel', Georgia, serif; font-weight: 400; font-size: 168px; line-height: 1;
+    color: #fff; letter-spacing: 0.62em; padding-left: 0.62em;
+    text-shadow: 0 0 2px rgba(255,255,255,0.9), 0 0 22px rgba(255,214,150,0.55), 0 0 60px rgba(255,170,80,0.25);
+  }
+  #title span { opacity: 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="gl"></canvas>
+  <div id="title"><span>S</span><span>U</span><span>N</span></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(() => {
+const W = 1080, H = 1920;
+const BPM = 86, B = 60 / BPM;           // one beat = 0.6977 s (matches the reference's ~0.7 s cuts)
+const BEATS = 89, DURATION = BEATS * B; // 62.09 s
+const qs = new URLSearchParams(location.search);
+const SCALE = Number(qs.get('scale') || 1);
+
+const stage = document.getElementById('stage');
+const fit = () => { stage.style.transform = `scale(${Math.min(innerWidth / W, innerHeight / H)})`; };
+addEventListener('resize', fit); fit();
+
+// ---------------------------------------------------------------- renderer
+const canvas = document.getElementById('gl');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(Math.round(W * SCALE), Math.round(H * SCALE), false);
+renderer.autoClear = false;
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+
+const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const ss = (a, b, t) => { const x = clamp((t - a) / (b - a)); return x * x * (3 - 2 * x); };
+const ease = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const easeOut = x => 1 - Math.pow(1 - x, 3);
+const lerp = (a, b, t) => a + (b - a) * t;
+const lerpV = (a, b, t) => a.clone().lerp(b, t);
+const dirFromAngles = (lon, lat) => V3(Math.cos(lat) * Math.sin(lon), Math.sin(lat), Math.cos(lat) * Math.cos(lon));
+
+// ---------------------------------------------------------------- sun shader
+const frag = `
+precision highp float;
+uniform vec2 uRes; uniform float uTime;
+uniform vec3 uCamPos, uCamR, uCamU, uCamF; uniform float uTan, uAspect;
+uniform float uRot, uGran, uDetail, uSpots, uSurf, uWarp, uSeed;
+uniform float uCorona, uStreamer, uRim;
+uniform vec4 uProm; uniform float uPromH;
+uniform vec4 uLoop; uniform vec3 uLoopT; uniform vec2 uLoopSize;
+uniform vec4 uFlare; uniform vec2 uFlareScr;
+uniform vec4 uCME; uniform float uCMEI;
+uniform vec4 uOcc; uniform float uOccType;
+uniform vec4 uNeb; uniform vec3 uNeb2; uniform float uStars, uMW;
+uniform float uExpo, uFlash, uFade, uGrain, uSat, uVig;
+varying vec2 vUv;
+
+float hash13(vec3 p){ p = fract(p*.1031); p += dot(p, p.zyx+31.32); return fract((p.x+p.y)*p.z); }
+vec3 hash33(vec3 p){ p = fract(p*vec3(.1031,.1030,.0973)); p += dot(p, p.yxz+33.33); return fract((p.xxy+p.yxx)*p.zyx); }
+float noise(vec3 x){ vec3 i = floor(x); vec3 f = fract(x); f = f*f*(3.-2.*f);
+  return mix(mix(mix(hash13(i),hash13(i+vec3(1,0,0)),f.x), mix(hash13(i+vec3(0,1,0)),hash13(i+vec3(1,1,0)),f.x),f.y),
+             mix(mix(hash13(i+vec3(0,0,1)),hash13(i+vec3(1,0,1)),f.x), mix(hash13(i+vec3(0,1,1)),hash13(i+vec3(1,1,1)),f.x),f.y), f.z); }
+float fbm(vec3 p){ float a=.5, s=0.; for(int i=0;i<5;i++){ s += a*noise(p); p = p*2.03 + vec3(1.7,9.2,3.1); a *= .5; } return s/.96875; }
+float fbm3(vec3 p){ float a=.5, s=0.; for(int i=0;i<3;i++){ s += a*noise(p); p = p*2.07 + vec3(4.7,1.2,8.1); a *= .5; } return s/.875; }
+vec3 voronoi(vec3 x){ vec3 p = floor(x), f = fract(x); float F1 = 8., F2 = 8., id = 0.;
+  for(int k=-1;k<=1;k++) for(int j=-1;j<=1;j++) for(int i=-1;i<=1;i++){
+    vec3 b = vec3(float(i),float(j),float(k)); vec3 r = b + hash33(p+b) - f; float d = dot(r,r);
+    if(d < F1){ F2 = F1; F1 = d; id = hash13(p+b+17.); } else if(d < F2) F2 = d; }
+  return vec3(sqrt(F1), sqrt(F2), id); }
+vec3 rotY(vec3 p, float a){ float c = cos(a), s = sin(a); return vec3(c*p.x + s*p.z, p.y, -s*p.x + c*p.z); }
+float sphere(vec3 ro, vec3 rd, vec3 c, float r){ vec3 oc = ro - c; float b = dot(oc, rd); float h = b*b - dot(oc,oc) + r*r; if(h < 0.) return -1.; return -b - sqrt(h); }
+
+// photosphere: granulation, sunspots, faculae, limb darkening
+vec3 photosphere(vec3 n, float mu){
+  vec3 p = rotY(n, uRot);
+  float t = uTime;
+  vec3 q = p*uGran*1.8;
+  vec3 w = vec3(noise(q*.45 + t*.08), noise(q*.45 + 7.1 - t*.07), noise(q*.45 + 3.3 + t*.06)) - .5;
+  q += w*(.9 + uWarp*2.5);
+  vec3 v = voronoi(q + vec3(0., t*.05, 0.));
+  float lanes = smoothstep(.0, .1, v.y - v.x);
+  float gran = mix(.5, 1., lanes) * (.8 + .32*v.z) * (1. - .38*v.x*v.x);
+  gran *= .78 + .44*fbm3(q*2.4 + t*.1)*uDetail;
+  gran *= .9 + .2*noise(p*uGran*.18 + 9.);
+  float act = fbm3(p*2.3 + uSeed);
+  float spn = fbm(p*3.6 + 13. + uSeed);
+  float pen = smoothstep(.66, .70, spn) * uSpots;
+  float umb = smoothstep(.735, .76, spn) * uSpots;
+  float fil = noise(p*vec3(140.,40.,140.) + spn*30.);
+  float I = gran;
+  I = mix(I, .38 + .22*fil, pen);
+  I = mix(I, .07, umb);
+  I += smoothstep(.56, .72, act) * pow(1. - mu, 1.5) * .55 * (1. - pen);
+  float ld = 1. - .6*(1. - mu) - .15*(1. - mu)*(1. - mu);
+  I *= ld;
+  vec3 hot = vec3(1., .66, .24), cool = vec3(.92, .26, .02), deep = vec3(.45, .05, .0);
+  vec3 col = mix(cool, hot, clamp(I*1.15 - .1, 0., 1.));
+  col = mix(deep, col, smoothstep(.05, .35, I));
+  return col * I * uSurf;
+}
+
+vec3 background(vec3 rd){
+  vec3 c = vec3(0.);
+  vec3 g = rd*420.; vec3 id = floor(g); vec3 fr = fract(g) - .5;
+  float hs = hash13(id + uSeed*.17);
+  if(hs > .982){ vec3 o = (hash33(id) - .5)*.6; float dd = length(fr - o); float b = (hs - .982)/.018;
+    vec3 tint = mix(vec3(1.,.78,.55), vec3(.7,.82,1.), hash13(id*1.37));
+    c += tint * b*b * exp(-dd*dd*28.) * 2.2; }
+  vec3 mwn = normalize(vec3(.35, .9, .25));
+  float band = exp(-pow(dot(rd, mwn)/.28, 2.));
+  float mw = fbm(rd*5. + 2.);
+  float dust = smoothstep(.45, .7, fbm3(rd*9. + 5.));
+  c += uMW * band * (vec3(.05,.08,.2)*pow(mw,1.6) + vec3(.12,.1,.09)*pow(mw,4.)) * (1. - .8*dust*band);
+  float n1 = fbm(rd*2.2 + uSeed), n2 = fbm3(rd*4.5 - uSeed);
+  c += uNeb.w * (uNeb.rgb*pow(n1, 3.2)*.55 + uNeb2*pow(n2, 3.5)*.4);
+  // fine star dust
+  c += uStars * .25 * vec3(.6,.7,1.) * pow(hash13(floor(rd*1400.)), 60.);
+  return c * uStars;
+}
+
+void main(){
+  vec2 uv = vUv*2. - 1.;
+  vec3 ro = uCamPos;
+  vec3 rd = normalize(uCamF + uv.x*uTan*uAspect*uCamR + uv.y*uTan*uCamU);
+
+  float tS = sphere(ro, rd, vec3(0.), 1.);
+  float tO = uOcc.w > 0. ? sphere(ro, rd, uOcc.xyz, uOcc.w) : -1.;
+  bool hitOcc = tO > 0. && (tS < 0. || tO < tS);
+
+  vec3 col = vec3(0.);
+  // closest approach of the ray to the sun centre
+  float tc = max(-dot(ro, rd), 0.);
+  vec3 P = ro + rd*tc; float d = max(length(P), 1e-4); vec3 dp = P/d; float h = d - 1.;
+
+  if(tS > 0. && !hitOcc){
+    vec3 n = normalize(ro + rd*tS);
+    float mu = clamp(dot(n, -rd), 0., 1.);
+    col = photosphere(n, mu) * 1.25;
+    // flare on the disk
+    float fd = 1. - dot(n, normalize(uFlare.xyz));
+    col += uFlare.w * vec3(1., .93, .8) * (exp(-fd*1600.)*14. + exp(-fd*160.)*2.5);
+  } else if(!hitOcc){
+    col = background(rd);
+    float hp = max(h, 0.) + (tc <= 0. ? .8*max(dot(rd, normalize(ro)), 0.) : 0.);
+    // corona with radial streamers
+    vec3 sd = rotY(dp, uRot*.25);
+    float st = fbm(sd*vec3(3.,5.5,3.) + uSeed*.3);
+    float streak = pow(clamp(st*1.25 - .15, 0., 1.), 2.2);
+    float k = exp(-hp*14.)*.5 + .12/pow(1. + hp*3., 3.6);
+    float stre = streak * (.22/pow(1. + hp*1.4, 2.6)) * uStreamer;
+    vec3 ccol = mix(vec3(1., .42, .1), vec3(1., .78, .48), exp(-hp*5.));
+    col += ccol * (k + stre) * uCorona;
+    // chromosphere rim & spicules
+    float spi = .55 + .9*noise(sd*vec3(420., 420., 420.) + vec3(0., 0., hp*60.));
+    col += vec3(1., .28, .07) * exp(-hp/(.006 + .01*spi)) * uRim * 2.2;
+    // prominences (red-orange plasma clouds anchored to the limb)
+    float pm = max(dot(dp, normalize(uProm.xyz)), 0.);
+    float pmask = smoothstep(.72, .95, pm);
+    float pn = fbm(dp*14. + vec3(0., hp*4.5, 0.) + vec3(uTime*.05, -uTime*.11, 0.));
+    float ph = uPromH*(.45 + .9*fbm3(dp*6. + 3.));
+    float prom = smoothstep(.42, .6, pn) * pmask * smoothstep(ph, ph*.25, hp) * smoothstep(-.01, .015, hp);
+    float pfine = .6 + .8*noise(dp*90. + vec3(0., hp*40., 0.));
+    col += vec3(1., .3, .06) * prom * pfine * uProm.w * 4.5;
+    // coronal loop arcade
+    if(uLoop.w > 0.){
+      vec3 L = normalize(uLoop.xyz);
+      float u = dot(dp, normalize(uLoopT));
+      float side = dot(dp, L);
+      float env = smoothstep(.55, .85, side) * smoothstep(-.005, .012, hp);
+      float acc = 0.;
+      for(int i = 0; i < 7; i++){
+        float fi = float(i);
+        float uc = (hash13(vec3(fi, 3.1, uSeed)) - .5) * uLoopSize.x * 1.6;
+        float wi = uLoopSize.x * (.35 + .55*hash13(vec3(fi, 7.7, uSeed)));
+        float hi = uLoopSize.y * (.45 + .75*hash13(vec3(fi, 1.3, uSeed)));
+        vec2 e = vec2((u - uc)/wi, hp/hi);
+        float sr = length(e);
+        float ph = atan(e.y, e.x);
+        float wob = (fbm3(vec3(ph*2.5, fi*3.7, uTime*.2)) - .5) * .12;
+        float th = .045 + .03*hash13(vec3(fi, 9.9, uSeed));
+        float tube = exp(-pow((sr - 1. + wob)/th, 2.));
+        float tube2 = exp(-pow((sr - 1. - th*1.6 + wob)/(th*.6), 2.)) * .6;
+        float blob = .35 + 1.3*pow(fbm3(vec3(ph*7., fi*11., uTime*.35)), 2.);
+        float foot = .55 + .45*smoothstep(.2, 1.4, ph) * smoothstep(2.95, 1.75, ph);
+        acc += (tube + tube2) * blob * foot * (.5 + .7*hash13(vec3(fi, 5.5, uSeed)));
+      }
+      vec3 lc = mix(vec3(1., .36, .06), vec3(1., .8, .45), clamp(acc*.35, 0., 1.));
+      col += lc * acc * env * uLoop.w * 1.5;
+      col += vec3(1., .5, .18) * env * .18 * uLoop.w * exp(-hp*3.);
+    }
+  }
+
+  // coronal mass ejection: expanding filamentary shell
+  if(uCMEI > 0.){
+    vec3 Cd = normalize(uCME.xyz); float pr = uCME.w;
+    vec3 C = Cd*(1. + pr*2.2); float r = .15 + pr*1.9;
+    float tC = max(dot(C - ro, rd), 0.);
+    vec3 Q = ro + rd*tC; float dC = length(Q - C);
+    vec3 qd = normalize(Q - C + 1e-4);
+    float front = dot(qd, Cd);
+    float cloud = fbm(Q*2.6 + Cd*pr*2.) ;
+    float shell = exp(-pow((dC - r)/(.14*r + .025), 2.)) * smoothstep(-.45, .25, front);
+    float legs = exp(-pow((dC - r)/(.2*r + .03), 2.)) * smoothstep(.1, -.6, front) * .35;
+    float core = exp(-pow(length(Q - Cd*(1. + pr*1.1))/(.18*r + .03), 2.)) * .9;
+    float behind = (tS > 0. && tS < tC) || hitOcc ? .1 : 1.;
+    float em = (shell*(.35 + 1.6*pow(cloud, 2.2)) + legs*cloud + core*pow(cloud, 1.5)*1.4);
+    col += mix(vec3(1., .38, .08), vec3(1., .75, .4), shell*.5) * em * uCMEI * (1. - pr*.5) * behind * 1.3;
+  }
+
+  // occluder: moon / planet
+  if(uOcc.w > 0.){
+    vec3 oc = uOcc.xyz; float R = uOcc.w;
+    vec3 sunDir = normalize(-oc);
+    if(hitOcc){
+      vec3 n = normalize(ro + rd*tO - oc);
+      if(uOccType < 1.5){
+        col = vec3(.004, .0045, .006) * (.6 + .4*noise(n*12.));
+      } else {
+        float lit = dot(n, sunDir);
+        float land = smoothstep(.5, .56, fbm(n*2.6 + 4.));
+        float cloud = smoothstep(.5, .72, fbm(n*5. + vec3(uTime*.01, 0., 0.)));
+        vec3 surf = mix(vec3(.015,.05,.14), vec3(.16,.12,.07), land);
+        surf = mix(surf, vec3(.85), cloud*.85);
+        col = surf * max(lit, 0.) * 1.6;
+        float term = smoothstep(.12, -.02, lit);
+        float city = step(.93, hash13(floor(n*260.))) * land * (1. - cloud) * smoothstep(.45, .6, fbm3(n*9.));
+        col += vec3(1., .6, .22) * city * term * .9;
+        float rimv = pow(1. - clamp(dot(n, -rd), 0., 1.), 4.);
+        col += mix(vec3(.15,.35,1.), vec3(1.,.45,.12), pow(max(dot(n, sunDir) + .25, 0.), 2.)) * rimv * smoothstep(-.35, .3, lit) * 1.6;
+      }
+    }
+    if(uOccType > 1.5){
+      float to = max(dot(oc - ro, rd), 0.);
+      float dd = length(ro + rd*to - oc) - R;
+      if(dd > 0. && !hitOcc){
+        vec3 cn = normalize(ro + rd*to - oc);
+        float fwd = pow(max(dot(cn, sunDir) + .35, 0.), 2.5);
+        vec3 ac = mix(vec3(.12,.32,1.), vec3(1.,.5,.15), clamp(fwd*.7, 0., 1.));
+        col += ac * exp(-max(dd, 0.)/(.012*R)) * (.25 + 1.6*fwd) * .9;
+      }
+    }
+  }
+
+  // flare glow + anamorphic streak
+  if(uFlare.w > 0.){
+    vec3 Fp = normalize(uFlare.xyz)*1.01;
+    float tf = max(dot(Fp - ro, rd), 0.);
+    float df = length(ro + rd*tf - Fp);
+    float occl = hitOcc ? .0 : 1.;
+    col += uFlare.w * vec3(1., .82, .55) * (.0009/(df*df + .0009)) * 2.5 * occl;
+    vec2 fs = (uv - uFlareScr) * vec2(uAspect, 1.);
+    col += uFlare.w * vec3(1., .7, .4) * exp(-abs(fs.y)*90.) * exp(-abs(fs.x)*1.6) * 1.1 * occl;
+  }
+
+  // exposure, filmic tone map, grade
+  col *= uExpo;
+  col = (col*(2.51*col + .03))/(col*(2.43*col + .59) + .14);
+  col = clamp(col, 0., 1.);
+  float lum = dot(col, vec3(.2126, .7152, .0722));
+  col = mix(vec3(lum), col, uSat);
+  col = pow(col, vec3(1./2.2));
+  float vig = 1. - uVig*dot(uv*vec2(.75, .55), uv*vec2(.75, .55));
+  col *= vig;
+  col += (hash13(vec3(gl_FragCoord.xy, uTime*60.)) - .5) * uGrain;
+  col = mix(col, vec3(1., .93, .8), uFlash);
+  col *= 1. - uFade;
+  gl_FragColor = vec4(col, 1.);
+}`;
+
+const U = {
+  uRes: { value: new THREE.Vector2(W, H) }, uTime: { value: 0 },
+  uCamPos: { value: V3(0, 0, 5) }, uCamR: { value: V3(1, 0, 0) }, uCamU: { value: V3(0, 1, 0) }, uCamF: { value: V3(0, 0, -1) },
+  uTan: { value: Math.tan(20 * Math.PI / 180) }, uAspect: { value: W / H },
+};
+const DEFAULTS = {
+  uRot: 0, uGran: 38, uDetail: 1, uSpots: 1, uSurf: 1, uWarp: 0, uSeed: 1,
+  uCorona: 1, uStreamer: 1, uRim: 1,
+  uProm: new THREE.Vector4(0.6, 0.8, 0, 0), uPromH: 0.12,
+  uLoop: new THREE.Vector4(0, 1, 0, 0), uLoopT: V3(1, 0, 0), uLoopSize: new THREE.Vector2(0.25, 0.25),
+  uFlare: new THREE.Vector4(0, 0, 1, 0), uFlareScr: new THREE.Vector2(0, 0),
+  uCME: new THREE.Vector4(0, 1, 0, 0), uCMEI: 0,
+  uOcc: new THREE.Vector4(0, 0, 0, 0), uOccType: 0,
+  uNeb: new THREE.Vector4(0, 0, 0, 0), uNeb2: V3(0, 0, 0), uStars: 1, uMW: 0.6,
+  uExpo: 1, uFlash: 0, uFade: 0, uGrain: 0.03, uSat: 1.3, uVig: 0.55,
+};
+for (const k in DEFAULTS) U[k] = { value: DEFAULTS[k].clone ? DEFAULTS[k].clone() : DEFAULTS[k] };
+
+const bgScene = new THREE.Scene();
+const bgCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+bgScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({
+  uniforms: U, depthTest: false, depthWrite: false,
+  vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0., 1.); }',
+  fragmentShader: frag,
+})));
+
+// ---------------------------------------------------------------- solar probe (generic heat-shielded solar probe)
+const probeScene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, W / H, 0.001, 100);
+const sunLight = new THREE.DirectionalLight(0xfff0d8, 4.5); probeScene.add(sunLight); probeScene.add(sunLight.target);
+probeScene.add(new THREE.HemisphereLight(0x405070, 0xff7a20, 0.9));
+const rimLight = new THREE.DirectionalLight(0xffa860, 2.2); probeScene.add(rimLight); probeScene.add(rimLight.target);
+const probe = new THREE.Group(); probeScene.add(probe);
+{
+  const M = (c, r, m, e = 0x000000) => new THREE.MeshStandardMaterial({ color: c, roughness: r, metalness: m, emissive: e });
+  const shieldFront = M(0xf2efe8, 0.85, 0.0), shieldEdge = M(0x8a8680, 0.5, 0.4), goldFoil = M(0xd6a03c, 0.32, 1.0, 0x1a0c00);
+  const truss = M(0x9aa0aa, 0.4, 0.9), panel = M(0x1a2a55, 0.25, 0.6, 0x050a20), dark = M(0x16181c, 0.5, 0.5);
+  const add = (geo, mat, x, y, z, rx = 0, ry = 0, rz = 0) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.set(rx, ry, rz); probe.add(m); return m; };
+  // +z faces the Sun
+  add(new THREE.CylinderGeometry(1.15, 1.15, 0.03, 64), shieldFront, 0, 0, 0.62, Math.PI / 2);
+  add(new THREE.CylinderGeometry(1.17, 1.12, 0.13, 64, 1, true), shieldEdge, 0, 0, 0.55, Math.PI / 2);
+  add(new THREE.CylinderGeometry(1.1, 1.1, 0.02, 64), M(0x55524c, 0.7, 0.2), 0, 0, 0.48, Math.PI / 2);
+  for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2; const s = add(new THREE.CylinderGeometry(0.025, 0.025, 0.62, 8), truss, Math.cos(a) * 0.5, Math.sin(a) * 0.5, 0.2, Math.PI / 2 + 0.25 * Math.sin(a), 0, 0); s.lookAt(Math.cos(a) * 0.3, Math.sin(a) * 0.3, -0.2); s.rotateX(Math.PI / 2); }
+  add(new THREE.CylinderGeometry(0.42, 0.42, 0.9, 6), goldFoil, 0, 0, -0.45, Math.PI / 2);
+  add(new THREE.CylinderGeometry(0.44, 0.44, 0.04, 6), dark, 0, 0, -0.02, Math.PI / 2);
+  for (const sgn of [-1, 1]) {
+    const arm = add(new THREE.BoxGeometry(0.5, 0.05, 0.05), truss, sgn * 0.65, 0, -0.35);
+    const p = add(new THREE.BoxGeometry(0.55, 0.02, 0.42), panel, sgn * 1.15, 0, -0.25, 0.2 * sgn, 0, sgn * 0.12);
+    for (let k = 0; k < 4; k++) add(new THREE.BoxGeometry(0.008, 0.025, 0.42), truss, sgn * (0.92 + k * 0.15), 0, -0.25, 0.2 * sgn, 0, sgn * 0.12);
+  }
+  add(new THREE.CylinderGeometry(0.012, 0.012, 1.3, 6), truss, 0, 0.1, -1.45, Math.PI / 2);
+  add(new THREE.SphereGeometry(0.22, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2.6), M(0xdedad2, 0.5, 0.2), 0.0, -0.42, -0.65, Math.PI);
+  add(new THREE.CylinderGeometry(0.03, 0.03, 0.35, 8), truss, 0.0, -0.28, -0.65);
+  add(new THREE.BoxGeometry(0.2, 0.2, 0.2), goldFoil, 0.25, 0.3, -0.8);
+}
+
+// ---------------------------------------------------------------- shot setups
+// Sun: radius 1 at the origin. Each setup returns camera + uniform overrides for local progress k (0..1) and shot seconds lt.
+function camLook(pos, target, fov = 40, roll = 0) { return { pos, target, fov, roll }; }
+const horizonCam = (D, above, lon, k, glide, fov = 40, roll = 0, lat0 = 0) => {
+  // camera at distance D from sun centre, looking at the limb; 'above' degrees above the limb direction
+  const base = dirFromAngles(lon + glide * k, lat0);
+  const pos = base.clone().multiplyScalar(D);
+  const limbA = Math.asin(1 / D) + above * Math.PI / 180;
+  const toC = base.clone().negate();
+  const up = V3(0, 1, 0).sub(base.clone().multiplyScalar(base.y)).normalize();
+  const dir = toC.clone().multiplyScalar(Math.cos(limbA)).add(up.clone().multiplyScalar(Math.sin(limbA)));
+  return camLook(pos, pos.clone().add(dir), fov, roll);
+};
+const limbPoint = (cam, side = 0) => { // direction from sun centre to the visible limb straight "up" in the frame
+  const toC = cam.pos.clone().negate().normalize();
+  const f = cam.target.clone().sub(cam.pos).normalize();
+  const up = f.clone().sub(toC.clone().multiplyScalar(f.dot(toC))).normalize();
+  const D = cam.pos.length();
+  const p = cam.pos.clone().add(toC.clone().multiplyScalar(D)).normalize(); // dummy
+  const right = toC.clone().cross(up).normalize();
+  return { up, right, tangent: right, dir: up.clone().multiplyScalar(Math.cos(side)).add(right.clone().multiplyScalar(Math.sin(side))).normalize() };
+};
+
+const SETUPS = {
+  // wide: full disk in a starfield
+  wide(k, lt, o) {
+    const d = lerp(o.d0 ?? 7.0, o.d1 ?? 6.2, ease(k));
+    const pos = dirFromAngles(o.lon ?? 0.2, o.lat ?? 0.15).multiplyScalar(d);
+    const cam = camLook(pos, V3(o.tx ?? 0, o.ty ?? 0, 0), o.fov ?? 40, (o.roll ?? 0) + (o.rollV ?? 0) * k);
+    const ld = limbPoint(cam, o.promSide ?? 0.9);
+    return { cam, u: { uRot: (o.rot ?? 0) + lt * 0.02, uGran: 30, uSpots: o.spots ?? 1, uStreamer: o.streamer ?? 1.2, uMW: o.mw ?? 0.7,
+      uProm: new THREE.Vector4(ld.dir.x, ld.dir.y, ld.dir.z, o.prom ?? 0.9), uPromH: 0.1, uSeed: o.seed ?? 1, uNeb: o.neb || new THREE.Vector4(0, 0, 0, 0), uNeb2: o.neb2 || V3(0, 0, 0) } };
+  },
+  // limb horizon with spicules and prominences
+  horizon(k, lt, o) {
+    const cam = horizonCam(o.D ?? 1.45, o.above ?? 9, o.lon ?? 0, ease(k), o.glide ?? 0.05, o.fov ?? 40, (o.roll ?? 0) + (o.rollV ?? 0) * k, o.lat ?? 0);
+    const ld = limbPoint(cam, o.promSide ?? 0.15);
+    return { cam, u: { uRot: (o.rot ?? 0.5) + lt * 0.01, uGran: o.gran ?? 60, uProm: new THREE.Vector4(ld.dir.x, ld.dir.y, ld.dir.z, o.prom ?? 1.2), uPromH: o.promH ?? 0.12,
+      uLoop: new THREE.Vector4(ld.dir.x, ld.dir.y, ld.dir.z, o.loop ?? 0), uLoopT: ld.right, uLoopSize: new THREE.Vector2(o.lw ?? 0.2, o.lh ?? 0.16),
+      uCorona: o.corona ?? 0.45, uStreamer: 0.7, uSeed: o.seed ?? 2, uMW: 0.25 } };
+  },
+  // coronal loop arcade (the reference's black-hole arc becomes a glowing loop system)
+  loops(k, lt, o) {
+    const cam = horizonCam(o.D ?? 1.6, o.above ?? 4, o.lon ?? 1.2, ease(k), o.glide ?? 0.03, lerp(o.fov0 ?? 44, o.fov1 ?? 36, ease(k)), o.roll ?? 0);
+    const ld = limbPoint(cam, 0);
+    return { cam, u: { uRot: (o.rot ?? 1.3) + lt * 0.01, uGran: 60, uLoop: new THREE.Vector4(ld.dir.x, ld.dir.y, ld.dir.z, (o.loop ?? 1.3) * (1 + 0.15 * Math.sin(lt * 3))),
+      uLoopT: ld.right, uLoopSize: new THREE.Vector2(o.lw ?? 0.3, o.lh ?? 0.3), uProm: new THREE.Vector4(ld.dir.x, ld.dir.y, ld.dir.z, 0.5), uPromH: 0.05, uSeed: o.seed ?? 3, uMW: 0.2, uCorona: 1.2 } };
+  },
+  // close-up flight over the surface
+  surface(k, lt, o) {
+    const D = o.D ?? 1.035;
+    const tilt = (o.tilt ?? 50) * Math.PI / 180;
+    const pos = V3(0, 0, D);
+    const dir = V3(0, Math.sin(tilt), -Math.cos(tilt));
+    const cam = camLook(pos, pos.clone().add(dir), o.fov ?? 45, (o.roll ?? 0) + (o.rollV ?? 0) * k);
+    const ha = Math.acos(1 / D) + 0.01; const hz = V3(0, Math.sin(ha), Math.cos(ha));
+    return { cam, u: { uCorona: 0.28, uRim: 1.6, uProm: new THREE.Vector4(hz.x, hz.y, hz.z, o.prom ?? 1.6), uPromH: o.promH ?? 0.025, uRot: (o.rot ?? 0) + (o.speed ?? 0.025) * lt, uGran: (o.gran ?? 140) * 2.4, uWarp: o.warp ?? 0, uSpots: o.spots ?? 1, uSeed: o.seed ?? 4,
+      uFlare: o.flare ? new THREE.Vector4(0, Math.sin(o.flareLat ?? 0.12), Math.cos(o.flareLat ?? 0.12), o.flare(lt, k)) : new THREE.Vector4(0, 0, 1, 0), uExpo: o.expo ?? 1 } };
+  },
+  // total eclipse: the moon hides the disk, the corona shows
+  eclipse(k, lt, o) {
+    const D = o.Dc ?? 9;
+    const cam = camLook(V3(0, 0, D), V3(0, 0, 0), lerp(o.fov0 ?? 34, o.fov1 ?? 30, ease(k)), (o.roll ?? 0) + (o.rollV ?? 0.06) * k);
+    const sunAng = Math.asin(1 / D);
+    const md = D * 0.5, mr = md * Math.sin(sunAng * (o.cover ?? 1.035));
+    const off = (o.off0 ?? 0) + ((o.off1 ?? 0) - (o.off0 ?? 0)) * ease(k);
+    return { cam, u: { uOcc: new THREE.Vector4(off * mr, (o.offY ?? 0) * mr, D - md, mr), uOccType: 1, uStreamer: o.streamer ?? 2.2, uCorona: o.corona ?? 1.3, uRim: 1.6,
+      uProm: new THREE.Vector4(0.3, 0.95, 0, o.prom ?? 0.9), uPromH: 0.08, uMW: 0.5, uSeed: o.seed ?? 5, uExpo: o.expo ?? 1.1,
+      uFlare: o.diamond ? new THREE.Vector4(-0.94, 0.33, 0.05, o.diamond(k)) : new THREE.Vector4(0, 0, 1, 0), uFlareScr: new THREE.Vector2(-0.94 * Math.tan(sunAng) / Math.tan(16 * Math.PI / 180) / (W / H), 0.33 * Math.tan(sunAng) / Math.tan(16 * Math.PI / 180)) } };
+  },
+  // sunrise over a planet's limb, seen from orbit
+  sunrise(k, lt, o) {
+    const cam = camLook(V3(0, o.cy ?? 0.5, 24), V3(0, (o.ty0 ?? -0.6) + ((o.ty1 ?? -1.6) - (o.ty0 ?? -0.6)) * ease(k), 0), o.fov ?? 34, (o.roll ?? 0) + (o.rollV ?? 0) * k);
+    const rise = (o.rise0 ?? 0) + ((o.rise1 ?? 1) - (o.rise0 ?? 0)) * ease(k);
+    const R = o.R ?? 5;
+    return { cam, u: { uOcc: new THREE.Vector4(o.px ?? 0, -R - 1.1 + rise * (o.riseAmt ?? 1.6), 24 - (o.pd ?? 10), R), uOccType: 2, uStreamer: 1.3, uMW: o.mw ?? 1, uSeed: o.seed ?? 6, uExpo: o.expo ?? 1, uCorona: 1.2 } };
+  },
+  // distant sun inside a nebula
+  nebula(k, lt, o) {
+    const d = lerp(o.d0 ?? 60, o.d1 ?? 45, ease(k));
+    const pos = dirFromAngles(o.lon ?? 2.2, o.lat ?? 0.3).multiplyScalar(d);
+    const cam = camLook(pos, V3(o.tx ?? 0, o.ty ?? 0, 0), o.fov ?? 40, (o.roll ?? 0) + (o.rollV ?? 0.05) * k);
+    return { cam, u: { uNeb: o.neb || new THREE.Vector4(0.9, 0.12, 0.2, 1), uNeb2: o.neb2 || V3(0.2, 0.25, 0.9), uMW: 0.3, uCorona: 2.5, uStreamer: 0.6, uSeed: o.seed ?? 7, uExpo: 1.2,
+      uOcc: o.planet ? new THREE.Vector4(...o.planet) : new THREE.Vector4(0, 0, 0, 0), uOccType: o.planet ? 2 : 0 } };
+  },
+  // solar probe in front of the sun
+  probe(k, lt, o) {
+    const r = lerp(o.r0 ?? 4, o.r1 ?? 3.6, ease(k));
+    const pos = dirFromAngles(o.lon ?? 0, o.lat ?? 0).multiplyScalar(r);
+    const tgt = V3(o.tx ?? 0, o.ty ?? 0, 0);
+    const cam = camLook(pos, tgt, o.fov ?? 40, (o.roll ?? 0) + (o.rollV ?? 0) * k);
+    const pp = lerpV(o.p0, o.p1, ease(k));
+    const ld = limbPoint(cam, 0.6);
+    return { cam, probe: { pos: pos.clone().add(pp.clone().applyQuaternion(lookQuat(cam))), scale: o.scale ?? 0.08, spin: (o.spin ?? 0) + (o.spinV ?? 0.2) * k },
+      u: { uRot: (o.rot ?? 2) + lt * 0.02, uGran: o.gran ?? 50, uSeed: o.seed ?? 8, uProm: new THREE.Vector4(ld.dir.x, ld.dir.y, ld.dir.z, 1), uPromH: 0.1, uMW: 0.5,
+        uLoop: new THREE.Vector4(ld.dir.x, ld.dir.y, ld.dir.z, o.loop ?? 0), uLoopT: ld.right } };
+  },
+  // coronal mass ejection blasting off the limb
+  cme(k, lt, o) {
+    const d = lerp(o.d0 ?? 7, o.d1 ?? 6, ease(k));
+    const pos = dirFromAngles(o.lon ?? 0.6, o.lat ?? 0.1).multiplyScalar(d);
+    const cam = camLook(pos, V3(o.tx ?? 0, o.ty ?? 0.6, 0), o.fov ?? 40, (o.roll ?? 0) + (o.rollV ?? 0) * k);
+    const ld = limbPoint(cam, o.side ?? 0.3);
+    const pr = lerp(o.pr0 ?? 0, o.pr1 ?? 1, o.lin ? k : easeOut(k));
+    const fl = o.flare ? o.flare(k) : 0;
+    return { cam, u: { uCME: new THREE.Vector4(ld.dir.x, ld.dir.y, ld.dir.z, pr), uCMEI: o.cmeI ?? 1.4, uRot: 0.8 + lt * 0.02, uGran: 30, uSeed: o.seed ?? 9, uMW: 0.5,
+      uProm: new THREE.Vector4(ld.dir.x, ld.dir.y, ld.dir.z, 1.4), uPromH: 0.18 + pr * 0.2, uFlare: new THREE.Vector4(ld.dir.x * 0.97, ld.dir.y * 0.97 + 0.1, ld.dir.z * 0.97 + 0.2, fl),
+      uFlareScr: projectScr(cam, ld.dir.clone().multiplyScalar(0.99)) } };
+  },
+  // big prominence lifting off the limb
+  prominence(k, lt, o) {
+    const cam = horizonCam(o.D ?? 1.9, o.above ?? 7, o.lon ?? 2.6, ease(k), o.glide ?? 0.04, lerp(o.fov0 ?? 42, o.fov1 ?? 38, ease(k)), o.roll ?? 0.0);
+    const ld = limbPoint(cam, o.side ?? 0);
+    return { cam, u: { uProm: new THREE.Vector4(ld.dir.x, ld.dir.y, ld.dir.z, o.prom ?? 2.0), uPromH: lerp(o.h0 ?? 0.18, o.h1 ?? 0.32, ease(k)), uRot: 2.4 + lt * 0.01, uGran: 60, uSeed: o.seed ?? 10,
+      uCME: new THREE.Vector4(ld.dir.x, ld.dir.y, ld.dir.z, lerp(o.pr0 ?? 0, o.pr1 ?? 0, easeOut(k))), uCMEI: o.cmeI ?? 0, uMW: 0.2, uCorona: 0.55 } };
+  },
+  // planet transiting the disk
+  transit(k, lt, o) {
+    const pos = V3(0, 0, 7.5);
+    const cam = camLook(pos, V3(0, 0, 0), lerp(36, 33, ease(k)), (o.rollV ?? 0.04) * k);
+    const x = lerp(o.x0 ?? -0.8, o.x1 ?? 0.2, k);
+    return { cam, u: { uOcc: new THREE.Vector4(x, o.y ?? -0.25, 3.5, o.r ?? 0.035), uOccType: 1, uRot: 1.1 + lt * 0.02, uGran: 34, uSeed: o.seed ?? 11, uMW: 0.6 } };
+  },
+  // finale: the sun as a bright star with a planet and moon in the foreground
+  system(k, lt, o) {
+    const pos = V3(0, 0.6, lerp(o.d0 ?? 26, o.d1 ?? 32, ease(k)));
+    const cam = camLook(pos, V3(lerp(-2.2, -1.6, k), 0.3, 0), 40, 0.02 * k);
+    return { cam, u: { uOcc: new THREE.Vector4(1.4, -1.6, pos.z - 9, 1.45), uOccType: 2, uMW: 1.1, uCorona: 1.6, uStreamer: 1.4, uSeed: 12, uExpo: 1.05,
+      uNeb: new THREE.Vector4(0.1, 0.2, 0.55, 0.45), uNeb2: V3(0.05, 0.1, 0.4) }, moon: V3(-0.9, -0.2, pos.z - 7) };
+  },
+};
+function lookQuat(cam) { const m = new THREE.Matrix4(); const up = camUp(cam); m.lookAt(cam.pos, cam.target, up); return new THREE.Quaternion().setFromRotationMatrix(m); }
+function camBasis(cam) {
+  const F = cam.target.clone().sub(cam.pos).normalize();
+  let R = F.clone().cross(V3(0, 1, 0)); if (R.lengthSq() < 1e-6) R = V3(1, 0, 0); R.normalize();
+  let Up = R.clone().cross(F).normalize();
+  const c = Math.cos(cam.roll), s = Math.sin(cam.roll);
+  const R2 = R.clone().multiplyScalar(c).add(Up.clone().multiplyScalar(s));
+  const U2 = Up.clone().multiplyScalar(c).sub(R.clone().multiplyScalar(s));
+  return { F, R: R2, U: U2 };
+}
+function camUp(cam) { return camBasis(cam).U; }
+function projectScr(cam, p) {
+  const { F, R, U: Up } = camBasis(cam);
+  const v = p.clone().sub(cam.pos); const z = v.dot(F);
+  const t = Math.tan(cam.fov * Math.PI / 360);
+  return new THREE.Vector2(v.dot(R) / z / t / (W / H), v.dot(Up) / z / t);
+}
+
+// ---------------------------------------------------------------- edit decision list (in beats; 1 beat = 0.698 s)
+const flashOn = (k, at = 0, len = 0.25) => 0;
+const S = [];
+const shot = (b0, b1, setup, o = {}) => S.push({ b0, b1, setup, o });
+// ACT 1 - title build, one cut per beat (mirrors the reference's first six shots)
+shot(0, 1, 'wide', { d0: 7.6, d1: 6.8, lon: -0.3, lat: 0.25, tx: 0.15, ty: -0.1, mw: 1.2, rollV: 0.05, fadeIn: 0.35 });
+shot(1, 2, 'sunrise', { rise0: 0.1, rise1: 0.55, ty0: -0.4, ty1: -0.9, rollV: -0.03 });
+shot(2, 3, 'probe', { r0: 1.55, r1: 1.5, lon: 0.3, lat: -0.15, tx: 0, ty: 1.4, fov: 42, roll: -0.5, p0: V3(-0.06, 0.03, -0.3), p1: V3(0.03, -0.01, -0.3), scale: 0.035, spinV: 0.3, gran: 90 });
+shot(3, 4, 'probe', { r0: 2.6, r1: 2.45, lon: -0.2, lat: 0.6, tx: 0, ty: 2.2, fov: 40, p0: V3(0.0, 0.08, -0.6), p1: V3(0.0, 0.06, -0.55), scale: 0.06, spin: 1, spinV: 0.15, loop: 0.5 });
+shot(4, 5, 'surface', { D: 1.02, tilt: 85, gran: 260, warp: 1, rollV: 0.25, speed: 0.01, spots: 0, expo: 1.1 });
+shot(5, 6, 'eclipse', { fov0: 30, fov1: 27, cover: 1.04, streamer: 2.6 });
+// ACT 2 - rapid cuts (half beats)
+shot(6, 6.5, 'horizon', { D: 1.25, above: 6, roll: 0.35, glide: 0.04, lon: 1.8, prom: 1.4 });
+shot(6.5, 7, 'sunrise', { rise0: 0.0, rise1: 0.15, ty0: -1.2, ty1: -1.3, px: 2.5, R: 4, pd: 12, roll: -0.25 });
+shot(7, 7.5, 'wide', { d0: 5.4, d1: 5.1, lon: 0.9, mw: 0.5, streamer: 1.6, seed: 3 });
+shot(7.5, 8, 'surface', { D: 1.03, tilt: 40, gran: 160, speed: 0.04, seed: 6, roll: 0.2 });
+shot(8, 8.5, 'surface', { D: 1.05, tilt: 55, gran: 120, seed: 9, flare: (lt, k) => 1.2 * Math.exp(-k * 2.5) + 0.2, flareLat: 0.35 });
+shot(8.5, 9, 'eclipse', { cover: 1.01, off0: 0.03, off1: 0.04, diamond: k => 3.5, fov0: 26, fov1: 25, expo: 1.0 });
+shot(9, 10, 'loops', { D: 1.5, fov0: 46, fov1: 42, loop: 1.4 });
+shot(10, 11, 'probe', { r0: 3.2, r1: 3.1, lon: 0.9, lat: 0.1, tx: 0.2, ty: 0.3, p0: V3(0.07, -0.03, -0.55), p1: V3(0.05, -0.03, -0.52), scale: 0.045, spin: 2, spinV: 0.6 });
+shot(11, 12, 'probe', { r0: 1.9, r1: 1.85, lon: -0.8, lat: 0.4, tx: 0, ty: 1.6, roll: 0.3, p0: V3(-0.1, 0.05, -0.5), p1: V3(-0.05, 0.05, -0.5), scale: 0.05, spin: 3, spinV: 0.3, gran: 80 });
+// ACT 3 - slower cinematic sequences
+shot(12, 14, 'nebula', { d0: 70, d1: 55, lon: 2.0, fadeIn: 0.15 });
+shot(14, 16, 'nebula', { d0: 40, d1: 36, lon: -1.0, lat: -0.2, tx: 3, ty: 1, neb: new THREE.Vector4(0.15, 0.3, 0.9, 0.7), neb2: V3(0.6, 0.15, 0.5), planet: [12, -5, 18, 1.8], rollV: -0.04 });
+shot(16, 20, 'loops', { D: 1.75, fov0: 48, fov1: 34, loop: 1.6, lw: 0.34, lh: 0.34, glide: 0.06 });
+shot(20, 22, 'probe', { r0: 3.0, r1: 2.9, lon: 0.4, lat: 0.25, tx: 0.6, ty: 0.4, fov: 34, p0: V3(0.02, -0.01, -0.12), p1: V3(0.0, -0.005, -0.11), scale: 0.03, spin: 0.5, spinV: 0.35 });
+shot(22, 24, 'probe', { r0: 1.7, r1: 1.65, lon: 2.4, lat: 0.2, tx: 0, ty: 1.4, roll: -0.15, rollV: 0.05, p0: V3(0.22, 0.12, -0.9), p1: V3(-0.05, 0.1, -0.9), scale: 0.06, spin: 1.2, spinV: 0.5, gran: 80, loop: 0.6 });
+shot(24, 27, 'surface', { D: 1.025, tilt: 38, gran: 170, speed: 0.03, seed: 13, rollV: 0.05 });
+shot(27, 30, 'prominence', { D: 1.7, h0: 0.16, h1: 0.28, prom: 2.2, fov0: 44, fov1: 38 });
+shot(30, 32, 'sunrise', { rise0: 0.2, rise1: 0.9, ty0: -1.4, ty1: -1.0, R: 7, pd: 9, cy: 0.2, mw: 1.6, fov: 38 });
+shot(32, 34, 'wide', { d0: 6.0, d1: 5.0, lon: 1.6, lat: -0.1, streamer: 1.5, seed: 4, rollV: 0.05 });
+shot(34, 36, 'probe', { r0: 5.5, r1: 4.6, lon: -0.6, lat: 0.15, tx: 0, ty: 0, p0: V3(-0.05, -0.12, -0.6), p1: V3(-0.03, -0.06, -1.4), scale: 0.05, spin: 0.2, spinV: 0.2 });
+shot(36, 38, 'surface', { D: 1.06, tilt: 75, gran: 120, spots: 2.2, seed: 17, speed: 0.012, rollV: -0.08 });
+shot(38, 40, 'prominence', { D: 1.6, lon: 4.0, h0: 0.14, h1: 0.22, prom: 2.0, cmeI: 0.6, pr0: 0, pr1: 0.12 });
+// ACT 4 - build and eruption (impacts on beats 40, 48, 54, 72)
+shot(40, 42, 'cme', { pr0: 0.02, pr1: 0.5, flare: k => 4 * Math.exp(-k * 4) + 0.4, flash: 1, shake: 1, seed: 21 });
+shot(42, 43, 'loops', { D: 1.4, lon: 3.2, fov0: 40, fov1: 38, loop: 1.7, roll: 0.15 });
+shot(43, 44, 'cme', { d0: 9, d1: 8.5, lon: -0.4, pr0: 0.35, pr1: 0.6, ty: 0.9, seed: 22 });
+shot(44, 45, 'surface', { D: 1.03, tilt: 50, gran: 200, warp: 0.6, seed: 23, speed: 0.05, roll: -0.25 });
+shot(45, 46, 'eclipse', { fov0: 28, fov1: 26, rollV: 0.1, streamer: 2.8, seed: 9 });
+shot(46, 48, 'prominence', { D: 1.8, lon: 5.1, h0: 0.2, h1: 0.45, prom: 2.4, cmeI: 1.0, pr0: 0.0, pr1: 0.35 });
+shot(48, 50, 'cme', { d0: 7.2, d1: 5.6, lon: 0.1, lat: 0.0, side: 0, pr0: 0.08, pr1: 0.62, cmeI: 1.6, flare: k => 5 * Math.exp(-k * 5) + 0.5, flash: 1, shake: 1.2, ty: 0.3, seed: 24 });
+shot(50, 51, 'probe', { r0: 2.4, r1: 2.3, lon: 1.0, lat: 0.3, tx: 0, ty: 0.9, p0: V3(0.04, -0.05, -0.35), p1: V3(0.02, -0.03, -0.33), scale: 0.06, spin: 4, spinV: 0.4, loop: 1 });
+shot(51, 52, 'surface', { D: 1.05, tilt: 60, gran: 110, seed: 25, flare: (lt, k) => 1.4 * Math.exp(-k * 3) + 0.25, flareLat: 0.3 });
+shot(52, 52.5, 'horizon', { D: 1.2, above: 5, lon: 3.6, roll: -0.3, prom: 1.8 });
+shot(52.5, 53, 'loops', { D: 1.45, lon: 0.5, loop: 1.8, fov0: 40, fov1: 39 });
+shot(53, 53.5, 'eclipse', { cover: 1.01, off0: -0.03, off1: -0.035, offY: 0.02, diamond: () => 3.2, fov0: 25, fov1: 25 });
+shot(53.5, 54, 'surface', { D: 1.04, tilt: 45, gran: 150, seed: 31, flare: (lt, k) => 0.6 + 1.0 * k, flareLat: 0.2 });
+shot(54, 56, 'cme', { d0: 3.2, d1: 2.7, lon: 1.4, lat: 0.3, ty: 1.2, side: -0.2, pr0: 0.0, pr1: 0.55, cmeI: 2.0, flare: k => 4 * Math.exp(-k * 3) + 0.6, flash: 1, shake: 1.3, seed: 26 });
+shot(56, 58, 'loops', { D: 1.55, lon: 2.0, fov0: 44, fov1: 36, loop: 1.9, lw: 0.28, lh: 0.36 });
+shot(58, 60, 'sunrise', { rise0: 0.5, rise1: 1.0, ty0: -1.0, ty1: -0.7, R: 5, pd: 10, roll: 0.15, rollV: -0.05 });
+shot(60, 62, 'wide', { d0: 5.6, d1: 5.0, lon: -1.2, lat: 0.3, streamer: 2.0, seed: 6 });
+shot(62, 64, 'probe', { r0: 2.0, r1: 1.9, lon: 3.0, lat: -0.2, tx: 0, ty: 1.2, roll: 0.2, p0: V3(-0.08, -0.06, -0.3), p1: V3(0.0, -0.05, -0.28), scale: 0.06, spin: 5, spinV: 0.3, gran: 70 });
+shot(64, 66, 'prominence', { D: 1.5, lon: 0.9, h0: 0.25, h1: 0.4, prom: 2.6, fov0: 40, fov1: 36 });
+shot(66, 68, 'surface', { D: 1.02, tilt: 80, gran: 240, warp: 1.2, seed: 33, rollV: 0.2, speed: 0.01, spots: 0, expo: 1.15 });
+shot(68, 70, 'cme', { d0: 8, d1: 7, lon: 2.4, lat: -0.2, side: 0.8, pr0: 0.2, pr1: 0.85, cmeI: 1.6, ty: 0.2, seed: 27 });
+shot(70, 72, 'surface', { D: 1.06, tilt: 58, gran: 110, seed: 35, flare: (lt, k) => 0.3 + 1.6 * k * k, flareLat: 0.25 });
+shot(72, 74, 'eclipse', { fov0: 34, fov1: 29, streamer: 3.0, corona: 1.5, flash: 1, seed: 11 });
+// ACT 5 - outro
+shot(74, 77, 'transit', { x0: -0.75, x1: -0.1 });
+shot(77, 89, 'system', { d0: 24, d1: 34 });
+
+const IMPACTS = [0, 40, 48, 54, 72];
+
+// ---------------------------------------------------------------- title (letters appear on the cut, like the reference)
+const spans = [...document.querySelectorAll('#title span')];
+function updateTitle(t) {
+  const b = t / B;
+  const on = [b >= 0.0, b >= 1, b >= 2];
+  const out = 1 - ss(5.55, 6.0, b);
+  const inn = ss(0.0, 0.25, b);
+  spans.forEach((s, i) => { s.style.opacity = on[i] ? inn * out : 0; });
+  const z = 1 + b * 0.006;
+  document.getElementById('title').style.transform = `scale(${z})`;
+}
+
+// ---------------------------------------------------------------- frame
+function setU(name, v) { const u = U[name]; if (u.value && u.value.copy && v && v.isVector2 === u.value.isVector2) u.value.copy(v); else u.value = v; }
+function renderAt(t) {
+  t = clamp(t, 0, DURATION - 1e-4);
+  const b = t / B;
+  const s = S.find(x => b >= x.b0 && b < x.b1) || S[S.length - 1];
+  const t0 = s.b0 * B, len = (s.b1 - s.b0) * B, lt = t - t0, k = clamp(lt / len);
+  const res = SETUPS[s.setup](k, lt, s.o);
+  // reset uniforms, then apply
+  for (const n in DEFAULTS) setU(n, DEFAULTS[n].clone ? DEFAULTS[n].clone() : DEFAULTS[n]);
+  for (const n in res.u) setU(n, res.u[n]);
+  U.uTime.value = t;
+  // camera shake on impacts
+  const cam = res.cam;
+  if (s.o.shake) {
+    const a = s.o.shake * 0.012 * Math.exp(-lt * 3);
+    cam.pos.add(V3(Math.sin(t * 61) * a, Math.sin(t * 47 + 1) * a, 0));
+  }
+  const { F, R, U: Up } = camBasis(cam);
+  U.uCamPos.value.copy(cam.pos); U.uCamF.value.copy(F); U.uCamR.value.copy(R); U.uCamU.value.copy(Up);
+  U.uTan.value = Math.tan(cam.fov * Math.PI / 360);
+  // transitions: flash on impacts, fades
+  let flash = 0;
+  if (s.o.flash) flash = Math.max(flash, 0.85 * Math.exp(-lt * 9));
+  const bt = b - s.b0;
+  flash = Math.max(flash, 0.12 * Math.exp(-bt * 14) * (s.b1 - s.b0 <= 1 ? 1 : 0.6)); // tiny exposure kick on every cut
+  U.uFlash.value = flash;
+  let fade = 0;
+  if (s.o.fadeIn) fade = Math.max(fade, 1 - ss(0, s.o.fadeIn, lt));
+  fade = Math.max(fade, ss(DURATION - 2.2, DURATION - 0.1, t));
+  U.uFade.value = fade;
+
+  renderer.clear();
+  renderer.render(bgScene, bgCam);
+  if (res.probe) {
+    camera.fov = cam.fov; camera.aspect = W / H; camera.position.copy(cam.pos); camera.up.copy(Up); camera.lookAt(cam.target); camera.updateProjectionMatrix();
+    probe.visible = true;
+    probe.position.copy(res.probe.pos);
+    probe.scale.setScalar(res.probe.scale);
+    probe.lookAt(0, 0, 0);           // heat shield (+z) toward the sun
+    probe.rotateZ(res.probe.spin);
+    sunLight.position.set(0, 0, 0); sunLight.target.position.copy(probe.position);
+    rimLight.position.copy(cam.pos.clone().multiplyScalar(0.7)); rimLight.target.position.copy(probe.position);
+    renderer.toneMappingExposure = 1 - U.uFade.value;
+    renderer.clearDepth();
+    renderer.render(probeScene, camera);
+  }
+  updateTitle(t);
+}
+
+window.renderAt = renderAt;
+window.DURATION = DURATION;
+window.SHOTS = S.map(x => [x.b0 * B, x.b1 * B, x.setup]);
+if (!/[?&]capture/.test(location.search)) {
+  const start = performance.now();
+  const loop = now => { renderAt(((now - start) / 1000) % DURATION); requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+} else renderAt(0);
+})();
+</script>
+</body>
+</html>
