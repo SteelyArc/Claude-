@@ -713,7 +713,7 @@ function drawCover(){
   ctx.shadowColor='transparent';ctx.fillStyle='#16141f';ctx.textBaseline='middle';ctx.fillText('MELTED?',W/2,by+bh/2+fs*0.05);
   ctx.restore();
   ctx.save();ctx.textAlign='center';ctx.font=`800 52px ${FONT}`;ctx.fillStyle='#ffffff';ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=18;
-  ctx.fillText('The sea would rise 66 m…',W/2,1560);ctx.restore();
+  ctx.fillText(params.get('hook')||'The sea would rise 66 m…',W/2,1560);ctx.restore();
 }
 function storySeconds(t){return clamp((t-T_V)*SPEEDUP,0,LIGHT_S);}
 
@@ -1401,6 +1401,38 @@ function confetti(t,t0,ox,oy,n,spread){
   ctx.restore();
 }
 
+
+/* ---------- funny penguin cover scene (?pcover) ---------- */
+const pcScene=new THREE.Scene(); pcScene.background=anScene.background; pcScene.fog=new THREE.Fog(lin('#dfeefa'),30,140);
+const pcCam=new THREE.PerspectiveCamera(46,W/H,0.1,300);
+pcScene.add(new THREE.HemisphereLight(lin('#e6f2ff'),lin('#6f8fb0'),0.7));
+const pcSun=new THREE.DirectionalLight(lin('#fff2e0'),2.8); pcSun.position.set(-8,12,8); pcSun.castShadow=true; pcSun.shadow.mapSize.set(2048,2048);
+Object.assign(pcSun.shadow.camera,{left:-6,right:6,top:6,bottom:-6,near:1,far:40}); pcSun.shadow.bias=-0.0004; pcScene.add(pcSun,pcSun.target);
+const pcSea=new THREE.Mesh(new THREE.PlaneGeometry(300,300,80,80),new THREE.MeshStandardMaterial({color:lin('#1d7fc4'),roughness:0.18,envMap:envTex,envMapIntensity:0.6}));pcSea.rotation.x=-Math.PI/2;pcSea.receiveShadow=true;pcScene.add(pcSea);
+{const pa=pcSea.geometry.attributes.position;for(let i=0;i<pa.count;i++){const x=pa.getX(i),y=pa.getY(i);pa.setZ(i,0.06*Math.sin(x*0.8)+0.05*Math.cos(y*0.9));}pcSea.geometry.computeVertexNormals();}
+const pcFloe=shadowed(new THREE.Mesh(new THREE.CylinderGeometry(1.25,1.05,0.45,9),new THREE.MeshPhysicalMaterial({color:lin('#f4fbff'),roughness:0.25,clearcoat:1,flatShading:true,envMap:envTex,envMapIntensity:0.6})));pcFloe.position.set(0,0.12,0);pcFloe.rotation.z=0.06;pcScene.add(pcFloe);
+const pcPuddle=new THREE.Mesh(new THREE.CircleGeometry(0.7,32),new THREE.MeshStandardMaterial({color:lin('#8fd0ff'),roughness:0.05,transparent:true,opacity:0.7,envMap:envTex}));pcPuddle.rotation.x=-Math.PI/2;pcPuddle.position.set(0.3,0.36,0.4);pcScene.add(pcPuddle);
+const pcPeng=makePenguin(); pcPeng.scale.setScalar(2.1); pcPeng.position.set(-0.1,0.33,0.1); pcPeng.rotation.set(0,0.15,0.05); pcScene.add(pcPeng);
+pcPeng.userData['f-1'].rotation.z=-1.2; pcPeng.userData['f1'].rotation.z=2.2;   // one flipper up: "help!"
+{const ring=shadowed(new THREE.Mesh(new THREE.TorusGeometry(0.4,0.13,16,36).rotateX(Math.PI/2),mat('#ff6b5a',{roughness:0.4})));ring.position.y=0.42;pcPeng.add(ring);
+ for(let i=0;i<4;i++){const st=new THREE.Mesh(new THREE.TorusGeometry(0.4,0.135,16,6,0.35).rotateX(Math.PI/2),mat('#ffffff'));st.rotation.y=i*Math.PI/2;st.position.y=0.42;pcPeng.add(st);}
+ const gm=mat('#15141f',{roughness:0.15,metalness:0.3});for(const sx of [-1,1]){const b=new THREE.Mesh(rbox(0.12,0.035,0.03,0.012),gm);b.position.set(sx*0.1,0.97,0.26);b.rotation.z=sx*-0.45;pcPeng.add(b);}
+ const sweatD=new THREE.Mesh(new THREE.SphereGeometry(0.05,12,8),new THREE.MeshStandardMaterial({color:lin('#bfe8ff'),roughness:0.1,envMap:envTex}));sweatD.scale.y=1.5;sweatD.position.set(0.24,0.95,0.2);pcPeng.add(sweatD);
+ const sweat2=sweatD.clone();sweat2.position.set(-0.27,0.8,0.18);pcPeng.add(sweat2);}
+const pcBerg=shadowed(new THREE.Mesh(new THREE.DodecahedronGeometry(3.2,1),new THREE.MeshStandardMaterial({color:lin('#eaf7ff'),roughness:0.4,flatShading:true})));pcBerg.scale.y=0.7;pcBerg.position.set(-6,0.3,-16);pcScene.add(pcBerg);
+const pcSunBall=new THREE.Mesh(new THREE.SphereGeometry(1.6,32,20),new THREE.MeshBasicMaterial({map:sunTex,toneMapped:false}));pcSunBall.position.set(5,14.5,-22);pcScene.add(pcSunBall);
+const pcSunGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false}));pcSunGlow.scale.set(11,11,1);pcSunGlow.position.copy(pcSunBall.position);pcScene.add(pcSunGlow);
+const pcSpk=sparkles(pcScene,8);
+const pcDrops=[];for(let i=0;i<10;i++){const d=new THREE.Mesh(new THREE.SphereGeometry(0.06,10,8),new THREE.MeshStandardMaterial({color:lin('#bfe8ff'),roughness:0.1,envMap:envTex}));d.scale.y=1.4;d.position.set(Math.cos(i*0.63)*1.2,0.2-((i*0.37)%0.25),Math.sin(i*0.63)*1.05);pcScene.add(d);}
+const pcRipples=[0,1,2].map(k=>{const r=new THREE.Mesh(new THREE.RingGeometry(0.95,1.0,64),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.45-k*0.12,depthWrite:false,side:THREE.DoubleSide}));r.rotation.x=-Math.PI/2;r.position.y=0.04;r.scale.setScalar(1.4+k*0.55);pcScene.add(r);return r;});
+function renderPenguinCover(){
+  pcSpk.forEach((s,i)=>{s.position.set(-1.2+i*0.35,0.4+((i*0.53)%0.3),0.9-((i*0.71)%0.5));s.scale.setScalar(0.08+0.22*((i*0.37)%1));});
+  pcCam.position.set(1.1,1.5,9.2); pcCam.lookAt(0,0.25,0); pcCam.updateProjectionMatrix();
+  pcSun.target.position.set(0,0,0); renderer.render(pcScene,pcCam);
+  ctx.globalAlpha=1; ctx.drawImage(glCanvas,0,0,W,H); bloom(0.6,true); lensFlare(pcSunBall.position,pcCam,0.9); ctx.drawImage(vig,0,0); filmGrain(3);
+  drawCover();
+}
+
 const CUTS=[5.5,11,16.5,23,29,35,41,48];
 function drawTides(t,alpha){
   if(alpha<=0)return; const x=70,w=W-140,h=250,y=H-110-h; const a=t-16.5;
@@ -1442,6 +1474,7 @@ function renderScene(t){
   renderer.render(sc,cam); curCam=cam; curName=name;
 }
 function renderAt(t){
+  if(params.has('pcover')){renderPenguinCover();return;}
   t=((t%DUR)+DUR)%DUR;
   renderScene(t);
   let z=1,blur=0,fl=0;
