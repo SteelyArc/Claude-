@@ -27,6 +27,28 @@
 | The Moon | 15.0 | Planet transit across the disk | 74–77 |
 | Earth + Moon + bright blue star (held, end) | 15.7–17.3 | The Sun as a bright star behind a planet, slow pull-back, fade out | 77–89 |
 
+## Version 2: real NASA footage (final)
+
+After the first, procedural version, the brief was changed to "real graphics, like a video from space". The final video is therefore cut entirely from **real public-domain NASA footage** (see `CREDITS.md`):
+- **SDO** 4096×4096 time-lapses of the X6.3 (Feb 22, 2024), X8.7 (May 14, 2024), X2.5 (Feb 16, 2024) and X3.3/X-class (Oct 23 and 26, 2024) flares, at 171 Å (golden coronal loops), 193 Å (corona), 304 Å (red chromosphere and prominences) and 1600 Å.
+- **SDO HMI** visible-light images, showing granulation, sunspots and limb darkening.
+- **SDO** limb eruption footage, plus SDO "Sun This Week" full-disk rotation.
+- **Parker Solar Probe** crossing the real Sun, and Parker WISPR images taken from inside the corona.
+- **NOAA SWFO-L1** spacecraft visualisations.
+- **Real 2024 total-eclipse footage**, including the corona and diamond ring.
+
+The reference's beat structure, title build and transition rhythm are kept as described above. The shot mapping is in `shots.json`: 52 shots, each with a source clip, a start time and a virtual camera move.
+
+**How it's made** (`edit.py`):
+- **Frames:** ffmpeg decodes each source segment.
+- **Camera:** OpenCV reframes it to 9:16 with a smooth sub-pixel push-in, pan or roll aimed at real features: flare sites, limb loop arcades, eruptions, sunspot groups, the probe, the diamond ring.
+- **Look:** a gold-and-orange grade, bloom, vignette and fine grain.
+- **Title:** "S U N" in Cinzel appears letter by letter on the first three cuts.
+- **Transitions:** flash transitions and camera shake land on the four eruption impacts.
+- **Sound and export:** the original score (`music.py`) is mixed in, and everything is encoded to H.264 1080×1920 at 30 fps.
+
+The procedural three.js version (`sun.src.html`) is kept for reference, but it is not used in the final video.
+
 ## Science shown
 
 Every effect is computed in a shader:
