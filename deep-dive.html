@@ -1680,13 +1680,16 @@ const oBg=new THREE.Color(); oScene.background=oBg;
 const sub=new THREE.Group(); oScene.add(sub);
 const subParts={};
 {const hull=new THREE.MeshPhysicalMaterial({color:lin('#ffd43b'),roughness:0.35,clearcoat:0.8,envMap:envTex,envMapIntensity:0.5});
- const body=new THREE.Mesh(new THREE.SphereGeometry(1,48,32),hull);sub.add(body);
+ const body=new THREE.Mesh(new THREE.SphereGeometry(1,48,32,0,Math.PI*2,0.95,Math.PI-0.95).rotateX(Math.PI/2),hull);body.material.side=THREE.DoubleSide;sub.add(body);
+ const cabin=new THREE.Mesh(new THREE.SphereGeometry(0.96,40,24),new THREE.MeshStandardMaterial({color:lin('#f3ead8'),roughness:0.8,side:THREE.BackSide}));sub.add(cabin);
+ const frameR=new THREE.Mesh(new THREE.TorusGeometry(0.815,0.07,16,60),mat('#cfd6e0',{metalness:0.6,roughness:0.3}));frameR.position.z=0.58;sub.add(frameR);
+ for(let i=0;i<10;i++){const b=new THREE.Mesh(new THREE.SphereGeometry(0.035,8,6),mat('#9aa4b0',{metalness:0.6}));const a=i/10*Math.PI*2;b.position.set(0.815*Math.cos(a),0.815*Math.sin(a),0.65);sub.add(b);}
  const float=new THREE.Mesh(new THREE.SphereGeometry(1,8,6),hull);float.visible=false;
  const tank=new THREE.Mesh(rbox(2.6,0.7,1.1,0.32),hull);tank.position.y=1.15;sub.add(tank);
  const tower=new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.32,0.4,20),hull);tower.position.y=1.65;sub.add(tower);
- const ring=new THREE.Mesh(new THREE.TorusGeometry(0.45,0.08,16,40),mat('#cfd6e0',{metalness:0.6,roughness:0.3}));ring.position.set(0,0.05,0.93);sub.add(ring);
- const inner=new THREE.Mesh(new THREE.CircleGeometry(0.45,40),mat('#0f2a40'));inner.position.set(0,0.05,0.7);sub.add(inner);
- const glassD=new THREE.Mesh(new THREE.SphereGeometry(0.46,32,16,0,Math.PI*2,0,Math.PI/2),new THREE.MeshPhysicalMaterial({color:lin('#dff4ff'),roughness:0.03,transparent:true,opacity:0.25,clearcoat:1,envMap:envTex}));glassD.rotation.x=Math.PI/2;glassD.position.set(0,0.05,0.95);glassD.scale.z=0.35;sub.add(glassD);
+
+
+
  for(const s of [-1,1]){const lamp=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.2,0.3,16),mat('#cfd6e0',{metalness:0.6,roughness:0.3}));lamp.rotation.x=Math.PI/2;lamp.position.set(s*0.7,-0.45,0.72);sub.add(lamp);
    const bulb=new THREE.Mesh(new THREE.CircleGeometry(0.14,20),new THREE.MeshBasicMaterial({color:lin('#fff7dc'),toneMapped:false}));bulb.position.set(s*0.7,-0.45,0.88);sub.add(bulb);subParts['bulb'+s]=bulb;
    const arm=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.6,8),mat('#cfd6e0',{metalness:0.6}));arm.rotation.z=Math.PI/2;arm.position.set(s*1.1,-0.6,0.2);sub.add(arm);
@@ -1695,10 +1698,21 @@ const subParts={};
  const fin=new THREE.Mesh(rbox(0.08,0.6,0.5,0.04),mat('#ff6b5a'));fin.position.set(0,0.55,-0.85);sub.add(fin);
  const name=makeLabel(null,'DEEP DIVER',{worldH:0.22,accent:'#16141f'});name.material.depthTest=true;name.position.set(0,1.15,0.6);sub.add(name);
  shadowed(sub);}
-const subFace=makeFace(0.28,sub);
-const subHair=new THREE.Mesh(new THREE.SphereGeometry(0.3,16,10,0,Math.PI*2,0,Math.PI*0.4),mat('#4a3424'));subHair.position.set(0,0.06,0.8);subHair.scale.z=0.6;sub.add(subHair);
-const subSkin=new THREE.Mesh(new THREE.SphereGeometry(0.3,24,16),M.skin);subSkin.scale.z=0.55;subSkin.position.set(0,0.02,0.8);sub.add(subSkin);
-subFace.f.position.set(0,0.02,0.7); subFace.f.scale.setScalar(0.95);
+const pilot=makeHero('#ff9f1c'); pilot.scale.setScalar(1.15); pilot.position.set(0,-0.66,0.05); sub.add(pilot);
+{const ph=new THREE.Group();const band=new THREE.Mesh(new THREE.TorusGeometry(0.16,0.018,8,24,Math.PI),mat('#2b2f45'));band.position.y=0.78;ph.add(band);
+ for(const s2 of [-1,1]){const cup2=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.05,16),mat('#2b2f45'));cup2.rotation.z=Math.PI/2;cup2.position.set(s2*0.16,0.72,0);ph.add(cup2);}
+ const mic=new THREE.Mesh(new THREE.CylinderGeometry(0.01,0.01,0.16,6),mat('#2b2f45'));mic.rotation.set(0,0.3,Math.PI/2.4);mic.position.set(0.12,0.64,0.1);ph.add(mic);pilot.add(ph);}
+const subFace=pilot.userData.face;
+const seat=shadowed(new THREE.Mesh(rbox(0.5,0.6,0.16,0.06),mat('#ff6b5a'))); seat.position.set(0,-0.3,-0.2); sub.add(seat);
+const seatB=shadowed(new THREE.Mesh(rbox(0.5,0.12,0.45,0.05),mat('#ff6b5a'))); seatB.position.set(0,-0.6,0.02); sub.add(seatB);
+const subPanel=shadowed(new THREE.Mesh(rbox(1.0,0.2,0.32,0.06),mat("#3a4050"))); subPanel.position.set(0,-0.55,0.55); subPanel.rotation.x=-0.5; sub.add(subPanel);
+const btns=[];for(let i=0;i<6;i++){const b=new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8),new THREE.MeshBasicMaterial({color:lin(['#ff6b5a','#FFD43B','#4ecdc4','#8fd0ff','#ff9fd1','#9bffb0'][i]),toneMapped:false}));b.position.set(-0.3+i*0.12,-0.32,0.62);sub.add(b);btns.push(b);}
+const scrn=new THREE.Mesh(new THREE.PlaneGeometry(0.26,0.14),new THREE.MeshBasicMaterial({color:lin('#7dffb2'),toneMapped:false})); scrn.position.set(0.32,-0.3,0.66); scrn.rotation.x=-0.5; sub.add(scrn);
+const cabinLight=new THREE.PointLight(lin('#ffe9c4'),2.2,2.6,1.5); cabinLight.position.set(0,0.45,0.25); sub.add(cabinLight);
+const bubble=new THREE.Mesh(new THREE.SphereGeometry(0.82,48,24,0,Math.PI*2,0,Math.PI/2).rotateX(Math.PI/2),new THREE.MeshPhysicalMaterial({color:lin('#e6f6ff'),roughness:0.02,transparent:true,opacity:0.07,clearcoat:1,envMap:envTex,envMapIntensity:0.5,depthWrite:false}));
+bubble.position.z=0.58; bubble.scale.z=0.75; bubble.renderOrder=8; sub.add(bubble);
+const hl1=new THREE.Mesh(new THREE.PlaneGeometry(0.34,0.06),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.55,toneMapped:false,depthWrite:false}));hl1.position.set(-0.3,0.35,1.12);hl1.rotation.set(-0.3,-0.3,0.6);sub.add(hl1);
+const hl2=hl1.clone();hl2.scale.set(0.4,1,1);hl2.position.set(-0.05,0.48,1.1);sub.add(hl2);
 // the sub's headlight: the one strong light down in the dark (+ a fake light beam)
 const subLight=new THREE.SpotLight(lin('#fff4dc'),0,40,0.6,0.5,0.8); subLight.castShadow=true; subLight.shadow.mapSize.set(1024,1024); oScene.add(subLight,subLight.target);
 const subBeamMat=new THREE.MeshBasicMaterial({color:lin('#fff3d0'),transparent:true,opacity:0.12,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:false,toneMapped:false});
@@ -1777,6 +1791,60 @@ const lblTit=makeLabel('TITANIC','3,800 m deep',{worldH:0.7,accent:'#FFD43B'}); 
 const lblCup=makeLabel('FOAM CUP','SQUEEZED BY PRESSURE',{worldH:0.36,accent:'#ffb3a8'}); oScene.add(lblCup);
 const lblBottom=makeLabel('CHALLENGER DEEP','10,935 m · water ≈ 1–4 °C',{worldH:0.5,accent:'#FFD43B'}); oScene.add(lblBottom);
 const lblTrieste=makeLabel('FIRST VISIT: 1960','Trieste · ≈ 5 h down',{worldH:0.42,accent:'#ffffff'}); oScene.add(lblTrieste);
+
+/* ---------- random stuff floating around in the deep ---------- */
+const junk=[];
+function addJunk(obj,modes,o){shadowed(obj);oScene.add(obj);junk.push(Object.assign({obj,modes,ph:R(0,6.28)},o));return obj;}
+// rubber duck
+{const d=duck.clone();d.scale.setScalar(0.9);addJunk(d,['sun','dark'],{x:-2.6,z:2.6,y0:2,sp:0.5,spin:[0.4,0.9,0.3]});}
+// sock
+{const g=new THREE.Group();const m=mat('#ff9fd1');const a=new THREE.Mesh(rbox(0.28,0.7,0.2,0.1),m);g.add(a);const f=new THREE.Mesh(rbox(0.45,0.25,0.2,0.1),m);f.position.set(0.12,-0.4,0);g.add(f);
+ for(let i=0;i<3;i++){const st=new THREE.Mesh(rbox(0.3,0.06,0.21,0.02),mat('#ffffff'));st.position.y=0.25-i*0.12;g.add(st);} addJunk(g,['dark','whale'],{x:-3.4,z:1.2,y0:-1,sp:0.6,spin:[1.2,0.7,0.9]});}
+// toaster with toast
+{const g=new THREE.Group();const b=new THREE.Mesh(rbox(0.7,0.5,0.4,0.12),mat('#cfd6e0',{metalness:0.6,roughness:0.25}));g.add(b);
+ for(const x of [-0.13,0.13]){const t2=new THREE.Mesh(rbox(0.2,0.3,0.06,0.04),mat('#e2a85a'));t2.position.set(x,0.3,0);g.add(t2);} const lv=new THREE.Mesh(rbox(0.06,0.1,0.06,0.02),mat('#16141f'));lv.position.set(0.38,0.05,0);g.add(lv);
+ addJunk(g,['whale','titanic'],{x:-1.8,z:3.4,y0:1,sp:0.45,spin:[0.5,1.1,0.4]});}
+// traffic cone
+{const g=new THREE.Group();const c=new THREE.Mesh(new THREE.ConeGeometry(0.25,0.7,24),mat('#ff7a1a'));g.add(c);const s1=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.19,0.1,24),mat('#ffffff'));s1.position.y=0.02;g.add(s1);
+ const base=new THREE.Mesh(rbox(0.6,0.06,0.6,0.03),mat('#ff7a1a'));base.position.y=-0.35;g.add(base);addJunk(g,['sun','titanic','cup'],{x:-3.8,z:0.2,y0:-2,sp:0.55,spin:[0.9,0.4,1.3]});}
+// pizza slice
+{const sh=new THREE.Shape();sh.moveTo(0,0);sh.lineTo(-0.35,0.8);sh.quadraticCurveTo(0,0.95,0.35,0.8);sh.closePath();
+ const g=new THREE.Group();const p2=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:0.05,bevelEnabled:true,bevelThickness:0.02,bevelSize:0.02,bevelSegments:2}),mat('#ffcf6b'));g.add(p2);
+ const crust=new THREE.Mesh(new THREE.TorusGeometry(0.36,0.06,8,16,1.0),mat('#d9954a'));crust.rotation.z=Math.PI/2-0.5;crust.position.set(0,0.48,0.03);g.add(crust);
+ for(const [x,y] of [[-0.05,0.55],[0.12,0.4],[-0.12,0.32],[0.03,0.22]]){const pep=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.02,14),mat('#d6452f'));pep.rotation.x=Math.PI/2;pep.position.set(x,y,0.07);g.add(pep);}
+ addJunk(g,['dark','cup'],{x:-1.2,z:3.0,y0:3,sp:0.4,spin:[0.3,1.4,0.6]});}
+// a fish wearing a top hat
+{const f=makeFish('#ffd166',2.2);const hat=new THREE.Group();const br=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.015,20),mat('#16141f'));hat.add(br);const tp=new THREE.Mesh(new THREE.CylinderGeometry(0.075,0.075,0.14,20),mat('#16141f'));tp.position.y=0.07;hat.add(tp);
+ const rb=new THREE.Mesh(new THREE.CylinderGeometry(0.077,0.077,0.03,20),mat('#ff6b5a'));rb.position.y=0.02;hat.add(rb);hat.position.set(0.05,0.17,0);f.add(hat);oScene.remove(f);
+ const mono=new THREE.Mesh(new THREE.TorusGeometry(0.035,0.008,6,16),mat('#FFD43B',{metalness:0.6}));mono.position.set(0.18,0.04,0.09);f.add(mono);
+ addJunk(f,['sun','dark','whale'],{swim:true,x:-2.2,z:2.2,y0:0.9,sp:0,spin:[0,0,0]});}
+// old TV
+{const g=new THREE.Group();const b=new THREE.Mesh(rbox(0.9,0.7,0.6,0.12),mat('#9a6a48'));g.add(b);const sc=new THREE.Mesh(rbox(0.6,0.45,0.04,0.08),new THREE.MeshBasicMaterial({color:lin('#8fd0ff'),toneMapped:false}));sc.position.set(-0.08,0,0.3);g.add(sc);
+ for(const x of [-0.12,0.12]){const an=new THREE.Mesh(new THREE.CylinderGeometry(0.01,0.01,0.5,6),mat('#2b2f45'));an.position.set(x,0.55,0);an.rotation.z=x*4;g.add(an);} g.userData.scr=sc;
+ addJunk(g,['titanic','cup','bottom'],{x:-3.2,z:2.4,y0:0.6,sp:0.35,spin:[0.4,0.6,0.3]});}
+// on the seabed: a toilet, a shopping cart, a garden gnome on the wreck
+const toilet=new THREE.Group();{const w2=mat('#ffffff',{roughness:0.3});const bowl=new THREE.Mesh(new THREE.CylinderGeometry(0.32,0.22,0.4,24),w2);bowl.position.y=0.2;toilet.add(bowl);
+ const seat2=new THREE.Mesh(new THREE.TorusGeometry(0.3,0.05,10,24).rotateX(Math.PI/2),w2);seat2.position.y=0.42;toilet.add(seat2);const tank2=new THREE.Mesh(rbox(0.6,0.5,0.22,0.06),w2);tank2.position.set(0,0.55,-0.3);toilet.add(tank2);
+ const lid=new THREE.Mesh(new THREE.CircleGeometry(0.3,24),w2);lid.position.set(0,0.62,-0.18);lid.rotation.x=-0.25;toilet.add(lid);shadowed(toilet);oScene.add(toilet);}
+const cart=new THREE.Group();{const m2=mat('#cfd6e0',{metalness:0.6,roughness:0.3});
+ for(const [w,h,d,x,y,z] of [[1.0,0.04,0.6,0,0.45,0],[1.0,0.5,0.04,0,0.7,0.3],[1.0,0.5,0.04,0,0.7,-0.3],[0.04,0.5,0.6,0.5,0.7,0],[0.04,0.5,0.6,-0.5,0.7,0]]){const b=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color:lin('#cfd6e0'),metalness:0.6,roughness:0.3,wireframe:true}));b.position.set(x,y,z);cart.add(b);}
+ const hdl=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.7,8),mat('#ff6b5a'));hdl.rotation.x=Math.PI/2;hdl.position.set(-0.6,0.95,0);cart.add(hdl);
+ for(const [x,z] of [[0.4,0.25],[0.4,-0.25],[-0.4,0.25],[-0.4,-0.25]]){const wl=new THREE.Mesh(new THREE.TorusGeometry(0.07,0.03,8,12),mat('#2b2f45'));wl.position.set(x,0.08,z);cart.add(wl);}
+ cart.rotation.set(0,0.6,0.35);shadowed(cart);oScene.add(cart);}
+const gnome=new THREE.Group();{const b=new THREE.Mesh(new THREE.ConeGeometry(0.22,0.45,16),mat('#4ecdc4'));b.position.y=0.22;gnome.add(b);const h2=new THREE.Mesh(new THREE.SphereGeometry(0.11,14,10),M.skin);h2.position.y=0.5;gnome.add(h2);
+ const hat2=new THREE.Mesh(new THREE.ConeGeometry(0.13,0.36,16),mat('#ff6b5a'));hat2.position.y=0.74;hat2.rotation.z=0.25;gnome.add(hat2);const beard=new THREE.Mesh(new THREE.ConeGeometry(0.1,0.22,12),mat('#ffffff'));beard.rotation.x=Math.PI;beard.position.set(0,0.38,0.07);gnome.add(beard);
+ gnome.scale.setScalar(1.6);shadowed(gnome);oScene.add(gnome);}
+const lblWifi=makeLabel(null,'Wi-Fi: 0 bars',{worldH:0.3,accent:'#ff6b5a'}); oScene.add(lblWifi);
+function updateJunk(t,mode,d){
+  junk.forEach((j,i)=>{const on=j.modes.includes(mode);j.obj.visible=on;if(!on)return;
+    if(j.swim){j.obj.position.set(j.x+1.4*Math.sin(t*0.5),j.y0+0.3*Math.sin(t*1.3),j.z+0.8*Math.cos(t*0.5));j.obj.rotation.y=-t*0.5+Math.PI;j.obj.userData.tl&&(j.obj.userData.tl.rotation.y=0.5*Math.sin(t*12));return;}
+    const y=wrapS(j.y0+t*j.sp*1.4+j.ph*2,9);j.obj.position.set(j.x+0.4*Math.sin(t*0.6+j.ph),y,j.z+0.3*Math.cos(t*0.5+j.ph));
+    j.obj.rotation.set(j.spin[0]*t,j.spin[1]*t,j.spin[2]*t);
+    if(j.obj.userData.scr) j.obj.userData.scr.material.color.copy(Math.sin(t*20)>0?lin('#cfe9ff'):lin('#5a7a9a'));});
+  toilet.visible=cart.visible=mode==='bottom'; toilet.position.set(-3.6,-2.35,0.6); toilet.rotation.set(0.12,0.9,0.1); cart.position.set(1.4,-2.35,-1.8);
+  gnome.visible=mode==='titanic'; if(gnome.visible){gnome.position.copy(wreck.position).add(new THREE.Vector3(-1.2,2.7,0.6));gnome.rotation.y=0.7;}
+  lblWifi.visible=mode==='bottom'&&t>51.5; if(lblWifi.visible){const p=sub.localToWorld(new THREE.Vector3(0.0,1.6,0.3));lblWifi.position.copy(p);lblWifi.material.opacity=clamp((t-51.5)/0.25);}
+}
 function updateOcean(t,mode){
   const d=depthAt(t); oBg.copy(waterCol(d)); oScene.fog.color.copy(oBg);
   const light=Math.exp(-d/120); oScene.fog.near=d<5?20:7; oScene.fog.far=lerp(48,70,light);
@@ -1784,9 +1852,14 @@ function updateOcean(t,mode){
   const lightsOn=d>120; subLight.intensity=lightsOn?16:0; beams.forEach(b=>b.visible=lightsOn); [subParts['bulb-1'],subParts['bulb1']].forEach(b=>b.material.color.copy(lightsOn?lin('#fff7dc'):lin('#9aa4b0')));
   // sub pose (it stays in frame, the world scrolls by)
   const landed=t>=44.5;
-  sub.position.set(0,landed?1.05:0.4*Math.sin(t*0.9),0); sub.rotation.set(0.05*Math.sin(t*0.7),-0.55+0.08*Math.sin(t*0.4),0.04*Math.sin(t*0.6)); sub.updateMatrixWorld(true);
+  sub.position.set(0,landed?1.05:0.4*Math.sin(t*0.9),0); sub.rotation.set(0.05*Math.sin(t*0.7),-0.25+0.08*Math.sin(t*0.4),0.04*Math.sin(t*0.6)); sub.updateMatrixWorld(true);
   subParts.prop.rotation.z=t*(landed?2:12);
   subLight.position.copy(sub.localToWorld(new THREE.Vector3(0,-0.45,1.0))); subLight.target.position.copy(sub.localToWorld(new THREE.Vector3(0,-2.0,7)));
+  {const P=pilot.userData.arms;const lev=Math.sin(t*3);P[0].rotation.set(-1.1+0.15*lev,0,-0.25);P[1].rotation.set(-1.1-0.15*lev,0,0.25);
+   if(mode==='angler'||mode==='cup'){P[0].rotation.set(0,0,-2.6-0.3*Math.sin(t*12));P[1].rotation.set(0,0,2.6+0.3*Math.sin(t*12+1));}
+   if(mode==='whale'||mode==='bottom'&&t>46){P[1].rotation.set(0,0,2.5+0.4*Math.sin(t*10));}
+   pilot.position.y=-0.66+0.02*Math.sin(t*5); btns.forEach((b,i)=>b.visible=Math.sin(t*(3+i)+i*2)>-0.2); scrn.material.color.copy(Math.sin(t*2)>0?lin('#7dffb2'):lin('#8fd0ff'));}
+  updateJunk(t,mode,d);
   const scared=mode==='angler'||mode==='cup'; setFace(subFace,{open:scared?1.3:blinkAt(t,[2.2,8.4,19.8,27.3,46.1,52.7,57.5]),brow:scared?1.2:0.3,mouth:scared?'o':'smile',ms:scared?1.0:1.1,look:mode==='whale'?[-0.08,0]:[0.04,-0.02]});
   // surface plane only near the top
   surf.visible=d<40; surf.position.y=6+d*0.8; const pa=surf.geometry.attributes.position;if(surf.visible){for(let i=0;i<pa.count;i++){pa.setZ(i,0.15*Math.sin(pa.getX(i)*0.5+t*2)+0.1*Math.cos(pa.getY(i)*0.6+t*1.6));}pa.needsUpdate=true;surf.geometry.computeVertexNormals();}
