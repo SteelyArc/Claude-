@@ -1293,6 +1293,114 @@ function updateGlobeIce(t,mode){
   sLight.position.set(-8,6,8); sLight.target.position.copy(globe.position);
 }
 
+
+/* ============================================================
+   CINEMATIC FX LAYER — reflections, particles, bloom, flares, confetti
+   ============================================================ */
+// --- sky reflections for water, ice and glass (prefiltered environment map) ---
+const envTex=(()=>{const es=new THREE.Scene();
+  const st=canvasTex(512,256,(g,w,h)=>{const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#3f7fd0');gr.addColorStop(0.45,'#a9cdee');gr.addColorStop(0.5,'#fff1dc');gr.addColorStop(0.55,'#7d8f9c');gr.addColorStop(1,'#2a3a4a');g.fillStyle=gr;g.fillRect(0,0,w,h);
+    const s=g.createRadialGradient(w*0.3,h*0.28,0,w*0.3,h*0.28,40);s.addColorStop(0,'rgba(255,255,240,1)');s.addColorStop(1,'rgba(255,240,200,0)');g.fillStyle=s;g.fillRect(0,0,w,h);});
+  st.mapping=THREE.EquirectangularReflectionMapping;
+  es.add(new THREE.Mesh(new THREE.SphereGeometry(50,64,32),new THREE.MeshBasicMaterial({map:st,side:THREE.BackSide})));
+  const pm=new THREE.PMREMGenerator(renderer); const rt=pm.fromScene(es,0.01); pm.dispose(); return rt.texture;})();
+[twWater.material,floodWater.material,seaMat,glass.material,water.material,abOcean.material,...cubes.map(k=>k.c.material)].forEach(m=>{m.envMap=envTex;m.envMapIntensity=0.55;m.needsUpdate=true;});
+seaMat.roughness=0.18; twWater.material.roughness=0.18; floodWater.material.roughness=0.18; abOcean.material.roughness=0.2; twWater.material.color.copy(lin('#1d7fc4')); floodWater.material.color.copy(lin('#1d7fc4'));
+// --- round soft dot texture for particles ---
+const dotTex=canvasTex(64,64,(g,w,h)=>{const r=g.createRadialGradient(32,32,0,32,32,32);r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(0.4,'rgba(255,255,255,0.8)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(0,0,w,h);});
+const starTex=canvasTex(128,128,(g,w,h)=>{g.translate(64,64);const r=g.createRadialGradient(0,0,0,0,0,64);r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(0.15,'rgba(255,255,255,0.6)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(-64,-64,128,128);
+  g.fillStyle='rgba(255,255,255,0.9)';for(const a of [0,Math.PI/2]){g.save();g.rotate(a);g.beginPath();g.ellipse(0,0,60,3.5,0,0,Math.PI*2);g.fill();g.restore();}});
+function pointsCloud(scene,n,size,color,op,blend){const p=new Float32Array(n*3);const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));
+  const m=new THREE.Points(g,new THREE.PointsMaterial({map:dotTex,size,color:lin(color),transparent:true,opacity:op,depthWrite:false,blending:blend||THREE.NormalBlending,toneMapped:false}));m.frustumCulled=false;scene.add(m);return m;}
+const hash=(i,k)=>{const x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x);};
+// snow in Antarctica
+const snow=pointsCloud(anScene,1800,0.16,'#ffffff',0.95);
+// sun glints sparkling on water (tower + flood) and ice glints
+const glintsT=pointsCloud(twScene,700,0.32,'#fffbe8',1,THREE.AdditiveBlending);
+const glintsF=pointsCloud(gScene,600,0.26,'#fffbe8',1,THREE.AdditiveBlending);
+const glintsA=pointsCloud(anScene,500,0.5,'#ffffff',1,THREE.AdditiveBlending);
+// bubbles rising in the glass
+const glBubbles=pointsCloud(glScene,80,0.05,'#ffffff',0.85);
+// heat rising from the dark ocean (albedo)
+const heat=pointsCloud(abScene,300,0.18,'#ff8a4a',0.8,THREE.AdditiveBlending);
+// sparkle stars (ice shine) — sprites that twinkle
+function sparkles(scene,n){const a=[];for(let i=0;i<n;i++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:starTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false}));scene.add(s);a.push(s);}return a;}
+const spkGlass=sparkles(glScene,6), spkAnt=sparkles(anScene,14), spkSpace=sparkles(sScene,10), spkAb=sparkles(abScene,6);
+// splash rings around floating things (flood + tower)
+const ripples=[];for(let i=0;i<14;i++){const r=new THREE.Mesh(new THREE.RingGeometry(0.9,1.0,48),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.5,depthWrite:false,side:THREE.DoubleSide}));r.rotation.x=-Math.PI/2;ripples.push(r);(i<8?gScene:twScene).add(r);}
+// tower base splash spray
+const spray2=pointsCloud(twScene,260,0.22,'#ffffff',0.9);
+
+function updateFX(t,scene){
+  const set=(pts,fn)=>{const pa=pts.geometry.attributes.position;for(let i=0;i<pa.count;i++){const v=fn(i);pa.setXYZ(i,v[0],v[1],v[2]);}pa.needsUpdate=true;};
+  snow.visible=glintsA.visible=scene==='ant'; glintsT.visible=spray2.visible=scene==='tower'; glintsF.visible=scene==='flood'; glBubbles.visible=scene==='glass'; heat.visible=scene==='albedo';
+  spkGlass.forEach(s=>s.visible=false); spkAnt.forEach(s=>s.visible=false); spkSpace.forEach(s=>s.visible=false); spkAb.forEach(s=>s.visible=false);
+  ripples.forEach(r=>r.visible=false);
+  const tw=(i,sp)=>{const c=Math.sin(t*sp+i*12.9898)*0.5+0.5;return Math.pow(c,6);};
+  if(scene==='ant'){
+    set(snow,i=>{const x=(hash(i,1)-0.5)*40,z=(hash(i,2)-0.5)*30+6,fall=(t*1.6+hash(i,3)*14)%14;return [x+Math.sin(t*0.8+i)*0.6+((t*2.2)%40)*0.0,13-fall,z];});
+    set(glintsA,i=>[ (hash(i,4)-0.5)*36, 0.05, hash(i,5)*16-2 ]); glintsA.material.opacity=0.6+0.4*Math.sin(t*9);
+    glintsA.material.size=0.5*(0.6+0.4*Math.sin(t*13));
+    spkAnt.forEach((s,i)=>{s.visible=true;const k=tw(i,3.1+i*0.37);s.position.set((hash(i,6)-0.5)*20,(i%2?7.8:2+hash(i,7)*5),i%2?-4+hash(i,8)*-6:-2.9);s.scale.setScalar(0.1+1.4*k);});
+  }
+  if(scene==='tower'){
+    const wy=twWater.position.y;
+    set(glintsT,i=>{const x=(hash(i,9)-0.5)*50,z=(hash(i,10)-0.5)*40+4;return [x,wy+0.12,z];}); glintsT.material.size=0.32*(0.5+0.5*Math.abs(Math.sin(t*11)));
+    set(spray2,i=>{const a=hash(i,11)*6.28,ph=(t*1.4+hash(i,12))%1;const r=2.3+ph*1.4;return [r*Math.cos(a),wy+Math.sin(ph*Math.PI)*0.9*hash(i,13),r*Math.sin(a)];}); spray2.visible=wy>0.3;
+    [duck,boat].forEach((o,j)=>{for(let k=0;k<2;k++){const r=ripples[8+j*2+k];r.visible=true;const ph=((t*0.7+k*0.5)%1);r.position.set(o.position.x,wy+0.05,o.position.z);r.scale.setScalar(0.5+ph*2.2);r.material.opacity=0.55*(1-ph);}});
+  }
+  if(scene==='flood'){
+    const wy=floodWater.position.y;
+    set(glintsF,i=>[camP.x+(hash(i,14)-0.5)*30,wy+0.1,(hash(i,15)-0.5)*24+2]); glintsF.material.size=0.26*(0.5+0.5*Math.abs(Math.sin(t*12)));
+    watchers.forEach((w,i)=>{const r=ripples[i];r.visible=wy>0.25;const ph=((t*0.8+i*0.3)%1);r.position.set(w.p.position.x,wy+0.04,w.p.position.z);r.scale.setScalar(0.4+ph*1.6);r.material.opacity=0.5*(1-ph);});
+    for(let k=0;k<4;k++){const r=ripples[4+k];r.visible=wy>0.2;const ph=((t*0.6+k*0.25)%1);r.position.set(dog.position.x+(k%2?0.8:-0.8),wy+0.04,dog.position.z+(k>1?0.6:-0.6));r.scale.setScalar(0.3+ph*1.4);r.material.opacity=0.45*(1-ph);}
+  }
+  if(scene==='glass'){
+    set(glBubbles,i=>{const ph=(t*0.35+hash(i,16))%1;const a=hash(i,17)*6.28,r=hash(i,18)*0.6;return [r*Math.cos(a),0.2+ph*(WL-0.1),r*Math.sin(a)];});
+    spkGlass.forEach((s,i)=>{s.visible=true;const k=tw(i,2.6+i*0.5);const c=cubes[i%3].c;s.position.copy(c.position).add(new THREE.Vector3(0.15,0.2,0.2));s.scale.setScalar(0.05+0.5*k*c.scale.x);});
+  }
+  if(scene==='albedo'){
+    set(heat,i=>{const ph=(t*0.5+hash(i,19))%1;return [0.5+(hash(i,20)-0.2)*4.5+Math.sin(t*2+i)*0.15,0.1+ph*3.5,(hash(i,21)-0.5)*3];}); heat.material.opacity=0.55+0.3*clamp((t-38.2)/2);
+    spkAb.forEach((s,i)=>{s.visible=abIce.visible;const k=tw(i,3+i*0.6);s.position.set(-3.6+i*0.6,0.48,0.6+hash(i,22)*1.2);s.scale.setScalar(0.1+0.9*k);});
+  }
+  if(scene==='space'){
+    spkSpace.forEach((s,i)=>{s.visible=true;const k=tw(i,2.2+i*0.4);s.position.set((hash(i,23)-0.5)*14,(hash(i,24)-0.5)*16,-6-hash(i,25)*6);s.scale.setScalar(0.1+1.3*k);});
+  }
+}
+// gentle hand-held camera drift on top of every move (immersion)
+function sway(cam,t,amp=0.04){cam.position.x+=amp*(Math.sin(t*0.9)+0.5*Math.sin(t*2.3+1));cam.position.y+=amp*0.7*(Math.sin(t*1.3+2)+0.4*Math.sin(t*3.1));cam.rotation.z+=amp*0.15*Math.sin(t*0.7);}
+
+// --- 2D post: bloom, lens flare, vignette, film grain, confetti ---
+const bloomA=document.createElement('canvas'); bloomA.width=270; bloomA.height=480; const bA=bloomA.getContext('2d');
+const bloomB=document.createElement('canvas'); bloomB.width=135; bloomB.height=240; const bB=bloomB.getContext('2d');
+function bloom(str,day){
+  bA.clearRect(0,0,270,480); bA.filter=day?'brightness(0.5) contrast(3.4) saturate(1.5) blur(5px)':'brightness(0.85) contrast(2.4) saturate(1.4) blur(5px)'; bA.drawImage(out,0,0,270,480); bA.filter='none';
+  bB.clearRect(0,0,135,240); bB.filter='blur(7px)'; bB.drawImage(bloomA,0,0,135,240); bB.filter='none';
+  ctx.save(); ctx.globalCompositeOperation='screen'; ctx.imageSmoothingEnabled=true;
+  ctx.globalAlpha=0.55*str; ctx.drawImage(bloomA,0,0,W,H); ctx.globalAlpha=0.45*str; ctx.drawImage(bloomB,0,0,W,H); ctx.restore();
+}
+const vig=(()=>{const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');const r=g.createRadialGradient(W/2,H*0.48,H*0.28,W/2,H*0.5,H*0.72);r.addColorStop(0,'rgba(0,0,0,0)');r.addColorStop(1,'rgba(0,0,0,0.5)');g.fillStyle=r;g.fillRect(0,0,W,H);return c;})();
+const grain=(()=>{const c=document.createElement('canvas');c.width=256;c.height=256;const g=c.getContext('2d');const im=g.createImageData(256,256);const r=mulberry32(77);for(let i=0;i<im.data.length;i+=4){const v=r()*255;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255;}g.putImageData(im,0,0);return c;})();
+function filmGrain(t){ctx.save();ctx.globalAlpha=0.045;ctx.globalCompositeOperation='overlay';const ox=Math.floor(hash(Math.floor(t*30),1)*256),oy=Math.floor(hash(Math.floor(t*30),2)*256);
+  ctx.translate(-ox,-oy);for(let y=0;y<H+256;y+=256)for(let x=0;x<W+256;x+=256)ctx.drawImage(grain,x,y);ctx.restore();}
+function lensFlare(worldPos,cam,str){
+  const v=worldPos.clone().project(cam); if(v.z>1||Math.abs(v.x)>1.2||Math.abs(v.y)>1.2) return;
+  const sx=(v.x*0.5+0.5)*W, sy=(-v.y*0.5+0.5)*H, cx=W/2, cy=H/2;
+  ctx.save(); ctx.globalCompositeOperation='screen';
+  const g=ctx.createRadialGradient(sx,sy,0,sx,sy,420);g.addColorStop(0,`rgba(255,245,220,${0.55*str})`);g.addColorStop(0.2,`rgba(255,210,150,${0.18*str})`);g.addColorStop(1,'rgba(255,200,150,0)');ctx.fillStyle=g;ctx.fillRect(sx-420,sy-420,840,840);
+  ctx.globalAlpha=0.35*str; ctx.fillStyle='rgba(255,240,210,0.7)'; ctx.fillRect(0,sy-2,W,4);
+  [[0.35,60,'rgba(140,200,255,0.22)'],[0.6,28,'rgba(255,200,120,0.3)'],[0.85,90,'rgba(180,140,255,0.14)'],[1.25,40,'rgba(120,255,200,0.18)'],[1.6,120,'rgba(255,170,120,0.1)']].forEach(([k,r,c])=>{
+    const x=sx+(cx-sx)*k*1.6, y=sy+(cy-sy)*k*1.6; const gg=ctx.createRadialGradient(x,y,0,x,y,r);gg.addColorStop(0,c);gg.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=gg;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();});
+  ctx.restore();
+}
+function confetti(t,t0,ox,oy,n,spread){
+  const u=t-t0; if(u<0||u>2.6) return; const cols=['#FFD43B','#ff6b5a','#4ecdc4','#ff9fd1','#8fd0ff','#ffffff'];
+  ctx.save(); for(let i=0;i<n;i++){const a=-Math.PI/2+(hash(i,31)-0.5)*spread,sp=700+hash(i,32)*900;const vx=Math.cos(a)*sp,vy=Math.sin(a)*sp;
+    const x=ox+vx*u*0.9+Math.sin(u*6+i)*20,y=oy+vy*u+1100*u*u; if(y>H+40)continue; ctx.globalAlpha=clamp(1-(u-1.8)/0.8);
+    ctx.translate(x,y);ctx.rotate(u*(6+hash(i,33)*10)+i);ctx.fillStyle=cols[i%cols.length];const w=10+hash(i,34)*12,h=6+hash(i,35)*8;ctx.fillRect(-w/2,-h/2*Math.abs(Math.cos(u*9+i)),w,h*Math.abs(Math.cos(u*9+i))+1);ctx.setTransform(1,0,0,1,0,0);}
+  ctx.restore();
+}
+
 const CUTS=[5.5,11,16.5,23,29,35,41,48];
 function drawTides(t,alpha){
   if(alpha<=0)return; const x=70,w=W-140,h=250,y=H-110-h; const a=t-16.5;
@@ -1318,16 +1426,20 @@ function drawSLR(t,alpha){
     ctx.textAlign='right';ctx.font=`900 30px ${FONT}`;ctx.fillStyle=col;ctx.fillText(`${v} m`,x+w-36,yy+30);});
   ctx.restore();
 }
+let curCam=null,curName='';
 function renderScene(t){
-  if(t<5.5){updateGlobeIce(t,'intro');renderer.render(sScene,sCam);}
-  else if(t<11){updateGlass(t);renderer.render(glScene,glCam);}
-  else if(t<16.5){updateAntarctica(t);renderer.render(anScene,anCam);}
-  else if(t<23){updateTower(t,'rise');renderer.render(twScene,twCam);}
-  else if(t<29){updateFlood(t);renderer.render(gScene,gCam);}
-  else if(t<35){updateGlobeIce(t,'coast');renderer.render(sScene,sCam);}
-  else if(t<41){updateAlbedo(t);renderer.render(abScene,abCam);}
-  else if(t<48){updateTower(t,'today');renderer.render(twScene,twCam);}
-  else {updateGlobeIce(t,'end');renderer.render(sScene,sCam);}
+  let sc,cam,name;
+  if(t<5.5){updateGlobeIce(t,'intro');sc=sScene;cam=sCam;name='space';}
+  else if(t<11){updateGlass(t);sc=glScene;cam=glCam;name='glass';}
+  else if(t<16.5){updateAntarctica(t);sc=anScene;cam=anCam;name='ant';}
+  else if(t<23){updateTower(t,'rise');sc=twScene;cam=twCam;name='tower';}
+  else if(t<29){updateFlood(t);sc=gScene;cam=gCam;name='flood';}
+  else if(t<35){updateGlobeIce(t,'coast');sc=sScene;cam=sCam;name='space';}
+  else if(t<41){updateAlbedo(t);sc=abScene;cam=abCam;name='albedo';}
+  else if(t<48){updateTower(t,'today');sc=twScene;cam=twCam;name='tower';}
+  else {updateGlobeIce(t,'end');sc=sScene;cam=sCam;name='space';}
+  updateFX(t,name); sway(cam,t,name==='glass'?0.015:(name==='space'?0.03:0.05));
+  renderer.render(sc,cam); curCam=cam; curName=name;
 }
 function renderAt(t){
   t=((t%DUR)+DUR)%DUR;
@@ -1341,6 +1453,11 @@ function renderAt(t){
   ctx.globalAlpha=1;ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
   const draw=(zz,al)=>{ctx.globalAlpha=al;const w=W*zz,h=H*zz;ctx.drawImage(glCanvas,(W-w)/2,(H-h)/2,w,h);};
   draw(z,1); if(blur>0.05){draw(z*1.04,0.35*blur);draw(z*1.08,0.2*blur);} ctx.globalAlpha=1;
+  // cinematic post: bloom → lens flare → vignette → film grain
+  bloom(curName==='space'?1.15:0.55,curName!=='space');
+  if(t<5.5) lensFlare(sunHot.position,sCam,0.9);
+  if(curName==='albedo') lensFlare(abSunBall.position,abCam,1.0);
+  ctx.drawImage(vig,0,0); filmGrain(t);
   if(fl>0){ctx.fillStyle=`rgba(255,255,255,${0.35*fl})`;ctx.fillRect(0,0,W,H);}
   if(NOHUD){ if(params.has('cover')) drawCover(); return; }
   drawCaption(t);
@@ -1348,6 +1465,7 @@ function renderAt(t){
   if(t>=41.6&&t<48){const a=t-41.6;
     drawTimeline({title:"TODAY'S PACE",speed:'SATELLITE DATA',value:'≈ 4 mm / year',p:0.004*easeOut(a/1.5)/0.004*0.02,done:false,sub:'',
       ticks:[{p:0,label:'today'},{p:1,label:'+66 m: thousands of years'}]},clamp(a/0.25)*clamp((48-t)/0.15));}
+  confetti(t,48.3,W/2,360,160,2.6); confetti(t,59.95,W/2,H-200,200,1.4);
   if(t>=49.2){const a=t-49.2;
     drawCard('IF ALL THE ICE MELTED','#8fd0ff',[{text:'Seas rise ≈ 66 m'},{text:'Coastal cities underwater'},{text:'Darker Earth absorbs more heat'},{text:'Would take thousands of years'}],[(a-0.3)/0.2,(a-1.0)/0.2,(a-1.7)/0.2,(a-2.4)/0.2],clamp(a/0.25)*clamp((61-t)/0.5));}
   let fade=Math.max(1-t/0.35, 1-(DUR-t)/0.6);
