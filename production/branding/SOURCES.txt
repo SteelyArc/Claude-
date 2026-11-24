@@ -1,0 +1,6 @@
+Profile pictures: crops of public-domain 18th-century engravings (no known restrictions, Library of Congress)
+
+historical_1_compass_rose_Warsaw_1772.png: Plan de Varsovie, Rizzi-Zannoni atlas of Poland (1772), Library of Congress https://www.loc.gov/item/2021668473/
+historical_2_Lithuania_cartouche_1778.png: T. C. Lotter, Magnus Ducatus Lithuania (Augsburg, c. 1778), Library of Congress https://www.loc.gov/item/97683589/
+historical_3_Warsaw_crown_cartouche_1772.png: Plan de Varsovie, Rizzi-Zannoni atlas of Poland (1772), Library of Congress https://www.loc.gov/item/2021668473/
+historical_4_hand_coloured_map_1778.png: T. C. Lotter, Magnus Ducatus Lithuania (Augsburg, c. 1778), Library of Congress https://www.loc.gov/item/97683589/
