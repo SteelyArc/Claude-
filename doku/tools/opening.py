@@ -298,7 +298,7 @@ def main():
     TITLE_START = float(os.environ.get("TITLE_START", "28.0"))
     TOTAL = float(os.environ.get("OPENING_TOTAL", "33.5"))
     l_tag = layer(lambda d: (d.rounded_rectangle([SAFE_X0, 200, SAFE_X0 + 560, 246], 6, fill=RED),
-                             d.text((SAFE_X0 + 16, 208), "● HISTORICAL AUDIO · ORIGINAL GERMAN", font=font(MONO, 24), fill=PAPER)))
+                             d.text((SAFE_X0 + 16, 208), "HISTORICAL AUDIO · ORIGINAL GERMAN", font=font(MONO, 24), fill=PAPER)))
     l_src = layer(lambda d: d.text((SAFE_X0, 258), "Hitler to Krupp workers, Essen, c. 1935/36 · British Pathé, film ID 604.06",
                                    font=font(MONO_L, 20), fill=(200, 190, 170)))
     l_ctx = layer(lambda d: d.text((SAFE_X0, 286), "Historical documentary · contains Nazi-era propaganda, shown for education", font=font(MONO_L, 19), fill=(170, 160, 140)))

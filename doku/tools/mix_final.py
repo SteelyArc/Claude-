@@ -15,6 +15,8 @@ os.environ.setdefault("SCRATCH", "/tmp")
 import render_doc as RD
 if os.environ.get("RENDER_V2"):
     import render_v2  # noqa: F401  (patches RD.build_shots)
+if os.environ.get("RENDER_V3"):
+    import render_v3  # noqa: F401
 
 SR = 48000
 
