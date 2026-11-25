@@ -4030,7 +4030,7 @@ const shChalk=new THREE.Mesh(new THREE.PlaneGeometry(4000,14).rotateX(-Math.PI/2
 const shKid=makeKid('#ff6b5a','#2f6fd6',false); shScene.add(shKid); shKid.scale.setScalar(5.8); // ≈ 10 mm tall (makeKid ≈ 1.7 units)
 const SH_KS=10/2.1;
 const shO=new THREE.Object3D(), shV=new THREE.Vector3();
-function shRefreshCube(pos){const au=renderer.shadowMap.autoUpdate;renderer.shadowMap.autoUpdate=false;shCubeCam.position.copy(pos);shDrops.forEach(d=>d.visible=false);shRain.forEach(d=>d.visible=false);shBeads.visible=false;shSplash.visible=false;const kv=shKid.visible;shCubeCam.update(renderer,shScene);renderer.shadowMap.autoUpdate=au;shDrops.forEach(d=>d.visible=!d.userData.hide);shBeads.visible=true;shSplash.visible=true;shKid.visible=kv;}
+let shCubeLast=null;function shRefreshCube(pos,t,mode){if((mode==='swarm'||mode==='web'||mode==='grow')&&shCubeLast&&shCubeLast.m===mode&&shCubeLast.p.distanceTo(pos)<0.5&&Math.abs(t-shCubeLast.t)<0.4)return;shCubeLast={m:mode,p:pos.clone(),t:t};const au=renderer.shadowMap.autoUpdate;renderer.shadowMap.autoUpdate=false;shCubeCam.position.copy(pos);shDrops.forEach(d=>d.visible=false);shRain.forEach(d=>d.visible=false);shBeads.visible=false;shSplash.visible=false;const kv=shKid.visible;shCubeCam.update(renderer,shScene);renderer.shadowMap.autoUpdate=au;shDrops.forEach(d=>d.visible=!d.userData.hide);shBeads.visible=true;shSplash.visible=true;shKid.visible=kv;}
 function kidPose(t,{walk=0,arm=0,look=[0,0.05],mouth='smile',ms=1,brow=0.5,head=0}={}){const A=shKid.userData;A.legs.forEach((l,i)=>l.rotation.set(walk*0.55*Math.sin(t*7+(i?Math.PI:0)),0,0));A.arms[0].rotation.set(-walk*0.5*Math.sin(t*7),0,-0.12);A.arms[1].rotation.set(walk*0.5*Math.sin(t*7),0,0.12+arm);
   A.head.rotation.set(head,0,0);A.hips.position.y=0.86+walk*0.02*Math.abs(Math.sin(t*7));setFace(A.F,{open:(t%3.2)<0.12?0.1:1,look,brow,mouth,ms});}
 function shReset(t,mode){shDrops.forEach((d,i)=>d.userData.hide=(mode==='ants'&&(i===0||i===4||i===2))||(mode==='bee'&&i===0));shWindU.uTime.value=t;shKid.visible=true;shBee.visible=false;shAnts.forEach(a=>a.visible=false);shCrumb.visible=false;shSpider.visible=true;shMiniAnts.visible=false;shRain.forEach(d=>d.visible=false);shSplash.count=0;shRipple.count=0;shChalk.visible=mode==='field';
@@ -4087,7 +4087,7 @@ function updateShrink(t,mode){shReset(t,mode);let tgt=new THREE.Vector3(0,0,0),s
   shWindU.uWind.value=mode==='rain'?2.5:1;
   if(shake>0){shCam.position.x+=shake*Math.sin(t*61);shCam.position.y+=shake*Math.sin(t*47);}
   shCam.updateProjectionMatrix();
-  shRefreshCube(mode==='intro'||mode==='grow'?new THREE.Vector3(6,6,14):tgt.clone().add(new THREE.Vector3(0,4,0)));
+  shRefreshCube(mode==='intro'||mode==='grow'?new THREE.Vector3(6,6,14):tgt.clone().add(new THREE.Vector3(0,4,0)),t,mode);
   GOD={pos:shSunDisc.position.clone(),str:0.4};
 }
 window.__sh={updateShrink,renderer};
