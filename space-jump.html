@@ -4588,17 +4588,12 @@ const skCapsule=(()=>{const g=new THREE.Group();
   for(const a of [-1.2,1.2,2.6]){const w=new THREE.Mesh(new THREE.CircleGeometry(0.2,20),win.material);w.position.set(Math.sin(a)*1.82,1.5,Math.cos(a)*1.82);w.lookAt(w.position.clone().multiplyScalar(2).setY(1.5));g.add(w);}
   const cab=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,90,6),mat('#555b66'));cab.position.y=3.3+45;g.add(cab);
   shadowed(g);g.userData={door};fgScene.add(g);return g;})();
-// balloon (inflated) with a cute face
+// balloon (inflated)
 const skBalloon=(()=>{const g=new THREE.Group();
   const gt=canvasTex(1024,64,(c,w,h)=>{c.fillStyle='#f2f5f9';c.fillRect(0,0,w,h);c.fillStyle='rgba(150,165,185,0.55)';for(let i=0;i<64;i++)c.fillRect(i*w/64,0,2,h);});
   const prof=[];for(let i=0;i<=40;i++){const u=i/40;const y=u*120;const r=Math.max(0.5,64*Math.pow(Math.sin(Math.PI*Math.pow(u,0.75)),0.85)*(0.35+0.65*u));prof.push(new THREE.Vector2(r,y));}
   const env=new THREE.Mesh(new THREE.LatheGeometry(prof,64),new THREE.MeshStandardMaterial({map:gt,roughness:0.28,metalness:0.05,envMap:envTex,envMapIntensity:0.8,transparent:true,opacity:0.93,side:THREE.DoubleSide,emissive:lin('#2a3240'),emissiveIntensity:0.25}));g.add(env);
-  const F=new THREE.Group();F.position.set(0,82,0);g.add(F);
-  const eyeW=new THREE.MeshBasicMaterial({color:0xffffff}),pup=new THREE.MeshBasicMaterial({color:lin('#1a1f2a')});const eyes=[];
-  for(const s of [-1,1]){const e=new THREE.Group();const yy=6,rr=Math.sqrt(Math.max(0,62*62*0.86-0));e.position.set(s*13,yy,55.5);e.rotation.y=s*0.24;F.add(e);
-    const wb=new THREE.Mesh(new THREE.CircleGeometry(7.5,32),eyeW);e.add(wb);const p=new THREE.Mesh(new THREE.CircleGeometry(4.2,24),pup);p.position.set(0,-0.6,0.1);e.add(p);const hl=new THREE.Mesh(new THREE.CircleGeometry(1.4,16),eyeW);hl.position.set(1.5,1.3,0.2);e.add(hl);eyes.push(e);}
-  const mouth=new THREE.Mesh(new THREE.TorusGeometry(9,1.3,8,32,Math.PI),new THREE.MeshBasicMaterial({color:lin('#c43a4a')}));mouth.rotation.z=Math.PI;mouth.position.set(0,-6,57);F.add(mouth);
-  const cheek=new THREE.MeshBasicMaterial({color:lin('#ff9aa8'),transparent:true,opacity:0.6});for(const s of [-1,1]){const c=new THREE.Mesh(new THREE.CircleGeometry(4,20),cheek);c.position.set(s*24,-4,53);c.rotation.y=s*0.4;F.add(c);}
+  const F=new THREE.Group();const eyes=[];
   const lines=new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints([...Array(16)].flatMap((_,i)=>{const a=i/16*Math.PI*2;return [new THREE.Vector3(0,-2,0),new THREE.Vector3(Math.cos(a)*prof[3].x,prof[3].y,Math.sin(a)*prof[3].x)];})),new THREE.LineBasicMaterial({color:lin('#8b93a0')}));g.add(lines);
   g.userData={eyes,F};fgScene.add(g);return g;})();
 // launch-shape balloon: bubble on top of a long limp tube
@@ -4606,8 +4601,6 @@ const skLaunchB=(()=>{const g=new THREE.Group();const m=new THREE.MeshStandardMa
   const bub=new THREE.Mesh(new THREE.SphereGeometry(19,40,30),m);bub.scale.set(1,1.15,1);bub.position.y=150;g.add(bub);
   const tprof=[];for(let i=0;i<=40;i++){const u=i/40;tprof.push(new THREE.Vector2(2.2+1.8*Math.sin(u*31)*0.15+u*6,u*132));}
   const tube=new THREE.Mesh(new THREE.LatheGeometry(tprof,24),m);g.add(tube);
-  const F=new THREE.Group();F.position.set(0,150,17.5);g.add(F);for(const s of [-1,1]){const e=new THREE.Mesh(new THREE.CircleGeometry(3.4,24),new THREE.MeshBasicMaterial({color:0xffffff}));e.position.set(s*5.5,3,0.5);e.rotation.y=s*0.3;F.add(e);const p=new THREE.Mesh(new THREE.CircleGeometry(1.9,20),new THREE.MeshBasicMaterial({color:lin('#1a1f2a')}));p.position.set(s*5.5,2.6,0.8);p.rotation.y=s*0.3;F.add(p);}
-  const mo=new THREE.Mesh(new THREE.TorusGeometry(4,0.6,8,24,Math.PI),new THREE.MeshBasicMaterial({color:lin('#c43a4a')}));mo.rotation.z=Math.PI;mo.position.set(0,-3,1.2);F.add(mo);
   fgScene.add(g);return g;})();
 // the jumper (astronaut kid in a pressure suit)
 const skKid=makeKid('#ffffff','#ffffff',true); skKid.scale.setScalar(0.86); fgScene.add(skKid);
